@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "689652057864",
+    "project_id": "k-visuals-16319",
+    "storage_bucket": "k-visuals-16319.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689652057864:android:bd67b62462eccd5d6e0ebd",
+        "android_client_info": {
+          "package_name": "com.kellogg.bisco.cairo_bisco_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689652057864-mg5bqr3e9h6e212u4pno9183rk2al13o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCS0eDhfwMwRiKNT8Likjze9iZnwi0TieU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "689652057864-mg5bqr3e9h6e212u4pno9183rk2al13o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
