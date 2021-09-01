@@ -1,16 +1,15 @@
 # cairo_bisco_app
 
-project for Bisco Misr factory
+Project for Bisco Misr Cairo Plant
 
-## Getting Started
+## deployment instructions :
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Build for web :
+   > flutter build web --no-sound-null-safety
+2. Move build/web --> /public
+3. You can test locally before deployment
+   > firebase serve --only hosting
+4. Deploy a new release
+   > firebase deploy --only hosting:bisco-k-visuals
+5. Use [deployment URL](https://bisco-k-visuals.web.app)
+   > https://bisco-k-visuals.web.app

@@ -161,7 +161,7 @@ packages:
       name: fl_chart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.36.4"
+    version: "0.40.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -335,14 +335,14 @@ packages:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.2.57"
+    version: "19.2.59"
   syncfusion_flutter_gauges:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_gauges
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.2.57"
+    version: "19.2.59"
   term_glyph:
     dependency: transitive
     description:
