@@ -20,13 +20,7 @@ class ProductionLine extends StatelessWidget {
   }) : super(key: key);
 
   final String productName;
-  final double cartons,
-      oee,
-      scrap,
-      overweight,
-      filmWaste,
-      targetProd,
-      money;
+  final double cartons, oee, scrap, overweight, filmWaste, targetProd, money;
 
   @override
   Widget build(BuildContext context) {
