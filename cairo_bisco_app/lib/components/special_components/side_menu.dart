@@ -60,6 +60,7 @@ class SideMenu extends StatelessWidget {
             image: "exit",
             press: () {
               Navigator.pop(context);
+              Navigator.pop(context);
             },
           ),
         ],
