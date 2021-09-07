@@ -1,3 +1,4 @@
+import 'package:cairo_bisco_app/components/utility_funcs/calculations_utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 final biscuitsSkuRef =
@@ -15,6 +16,7 @@ final maamoulSkuRef =
           fromFirestore: (snapshot, _) => SKU.fromJson(snapshot.data()!),
           toFirestore: (sku, _) => sku.toJson(),
         );
+final RefSkuArr = [biscuitsSkuRef, waferSkuRef, maamoulSkuRef];
 
 class SKU {
   final String name;
@@ -30,10 +32,11 @@ class SKU {
   SKU.fromJson(Map<String, Object?> json)
       : this(
           name: json['name']! as String,
-          cartonWeight: json['cartonWeight']! as double,
-          theoreticalShiftProd: json['theoreticalShiftProd']! as double,
-          targetScrap: json['targetScrap']! as double,
-          targetFilmWaste: json['targetFilmWaste']! as double,
+          cartonWeight: parseJsonToDouble(json['cartonWeight']!),
+          theoreticalShiftProd:
+              parseJsonToDouble(json['theoreticalShiftProd']!),
+          targetScrap: parseJsonToDouble(json['targetScrap']!),
+          targetFilmWaste: parseJsonToDouble(json['targetFilmWaste']!),
         );
 
   Map<String, Object?> toJson() {
@@ -53,8 +56,6 @@ class SKU {
       double theoreticalShiftProd,
       double targetScrap,
       double targetFilmWaste) async {
-    final RefSkuArr = [biscuitsSkuRef, waferSkuRef, maamoulSkuRef];
-
     await RefSkuArr[refNum].add(
       SKU(
           name: name,
@@ -106,15 +107,13 @@ class SKU {
     // 'Plain Ghorayeba غريبة سادة'
   ];
 
-  void getAllSku() {
+  static void getAllSku() {
     getSKU(0, biscuitSKU);
     getSKU(1, waferSKU);
     getSKU(2, maamoulSKU);
   }
 
-  void getSKU(refNum, skuNamesList) async {
-    final RefSkuArr = [biscuitsSkuRef, waferSkuRef, maamoulSkuRef];
-
+  static void getSKU(refNum, skuNamesList) async {
     List<QueryDocumentSnapshot<SKU>> skuList =
         await RefSkuArr[refNum].get().then((snapshot) => snapshot.docs);
 
