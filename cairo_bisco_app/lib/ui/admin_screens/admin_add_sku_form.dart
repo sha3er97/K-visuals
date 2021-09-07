@@ -1,12 +1,10 @@
 import 'package:cairo_bisco_app/classes/SKU.dart';
-import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
-import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
-import 'package:cairo_bisco_app/components/utility_funcs/date_utility.dart';
-import 'package:cairo_bisco_app/components/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
-import 'package:cairo_bisco_app/classes/values/form_values.dart';
+import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
+import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
+import 'package:cairo_bisco_app/components/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,10 +30,10 @@ class _AddSkuFormState extends State<AddSkuForm> {
 
   bool showSpinner = false;
   String skuName = "";
-  double cartonWeight = 0.0,
-      theoreticalShiftProd = 0.0,
-      targetScrap = 0.0,
-      targetFilmWaste = 0.0;
+  String cartonWeight = "0.0",
+      theoreticalShiftProd = "0.0",
+      targetScrap = "0.0",
+      targetFilmWaste = "0.0";
   bool _sku_name_validate = false,
       _cartonWeight_validate = false,
       _theoreticalShiftProd_validate = false,
@@ -137,9 +135,7 @@ class _AddSkuFormState extends State<AddSkuForm> {
                             ),
                           ),
                           onChanged: (value) {
-                            _cartonWeight_validate = emptyField(value);
-                            if (_cartonWeight_validate)
-                              cartonWeight = double.parse(value);
+                            cartonWeight = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -175,9 +171,7 @@ class _AddSkuFormState extends State<AddSkuForm> {
                             ),
                           ),
                           onChanged: (value) {
-                            _theoreticalShiftProd_validate = emptyField(value);
-                            if (_theoreticalShiftProd_validate)
-                              theoreticalShiftProd = double.parse(value);
+                            theoreticalShiftProd = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -212,9 +206,7 @@ class _AddSkuFormState extends State<AddSkuForm> {
                             ),
                           ),
                           onChanged: (value) {
-                            _targetScrap_validate = emptyField(value);
-                            if (_targetScrap_validate)
-                              targetScrap = double.parse(value);
+                            targetScrap = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -250,9 +242,7 @@ class _AddSkuFormState extends State<AddSkuForm> {
                             ),
                           ),
                           onChanged: (value) {
-                            _targetFilmWaste_validate = emptyField(value);
-                            if (_targetFilmWaste_validate)
-                              targetFilmWaste = double.parse(value);
+                            targetFilmWaste = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -268,6 +258,14 @@ class _AddSkuFormState extends State<AddSkuForm> {
                                 setState(() {
                                   showSpinner = true;
                                   _sku_name_validate = emptyField(skuName);
+                                  _targetFilmWaste_validate =
+                                      emptyField(targetFilmWaste);
+                                  _cartonWeight_validate =
+                                      emptyField(cartonWeight);
+                                  _targetScrap_validate =
+                                      emptyField(targetScrap);
+                                  _theoreticalShiftProd_validate =
+                                      emptyField(theoreticalShiftProd);
                                 });
                                 try {
                                   if (!_sku_name_validate &&
@@ -275,14 +273,14 @@ class _AddSkuFormState extends State<AddSkuForm> {
                                       !_cartonWeight_validate &&
                                       !_targetScrap_validate &&
                                       !_theoreticalShiftProd_validate) {
-                                    //TODO :: add sku in database
                                     SKU.addSKU(
-                                        refNum,
-                                        skuName,
-                                        cartonWeight,
-                                        theoreticalShiftProd,
-                                        targetScrap,
-                                        targetFilmWaste);
+                                      refNum,
+                                      skuName,
+                                      double.parse(cartonWeight),
+                                      double.parse(theoreticalShiftProd),
+                                      double.parse(targetScrap),
+                                      double.parse(targetFilmWaste),
+                                    );
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(

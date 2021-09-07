@@ -1,4 +1,4 @@
-import 'package:cairo_bisco_app/classes/values/Rules.dart';
+import 'package:cairo_bisco_app/classes/Rules.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
@@ -49,7 +49,7 @@ class ProductionColScreen extends StatelessWidget {
           ),
           Center(
             child: Text(
-              lineNum == -1 ? 'اجمالي المنطقة' : ' $lineNumخط  ',
+              lineNum == -1 ? 'اجمالي المنطقة' : ' $lineNum خط  ',
               style: TextStyle(
                 color: KelloggColors.darkRed,
                 fontSize: largeFontSize,
@@ -77,7 +77,7 @@ class ProductionColScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subHeading(" الف$cartons"),
+                      subHeading(" $cartons الف "),
                     ],
                   ),
                 ),
@@ -97,7 +97,7 @@ class ProductionColScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subHeading(" طن$actual"),
+                      subHeading("$actual طن "),
                     ],
                   ),
                 ),
@@ -237,12 +237,11 @@ class ProductionColScreen extends StatelessWidget {
                   child: ConstrainedBox(
                       constraints: BoxConstraints.tightFor(height: 150),
                       child: ElevatedButton.icon(
-                        label: Text(
-                            (scrap * Plans.scrapKgCost).toStringAsFixed(1) +
-                                " الف جنيه "),
+                        label: Text(" الف جنيه " +
+                            (scrap * Plans.scrapKgCost).toStringAsFixed(1)),
                         style: ElevatedButton.styleFrom(
                           textStyle: TextStyle(
-                              fontSize: largeButtonFont, fontFamily: 'Poppins'),
+                              fontSize: largeButtonFont, fontFamily: 'MyFont'),
                           primary: scrap < Plans.targetScrap
                               ? KelloggColors.green
                               : KelloggColors.cockRed,

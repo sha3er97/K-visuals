@@ -1,7 +1,7 @@
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
-import 'package:cairo_bisco_app/classes/values/Rules.dart';
+import 'package:cairo_bisco_app/classes/Rules.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
@@ -123,7 +123,7 @@ class ProductionLine extends StatelessWidget {
                       width: 25.0,
                       padding: EdgeInsets.all(minimumPadding / 2),
                       color: prodTargetDone
-                          ? KelloggColors.green.withOpacity(0.5)
+                          ? KelloggColors.green
                           : KelloggColors.clearRed,
                       child: new Image.asset(
                         'images/$arrowImg.png',
@@ -142,7 +142,7 @@ class ProductionLine extends StatelessWidget {
                             (actual - targetProd).toStringAsFixed(1) + " K",
                             style: TextStyle(
                                 color: prodTargetDone
-                                    ? KelloggColors.green.withOpacity(0.5)
+                                    ? KelloggColors.green
                                     : KelloggColors.clearRed,
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w500,
@@ -205,7 +205,7 @@ class ProductionLine extends StatelessWidget {
                 GaugeRange(
                     startValue: Plans.targetOEE - 1,
                     endValue: Plans.targetOEE + 1,
-                    color: KelloggColors.darkBlue),
+                    color: KelloggColors.green),
                 // GaugeRange(startValue: 50, endValue: 100, color: Colors.orange),
                 // GaugeRange(startValue: 100, endValue: 150, color: Colors.red)
               ], annotations: <GaugeAnnotation>[
@@ -279,7 +279,7 @@ class ProductionLine extends StatelessWidget {
                         label: Text(overweight.toStringAsFixed(1) + " %"),
                         style: ElevatedButton.styleFrom(
                           textStyle: TextStyle(
-                              fontSize: largeButtonFont, fontFamily: 'Poppins'),
+                              fontSize: largeButtonFont, fontFamily: 'MyFont'),
                           primary: overweightNormal
                               ? KelloggColors.green
                               : KelloggColors.cockRed,
@@ -350,15 +350,14 @@ class ProductionLine extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15.0),
                   //or 15.0
                   child: ConstrainedBox(
-                      constraints:
-                          BoxConstraints.tightFor(height: 150, width: 200),
+                      constraints: BoxConstraints.tightFor(height: 150),
                       child: ElevatedButton.icon(
                         label: Text(
                             (scrap * Plans.scrapKgCost).toStringAsFixed(1) +
-                                " EGP "),
+                                " K EGP "),
                         style: ElevatedButton.styleFrom(
                           textStyle: TextStyle(
-                              fontSize: largeButtonFont, fontFamily: 'Poppins'),
+                              fontSize: largeButtonFont, fontFamily: 'MyFont'),
                           primary: scrap < Plans.targetScrap
                               ? KelloggColors.green
                               : KelloggColors.cockRed,

@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.red,
         // primaryColor: KelloggColors.darkRed,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: 'Poppins',
+        fontFamily: 'MyFont',
         // colorScheme: ColorScheme.fromSwatch()
         //     .copyWith(secondary: KelloggColors.darkRed)
       ),

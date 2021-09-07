@@ -292,7 +292,7 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                                 style: ElevatedButton.styleFrom(
                                   textStyle: TextStyle(
                                       fontSize: largeButtonFont,
-                                      fontFamily: 'Poppins'),
+                                      fontFamily: 'MyFont'),
                                   primary: KelloggColors.yellow,
                                 ),
                                 icon: ClipRRect(
@@ -329,7 +329,7 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                                 style: ElevatedButton.styleFrom(
                                   textStyle: TextStyle(
                                       fontSize: largeButtonFont,
-                                      fontFamily: 'Poppins'),
+                                      fontFamily: 'MyFont'),
                                   primary: KelloggColors.green,
                                 ),
                                 icon: ClipRRect(
@@ -365,7 +365,7 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                                 style: ElevatedButton.styleFrom(
                                   textStyle: TextStyle(
                                       fontSize: largeButtonFont,
-                                      fontFamily: 'Poppins'),
+                                      fontFamily: 'MyFont'),
                                   padding: EdgeInsets.symmetric(
                                       horizontal: defaultPadding,
                                       vertical: minimumPadding),

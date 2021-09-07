@@ -65,7 +65,7 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                                   style: ElevatedButton.styleFrom(
                                     textStyle: TextStyle(
                                         fontSize: largeFontSize,
-                                        fontFamily: 'Poppins'),
+                                        fontFamily: 'MyFont'),
                                     primary:
                                         KelloggColors.yellow.withOpacity(0.5),
                                   ),
@@ -124,7 +124,7 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                                   style: ElevatedButton.styleFrom(
                                     textStyle: TextStyle(
                                         fontSize: largeFontSize,
-                                        fontFamily: 'Poppins'),
+                                        fontFamily: 'MyFont'),
                                     primary:
                                         KelloggColors.green.withOpacity(0.5),
                                   ),
@@ -183,7 +183,7 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                                   style: ElevatedButton.styleFrom(
                                     textStyle: TextStyle(
                                         fontSize: largeFontSize,
-                                        fontFamily: 'Poppins'),
+                                        fontFamily: 'MyFont'),
                                     padding: EdgeInsets.symmetric(
                                         horizontal: defaultPadding,
                                         vertical: minimumPadding),

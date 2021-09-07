@@ -46,7 +46,7 @@ class LineNumButton extends StatelessWidget {
                 ),
                 style: ElevatedButton.styleFrom(
                   textStyle:
-                      TextStyle(fontSize: largeFontSize, fontFamily: 'Poppins'),
+                      TextStyle(fontSize: largeFontSize, fontFamily: 'MyFont'),
                   padding: EdgeInsets.symmetric(
                       horizontal: defaultPadding, vertical: minimumPadding),
                   primary: mainColor,

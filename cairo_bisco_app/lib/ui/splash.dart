@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:cairo_bisco_app/classes/Rules.dart';
+import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/components/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/ui/login_screens/login.dart';
@@ -16,9 +18,9 @@ class _SplashState extends State<SplashScreen> {
     Timer(
         Duration(seconds: 3),
         () => {
-              getCredentials(),
-              getPlans(),
-              // getSKU(), TODO :: getallSKUs()
+              Credentials.getCredentials(),
+              Plans.getPlans(),
+              SKU.getAllSku(),
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) => Login()))
             });
