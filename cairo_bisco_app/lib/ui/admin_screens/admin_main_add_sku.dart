@@ -4,16 +4,14 @@
     wafer
     maamoul
  *********************************/
-import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
-import 'package:cairo_bisco_app/ui/supervisor_screens/maamoul_production_report.dart';
-import 'package:cairo_bisco_app/ui/supervisor_screens/wafer_production_report.dart';
+import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cairo_bisco_app/ui/supervisor_screens/biscuits_production_report.dart';
+import 'admin_add_sku_form.dart';
 
-class SupervisorHomeProductionPage extends StatelessWidget {
+class AdminAddSku extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,8 +60,9 @@ class SupervisorHomeProductionPage extends StatelessWidget {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              BiscuitsReport()));
+                                          builder: (context) => AddSkuForm(
+                                                refNum: 0,
+                                              )));
                                 },
                               ))))),
               Padding(
@@ -99,7 +98,9 @@ class SupervisorHomeProductionPage extends StatelessWidget {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => WaferReport()));
+                                          builder: (context) => AddSkuForm(
+                                                refNum: 1,
+                                              )));
                                 },
                               ))))),
               Padding(
@@ -138,8 +139,9 @@ class SupervisorHomeProductionPage extends StatelessWidget {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              MaamoulReport()));
+                                          builder: (context) => AddSkuForm(
+                                                refNum: 2,
+                                              )));
                                 },
                               ))))),
             ])));

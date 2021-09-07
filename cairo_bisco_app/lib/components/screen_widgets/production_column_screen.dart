@@ -1,7 +1,7 @@
-import 'package:cairo_bisco_app/components/values/Rules.dart';
-import 'package:cairo_bisco_app/components/values/TextStandards.dart';
-import 'package:cairo_bisco_app/components/values/colors.dart';
-import 'package:cairo_bisco_app/components/values/constants.dart';
+import 'package:cairo_bisco_app/classes/values/Rules.dart';
+import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
+import 'package:cairo_bisco_app/classes/values/colors.dart';
+import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
@@ -12,16 +12,20 @@ class ProductionColScreen extends StatelessWidget {
     required this.actual,
     required this.targetProd,
     required this.oee,
-    required this.money,
+    required this.scrap,
+    required this.prodType,
+    required this.lineNum,
   }) : super(key: key);
   final double cartons, actual, oee, targetProd;
-  final double money;
+  final double scrap;
+  final String prodType;
+  final int lineNum;
 
   @override
   Widget build(BuildContext context) {
     bool prodTargetDone = actual - targetProd > 0;
     String arrowImg = prodTargetDone ? "up" : "down";
-    String arrowImg2 = money > Plans.targetMinimumMoney ? "up" : "down";
+    String arrowImg2 = scrap < Plans.targetScrap ? "up" : "down";
 
     return Container(
       margin: EdgeInsets.all(defaultPadding),
@@ -30,6 +34,32 @@ class ProductionColScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Center(
+            child: Text(
+              prodType,
+              style: TextStyle(
+                color: KelloggColors.yellow,
+                fontSize: largeFontSize,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: minimumPadding,
+          ),
+          Center(
+            child: Text(
+              lineNum == -1 ? 'اجمالي المنطقة' : ' $lineNumخط  ',
+              style: TextStyle(
+                color: KelloggColors.darkRed,
+                fontSize: largeFontSize,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: defaultPadding,
+          ),
           Row(
             children: [
               Expanded(
@@ -193,7 +223,7 @@ class ProductionColScreen extends StatelessWidget {
             ],
           ),
           Center(
-            child: Text('مكاسب المصنع',
+            child: Text('تكلفة الهالك',
                 style: TextStyle(
                     fontSize: largeFontSize,
                     fontWeight: FontWeight.bold,
@@ -207,11 +237,13 @@ class ProductionColScreen extends StatelessWidget {
                   child: ConstrainedBox(
                       constraints: BoxConstraints.tightFor(height: 150),
                       child: ElevatedButton.icon(
-                        label: Text(money.toStringAsFixed(1) + " الف جنيه "),
+                        label: Text(
+                            (scrap * Plans.scrapKgCost).toStringAsFixed(1) +
+                                " الف جنيه "),
                         style: ElevatedButton.styleFrom(
                           textStyle: TextStyle(
                               fontSize: largeButtonFont, fontFamily: 'Poppins'),
-                          primary: money > Plans.targetMinimumMoney
+                          primary: scrap < Plans.targetScrap
                               ? KelloggColors.green
                               : KelloggColors.cockRed,
                         ),

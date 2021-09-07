@@ -6,16 +6,16 @@ this screen will contain
 4- qfs brief
 5- ehs brief
  *********************************/
-import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/6kpis_good_bad_indicator.dart';
-import 'package:cairo_bisco_app/components/values/Rules.dart';
-import 'package:cairo_bisco_app/components/values/TextStandards.dart';
+import 'package:cairo_bisco_app/classes/values/Rules.dart';
+import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
+import 'package:cairo_bisco_app/classes/values/colors.dart';
+import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/classes/values/form_values.dart';
 import 'package:cairo_bisco_app/components/production_widgets/chart.dart';
-import 'package:cairo_bisco_app/components/values/colors.dart';
 import 'package:cairo_bisco_app/components/production_widgets/production_info_card.dart';
+import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/6kpis_good_bad_indicator.dart';
 import 'package:cairo_bisco_app/components/special_components/side_menu.dart';
-import 'package:cairo_bisco_app/components/values/constants.dart';
 import 'package:cairo_bisco_app/components/utility_funcs/date_utility.dart';
-import 'package:cairo_bisco_app/components/values/form_values.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 

@@ -1,5 +1,5 @@
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
-import 'package:cairo_bisco_app/components/values/colors.dart';
+import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:flutter/material.dart';
 
 class GeneralErrorScreen extends StatelessWidget {

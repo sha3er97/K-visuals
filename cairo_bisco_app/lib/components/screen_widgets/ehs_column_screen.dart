@@ -1,8 +1,8 @@
 import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/1kpi_good_bad_indicator.dart';
-import 'package:cairo_bisco_app/components/values/Rules.dart';
-import 'package:cairo_bisco_app/components/values/TextStandards.dart';
-import 'package:cairo_bisco_app/components/values/colors.dart';
-import 'package:cairo_bisco_app/components/values/constants.dart';
+import 'package:cairo_bisco_app/classes/values/Rules.dart';
+import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
+import 'package:cairo_bisco_app/classes/values/colors.dart';
+import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
@@ -80,7 +80,7 @@ class EHSColScreen extends StatelessWidget {
         myDivider(),
         SfRadialGauge(
           title: GaugeTitle(
-              text: 'هالك الفيلم%',
+              text: 'هالك التغليف %',
               textStyle: TextStyle(
                   fontSize: largeFontSize,
                   fontWeight: FontWeight.bold,

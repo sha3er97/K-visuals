@@ -1,5 +1,5 @@
-import 'package:cairo_bisco_app/components/values/colors.dart';
-import 'package:cairo_bisco_app/components/values/constants.dart';
+import 'package:cairo_bisco_app/classes/values/colors.dart';
+import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/ui/production_screens/home_production.dart';
 import 'package:cairo_bisco_app/ui/production_screens/home_production_interval.dart';
 import 'package:cairo_bisco_app/ui/qfs_ehs_screens/ehs_report.dart';
@@ -53,6 +53,13 @@ class SideMenu extends StatelessWidget {
             press: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => EhsReport()));
+            },
+          ),
+          DrawerListTile(
+            title: "  Log Out",
+            image: "exit",
+            press: () {
+              Navigator.pop(context);
             },
           ),
         ],

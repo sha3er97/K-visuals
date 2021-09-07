@@ -59,6 +59,7 @@ flutter:
 
   assets:
     - images/
+    - images/error_screens/
 
   fonts:
     - family: Poppins

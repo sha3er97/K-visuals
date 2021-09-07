@@ -1,5 +1,5 @@
+import 'package:cairo_bisco_app/classes/values/Rules.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../values/Rules.dart';
 
 void getPlans() {
   FirebaseFirestore.instance
@@ -17,8 +17,7 @@ void getPlans() {
       Plans.targetFilmWaste = documentSnapshot["targetFilmWaste"].toDouble();
       Plans.targetScrap = documentSnapshot["targetScrap"].toDouble();
       Plans.targetScrap = documentSnapshot["targetScrap"].toDouble();
-      Plans.targetMinimumMoney =
-          documentSnapshot["targetMinimumMoney"].toDouble();
+      Plans.scrapKgCost = documentSnapshot["scrapKgCost"].toDouble();
     } else {
       print('Document does not exist on the database');
     }
@@ -37,6 +36,8 @@ void getCredentials() {
       Credentials.plt_password = documentSnapshot["plt_password"];
       Credentials.screen_email = documentSnapshot["screen_email"];
       Credentials.screen_password = documentSnapshot["screen_password"];
+      Credentials.admin_email = documentSnapshot["admin_email"];
+      Credentials.admin_password = documentSnapshot["admin_password"];
     } else {
       print('Document does not exist on the database');
     }
@@ -53,6 +54,11 @@ bool isPlt(String email, String password) {
 bool isScreen(String email, String password) {
   return email.trim().compareTo(Credentials.screen_email) == 0 &&
       password.trim().compareTo(Credentials.screen_password) == 0;
+}
+
+bool isAdmin(String email, String password) {
+  return email.trim().compareTo(Credentials.admin_email) == 0 &&
+      password.trim().compareTo(Credentials.admin_password) == 0;
 }
 
 bool noEmptyValues(String email, String password) {

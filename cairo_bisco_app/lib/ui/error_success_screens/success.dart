@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
-import 'package:cairo_bisco_app/components/values/colors.dart';
-import 'package:cairo_bisco_app/components/values/constants.dart';
+import 'package:cairo_bisco_app/classes/values/colors.dart';
+import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

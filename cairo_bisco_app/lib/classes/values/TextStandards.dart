@@ -1,6 +1,5 @@
-import 'package:cairo_bisco_app/components/values/colors.dart';
 import 'package:flutter/material.dart';
-
+import 'colors.dart';
 import 'constants.dart';
 
 Text subHeading(String title) {
@@ -74,7 +73,7 @@ Widget sectionWithDivider(String title) {
         style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: largeFontSize,
-            color: KelloggColors.green),
+            color: KelloggColors.darkBlue),
       ),
       SizedBox(height: defaultPadding),
     ],

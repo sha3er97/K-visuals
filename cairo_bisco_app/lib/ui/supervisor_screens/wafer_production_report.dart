@@ -12,20 +12,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-class BiscuitsReport extends StatefulWidget {
+class WaferReport extends StatefulWidget {
   @override
-  _BiscuitsReportState createState() => _BiscuitsReportState();
+  _WaferReportState createState() => _WaferReportState();
 }
 
-class _BiscuitsReportState extends State<BiscuitsReport> {
+class _WaferReportState extends State<WaferReport> {
   bool showSpinner = false;
 
   String supName = "";
   int shiftProductionPlan = 0, actualSpeed = 0, production = 0;
-  int extrusionScrap = 0, extrusionRework = 0;
   int ovenScrap = 0, ovenRework = 0;
+  int creamScrap = 0, creamRework = 0;
+  int coolerScrap = 0, coolerRework = 0;
   int cutterScrap = 0, cutterRework = 0;
-  int conveyorScrap = 0, conveyorRework = 0;
   int unPackedProducts = 0;
   int MC1Speed = 0, MC2Speed = 0;
   int packingScrap = 0, packingRework = 0, packingRepack = 0;
@@ -37,14 +37,14 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
       _shift_plan_validate = false,
       _actualSpeed_validate = false,
       _production_validate = false,
-      _extrusionScrap_validate = false,
-      _extrusionRework_validate = false,
       _ovenScrap_validate = false,
       _ovenRework_validate = false,
+      _creamScrap_validate = false,
+      _creamRework_validate = false,
+      _coolerScrap_validate = false,
+      _coolerRework_validate = false,
       _cutterScrap_validate = false,
       _cutterRework_validate = false,
-      _conveyorScrap_validate = false,
-      _conveyorRework_validate = false,
       _unPackedProducts_validate = false,
       _mc1Speed_validate = false,
       _mc2Speed_validate = false,
@@ -64,7 +64,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
   String selectedMonth = months[(int.parse(getMonth())) - 1];
   String selectedDay = days[(int.parse(getDay())) - 1];
   String selectedProdLine = prod_lines4[0];
-  String sku = SKU.biscuitSKU[0];
+  String sku = SKU.waferSKU[0];
 
   VoidCallback? onSKUChange(val) {
     setState(() {
@@ -115,9 +115,9 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
             shadowColor: KelloggColors.white.withOpacity(0),
             leading: MyBackButton(),
             title: Text(
-              "Biscuits",
+              "Wafer",
               style: TextStyle(
-                  color: KelloggColors.yellow,
+                  color: KelloggColors.green,
                   fontWeight: FontWeight.w300,
                   fontSize: largeFontSize),
             ),
@@ -324,7 +324,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                         ),
                         SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////
-                        smallerHeading('نوع منتج البسكويت\nBiscuit SKU'),
+                        smallerHeading('نوع منتج الويفر\nWafer SKU'),
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
@@ -335,7 +335,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             // decoration: InputDecoration(labelText: 'اختر'),
                             value: sku,
                             isExpanded: true,
-                            items: SKU.biscuitSKU.map((String value) {
+                            items: SKU.waferSKU.map((String value) {
                               return new DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
@@ -470,86 +470,6 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        sectionWithDivider('التشكيل Extrusion'),
-                        /////////////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اعادة تشغيل\nRework'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _extrusionRework_validate
-                                ? 'هذه الخانة ضرورية'
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            _extrusionRework_validate = emptyField(value);
-                            if (_extrusionRework_validate)
-                              extrusionRework = int.parse(value);
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////
-                        smallerHeading('الهالك\nScrap'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _extrusionScrap_validate
-                                ? 'هذه الخانة ضرورية'
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            _extrusionScrap_validate = emptyField(value);
-                            if (_extrusionScrap_validate)
-                              extrusionScrap = int.parse(value);
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////
                         sectionWithDivider('الفرن Oven'),
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
@@ -630,7 +550,167 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                         ),
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////////////////////////////////////
-                        sectionWithDivider('السكينة Cutter'),
+                        sectionWithDivider('الحشو Cream'),
+                        /////////////////////////////////////////////////////////////////////////////////
+                        smallerHeading('اعادة تشغيل\nRework'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _creamRework_validate
+                                ? 'هذه الخانة ضرورية'
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            _creamRework_validate = emptyField(value);
+                            if (_creamRework_validate)
+                              creamRework = int.parse(value);
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        smallerHeading('الهالك\nScrap'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _creamScrap_validate
+                                ? 'هذه الخانة ضرورية'
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            _creamScrap_validate = emptyField(value);
+                            if (_creamScrap_validate)
+                              creamScrap = int.parse(value);
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        sectionWithDivider('الثلاجة Cooler'),
+                        /////////////////////////////////////////////////////////////////////////////////
+                        smallerHeading('اعادة تشغيل\nRework'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _coolerRework_validate
+                                ? 'هذه الخانة ضرورية'
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            _coolerRework_validate = emptyField(value);
+                            if (_coolerRework_validate)
+                              coolerRework = int.parse(value);
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        smallerHeading('الهالك\nScrap'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _coolerScrap_validate
+                                ? 'هذه الخانة ضرورية'
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            _coolerScrap_validate = emptyField(value);
+                            if (_coolerScrap_validate)
+                              coolerScrap = int.parse(value);
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        sectionWithDivider('المنشار Cutter'),
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
                         SizedBox(height: minimumPadding),
@@ -706,86 +786,6 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             _cutterScrap_validate = emptyField(value);
                             if (_cutterScrap_validate)
                               cutterScrap = int.parse(value);
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////
-                        sectionWithDivider('السير Conveyor'),
-                        /////////////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اعادة تشغيل\nRework'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _conveyorRework_validate
-                                ? 'هذه الخانة ضرورية'
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            _conveyorRework_validate = emptyField(value);
-                            if (_conveyorRework_validate)
-                              conveyorRework = int.parse(value);
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////
-                        smallerHeading('الهالك\nScrap'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _conveyorScrap_validate
-                                ? 'هذه الخانة ضرورية'
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            _conveyorScrap_validate = emptyField(value);
-                            if (_conveyorScrap_validate)
-                              conveyorScrap = int.parse(value);
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -1298,14 +1298,14 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                                       !_shift_plan_validate &&
                                       !_actualSpeed_validate &&
                                       !_production_validate &&
-                                      !_extrusionScrap_validate &&
-                                      !_extrusionRework_validate &&
                                       !_ovenScrap_validate &&
                                       !_ovenRework_validate &&
+                                      !_creamScrap_validate &&
+                                      !_creamRework_validate &&
+                                      !_coolerScrap_validate &&
+                                      !_coolerRework_validate &&
                                       !_cutterScrap_validate &&
                                       !_cutterRework_validate &&
-                                      !_conveyorScrap_validate &&
-                                      !_conveyorRework_validate &&
                                       !_unPackedProducts_validate &&
                                       !_mc1Speed_validate &&
                                       !_mc2Speed_validate &&

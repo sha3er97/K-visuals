@@ -1,4 +1,4 @@
-import 'package:cairo_bisco_app/components/values/colors.dart';
+import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/general_error.dart';
 import 'package:cairo_bisco_app/ui/splash.dart';
 import 'package:firebase_core/firebase_core.dart';

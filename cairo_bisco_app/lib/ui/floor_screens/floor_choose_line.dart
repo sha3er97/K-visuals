@@ -1,8 +1,7 @@
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/line_num_button.dart';
-import 'package:cairo_bisco_app/components/values/colors.dart';
-import 'package:cairo_bisco_app/components/values/constants.dart';
-import 'package:cairo_bisco_app/ui/floor_screens/floor_dashboard.dart';
+import 'package:cairo_bisco_app/classes/values/colors.dart';
+import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:flutter/material.dart';
 
 class FloorChooseLine extends StatelessWidget {

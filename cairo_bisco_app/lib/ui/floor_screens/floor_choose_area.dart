@@ -4,8 +4,9 @@
     wafer
     maamoul
  *********************************/
-import 'package:cairo_bisco_app/components/values/colors.dart';
-import 'package:cairo_bisco_app/components/values/constants.dart';
+import 'package:cairo_bisco_app/components/buttons/log_out_btn.dart';
+import 'package:cairo_bisco_app/classes/values/colors.dart';
+import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cairo_bisco_app/ui/floor_screens/floor_choose_line.dart';
@@ -24,6 +25,7 @@ class _FloorChooseAreaState extends State<FloorChooseArea> {
         appBar: new AppBar(
           backgroundColor: KelloggColors.white.withOpacity(0),
           shadowColor: KelloggColors.white.withOpacity(0),
+          leading: LogOutBtn(),
         ),
         body: SingleChildScrollView(
             child: Column(

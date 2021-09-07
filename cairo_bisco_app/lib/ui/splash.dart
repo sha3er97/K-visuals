@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/components/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/ui/login_screens/login.dart';
 import 'package:flutter/material.dart';
-import 'package:cairo_bisco_app/components/values/colors.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -18,6 +18,7 @@ class _SplashState extends State<SplashScreen> {
         () => {
               getCredentials(),
               getPlans(),
+              // getSKU(), TODO :: getallSKUs()
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) => Login()))
             });

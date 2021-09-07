@@ -1,13 +1,8 @@
+import 'package:cairo_bisco_app/classes/values/colors.dart';
+import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/screen_widgets/ehs_column_screen.dart';
 import 'package:cairo_bisco_app/components/screen_widgets/production_column_screen.dart';
-import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/1kpi_good_bad_indicator.dart';
-import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/6kpis_good_bad_indicator.dart';
 import 'package:cairo_bisco_app/components/screen_widgets/qfs_column_screen.dart';
-import 'package:cairo_bisco_app/components/values/Rules.dart';
-import 'package:cairo_bisco_app/components/values/TextStandards.dart';
-import 'package:cairo_bisco_app/components/values/colors.dart';
-import 'package:cairo_bisco_app/components/values/constants.dart';
-import 'package:cairo_bisco_app/components/values/form_values.dart';
 import 'package:flutter/material.dart';
 
 class FloorDashBoard extends StatefulWidget {
@@ -52,14 +47,16 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                         const EdgeInsets.symmetric(horizontal: minimumPadding),
                     child: Column(
                       children: [
-                        sectionTitle('الانتاج'),
+                        // sectionTitle('الانتاج'),
                         Center(
                             child: ProductionColScreen(
                           cartons: 5.3,
                           actual: 5.3,
                           targetProd: 5.5,
                           oee: 53.3,
-                          money: 4.3,
+                          scrap: 4.3,
+                          prodType: type,
+                          lineNum: lineNum,
                         )),
                       ],
                     ),

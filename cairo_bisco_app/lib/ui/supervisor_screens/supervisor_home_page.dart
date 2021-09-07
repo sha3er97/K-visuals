@@ -4,10 +4,11 @@
     qfs
     ehs
  *********************************/
+import 'package:cairo_bisco_app/components/buttons/log_out_btn.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_production_home.dart';
 import 'package:flutter/material.dart';
-import 'package:cairo_bisco_app/components/values/colors.dart';
-import 'package:cairo_bisco_app/components/values/constants.dart';
+import 'package:cairo_bisco_app/classes/values/colors.dart';
+import 'package:cairo_bisco_app/classes/values/constants.dart';
 
 class SupervisorHomePage extends StatefulWidget {
   @override
@@ -23,6 +24,7 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
         appBar: new AppBar(
           backgroundColor: KelloggColors.white.withOpacity(0),
           shadowColor: KelloggColors.white.withOpacity(0),
+          leading: LogOutBtn(),
           // leading: MyBackButton(),
         ),
         body: SingleChildScrollView(

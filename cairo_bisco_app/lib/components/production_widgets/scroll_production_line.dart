@@ -1,7 +1,7 @@
-import 'package:cairo_bisco_app/components/values/Rules.dart';
-import 'package:cairo_bisco_app/components/values/TextStandards.dart';
-import 'package:cairo_bisco_app/components/values/colors.dart';
-import 'package:cairo_bisco_app/components/values/constants.dart';
+import 'package:cairo_bisco_app/classes/values/colors.dart';
+import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
+import 'package:cairo_bisco_app/classes/values/Rules.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
@@ -36,7 +36,7 @@ class ProductionLine extends StatelessWidget {
     bool overweightNormal = overweight < Plans.targetOverWeightAbove &&
         overweight > Plans.targetOverWeightBelow;
     String arrowImg2 = overweightNormal ? "up" : "down";
-    String arrowImg3 = money > Plans.targetMinimumMoney ? "up" : "down";
+    String arrowImg3 = scrap < Plans.targetScrap ? "up" : "down";
 
     return Container(
       margin: EdgeInsets.all(defaultPadding),
@@ -338,7 +338,7 @@ class ProductionLine extends StatelessWidget {
             ],
           ),
           Center(
-            child: Text('RM MUV (EGP)',
+            child: Text('Scrap Cost (EGP)',
                 style: TextStyle(
                     fontSize: largeFontSize,
                     fontWeight: FontWeight.bold,
@@ -353,11 +353,13 @@ class ProductionLine extends StatelessWidget {
                       constraints:
                           BoxConstraints.tightFor(height: 150, width: 200),
                       child: ElevatedButton.icon(
-                        label: Text(money.toStringAsFixed(1) + " EGP "),
+                        label: Text(
+                            (scrap * Plans.scrapKgCost).toStringAsFixed(1) +
+                                " EGP "),
                         style: ElevatedButton.styleFrom(
                           textStyle: TextStyle(
                               fontSize: largeButtonFont, fontFamily: 'Poppins'),
-                          primary: money > Plans.targetMinimumMoney
+                          primary: scrap < Plans.targetScrap
                               ? KelloggColors.green
                               : KelloggColors.cockRed,
                         ),
@@ -368,7 +370,7 @@ class ProductionLine extends StatelessWidget {
                             width: 50.0,
                             padding: EdgeInsets.all(minimumPadding / 2),
                             child: new Image.asset(
-                              'images/$arrowImg2.png',
+                              'images/$arrowImg3.png',
                             ),
                           ),
                         ),

@@ -1,11 +1,9 @@
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/components/utility_funcs/login_utility.dart';
-import 'package:cairo_bisco_app/components/values/colors.dart';
-import 'package:cairo_bisco_app/components/values/constants.dart';
+import 'package:cairo_bisco_app/classes/values/colors.dart';
+import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/ui/admin_screens/admin_main_add_sku.dart';
 import 'package:cairo_bisco_app/ui/floor_screens/floor_choose_area.dart';
-
-// import 'package:cairo_bisco_app/ui/create_account/create_account.dart';
 import 'package:cairo_bisco_app/ui/homePage.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_home_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
+// import 'package:cairo_bisco_app/ui/create_account/create_account.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_database/firebase_database.dart';
 // import 'package:firebase_core/firebase_core.dart';
 
@@ -194,6 +194,12 @@ class _LoginState extends State<Login> {
                                   MaterialPageRoute(
                                       // builder: (context) => SuccessScreen()
                                       builder: (context) => FloorChooseArea()));
+                            } else if (isAdmin(email, password)) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      // builder: (context) => SuccessScreen()
+                                      builder: (context) => AdminAddSku()));
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
