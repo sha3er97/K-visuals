@@ -9,6 +9,8 @@ class BiscuitLines extends StatefulWidget {
 }
 
 class _BiscuitLinesState extends State<BiscuitLines> {
+  String productName = 'MAMUL معمول';
+
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -56,14 +58,13 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                     Center(
                         child: ProductionLine(
                       cartons: 5.3,
-                      actual: 5.3,
                       oee: 53.3,
                       scrap: 5.3,
                       money: 4.3,
                       overweight: 0.5,
                       filmWaste: 5.3,
                       targetProd: 5.1,
-                      productName: 'Datto King Size 12 Boxes 53 gm',
+                      productName: productName,
                     )),
                   ],
                 ),
@@ -76,14 +77,13 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                     Center(
                         child: ProductionLine(
                       cartons: 5.3,
-                      actual: 5.3,
                       money: 4.3,
                       oee: 53.3,
                       scrap: 5.3,
                       overweight: 0.5,
                       filmWaste: 5.3,
                       targetProd: 5.1,
-                      productName: 'Datto King Size 12 Boxes 53 gm',
+                      productName: productName,
                     )),
                   ],
                 ),
@@ -96,14 +96,13 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                     Center(
                         child: ProductionLine(
                       cartons: 5.3,
-                      actual: 5.3,
                       oee: 53.3,
                       scrap: 5.3,
                       overweight: 0.5,
                       filmWaste: 5.3,
                       money: 4.3,
                       targetProd: 5.1,
-                      productName: 'Datto King Size 12 Boxes 53 gm',
+                      productName: productName,
                     )),
                   ],
                 ),
@@ -116,14 +115,13 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                     Center(
                         child: ProductionLine(
                       cartons: 5.3,
-                      actual: 5.3,
                       oee: 53.3,
                       money: 4.3,
                       scrap: 5.3,
                       overweight: 0.5,
                       filmWaste: 5.3,
                       targetProd: 5.1,
-                      productName: 'Datto King Size 12 Boxes 53 gm',
+                      productName: productName,
                     )),
                   ],
                 ),
@@ -136,14 +134,13 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                     Center(
                         child: ProductionLine(
                       cartons: 5.3,
-                      actual: 5.3,
                       money: 4.3,
                       oee: 53.3,
                       scrap: 5.3,
                       overweight: 0.5,
                       filmWaste: 5.3,
                       targetProd: 5.1,
-                      productName: 'Datto King Size 12 Boxes 53 gm',
+                      productName: productName,
                     )),
                   ],
                 ),

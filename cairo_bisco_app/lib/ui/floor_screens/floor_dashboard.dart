@@ -53,7 +53,6 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                         Center(
                             child: ProductionColScreen(
                           cartons: 5.3,
-                          actual: 5.3,
                           targetProd: 5.5,
                           oee: 53.3,
                           scrap: 4.3,

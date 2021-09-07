@@ -10,7 +10,6 @@ class ProductionColScreen extends StatelessWidget {
   const ProductionColScreen({
     Key? key,
     required this.cartons,
-    required this.actual,
     required this.targetProd,
     required this.oee,
     required this.scrap,
@@ -18,7 +17,7 @@ class ProductionColScreen extends StatelessWidget {
     required this.lineNum,
     required this.productName,
   }) : super(key: key);
-  final double cartons, actual, oee, targetProd;
+  final double cartons, oee, targetProd;
   final double scrap;
   final String prodType;
   final int lineNum;
@@ -26,6 +25,7 @@ class ProductionColScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double actual = cartons * SKU.skuDetails[productName]!.cartonWeight;
     bool prodTargetDone = actual - targetProd > 0;
     String arrowImg = prodTargetDone ? "up" : "down";
     String arrowImg2 =

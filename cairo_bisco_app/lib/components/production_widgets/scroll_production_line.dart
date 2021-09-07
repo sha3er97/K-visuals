@@ -10,7 +10,6 @@ class ProductionLine extends StatelessWidget {
   const ProductionLine({
     Key? key,
     required this.cartons,
-    required this.actual,
     required this.oee,
     required this.scrap,
     required this.overweight,
@@ -22,7 +21,6 @@ class ProductionLine extends StatelessWidget {
 
   final String productName;
   final double cartons,
-      actual,
       oee,
       scrap,
       overweight,
@@ -32,6 +30,7 @@ class ProductionLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double actual = cartons * SKU.skuDetails[productName]!.cartonWeight;
     bool prodTargetDone = actual - targetProd > 0;
     String arrowImg = prodTargetDone ? "up" : "down";
     String arrowImg2 = overweight < Plans.targetOverWeightAbove ? "up" : "down";
