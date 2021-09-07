@@ -11,6 +11,8 @@ const textFieldFocusedBorderRadius = 1.0;
 const maxScrap = 10.0;
 const maxFilmWaste = 10.0;
 
+const monthDays = 28.0;
+
 const String submissionErrorText = "Error in submission .. incomplete report";
 List<String> months = <String>[
   '1',

@@ -1,4 +1,5 @@
 import 'package:cairo_bisco_app/classes/Rules.dart';
+import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
@@ -15,17 +16,20 @@ class ProductionColScreen extends StatelessWidget {
     required this.scrap,
     required this.prodType,
     required this.lineNum,
+    required this.productName,
   }) : super(key: key);
   final double cartons, actual, oee, targetProd;
   final double scrap;
   final String prodType;
   final int lineNum;
+  final String productName;
 
   @override
   Widget build(BuildContext context) {
     bool prodTargetDone = actual - targetProd > 0;
     String arrowImg = prodTargetDone ? "up" : "down";
-    String arrowImg2 = scrap < Plans.targetScrap ? "up" : "down";
+    String arrowImg2 =
+        scrap < SKU.skuDetails[productName]!.targetScrap ? "up" : "down";
 
     return Container(
       margin: EdgeInsets.all(defaultPadding),
@@ -242,9 +246,10 @@ class ProductionColScreen extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           textStyle: TextStyle(
                               fontSize: largeButtonFont, fontFamily: 'MyFont'),
-                          primary: scrap < Plans.targetScrap
-                              ? KelloggColors.green
-                              : KelloggColors.cockRed,
+                          primary:
+                              scrap < SKU.skuDetails[productName]!.targetScrap
+                                  ? KelloggColors.green
+                                  : KelloggColors.cockRed,
                         ),
                         icon: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0), //or 15.0

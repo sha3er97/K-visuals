@@ -1,8 +1,9 @@
-import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/1kpi_good_bad_indicator.dart';
 import 'package:cairo_bisco_app/classes/Rules.dart';
+import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/1kpi_good_bad_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
@@ -13,12 +14,16 @@ class EHSColScreen extends StatelessWidget {
     required this.recordable_incidents,
     required this.nearMiss,
     required this.filmWaste,
+    required this.productName,
   }) : super(key: key);
   final int firstAid_incidents, recordable_incidents, nearMiss;
   final double filmWaste;
+  final String productName;
 
   @override
   Widget build(BuildContext context) {
+    int days_in_interval = 1; //screen shows 1 day only
+
     return Column(
       children: [
         sectionTitle('الامن و السلامة'),
@@ -66,7 +71,9 @@ class EHSColScreen extends StatelessWidget {
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: minimumPadding),
                   child: KPI1GoodBadIndicator(
-                    circleColor: nearMiss == 0
+                    circleColor: nearMiss <
+                            (Plans.monthlyNearMissTarget / monthDays) *
+                                days_in_interval
                         ? KelloggColors.cockRed
                         : KelloggColors.green,
                     title: 'حوادث وشيكة',
@@ -93,10 +100,10 @@ class EHSColScreen extends StatelessWidget {
             ], ranges: <GaugeRange>[
               GaugeRange(
                   startValue: 0,
-                  endValue: Plans.targetFilmWaste,
+                  endValue: SKU.skuDetails[productName]!.targetFilmWaste,
                   color: KelloggColors.successGreen),
               GaugeRange(
-                  startValue: Plans.targetFilmWaste,
+                  startValue: SKU.skuDetails[productName]!.targetFilmWaste,
                   endValue: maxFilmWaste,
                   color: KelloggColors.clearRed)
             ], annotations: <GaugeAnnotation>[

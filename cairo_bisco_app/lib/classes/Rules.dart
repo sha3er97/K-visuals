@@ -31,13 +31,11 @@ class Credentials {
 
 class Plans {
   static double targetOverWeightAbove = 0.1;
-  static double targetOverWeightBelow = -0.1; //TODO :: remove
   static double targetOEE = 20.0;
-  static double targetFilmWaste = 1.0; //TODO :: per sku
-  static double targetScrap = 1.0; //TODO :: per sku
-  static double mediumRisksBoundary = 5;
-  static double highRisksBoundary = 12;
   static double scrapKgCost = 10.5;
+  static int monthlyNearMissTarget = 5;
+  static int mediumRisksBoundary = 5;
+  static int highRisksBoundary = 12;
 
   static void getPlans() {
     FirebaseFirestore.instance
@@ -49,13 +47,13 @@ class Plans {
         print('getPlans data: ${documentSnapshot.data()}');
         Plans.targetOverWeightAbove =
             documentSnapshot["targetOverWeightAbove"].toDouble();
-        Plans.targetOverWeightBelow =
-            documentSnapshot["targetOverWeightBelow"].toDouble();
         Plans.targetOEE = documentSnapshot["targetOEE"].toDouble();
-        Plans.targetFilmWaste = documentSnapshot["targetFilmWaste"].toDouble();
-        Plans.targetScrap = documentSnapshot["targetScrap"].toDouble();
-        Plans.targetScrap = documentSnapshot["targetScrap"].toDouble();
         Plans.scrapKgCost = documentSnapshot["scrapKgCost"].toDouble();
+        Plans.monthlyNearMissTarget =
+            documentSnapshot["monthlyNearMissTarget"].toInt();
+        Plans.mediumRisksBoundary =
+            documentSnapshot["mediumRisksBoundary"].toInt();
+        Plans.highRisksBoundary = documentSnapshot["highRisksBoundary"].toInt();
       } else {
         print('Document does not exist on the database');
       }

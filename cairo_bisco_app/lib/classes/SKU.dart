@@ -106,6 +106,7 @@ class SKU {
     // 'Dluxe Eid Assortment 2kg مشكل 2 كيلو',
     // 'Plain Ghorayeba غريبة سادة'
   ];
+  static Map<String, SKU> skuDetails = new Map<String, SKU>();
 
   static void getAllSku() {
     getSKU(0, biscuitSKU);
@@ -118,57 +119,11 @@ class SKU {
         await RefSkuArr[refNum].get().then((snapshot) => snapshot.docs);
 
     for (var sku in skuList) {
-      if (!skuNamesList.contains(sku.data().name.toString()))
+      if (!skuNamesList.contains(sku.data().name.toString())) {
         skuNamesList.add(sku.data().name.toString());
+
+        skuDetails[sku.data().name.toString()] = sku.data();
+      }
     }
   }
-// FirebaseFirestore.instance
-//     .collection('sku')
-//     .doc('biscuits')
-//     .get()
-//     .then((DocumentSnapshot documentSnapshot) {
-//   if (documentSnapshot.exists) {
-//     print('biscuits sku data: ${documentSnapshot.data()}');
-//     Map<String, dynamic> data =
-//         documentSnapshot.data() as Map<String, dynamic>;
-//     for (var v in data.values) {
-//       if (!biscuitSKU.contains(v.toString())) biscuitSKU.add(v.toString());
-//     }
-//   } else {
-//     print('Document does not exist on the database');
-//   }
-// });
-// FirebaseFirestore.instance
-//     .collection('sku')
-//     .doc('wafer')
-//     .get()
-//     .then((DocumentSnapshot documentSnapshot) {
-//   if (documentSnapshot.exists) {
-//     print('wafer sku data: ${documentSnapshot.data()}');
-//     Map<String, dynamic> data =
-//         documentSnapshot.data() as Map<String, dynamic>;
-//     for (var v in data.values) {
-//       if (!waferSKU.contains(v.toString())) waferSKU.add(v.toString());
-//     }
-//   } else {
-//     print('Document does not exist on the database');
-//   }
-// });
-//
-// FirebaseFirestore.instance
-//     .collection('sku')
-//     .doc('maamoul')
-//     .get()
-//     .then((DocumentSnapshot documentSnapshot) {
-//   if (documentSnapshot.exists) {
-//     print('maamoul sku data: ${documentSnapshot.data()}');
-//     Map<String, dynamic> data =
-//         documentSnapshot.data() as Map<String, dynamic>;
-//     for (var v in data.values) {
-//       if (!maamoulSKU.contains(v.toString())) maamoulSKU.add(v.toString());
-//     }
-//   } else {
-//     print('Document does not exist on the database');
-//   }
-// });
 }

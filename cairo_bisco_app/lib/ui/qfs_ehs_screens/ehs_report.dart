@@ -66,6 +66,32 @@ class _EhsReportState extends State<EhsReport> {
     });
   }
 
+  int days_in_interval = 0;
+
+  void calculateInterval() {
+    // assume dates are validated (yearTo>yearFrom)
+    int modified_to_month = int.parse(_selectedMonthTo) +
+        (int.parse(_selectedYearTo) - int.parse(_selectedYearFrom)) * 12;
+    // modified_to_month is now > from_month for sure
+    int modified_to_day = int.parse(_selectedDayTo) +
+        (modified_to_month - int.parse(_selectedMonthFrom)) * 12;
+    // modified_to_day is now > from_day for sure
+    days_in_interval = modified_to_day - int.parse(_selectedDayFrom);
+  }
+
+  bool validateInterval() {
+    if (int.parse(_selectedYearTo) < int.parse(_selectedYearFrom))
+      return false;
+    else if ((int.parse(_selectedYearTo) == int.parse(_selectedYearFrom)) &&
+        (int.parse(_selectedMonthTo) < int.parse(_selectedMonthFrom)))
+      return false;
+    else if ((int.parse(_selectedYearTo) == int.parse(_selectedYearFrom)) &&
+        (int.parse(_selectedMonthTo) == int.parse(_selectedMonthFrom)) &&
+        (int.parse(_selectedDayTo) < int.parse(_selectedYearFrom)))
+      return false;
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -303,9 +329,11 @@ class _EhsReportState extends State<EhsReport> {
                         showSpinner = true;
                       });
                       try {
-                        // final user = await _auth.signInWithEmailAndPassword(
-                        //     email: email, password: password);
-
+                        //TODO :: validate interval
+                        if (validateInterval()) {
+                          calculateInterval();
+                          // TODO :: capture reports in the interval "inclusive"
+                        }
                         setState(() {
                           showSpinner = false;
                         });
@@ -379,7 +407,9 @@ class _EhsReportState extends State<EhsReport> {
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: KPI1GoodBadIndicator(
-                          circleColor: nearMiss == 0
+                          circleColor: nearMiss <
+                                  (Plans.monthlyNearMissTarget / monthDays) *
+                                      days_in_interval
                               ? KelloggColors.cockRed
                               : KelloggColors.green,
                           title: 'Near Miss',

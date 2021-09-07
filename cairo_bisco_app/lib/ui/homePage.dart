@@ -53,6 +53,8 @@ class _HomeState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    int days_in_interval = 1; //screen shows 1 day only
+
     return ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: SafeArea(
@@ -167,7 +169,9 @@ class _HomeState extends State<HomePage> {
                             ? KelloggColors.cockRed
                             : KelloggColors.green,
                         title3: 'Recordable\nIncidents',
-                        color4: nearMiss == 0
+                        color4: nearMiss <
+                                (Plans.monthlyNearMissTarget / monthDays) *
+                                    days_in_interval
                             ? KelloggColors.cockRed
                             : KelloggColors.green,
                         title4: 'Near Miss',

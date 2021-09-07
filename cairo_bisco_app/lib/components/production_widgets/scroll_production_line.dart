@@ -1,3 +1,4 @@
+import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
@@ -33,10 +34,9 @@ class ProductionLine extends StatelessWidget {
   Widget build(BuildContext context) {
     bool prodTargetDone = actual - targetProd > 0;
     String arrowImg = prodTargetDone ? "up" : "down";
-    bool overweightNormal = overweight < Plans.targetOverWeightAbove &&
-        overweight > Plans.targetOverWeightBelow;
-    String arrowImg2 = overweightNormal ? "up" : "down";
-    String arrowImg3 = scrap < Plans.targetScrap ? "up" : "down";
+    String arrowImg2 = overweight < Plans.targetOverWeightAbove ? "up" : "down";
+    String arrowImg3 =
+        scrap < SKU.skuDetails[productName]!.targetScrap ? "up" : "down";
 
     return Container(
       margin: EdgeInsets.all(defaultPadding),
@@ -240,10 +240,10 @@ class ProductionLine extends StatelessWidget {
                   ranges: <GaugeRange>[
                     GaugeRange(
                         startValue: 0,
-                        endValue: Plans.targetScrap,
+                        endValue: SKU.skuDetails[productName]!.targetScrap,
                         color: KelloggColors.successGreen),
                     GaugeRange(
-                        startValue: Plans.targetScrap,
+                        startValue: SKU.skuDetails[productName]!.targetScrap,
                         endValue: maxScrap,
                         color: KelloggColors.clearRed)
                   ],
@@ -280,7 +280,7 @@ class ProductionLine extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           textStyle: TextStyle(
                               fontSize: largeButtonFont, fontFamily: 'MyFont'),
-                          primary: overweightNormal
+                          primary: overweight < Plans.targetOverWeightAbove
                               ? KelloggColors.green
                               : KelloggColors.cockRed,
                         ),
@@ -317,10 +317,11 @@ class ProductionLine extends StatelessWidget {
                   ranges: <GaugeRange>[
                     GaugeRange(
                         startValue: 0,
-                        endValue: Plans.targetFilmWaste,
+                        endValue: SKU.skuDetails[productName]!.targetFilmWaste,
                         color: KelloggColors.successGreen),
                     GaugeRange(
-                        startValue: Plans.targetFilmWaste,
+                        startValue:
+                            SKU.skuDetails[productName]!.targetFilmWaste,
                         endValue: maxFilmWaste,
                         color: KelloggColors.clearRed)
                   ],
@@ -358,9 +359,10 @@ class ProductionLine extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           textStyle: TextStyle(
                               fontSize: largeButtonFont, fontFamily: 'MyFont'),
-                          primary: scrap < Plans.targetScrap
-                              ? KelloggColors.green
-                              : KelloggColors.cockRed,
+                          primary:
+                              scrap < SKU.skuDetails[productName]!.targetScrap
+                                  ? KelloggColors.green
+                                  : KelloggColors.cockRed,
                         ),
                         icon: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0), //or 15.0

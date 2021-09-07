@@ -27,10 +27,12 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
 
   final int lineNum;
   final String type;
+  String productName = 'MAMUL معمول';
 
   @override
   Widget build(BuildContext context) {
     bool isTotal = lineNum == -1;
+    //TODO :: if is total add or average all targets
     return Scaffold(
       backgroundColor: KelloggColors.white,
       resizeToAvoidBottomInset: true,
@@ -57,6 +59,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                           scrap: 4.3,
                           prodType: type,
                           lineNum: lineNum,
+                          productName: productName,
                         )),
                       ],
                     ),
@@ -72,6 +75,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                       firstAid_incidents: 1,
                       nearMiss: 0,
                       filmWaste: 4.5,
+                      productName: productName,
                     ),
                   ),
                 ),
@@ -84,6 +88,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                       quality_incidents: 3,
                       food_safety_incidents: 0,
                       scrap: 5.3,
+                      productName: productName,
                     ),
                   ),
                 ),

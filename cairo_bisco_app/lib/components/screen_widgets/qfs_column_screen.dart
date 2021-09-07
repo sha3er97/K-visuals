@@ -1,3 +1,4 @@
+import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/1kpi_good_bad_indicator.dart';
 import 'package:cairo_bisco_app/classes/Rules.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
@@ -12,9 +13,11 @@ class QFSColScreen extends StatelessWidget {
     required this.quality_incidents,
     required this.food_safety_incidents,
     required this.scrap,
+    required this.productName,
   }) : super(key: key);
   final int quality_incidents, food_safety_incidents;
   final double scrap;
+  final String productName;
 
   @override
   Widget build(BuildContext context) {
@@ -84,10 +87,10 @@ class QFSColScreen extends StatelessWidget {
             ], ranges: <GaugeRange>[
               GaugeRange(
                   startValue: 0,
-                  endValue: Plans.targetScrap,
+                  endValue: SKU.skuDetails[productName]!.targetScrap,
                   color: KelloggColors.successGreen),
               GaugeRange(
-                  startValue: Plans.targetScrap,
+                  startValue: SKU.skuDetails[productName]!.targetScrap,
                   endValue: maxScrap,
                   color: KelloggColors.clearRed)
             ], annotations: <GaugeAnnotation>[
