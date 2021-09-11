@@ -25,7 +25,7 @@ class ProductionLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double actual = cartons * SKU.skuDetails[productName]!.cartonWeight;
-    bool prodTargetDone = actual - targetProd > 0;
+    bool prodTargetDone = cartons - targetProd > 0;
     String arrowImg = prodTargetDone ? "up" : "down";
     String arrowImg2 = overweight < Plans.targetOverWeightAbove ? "up" : "down";
     String arrowImg3 =
@@ -88,7 +88,7 @@ class ProductionLine extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subHeading("$actual K"),
+                      subHeading(actual.toStringAsFixed(1) + " K"),
                     ],
                   ),
                 ),
@@ -132,7 +132,7 @@ class ProductionLine extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            (actual - targetProd).toStringAsFixed(1) + " K",
+                            (cartons - targetProd).toStringAsFixed(1) + " K",
                             style: TextStyle(
                                 color: prodTargetDone
                                     ? KelloggColors.green
@@ -162,7 +162,7 @@ class ProductionLine extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            ((actual - targetProd) * 100 / targetProd)
+                            ((cartons - targetProd) * 100 / targetProd)
                                     .toStringAsFixed(1) +
                                 " %",
                             style: TextStyle(

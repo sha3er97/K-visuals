@@ -26,7 +26,7 @@ class ProductionColScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double actual = cartons * SKU.skuDetails[productName]!.cartonWeight;
-    bool prodTargetDone = actual - targetProd > 0;
+    bool prodTargetDone = cartons - targetProd > 0;
     String arrowImg = prodTargetDone ? "up" : "down";
     String arrowImg2 =
         scrap < SKU.skuDetails[productName]!.targetScrap ? "up" : "down";
@@ -101,7 +101,7 @@ class ProductionColScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subHeading("$actual طن "),
+                      subHeading(actual.toStringAsFixed(1) + " طن "),
                     ],
                   ),
                 ),
@@ -145,7 +145,7 @@ class ProductionColScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            (actual - targetProd).toStringAsFixed(1) + " K",
+                            (cartons - targetProd).toStringAsFixed(1) + " K",
                             style: TextStyle(
                                 color: prodTargetDone
                                     ? KelloggColors.green
@@ -175,7 +175,7 @@ class ProductionColScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            ((actual - targetProd) * 100 / targetProd)
+                            ((cartons - targetProd) * 100 / targetProd)
                                     .toStringAsFixed(1) +
                                 " %",
                             style: TextStyle(

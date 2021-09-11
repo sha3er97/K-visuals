@@ -57,13 +57,13 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                   children: [
                     Center(
                         child: ProductionLine(
-                      cartons: 5.3,
+                      cartons: 50.0,
                       oee: 53.3,
                       scrap: 5.3,
                       money: 4.3,
                       overweight: 0.5,
                       filmWaste: 5.3,
-                      targetProd: 5.1,
+                      targetProd: 53.0,
                       productName: productName,
                     )),
                   ],
@@ -76,13 +76,13 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                   children: [
                     Center(
                         child: ProductionLine(
-                      cartons: 5.3,
+                      cartons: 50.0,
                       money: 4.3,
                       oee: 53.3,
                       scrap: 5.3,
                       overweight: 0.5,
                       filmWaste: 5.3,
-                      targetProd: 5.1,
+                      targetProd: 51.0,
                       productName: productName,
                     )),
                   ],
