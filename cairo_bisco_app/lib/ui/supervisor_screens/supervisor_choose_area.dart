@@ -9,6 +9,7 @@ import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/biscuits_production_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/maamoul_production_report.dart';
+import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_ehs_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_qfs_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/wafer_production_report.dart';
 import 'package:flutter/material.dart';
@@ -76,13 +77,12 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                         refNum: 0,
                                       )));
                         } else {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) =>
-                          //             SupervisorEhsReport(
-                          //               refNum: 0,
-                          //             )));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SupervisorEhsReport(
+                                        refNum: 0,
+                                      )));
                         }
                       },
                     ),
@@ -131,13 +131,12 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                         refNum: 1,
                                       )));
                         } else {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) =>
-                          //             SupervisorEhsReport(
-                          //               refNum: 1,
-                          //             )));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SupervisorEhsReport(
+                                        refNum: 1,
+                                      )));
                         }
                       },
                     ),
@@ -190,13 +189,12 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                         refNum: 2,
                                       )));
                         } else {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) =>
-                          //             SupervisorEhsReport(
-                          //               refNum: 2,
-                          //             )));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SupervisorEhsReport(
+                                        refNum: 2,
+                                      )));
                         }
                       },
                     ),

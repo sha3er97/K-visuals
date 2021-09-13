@@ -2,12 +2,25 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 import 'constants.dart';
 
+Widget ErrorMessageHeading(String title) {
+  return Center(
+    child: Text(
+      '* ' + title + ' *',
+      style: TextStyle(
+          color: KelloggColors.green,
+          fontSize: largeButtonFont,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.2),
+    ),
+  );
+}
+
 Text subHeading(String title) {
   return Text(
     title,
     style: TextStyle(
         color: KelloggColors.darkRed,
-        fontSize: 20.0,
+        fontSize: largeFontSize,
         fontWeight: FontWeight.w700,
         letterSpacing: 1.2),
   );

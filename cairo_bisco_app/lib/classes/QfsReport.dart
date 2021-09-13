@@ -108,19 +108,8 @@ class QfsReport {
     );
   }
 
-  static QfsReport getFilteredReportOfDay(reportsList, month_from, month_to,
-      day_from, day_to, areaRequired, lineNumRequired) {
-    // final qualityReportRef = FirebaseFirestore.instance
-    //     .collection(factory_name)
-    //     .doc('quality_reports')
-    //     .collection(year.toString())
-    //     .withConverter<QfsReport>(
-    //       fromFirestore: (snapshot, _) => QfsReport.fromJson(snapshot.data()!),
-    //       toFirestore: (report, _) => report.toJson(),
-    //     );
-    //
-    // List<QueryDocumentSnapshot<QfsReport>> reportsList =
-    //     await qualityReportRef.get().then((snapshot) => snapshot.docs);
+  static QfsReport getFilteredReportOfInterval(reportsList, month_from,
+      month_to, day_from, day_to, areaRequired, lineNumRequired) {
     int temp_quality_incidents = 0,
         temp_food_safety_incidents = 0,
         temp_ccp_failure = 0,
@@ -138,7 +127,6 @@ class QfsReport {
           report.data().line_index == lineNumRequired &&
           report.data().area == areaRequired) {
         //all shifts in one line in one area
-        print('debug :: report found in first if');
         temp_quality_incidents += report.data().quality_incidents as int;
         temp_food_safety_incidents +=
             report.data().food_safety_incidents as int;
@@ -149,7 +137,6 @@ class QfsReport {
       } else if (lineNumRequired == -1 &&
           areaRequired != -1 &&
           report.data().area == areaRequired) {
-        print('debug :: report found in second if');
         // all shifts all lines in one area
         temp_quality_incidents += report.data().quality_incidents as int;
         temp_food_safety_incidents +=
@@ -159,7 +146,6 @@ class QfsReport {
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
       } else if (areaRequired == -1) {
-        print('debug :: report found in else');
         // all shifts all lines all areas
         temp_quality_incidents += report.data().quality_incidents as int;
         temp_food_safety_incidents +=
@@ -169,7 +155,7 @@ class QfsReport {
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
       } else {
-        print('debug :: report filtered out');
+        // print('debug :: report filtered out');
       }
     }
     //return the total in capsulized form

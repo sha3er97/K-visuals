@@ -1,4 +1,6 @@
+import 'package:cairo_bisco_app/classes/EhsReport.dart';
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
+import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/screen_widgets/ehs_column_screen.dart';
@@ -28,7 +30,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
     required this.lineNum,
   });
 
-  final int lineNum;
+  final int lineNum; //=-1 at total
   final String type; // have the area name 'biscuits'
   String productName = 'MAMUL معمول';
 
@@ -42,9 +44,14 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
           fromFirestore: (snapshot, _) => QfsReport.fromJson(snapshot.data()!),
           toFirestore: (report, _) => report.toJson(),
         );
-
-    bool isTotal = lineNum == -1;
-    //TODO :: if is total add or average all targets
+    final ehsReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('ehs_reports')
+        .collection(getYear())
+        .withConverter<EhsReport>(
+          fromFirestore: (snapshot, _) => EhsReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
     return Scaffold(
       backgroundColor: KelloggColors.white,
       resizeToAvoidBottomInset: true,
@@ -58,20 +65,20 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                 Expanded(
                   child: Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: minimumPadding),
+                    const EdgeInsets.symmetric(horizontal: minimumPadding),
                     child: Column(
                       children: [
                         // sectionTitle('الانتاج'),
                         Center(
                             child: ProductionColScreen(
-                          cartons: 5.3,
-                          targetProd: 5.5,
-                          oee: 53.3,
-                          scrap: 4.3,
-                          prodType: type,
-                          lineNum: lineNum,
-                          productName: productName,
-                        )),
+                              cartons: 5.3,
+                              targetProd: 5.5,
+                              oee: 53.3,
+                              scrap: 4.3,
+                              prodType: type,
+                              lineNum: lineNum,
+                              productName: productName,
+                            )),
                       ],
                     ),
                   ),
@@ -81,12 +88,44 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                   child: Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: minimumPadding),
-                    child: EHSColScreen(
-                      recordable_incidents: 0,
-                      firstAid_incidents: 1,
-                      nearMiss: 0,
-                      filmWaste: 4.5,
-                      productName: productName,
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: ehsReportRef.snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return ErrorMessageHeading('Something went wrong');
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return ErrorMessageHeading("Loading");
+                        } else {
+                          List<QueryDocumentSnapshot<EhsReport>> reportsList =
+                              snapshot.data!.docs
+                                  as List<QueryDocumentSnapshot<EhsReport>>;
+                          // print("ehs ::" + reportsList.length.toString());
+                          try {
+                            EhsReport temp_ehs =
+                                EhsReport.getFilteredReportOfInterval(
+                                    reportsList,
+                                    int.parse(getMonth()),
+                                    int.parse(getMonth()),
+                                    int.parse(getDay()),
+                                    int.parse(getDay()),
+                                    prodType.indexOf(type),
+                                    lineNum);
+                            return EHSColScreen(
+                              recordable_incidents:
+                                  temp_ehs.recordable_incidents,
+                              firstAid_incidents: temp_ehs.firstAid_incidents,
+                              nearMiss: temp_ehs.nearMiss,
+                              filmWaste: 4.5,
+                              productName: productName,
+                            );
+                          } catch (e) {
+                            print(e);
+                            return ErrorMessageHeading('Something went wrong');
+                          }
+                        }
+                      },
                     ),
                   ),
                 ),
@@ -94,24 +133,24 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                 Expanded(
                   child: Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: minimumPadding),
+                    const EdgeInsets.symmetric(horizontal: minimumPadding),
                     child: StreamBuilder<QuerySnapshot>(
                       stream: qualityReportRef.snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasError) {
-                          return Text('Something went wrong');
+                          return ErrorMessageHeading('Something went wrong');
                         } else if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Text("Loading");
+                          return ErrorMessageHeading('Loading');
                         } else {
                           List<QueryDocumentSnapshot<QfsReport>> reportsList =
-                              snapshot.data!.docs
-                                  as List<QueryDocumentSnapshot<QfsReport>>;
-                          print(reportsList.length);
+                          snapshot.data!.docs
+                          as List<QueryDocumentSnapshot<QfsReport>>;
+                          // print("qfs ::" + reportsList.length.toString());
                           try {
                             QfsReport temp_qfs =
-                                QfsReport.getFilteredReportOfDay(
+                            QfsReport.getFilteredReportOfInterval(
                                     reportsList,
                                     int.parse(getMonth()),
                                     int.parse(getMonth()),
@@ -122,13 +161,13 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                             return QFSColScreen(
                               quality_incidents: temp_qfs.quality_incidents,
                               food_safety_incidents:
-                                  temp_qfs.food_safety_incidents,
+                              temp_qfs.food_safety_incidents,
                               scrap: 5.3,
                               productName: productName,
                             );
                           } catch (e) {
                             print(e);
-                            return Text('Something went wrong');
+                            return ErrorMessageHeading('Something went wrong');
                           }
                         }
                       },

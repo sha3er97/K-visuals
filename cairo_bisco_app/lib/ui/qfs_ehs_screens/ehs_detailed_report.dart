@@ -437,7 +437,7 @@ class _EhsReportState extends State<EhsReport> {
                               : risk_assessment > Plans.mediumRisksBoundary
                                   ? KelloggColors.yellow
                                   : KelloggColors.green,
-                          title: 'pre-shift\nRisk Assessment',
+                          title: 'Pre-Shift\nRisk Assessment',
                           circleText: risk_assessment.toString(),
                         ),
                       ),
