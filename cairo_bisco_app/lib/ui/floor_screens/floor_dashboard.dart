@@ -58,20 +58,20 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                 Expanded(
                   child: Padding(
                     padding:
-                    const EdgeInsets.symmetric(horizontal: minimumPadding),
+                        const EdgeInsets.symmetric(horizontal: minimumPadding),
                     child: Column(
                       children: [
                         // sectionTitle('الانتاج'),
                         Center(
                             child: ProductionColScreen(
-                              cartons: 5.3,
-                              targetProd: 5.5,
-                              oee: 53.3,
-                              scrap: 4.3,
-                              prodType: type,
-                              lineNum: lineNum,
-                              productName: productName,
-                            )),
+                          cartons: 5.3,
+                          targetProd: 5.5,
+                          oee: 53.3,
+                          scrap: 4.3,
+                          prodType: type,
+                          lineNum: lineNum,
+                          productName: productName,
+                        )),
                       ],
                     ),
                   ),
@@ -80,7 +80,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                 Expanded(
                   child: Padding(
                     padding:
-                    const EdgeInsets.symmetric(horizontal: minimumPadding),
+                        const EdgeInsets.symmetric(horizontal: minimumPadding),
                     child: EHSColScreen(
                       recordable_incidents: 0,
                       firstAid_incidents: 1,
