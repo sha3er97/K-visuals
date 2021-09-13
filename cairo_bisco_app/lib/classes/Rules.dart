@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Credentials {
   static String plt_email = "";
   static String plt_password = "";
-  static String screen_email = "";
+  static String screen_email = ""; //screen@kelloggs.com
   static String screen_password = "";
   static String admin_email = "";
   static String admin_password = "";

@@ -15,6 +15,13 @@ const monthDays = 28.0;
 
 const factory_name = "bisco_cairo";
 const submissionErrorText = "Error in submission .. incomplete report";
+
+List<String> prodType = <String>[
+  'Biscuits',
+  'Wafer',
+  'Maamoul',
+];
+
 List<String> months = <String>[
   '1',
   '2',
@@ -80,9 +87,4 @@ List<String> years = <String>[
   '2034',
   '2035',
   '2036'
-];
-List<String> prodType = <String>[
-  'Biscuits',
-  'Wafer',
-  'Maamoul',
 ];

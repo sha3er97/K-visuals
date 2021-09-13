@@ -558,7 +558,9 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                         int.parse(selectedMonth),
                                         int.parse(selectedDay),
                                         shifts.indexOf(selectedShift),
-                                        prod_lines4.indexOf(selectedProdLine),
+                                        prod_lines4.indexOf(selectedProdLine) +
+                                            1,
+                                        //line 1,2,3,4
                                         Pes.indexOf(selected_pes),
                                         G6.indexOf(selected_G6),
                                         refNum);
