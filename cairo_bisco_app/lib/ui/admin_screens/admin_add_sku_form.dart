@@ -29,12 +29,12 @@ class _AddSkuFormState extends State<AddSkuForm> {
   final int refNum;
 
   bool showSpinner = false;
-  String skuName = "";
-  String cartonWeight = "0.0",
-      theoreticalShiftProd = "0.0",
-      targetScrap = "0.0",
-      targetFilmWaste = "0.0";
-  bool _sku_name_validate = false,
+  String skuName = "",
+      cartonWeight = "",
+      theoreticalShiftProd = "",
+      targetScrap = "",
+      targetFilmWaste = "";
+  bool _skuName_validate = false,
       _cartonWeight_validate = false,
       _theoreticalShiftProd_validate = false,
       _targetFilmWaste_validate = false,
@@ -90,7 +90,7 @@ class _AddSkuFormState extends State<AddSkuForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText:
-                                _sku_name_validate ? 'هذه الخانة ضرورية' : null,
+                                _skuName_validate ? 'هذه الخانة ضرورية' : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
@@ -251,13 +251,12 @@ class _AddSkuFormState extends State<AddSkuForm> {
                           padding: const EdgeInsets.all(minimumPadding),
                           child: Center(
                             child: RoundedButton(
-                              btnText: 'تسليم التقرير',
+                              btnText: 'Add Sku',
                               color: KelloggColors.darkRed,
                               onPressed: () async {
-                                // Add login code
                                 setState(() {
                                   showSpinner = true;
-                                  _sku_name_validate = emptyField(skuName);
+                                  _skuName_validate = emptyField(skuName);
                                   _targetFilmWaste_validate =
                                       emptyField(targetFilmWaste);
                                   _cartonWeight_validate =
@@ -268,7 +267,7 @@ class _AddSkuFormState extends State<AddSkuForm> {
                                       emptyField(theoreticalShiftProd);
                                 });
                                 try {
-                                  if (!_sku_name_validate &&
+                                  if (!_skuName_validate &&
                                       !_targetFilmWaste_validate &&
                                       !_cartonWeight_validate &&
                                       !_targetScrap_validate &&

@@ -20,18 +20,30 @@ class BiscuitsReport extends StatefulWidget {
 class _BiscuitsReportState extends State<BiscuitsReport> {
   bool showSpinner = false;
 
-  String supName = "";
-  int shiftProductionPlan = 0, actualSpeed = 0, production = 0;
-  int extrusionScrap = 0, extrusionRework = 0;
-  int ovenScrap = 0, ovenRework = 0;
-  int cutterScrap = 0, cutterRework = 0;
-  int conveyorScrap = 0, conveyorRework = 0;
-  int unPackedProducts = 0;
-  int MC1Speed = 0, MC2Speed = 0;
-  int packingScrap = 0, packingRework = 0, packingRepack = 0;
-  int boxesWaste = 0, cartonWaste = 0;
-  int MC1FilmUsed = 0, MC2FilmUsed = 0;
-  int MC1WasteKg = 0, MC2WasteKg = 0;
+  String supName = "",
+      shiftProductionPlan = '',
+      actualSpeed = '',
+      production = '',
+      extrusionScrap = '',
+      extrusionRework = '',
+      ovenScrap = '',
+      ovenRework = '',
+      cutterScrap = '',
+      cutterRework = '',
+      conveyorScrap = '',
+      conveyorRework = '',
+      unPackedProducts = '',
+      mc1Speed = '',
+      mc2Speed = '',
+      packingScrap = '',
+      packingRework = '',
+      packingRepack = '',
+      boxesWaste = '',
+      cartonWaste = '',
+      mc1FilmUsed = '',
+      mc2FilmUsed = '',
+      mc1WasteKg = '',
+      mc2WasteKg = '';
 
   bool _sup_name_validate = false,
       _shift_plan_validate = false,
@@ -53,10 +65,10 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
       _packingRepack_validate = false,
       _boxesWaste_validate = false,
       _cartonWaste_validate = false,
-      _mC1FilmUsed_validate = false,
-      _mC2FilmUsed_validate = false,
-      _mC1WasteKg_validate = false,
-      _mC2WasteKg_validate = false;
+      _mc1FilmUsed_validate = false,
+      _mc2FilmUsed_validate = false,
+      _mc1WasteKg_validate = false,
+      _mc2WasteKg_validate = false;
 
   //drop down values
   String selectedShift = shifts[0];
@@ -385,9 +397,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _shift_plan_validate = emptyField(value);
-                            if (_shift_plan_validate)
-                              shiftProductionPlan = int.parse(value);
+                            shiftProductionPlan = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -424,9 +434,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _actualSpeed_validate = emptyField(value);
-                            if (_actualSpeed_validate)
-                              actualSpeed = int.parse(value);
+                            actualSpeed = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -463,9 +471,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _production_validate = emptyField(value);
-                            if (_production_validate)
-                              production = int.parse(value);
+                            production = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -504,9 +510,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _extrusionRework_validate = emptyField(value);
-                            if (_extrusionRework_validate)
-                              extrusionRework = int.parse(value);
+                            extrusionRework = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -543,9 +547,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _extrusionScrap_validate = emptyField(value);
-                            if (_extrusionScrap_validate)
-                              extrusionScrap = int.parse(value);
+                            extrusionScrap = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -584,9 +586,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _ovenRework_validate = emptyField(value);
-                            if (_ovenRework_validate)
-                              ovenRework = int.parse(value);
+                            ovenRework = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -623,9 +623,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _ovenScrap_validate = emptyField(value);
-                            if (_ovenScrap_validate)
-                              ovenScrap = int.parse(value);
+                            ovenScrap = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -664,9 +662,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _cutterRework_validate = emptyField(value);
-                            if (_cutterRework_validate)
-                              cutterRework = int.parse(value);
+                            cutterRework = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -703,9 +699,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _cutterScrap_validate = emptyField(value);
-                            if (_cutterScrap_validate)
-                              cutterScrap = int.parse(value);
+                            cutterScrap = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -744,9 +738,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _conveyorRework_validate = emptyField(value);
-                            if (_conveyorRework_validate)
-                              conveyorRework = int.parse(value);
+                            conveyorRework = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -783,9 +775,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _conveyorScrap_validate = emptyField(value);
-                            if (_conveyorScrap_validate)
-                              conveyorScrap = int.parse(value);
+                            conveyorScrap = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -845,9 +835,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _unPackedProducts_validate = emptyField(value);
-                            if (_unPackedProducts_validate)
-                              unPackedProducts = int.parse(value);
+                            unPackedProducts = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -885,8 +873,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _mc1Speed_validate = emptyField(value);
-                            if (_mc1Speed_validate) MC1Speed = int.parse(value);
+                            mc1Speed = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -922,8 +909,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _mc2Speed_validate = emptyField(value);
-                            if (_mc2Speed_validate) MC2Speed = int.parse(value);
+                            mc2Speed = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -960,9 +946,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _packingRework_validate = emptyField(value);
-                            if (_packingRework_validate)
-                              packingRework = int.parse(value);
+                            packingRework = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -999,9 +983,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _packingRepack_validate = emptyField(value);
-                            if (_packingRepack_validate)
-                              packingRepack = int.parse(value);
+                            packingRepack = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -1038,9 +1020,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _packingScrap_validate = emptyField(value);
-                            if (_packingScrap_validate)
-                              packingScrap = int.parse(value);
+                            packingScrap = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -1077,9 +1057,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _boxesWaste_validate = emptyField(value);
-                            if (_boxesWaste_validate)
-                              boxesWaste = int.parse(value);
+                            boxesWaste = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -1116,14 +1094,12 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _cartonWaste_validate = emptyField(value);
-                            if (_cartonWaste_validate)
-                              cartonWaste = int.parse(value);
+                            cartonWaste = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////////////////////////////////////
-                        sectionWithDivider('هالك البوبينات Film Waste'),
+                        sectionWithDivider('هالك الموبينات Film Waste'),
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك بالكجم MC1'),
                         SizedBox(height: minimumPadding),
@@ -1145,7 +1121,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _mC1WasteKg_validate
+                            errorText: _mc1WasteKg_validate
                                 ? 'هذه الخانة ضرورية'
                                 : null,
                             focusedBorder: OutlineInputBorder(
@@ -1157,9 +1133,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _mC1WasteKg_validate = emptyField(value);
-                            if (_mC1WasteKg_validate)
-                              MC1WasteKg = int.parse(value);
+                            mc1WasteKg = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -1184,7 +1158,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _mC1FilmUsed_validate
+                            errorText: _mc1FilmUsed_validate
                                 ? 'هذه الخانة ضرورية'
                                 : null,
                             focusedBorder: OutlineInputBorder(
@@ -1196,9 +1170,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _mC1FilmUsed_validate = emptyField(value);
-                            if (_mC1FilmUsed_validate)
-                              MC1FilmUsed = int.parse(value);
+                            mc1FilmUsed = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -1223,7 +1195,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _mC2WasteKg_validate
+                            errorText: _mc2WasteKg_validate
                                 ? 'هذه الخانة ضرورية'
                                 : null,
                             focusedBorder: OutlineInputBorder(
@@ -1235,9 +1207,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _mC2WasteKg_validate = emptyField(value);
-                            if (_mC2WasteKg_validate)
-                              MC2WasteKg = int.parse(value);
+                            mc2WasteKg = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -1262,7 +1232,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _mC2FilmUsed_validate
+                            errorText: _mc2FilmUsed_validate
                                 ? 'هذه الخانة ضرورية'
                                 : null,
                             focusedBorder: OutlineInputBorder(
@@ -1274,9 +1244,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            _mC2FilmUsed_validate = emptyField(value);
-                            if (_mC2FilmUsed_validate)
-                              MC2FilmUsed = int.parse(value);
+                            mc2FilmUsed = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -1292,6 +1260,44 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                                 setState(() {
                                   showSpinner = true;
                                   _sup_name_validate = emptyField(supName);
+                                  _shift_plan_validate =
+                                      emptyField(shiftProductionPlan);
+                                  _actualSpeed_validate =
+                                      emptyField(actualSpeed);
+                                  _production_validate = emptyField(production);
+                                  _extrusionScrap_validate =
+                                      emptyField(extrusionScrap);
+                                  _extrusionRework_validate =
+                                      emptyField(extrusionRework);
+                                  _ovenScrap_validate = emptyField(ovenScrap);
+                                  _ovenRework_validate = emptyField(ovenRework);
+                                  _cutterScrap_validate =
+                                      emptyField(cutterScrap);
+                                  _cutterRework_validate =
+                                      emptyField(cutterRework);
+                                  _conveyorScrap_validate =
+                                      emptyField(conveyorScrap);
+                                  _conveyorRework_validate =
+                                      emptyField(conveyorRework);
+                                  _unPackedProducts_validate =
+                                      emptyField(unPackedProducts);
+                                  _mc1Speed_validate = emptyField(mc1Speed);
+                                  _mc2Speed_validate = emptyField(mc2Speed);
+                                  _packingScrap_validate =
+                                      emptyField(packingScrap);
+                                  _packingRework_validate =
+                                      emptyField(packingRework);
+                                  _packingRepack_validate =
+                                      emptyField(packingRepack);
+                                  _boxesWaste_validate = emptyField(boxesWaste);
+                                  _cartonWaste_validate =
+                                      emptyField(cartonWaste);
+                                  _mc1FilmUsed_validate =
+                                      emptyField(mc1FilmUsed);
+                                  _mc2FilmUsed_validate =
+                                      emptyField(mc2FilmUsed);
+                                  _mc1WasteKg_validate = emptyField(mc1WasteKg);
+                                  _mc2WasteKg_validate = emptyField(mc2WasteKg);
                                 });
                                 try {
                                   if (!_sup_name_validate &&
@@ -1314,10 +1320,10 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                                       !_packingRepack_validate &&
                                       !_boxesWaste_validate &&
                                       !_cartonWaste_validate &&
-                                      !_mC1FilmUsed_validate &&
-                                      !_mC2FilmUsed_validate &&
-                                      !_mC1WasteKg_validate &&
-                                      !_mC2WasteKg_validate) {
+                                      !_mc1FilmUsed_validate &&
+                                      !_mc2FilmUsed_validate &&
+                                      !_mc1WasteKg_validate &&
+                                      !_mc2WasteKg_validate) {
                                     //TODO :: add form in database
                                     Navigator.push(
                                         context,
