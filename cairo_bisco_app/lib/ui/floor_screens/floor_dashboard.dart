@@ -65,20 +65,20 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                 Expanded(
                   child: Padding(
                     padding:
-                    const EdgeInsets.symmetric(horizontal: minimumPadding),
+                        const EdgeInsets.symmetric(horizontal: minimumPadding),
                     child: Column(
                       children: [
                         // sectionTitle('الانتاج'),
                         Center(
                             child: ProductionColScreen(
-                              cartons: 5.3,
-                              targetProd: 5.5,
-                              oee: 53.3,
-                              scrap: 4.3,
-                              prodType: type,
-                              lineNum: lineNum,
-                              productName: productName,
-                            )),
+                          cartons: 5.3,
+                          targetProd: 5.5,
+                          oee: 53.3,
+                          scrap: 4.3,
+                          prodType: type,
+                          lineNum: lineNum,
+                          productName: productName,
+                        )),
                       ],
                     ),
                   ),
@@ -133,7 +133,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                 Expanded(
                   child: Padding(
                     padding:
-                    const EdgeInsets.symmetric(horizontal: minimumPadding),
+                        const EdgeInsets.symmetric(horizontal: minimumPadding),
                     child: StreamBuilder<QuerySnapshot>(
                       stream: qualityReportRef.snapshots(),
                       builder: (BuildContext context,
@@ -145,12 +145,12 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                           return ErrorMessageHeading('Loading');
                         } else {
                           List<QueryDocumentSnapshot<QfsReport>> reportsList =
-                          snapshot.data!.docs
-                          as List<QueryDocumentSnapshot<QfsReport>>;
+                              snapshot.data!.docs
+                                  as List<QueryDocumentSnapshot<QfsReport>>;
                           // print("qfs ::" + reportsList.length.toString());
                           try {
                             QfsReport temp_qfs =
-                            QfsReport.getFilteredReportOfInterval(
+                                QfsReport.getFilteredReportOfInterval(
                                     reportsList,
                                     int.parse(getMonth()),
                                     int.parse(getMonth()),
@@ -161,7 +161,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                             return QFSColScreen(
                               quality_incidents: temp_qfs.quality_incidents,
                               food_safety_incidents:
-                              temp_qfs.food_safety_incidents,
+                                  temp_qfs.food_safety_incidents,
                               scrap: 5.3,
                               productName: productName,
                             );
