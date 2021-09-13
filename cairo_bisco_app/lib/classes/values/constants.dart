@@ -8,12 +8,13 @@ const textFieldRadius = 20.0;
 const textFieldBorderRadius = 1.0;
 const textFieldFocusedBorderRadius = 1.0;
 
-const maxScrap = 10.0;
-const maxFilmWaste = 10.0;
+const maxScrap = 20.0;
+const maxFilmWaste = 20.0;
 
 const monthDays = 28.0;
 
-const String submissionErrorText = "Error in submission .. incomplete report";
+const factory_name = "bisco_cairo";
+const submissionErrorText = "Error in submission .. incomplete report";
 List<String> months = <String>[
   '1',
   '2',
