@@ -143,7 +143,7 @@ class _EhsReportState extends State<EhsReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -171,7 +171,7 @@ class _EhsReportState extends State<EhsReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -200,7 +200,7 @@ class _EhsReportState extends State<EhsReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -246,7 +246,7 @@ class _EhsReportState extends State<EhsReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -274,7 +274,7 @@ class _EhsReportState extends State<EhsReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -303,7 +303,7 @@ class _EhsReportState extends State<EhsReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -408,8 +408,8 @@ class _EhsReportState extends State<EhsReport> {
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: KPI1GoodBadIndicator(
                           circleColor: nearMiss <
-                              (Plans.monthlyNearMissTarget / monthDays) *
-                                  days_in_interval
+                                  (Plans.monthlyNearMissTarget / monthDays) *
+                                      days_in_interval
                               ? KelloggColors.cockRed
                               : KelloggColors.green,
                           title: 'Near Miss',
@@ -435,8 +435,8 @@ class _EhsReportState extends State<EhsReport> {
                           circleColor: risk_assessment > Plans.highRisksBoundary
                               ? KelloggColors.cockRed
                               : risk_assessment > Plans.mediumRisksBoundary
-                              ? KelloggColors.yellow
-                              : KelloggColors.green,
+                                  ? KelloggColors.yellow
+                                  : KelloggColors.green,
                           title: 'Pre-Shift\nRisk Assessment',
                           circleText: risk_assessment.toString(),
                         ),
