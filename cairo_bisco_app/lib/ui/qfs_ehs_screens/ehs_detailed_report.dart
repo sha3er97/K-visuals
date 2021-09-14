@@ -1,4 +1,6 @@
+import 'package:cairo_bisco_app/classes/EhsReport.dart';
 import 'package:cairo_bisco_app/classes/Plans.dart';
+import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/classes/values/form_values.dart';
@@ -6,15 +8,16 @@ import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/1kpi_good_bad_indicator.dart';
 import 'package:cairo_bisco_app/components/utility_funcs/date_utility.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-class EhsReport extends StatefulWidget {
+class EhsDetailedReport extends StatefulWidget {
   @override
-  _EhsReportState createState() => _EhsReportState();
+  _EhsDetailedReportState createState() => _EhsDetailedReportState();
 }
 
-class _EhsReportState extends State<EhsReport> {
+class _EhsDetailedReportState extends State<EhsDetailedReport> {
   String _selectedYearFrom = years[(int.parse(getYear())) - 2020];
   String _selectedMonthFrom = months[(int.parse(getMonth())) - 1];
   String _selectedDayFrom = days[(int.parse(getDay())) - 1];
@@ -23,12 +26,6 @@ class _EhsReportState extends State<EhsReport> {
   String _selectedDayTo = days[(int.parse(getDay())) - 1];
 
   bool showSpinner = false;
-  int firstAid_incidents = 0,
-      lostTime_incidents = 0,
-      recordable_incidents = 0,
-      nearMiss = 0,
-      risk_assessment = 6;
-  String s7_tours = S7[1];
 
   VoidCallback? onFromYearChange(val) {
     setState(() {
@@ -67,33 +64,37 @@ class _EhsReportState extends State<EhsReport> {
   }
 
   int days_in_interval = 0;
+  int validated_day_from = int.parse(getDay()),
+      validated_day_to = int.parse(getDay()),
+      validated_month_from = int.parse(getMonth()),
+      validated_month_to = int.parse(getMonth()),
+      validated_year = int.parse(getYear());
 
   void calculateInterval() {
-    // assume dates are validated (yearTo>yearFrom)
-    int modified_to_month = int.parse(_selectedMonthTo) +
-        (int.parse(_selectedYearTo) - int.parse(_selectedYearFrom)) * 12;
-    // modified_to_month is now > from_month for sure
+    // assume dates are validated (yearTo=yearFrom)
+    // to_month is now > from_month for sure
     int modified_to_day = int.parse(_selectedDayTo) +
-        (modified_to_month - int.parse(_selectedMonthFrom)) * 12;
+        (int.parse(_selectedMonthTo) - int.parse(_selectedMonthFrom)) * 12;
     // modified_to_day is now > from_day for sure
+    // save values
     days_in_interval = modified_to_day - int.parse(_selectedDayFrom);
-  }
-
-  bool validateInterval() {
-    if (int.parse(_selectedYearTo) < int.parse(_selectedYearFrom))
-      return false;
-    else if ((int.parse(_selectedYearTo) == int.parse(_selectedYearFrom)) &&
-        (int.parse(_selectedMonthTo) < int.parse(_selectedMonthFrom)))
-      return false;
-    else if ((int.parse(_selectedYearTo) == int.parse(_selectedYearFrom)) &&
-        (int.parse(_selectedMonthTo) == int.parse(_selectedMonthFrom)) &&
-        (int.parse(_selectedDayTo) < int.parse(_selectedYearFrom)))
-      return false;
-    return true;
+    validated_day_from = int.parse(_selectedDayFrom);
+    validated_day_to = int.parse(_selectedDayTo);
+    validated_month_from = int.parse(_selectedMonthFrom);
+    validated_month_to = int.parse(_selectedMonthTo);
+    validated_year = int.parse(_selectedYearFrom);
   }
 
   @override
   Widget build(BuildContext context) {
+    final ehsReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('ehs_reports')
+        .collection(getYear())
+        .withConverter<EhsReport>(
+          fromFirestore: (snapshot, _) => EhsReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: Scaffold(
@@ -105,7 +106,9 @@ class _EhsReportState extends State<EhsReport> {
           leading: MyBackButton(),
           title: Text('EHS',
               style: TextStyle(
-                  color: KelloggColors.darkRed, fontWeight: FontWeight.w600)),
+                color: KelloggColors.darkRed,
+                fontWeight: FontWeight.w600,
+              )),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -143,7 +146,7 @@ class _EhsReportState extends State<EhsReport> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -171,7 +174,7 @@ class _EhsReportState extends State<EhsReport> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -200,7 +203,7 @@ class _EhsReportState extends State<EhsReport> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -246,7 +249,7 @@ class _EhsReportState extends State<EhsReport> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -274,7 +277,7 @@ class _EhsReportState extends State<EhsReport> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -303,7 +306,7 @@ class _EhsReportState extends State<EhsReport> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -323,143 +326,204 @@ class _EhsReportState extends State<EhsReport> {
                   child: RoundedButton(
                     btnText: 'Refresh Report',
                     color: KelloggColors.darkRed,
-                    onPressed: () async {
-                      // Add login code
-                      setState(() {
-                        showSpinner = true;
-                      });
-                      try {
-                        //TODO :: validate interval
-                        if (validateInterval()) {
-                          calculateInterval();
-                          // TODO :: capture reports in the interval "inclusive"
-                        }
-                        setState(() {
-                          showSpinner = false;
-                        });
-                      } catch (e) {
-                        print(e);
-                      }
+                    onPressed: () {
+                      if (int.parse(_selectedYearTo) !=
+                          int.parse(_selectedYearFrom))
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              "Error : invalid interval (reports of same year only are allowed)"),
+                        ));
+                      else if ((int.parse(_selectedYearTo) ==
+                              int.parse(_selectedYearFrom)) &&
+                          (int.parse(_selectedMonthTo) <
+                              int.parse(_selectedMonthFrom)))
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              "Error : invalid interval (month to < month from)"),
+                        ));
+                      else if ((int.parse(_selectedYearTo) ==
+                              int.parse(_selectedYearFrom)) &&
+                          (int.parse(_selectedMonthTo) ==
+                              int.parse(_selectedMonthFrom)) &&
+                          (int.parse(_selectedDayTo) <
+                              int.parse(_selectedYearFrom)))
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              "Error : invalid interval (day to < day from)"),
+                        ));
+                      calculateInterval();
                     },
                   ),
                 ),
               ),
-              SizedBox(height: defaultPadding),
-              IntrinsicHeight(
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: minimumPadding),
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
-                        child: KPI1GoodBadIndicator(
-                          circleColor: firstAid_incidents > 0
-                              ? KelloggColors.cockRed
-                              : KelloggColors.green,
-                          title: 'First Aid\nIncidents',
-                          circleText: firstAid_incidents.toString(),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: minimumPadding),
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
-                        child: KPI1GoodBadIndicator(
-                          circleColor: lostTime_incidents > 0
-                              ? KelloggColors.cockRed
-                              : KelloggColors.green,
-                          title: 'Lost Time\nIncidents',
-                          circleText: lostTime_incidents.toString(),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              StreamBuilder<QuerySnapshot>(
+                stream: ehsReportRef.snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return ErrorMessageHeading('Something went wrong');
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return ErrorMessageHeading("Loading");
+                  } else {
+                    try {
+                      List<QueryDocumentSnapshot<EhsReport>> reportsList =
+                          snapshot.data!.docs
+                              as List<QueryDocumentSnapshot<EhsReport>>;
+                      // print("ehs ::" + reportsList.length.toString());
+                      EhsReport temp_ehs =
+                          EhsReport.getFilteredReportOfInterval(
+                              reportsList,
+                              validated_month_from,
+                              validated_month_to,
+                              validated_day_from,
+                              validated_day_to,
+                              -1,
+                              -1);
+
+                      return Column(
+                        children: [
+                          SizedBox(height: defaultPadding),
+                          IntrinsicHeight(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: minimumPadding),
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: minimumPadding),
+                                    child: KPI1GoodBadIndicator(
+                                      circleColor:
+                                          temp_ehs.firstAid_incidents > 0
+                                              ? KelloggColors.cockRed
+                                              : KelloggColors.green,
+                                      title: 'First Aid\nIncidents',
+                                      circleText: temp_ehs.firstAid_incidents
+                                          .toString(),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: minimumPadding),
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: minimumPadding),
+                                    child: KPI1GoodBadIndicator(
+                                      circleColor:
+                                          temp_ehs.lostTime_incidents > 0
+                                              ? KelloggColors.cockRed
+                                              : KelloggColors.green,
+                                      title: 'Lost Time\nIncidents',
+                                      circleText: temp_ehs.lostTime_incidents
+                                          .toString(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: defaultPadding),
+                          IntrinsicHeight(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: minimumPadding),
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: minimumPadding),
+                                    child: KPI1GoodBadIndicator(
+                                      circleColor:
+                                          temp_ehs.recordable_incidents > 0
+                                              ? KelloggColors.cockRed
+                                              : KelloggColors.green,
+                                      title: 'Recordable\nIncidents',
+                                      circleText: temp_ehs.recordable_incidents
+                                          .toString(),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: minimumPadding),
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: minimumPadding),
+                                    child: KPI1GoodBadIndicator(
+                                      circleColor: temp_ehs.nearMiss <
+                                              (Plans.monthlyNearMissTarget /
+                                                      monthDays) *
+                                                  days_in_interval
+                                          ? KelloggColors.cockRed
+                                          : KelloggColors.green,
+                                      title: 'Near Miss',
+                                      circleText: temp_ehs.nearMiss.toString(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: defaultPadding),
+                          IntrinsicHeight(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: minimumPadding),
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: minimumPadding),
+                                    child: KPI1GoodBadIndicator(
+                                      circleColor: temp_ehs.risk_assessment >
+                                              Plans.highRisksBoundary
+                                          ? KelloggColors.cockRed
+                                          : temp_ehs.risk_assessment >
+                                                  Plans.mediumRisksBoundary
+                                              ? KelloggColors.yellow
+                                              : KelloggColors.green,
+                                      title: 'Pre-Shift\nRisk Assessment',
+                                      circleText:
+                                          temp_ehs.risk_assessment.toString(),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: minimumPadding),
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: minimumPadding),
+                                    child: KPI1GoodBadIndicator(
+                                      circleColor: temp_ehs.s7_index == 1
+                                          ? KelloggColors.cockRed
+                                          : KelloggColors.green,
+                                      title: 'S7 Tours',
+                                      circleText: S7[temp_ehs.s7_index],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: defaultPadding),
+                        ],
+                      );
+                    } catch (e) {
+                      print(e);
+                      return ErrorMessageHeading('Something went wrong');
+                    }
+                  }
+                },
               ),
-              SizedBox(height: defaultPadding),
-              IntrinsicHeight(
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: minimumPadding),
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
-                        child: KPI1GoodBadIndicator(
-                          circleColor: recordable_incidents > 0
-                              ? KelloggColors.cockRed
-                              : KelloggColors.green,
-                          title: 'Recordable\nIncidents',
-                          circleText: recordable_incidents.toString(),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: minimumPadding),
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
-                        child: KPI1GoodBadIndicator(
-                          circleColor: nearMiss <
-                                  (Plans.monthlyNearMissTarget / monthDays) *
-                                      days_in_interval
-                              ? KelloggColors.cockRed
-                              : KelloggColors.green,
-                          title: 'Near Miss',
-                          circleText: nearMiss.toString(),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: defaultPadding),
-              IntrinsicHeight(
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: minimumPadding),
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
-                        child: KPI1GoodBadIndicator(
-                          circleColor: risk_assessment > Plans.highRisksBoundary
-                              ? KelloggColors.cockRed
-                              : risk_assessment > Plans.mediumRisksBoundary
-                                  ? KelloggColors.yellow
-                                  : KelloggColors.green,
-                          title: 'Pre-Shift\nRisk Assessment',
-                          circleText: risk_assessment.toString(),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: minimumPadding),
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
-                        child: KPI1GoodBadIndicator(
-                          circleColor: s7_tours.compareTo(S7[1]) == 0
-                              ? KelloggColors.cockRed
-                              : KelloggColors.green,
-                          title: 'S7 Tours',
-                          circleText: s7_tours,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: defaultPadding),
             ],
           ),
         ),

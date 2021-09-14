@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -108,8 +109,14 @@ class QfsReport {
     );
   }
 
-  static QfsReport getFilteredReportOfInterval(reportsList, month_from,
-      month_to, day_from, day_to, areaRequired, lineNumRequired) {
+  static QfsReport getFilteredReportOfInterval(
+      List<QueryDocumentSnapshot<QfsReport>> reportsList,
+      int month_from,
+      int month_to,
+      int day_from,
+      int day_to,
+      int areaRequired,
+      int lineNumRequired) {
     int temp_quality_incidents = 0,
         temp_food_safety_incidents = 0,
         temp_ccp_failure = 0,
@@ -117,41 +124,42 @@ class QfsReport {
         temp_pes_index = 0,
         temp_g6_index = 0;
     for (var report in reportsList) {
-      if (report.data().day < day_from ||
-          report.data().day > day_to ||
-          report.data().month < month_from ||
-          report.data().month > month_to) continue;
+      if (!isDayInInterval(
+        report.data().day,
+        report.data().month,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+      )) continue;
 
       if (lineNumRequired != -1 &&
           areaRequired != -1 &&
           report.data().line_index == lineNumRequired &&
           report.data().area == areaRequired) {
         //all shifts in one line in one area
-        temp_quality_incidents += report.data().quality_incidents as int;
-        temp_food_safety_incidents +=
-            report.data().food_safety_incidents as int;
-        temp_ccp_failure += report.data().ccp_failure as int;
-        temp_consumer_complaints += report.data().consumer_complaints as int;
+        temp_quality_incidents += report.data().quality_incidents;
+        temp_food_safety_incidents += report.data().food_safety_incidents;
+        temp_ccp_failure += report.data().ccp_failure;
+        temp_consumer_complaints += report.data().consumer_complaints;
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
       } else if (lineNumRequired == -1 &&
           areaRequired != -1 &&
           report.data().area == areaRequired) {
         // all shifts all lines in one area
-        temp_quality_incidents += report.data().quality_incidents as int;
-        temp_food_safety_incidents +=
-            report.data().food_safety_incidents as int;
-        temp_ccp_failure += report.data().ccp_failure as int;
-        temp_consumer_complaints += report.data().consumer_complaints as int;
+        temp_quality_incidents += report.data().quality_incidents;
+        temp_food_safety_incidents += report.data().food_safety_incidents;
+        temp_ccp_failure += report.data().ccp_failure;
+        temp_consumer_complaints += report.data().consumer_complaints;
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
       } else if (areaRequired == -1) {
         // all shifts all lines all areas
-        temp_quality_incidents += report.data().quality_incidents as int;
-        temp_food_safety_incidents +=
-            report.data().food_safety_incidents as int;
-        temp_ccp_failure += report.data().ccp_failure as int;
-        temp_consumer_complaints += report.data().consumer_complaints as int;
+        temp_quality_incidents += report.data().quality_incidents;
+        temp_food_safety_incidents += report.data().food_safety_incidents;
+        temp_ccp_failure += report.data().ccp_failure;
+        temp_consumer_complaints += report.data().consumer_complaints;
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
       } else {

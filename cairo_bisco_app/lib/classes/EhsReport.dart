@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -108,8 +109,14 @@ class EhsReport {
     );
   }
 
-  static EhsReport getFilteredReportOfInterval(reportsList, month_from,
-      month_to, day_from, day_to, areaRequired, lineNumRequired) {
+  static EhsReport getFilteredReportOfInterval(
+      List<QueryDocumentSnapshot<EhsReport>> reportsList,
+      int month_from,
+      int month_to,
+      int day_from,
+      int day_to,
+      int areaRequired,
+      int lineNumRequired) {
     int temp_firstAid_incidents = 0,
         temp_lostTime_incidents = 0,
         temp_recordable_incidents = 0,
@@ -117,39 +124,43 @@ class EhsReport {
         temp_risk_assessment = 0,
         temp_s7_index = 0;
     for (var report in reportsList) {
-      if (report.data().day < day_from ||
-          report.data().day > day_to ||
-          report.data().month < month_from ||
-          report.data().month > month_to) continue;
+      if (!isDayInInterval(
+        report.data().day,
+        report.data().month,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+      )) continue;
 
       if (lineNumRequired != -1 &&
           areaRequired != -1 &&
           report.data().line_index == lineNumRequired &&
           report.data().area == areaRequired) {
         //all shifts in one line in one area
-        temp_firstAid_incidents += report.data().firstAid_incidents as int;
-        temp_lostTime_incidents += report.data().lostTime_incidents as int;
-        temp_recordable_incidents += report.data().recordable_incidents as int;
-        temp_nearMiss += report.data().nearMiss as int;
-        temp_risk_assessment += report.data().risk_assessment as int;
+        temp_firstAid_incidents += report.data().firstAid_incidents;
+        temp_lostTime_incidents += report.data().lostTime_incidents;
+        temp_recordable_incidents += report.data().recordable_incidents;
+        temp_nearMiss += report.data().nearMiss;
+        temp_risk_assessment += report.data().risk_assessment;
         temp_s7_index = max(temp_s7_index, report.data().s7_index);
       } else if (lineNumRequired == -1 &&
           areaRequired != -1 &&
           report.data().area == areaRequired) {
         // all shifts all lines in one area
-        temp_firstAid_incidents += report.data().firstAid_incidents as int;
-        temp_lostTime_incidents += report.data().lostTime_incidents as int;
-        temp_recordable_incidents += report.data().recordable_incidents as int;
-        temp_nearMiss += report.data().nearMiss as int;
-        temp_risk_assessment += report.data().risk_assessment as int;
+        temp_firstAid_incidents += report.data().firstAid_incidents;
+        temp_lostTime_incidents += report.data().lostTime_incidents;
+        temp_recordable_incidents += report.data().recordable_incidents;
+        temp_nearMiss += report.data().nearMiss;
+        temp_risk_assessment += report.data().risk_assessment;
         temp_s7_index = max(temp_s7_index, report.data().s7_index);
       } else if (areaRequired == -1) {
         // all shifts all lines all areas
-        temp_firstAid_incidents += report.data().firstAid_incidents as int;
-        temp_lostTime_incidents += report.data().lostTime_incidents as int;
-        temp_recordable_incidents += report.data().recordable_incidents as int;
-        temp_nearMiss += report.data().nearMiss as int;
-        temp_risk_assessment += report.data().risk_assessment as int;
+        temp_firstAid_incidents += report.data().firstAid_incidents;
+        temp_lostTime_incidents += report.data().lostTime_incidents;
+        temp_recordable_incidents += report.data().recordable_incidents;
+        temp_nearMiss += report.data().nearMiss;
+        temp_risk_assessment += report.data().risk_assessment;
         temp_s7_index = max(temp_s7_index, report.data().s7_index);
       } else {
         // print('debug :: report filtered out');

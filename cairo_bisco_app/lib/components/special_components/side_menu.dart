@@ -44,7 +44,7 @@ class SideMenu extends StatelessWidget {
             image: "quality",
             press: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => QfsReport()));
+                  MaterialPageRoute(builder: (context) => QfsDetailedReport()));
             },
           ),
           DrawerListTile(
@@ -52,7 +52,7 @@ class SideMenu extends StatelessWidget {
             image: "safety",
             press: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => EhsReport()));
+                  MaterialPageRoute(builder: (context) => EhsDetailedReport()));
             },
           ),
           DrawerListTile(
