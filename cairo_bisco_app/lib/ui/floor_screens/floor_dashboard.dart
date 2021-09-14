@@ -98,11 +98,11 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                             ConnectionState.waiting) {
                           return ErrorMessageHeading("Loading");
                         } else {
-                          List<QueryDocumentSnapshot<EhsReport>> reportsList =
-                              snapshot.data!.docs
-                                  as List<QueryDocumentSnapshot<EhsReport>>;
-                          // print("ehs ::" + reportsList.length.toString());
                           try {
+                            List<QueryDocumentSnapshot<EhsReport>> reportsList =
+                                snapshot.data!.docs
+                                    as List<QueryDocumentSnapshot<EhsReport>>;
+                            // print("ehs ::" + reportsList.length.toString());
                             EhsReport temp_ehs =
                                 EhsReport.getFilteredReportOfInterval(
                                     reportsList,
@@ -144,11 +144,11 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                             ConnectionState.waiting) {
                           return ErrorMessageHeading('Loading');
                         } else {
-                          List<QueryDocumentSnapshot<QfsReport>> reportsList =
-                              snapshot.data!.docs
-                                  as List<QueryDocumentSnapshot<QfsReport>>;
-                          // print("qfs ::" + reportsList.length.toString());
                           try {
+                            List<QueryDocumentSnapshot<QfsReport>> reportsList =
+                                snapshot.data!.docs
+                                    as List<QueryDocumentSnapshot<QfsReport>>;
+                            // print("qfs ::" + reportsList.length.toString());
                             QfsReport temp_qfs =
                                 QfsReport.getFilteredReportOfInterval(
                                     reportsList,

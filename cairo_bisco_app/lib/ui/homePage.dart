@@ -6,6 +6,8 @@ this screen will contain
 4- qfs brief
 5- ehs brief
  *********************************/
+import 'package:cairo_bisco_app/classes/EhsReport.dart';
+import 'package:cairo_bisco_app/classes/QfsReport.dart';
 import 'package:cairo_bisco_app/classes/Rules.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
@@ -16,6 +18,7 @@ import 'package:cairo_bisco_app/components/production_widgets/production_info_ca
 import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/6kpis_good_bad_indicator.dart';
 import 'package:cairo_bisco_app/components/special_components/side_menu.dart';
 import 'package:cairo_bisco_app/components/utility_funcs/date_utility.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
@@ -38,154 +41,225 @@ class _HomeState extends State<HomePage> {
       maamoulCartons = 3,
       totalCartons = 25; //TODO :: take actual numbers
 
-  int quality_incidents = 3,
-      food_safety_incidents = 0,
-      ccp_failure = 0,
-      consumer_complaints = 0;
-  String pes = Pes[1], g6_escalaction = G6[2]; //TODO :: take actual numbers
-
-  int firstAid_incidents = 0,
-      lostTime_incidents = 0,
-      recordable_incidents = 0,
-      nearMiss = 0,
-      risk_assessment = 6;
-  String s7_tours = S7[1]; //TODO :: take actual numbers
-
   @override
   Widget build(BuildContext context) {
     int days_in_interval = 1; //screen shows 1 day only
-
+    final qualityReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('quality_reports')
+        .collection(getYear())
+        .withConverter<QfsReport>(
+          fromFirestore: (snapshot, _) => QfsReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    final ehsReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('ehs_reports')
+        .collection(getYear())
+        .withConverter<EhsReport>(
+          fromFirestore: (snapshot, _) => EhsReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
     return ModalProgressHUD(
-        inAsyncCall: showSpinner,
-        child: SafeArea(
-            child: Scaffold(
-                backgroundColor: KelloggColors.white,
-                key: _scaffoldKey,
-                drawer: SideMenu(),
-                appBar: new AppBar(
-                  backgroundColor: KelloggColors.white.withOpacity(0),
-                  shadowColor: KelloggColors.white.withOpacity(0),
-                  leading: new IconButton(
-                    icon: new Icon(
-                      Icons.menu,
-                      color: KelloggColors.darkRed,
-                    ),
-                    onPressed: () => _scaffoldKey.currentState!.openDrawer(),
-                  ),
+      inAsyncCall: showSpinner,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: KelloggColors.white,
+          key: _scaffoldKey,
+          drawer: SideMenu(),
+          appBar: new AppBar(
+            backgroundColor: KelloggColors.white.withOpacity(0),
+            shadowColor: KelloggColors.white.withOpacity(0),
+            leading: new IconButton(
+              icon: new Icon(
+                Icons.menu,
+                color: KelloggColors.darkRed,
+              ),
+              onPressed: () => _scaffoldKey.currentState!.openDrawer(),
+            ),
+          ),
+          resizeToAvoidBottomInset: true,
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: subHeading('Plant overview'),
                 ),
-                resizeToAvoidBottomInset: true,
-                body: SingleChildScrollView(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                      Center(
-                        child: subHeading('Plant overview'),
-                      ),
-                      Center(child: smallerHeading(todayDateText())),
-                      SizedBox(height: defaultPadding),
-                      sectionTitle('Production'),
-                      Chart(
-                          biscuits: biscuits,
-                          wafer: wafer,
-                          maamoul: maamoul,
-                          totalProduction: biscuits + maamoul + wafer,
-                          totalTonnage: totalTonnage),
-                      ProductionInfoCard(
-                        image: "colored_biscuit",
-                        title: "Biscuits",
-                        background: KelloggColors.yellow,
-                        amountInKgs: "$biscuits K",
-                        numOfCartons: biscuitsCartons,
-                      ),
-                      ProductionInfoCard(
-                        image: "colored_wafer",
-                        title: "Wafer",
-                        background: KelloggColors.green,
-                        amountInKgs: "$wafer K",
-                        numOfCartons: waferCartons,
-                      ),
-                      ProductionInfoCard(
-                        image: "colored_maamoul",
-                        title: "Maamoul",
-                        background: KelloggColors.cockRed,
-                        amountInKgs: "$maamoul K",
-                        numOfCartons: maamoulCartons,
-                      ),
-                      ProductionInfoCard(
-                        image: "recycle",
-                        title: "Scrap and rework",
-                        background: KelloggColors.white,
-                        amountInKgs: (totalTonnage - biscuits - maamoul - wafer)
-                                .toStringAsFixed(1) +
-                            " K",
-                        numOfCartons: totalCartons -
-                            biscuitsCartons -
-                            maamoulCartons -
-                            waferCartons,
-                      ),
-                      sectionTitle('QFS'),
-                      KPI6GoodBadIndicator(
-                        color1: quality_incidents > 0
-                            ? KelloggColors.cockRed
-                            : KelloggColors.green,
-                        title1: 'Quality\nIncidents',
-                        color2: food_safety_incidents > 0
-                            ? KelloggColors.cockRed
-                            : KelloggColors.green,
-                        title2: 'Food Safety\nIncidents',
-                        color3: ccp_failure > 0
-                            ? KelloggColors.cockRed
-                            : KelloggColors.green,
-                        title3: 'CCP\nFailures',
-                        color4: pes.compareTo(Pes[2]) == 0
-                            ? KelloggColors.cockRed
-                            : pes.compareTo(Pes[1]) == 0
-                                ? KelloggColors.yellow
-                                : KelloggColors.green,
-                        title4: 'PES\n(B&C Defects)',
-                        color5: consumer_complaints > 0
-                            ? KelloggColors.cockRed
-                            : KelloggColors.green,
-                        title5: 'Consumer\nComplaints',
-                        color6: g6_escalaction.compareTo(G6[2]) == 0
-                            ? KelloggColors.cockRed
-                            : pes.compareTo(G6[1]) == 0
-                                ? KelloggColors.yellow
-                                : KelloggColors.green,
-                        title6: 'G6 Escalation',
-                      ),
-                      sectionTitle('EHS'),
-                      KPI6GoodBadIndicator(
-                        color1: firstAid_incidents > 0
-                            ? KelloggColors.cockRed
-                            : KelloggColors.green,
-                        title1: 'First Aid\nIncidents',
-                        color2: lostTime_incidents > 0
-                            ? KelloggColors.cockRed
-                            : KelloggColors.green,
-                        title2: 'Lost Time\nIncidents',
-                        color3: recordable_incidents > 0
-                            ? KelloggColors.cockRed
-                            : KelloggColors.green,
-                        title3: 'Recordable\nIncidents',
-                        color4: nearMiss <
-                                (Plans.monthlyNearMissTarget / monthDays) *
-                                    days_in_interval
-                            ? KelloggColors.cockRed
-                            : KelloggColors.green,
-                        title4: 'Near Miss',
-                        color5: risk_assessment > Plans.highRisksBoundary
-                            ? KelloggColors.cockRed
-                            : risk_assessment > Plans.mediumRisksBoundary
-                                ? KelloggColors.yellow
-                                : KelloggColors.green,
-                        title5: 'pre-shift\nRisk\nAssessment',
-                        color6: s7_tours.compareTo(S7[1]) == 0
-                            ? KelloggColors.cockRed
-                            : KelloggColors.green,
-                        title6: 'S7 Tours',
-                      ),
-                    ])))));
+                Center(child: smallerHeading(todayDateText())),
+                SizedBox(height: defaultPadding),
+                sectionTitle('Production'),
+                Chart(
+                    biscuits: biscuits,
+                    wafer: wafer,
+                    maamoul: maamoul,
+                    totalProduction: biscuits + maamoul + wafer,
+                    totalTonnage: totalTonnage),
+                ProductionInfoCard(
+                  image: "colored_biscuit",
+                  title: "Biscuits",
+                  background: KelloggColors.yellow,
+                  amountInKgs: "$biscuits K",
+                  numOfCartons: biscuitsCartons,
+                ),
+                ProductionInfoCard(
+                  image: "colored_wafer",
+                  title: "Wafer",
+                  background: KelloggColors.green,
+                  amountInKgs: "$wafer K",
+                  numOfCartons: waferCartons,
+                ),
+                ProductionInfoCard(
+                  image: "colored_maamoul",
+                  title: "Maamoul",
+                  background: KelloggColors.cockRed,
+                  amountInKgs: "$maamoul K",
+                  numOfCartons: maamoulCartons,
+                ),
+                ProductionInfoCard(
+                  image: "recycle",
+                  title: "Scrap and rework",
+                  background: KelloggColors.white,
+                  amountInKgs: (totalTonnage - biscuits - maamoul - wafer)
+                          .toStringAsFixed(1) +
+                      " K",
+                  numOfCartons: totalCartons -
+                      biscuitsCartons -
+                      maamoulCartons -
+                      waferCartons,
+                ),
+                sectionTitle('QFS'),
+                StreamBuilder<QuerySnapshot>(
+                  stream: qualityReportRef.snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return ErrorMessageHeading('Something went wrong');
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return ErrorMessageHeading('Loading');
+                    } else {
+                      try {
+                        List<QueryDocumentSnapshot<QfsReport>> reportsList =
+                            snapshot.data!.docs
+                                as List<QueryDocumentSnapshot<QfsReport>>;
+                        // print("qfs ::" + reportsList.length.toString());
+                        QfsReport temp_qfs =
+                            QfsReport.getFilteredReportOfInterval(
+                                reportsList,
+                                int.parse(getMonth()),
+                                int.parse(getMonth()),
+                                int.parse(getDay()),
+                                int.parse(getDay()),
+                                -1,
+                                -1);
+                        return KPI6GoodBadIndicator(
+                          color1: temp_qfs.quality_incidents > 0
+                              ? KelloggColors.cockRed
+                              : KelloggColors.green,
+                          title1: 'Quality\nIncidents',
+                          color2: temp_qfs.food_safety_incidents > 0
+                              ? KelloggColors.cockRed
+                              : KelloggColors.green,
+                          title2: 'Food Safety\nIncidents',
+                          color3: temp_qfs.ccp_failure > 0
+                              ? KelloggColors.cockRed
+                              : KelloggColors.green,
+                          title3: 'CCP\nFailures',
+                          color4: temp_qfs.pes_index == 2
+                              ? KelloggColors.cockRed
+                              : temp_qfs.pes_index == 1
+                                  ? KelloggColors.yellow
+                                  : KelloggColors.green,
+                          title4: 'PES\n(B&C Defects)',
+                          color5: temp_qfs.consumer_complaints > 0
+                              ? KelloggColors.cockRed
+                              : KelloggColors.green,
+                          title5: 'Consumer\nComplaints',
+                          color6: temp_qfs.g6_index == 2
+                              ? KelloggColors.cockRed
+                              : temp_qfs.g6_index == 1
+                                  ? KelloggColors.yellow
+                                  : KelloggColors.green,
+                          title6: 'G6 Escalation',
+                        );
+                      } catch (e) {
+                        print(e);
+                        return ErrorMessageHeading('Something went wrong');
+                      }
+                    }
+                  },
+                ),
+                sectionTitle('EHS'),
+                StreamBuilder<QuerySnapshot>(
+                  stream: ehsReportRef.snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return ErrorMessageHeading('Something went wrong');
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return ErrorMessageHeading("Loading");
+                    } else {
+                      try {
+                        List<QueryDocumentSnapshot<EhsReport>> reportsList =
+                            snapshot.data!.docs
+                                as List<QueryDocumentSnapshot<EhsReport>>;
+                        // print("ehs ::" + reportsList.length.toString());
+                        EhsReport temp_ehs =
+                            EhsReport.getFilteredReportOfInterval(
+                                reportsList,
+                                int.parse(getMonth()),
+                                int.parse(getMonth()),
+                                int.parse(getDay()),
+                                int.parse(getDay()),
+                                -1,
+                                -1);
+                        return KPI6GoodBadIndicator(
+                          color1: temp_ehs.firstAid_incidents > 0
+                              ? KelloggColors.cockRed
+                              : KelloggColors.green,
+                          title1: 'First Aid\nIncidents',
+                          color2: temp_ehs.lostTime_incidents > 0
+                              ? KelloggColors.cockRed
+                              : KelloggColors.green,
+                          title2: 'Lost Time\nIncidents',
+                          color3: temp_ehs.recordable_incidents > 0
+                              ? KelloggColors.cockRed
+                              : KelloggColors.green,
+                          title3: 'Recordable\nIncidents',
+                          color4: temp_ehs.nearMiss <
+                                  (Plans.monthlyNearMissTarget / monthDays) *
+                                      days_in_interval
+                              ? KelloggColors.cockRed
+                              : KelloggColors.green,
+                          title4: 'Near Miss',
+                          color5:
+                              temp_ehs.risk_assessment > Plans.highRisksBoundary
+                                  ? KelloggColors.cockRed
+                                  : temp_ehs.risk_assessment >
+                                          Plans.mediumRisksBoundary
+                                      ? KelloggColors.yellow
+                                      : KelloggColors.green,
+                          title5: 'pre-shift\nRisk\nAssessment',
+                          color6: temp_ehs.s7_index == 1
+                              ? KelloggColors.cockRed
+                              : KelloggColors.green,
+                          title6: 'S7 Tours',
+                        );
+                      } catch (e) {
+                        print(e);
+                        return ErrorMessageHeading('Something went wrong');
+                      }
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
