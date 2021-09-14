@@ -145,7 +145,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -173,7 +173,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -202,7 +202,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -248,7 +248,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -276,7 +276,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -305,7 +305,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),

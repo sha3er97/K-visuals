@@ -146,7 +146,7 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -174,7 +174,7 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -203,7 +203,7 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -249,7 +249,7 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -277,7 +277,7 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -306,7 +306,7 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
