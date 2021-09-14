@@ -7,12 +7,11 @@ this screen will contain
 5- ehs brief
  *********************************/
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
+import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
-import 'package:cairo_bisco_app/classes/Rules.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
-import 'package:cairo_bisco_app/classes/values/form_values.dart';
 import 'package:cairo_bisco_app/components/production_widgets/chart.dart';
 import 'package:cairo_bisco_app/components/production_widgets/production_info_card.dart';
 import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/6kpis_good_bad_indicator.dart';

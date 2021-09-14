@@ -1,4 +1,4 @@
-import 'package:cairo_bisco_app/classes/Rules.dart';
+import 'package:cairo_bisco_app/classes/Credentials.dart';
 
 bool isPlt(String email, String password) {
   print("checked email :" + email);

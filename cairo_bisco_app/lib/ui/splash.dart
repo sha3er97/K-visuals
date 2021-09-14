@@ -1,9 +1,8 @@
 import 'dart:async';
-
-import 'package:cairo_bisco_app/classes/Rules.dart';
+import 'package:cairo_bisco_app/classes/Credentials.dart';
+import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
-import 'package:cairo_bisco_app/components/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/ui/login_screens/login.dart';
 import 'package:flutter/material.dart';
 
