@@ -1,21 +1,31 @@
 import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
+import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-final biscuitsSkuRef =
-    FirebaseFirestore.instance.collection('biscuits_sku').withConverter<SKU>(
-          fromFirestore: (snapshot, _) => SKU.fromJson(snapshot.data()!),
-          toFirestore: (sku, _) => sku.toJson(),
-        );
-final waferSkuRef =
-    FirebaseFirestore.instance.collection('wafer_sku').withConverter<SKU>(
-          fromFirestore: (snapshot, _) => SKU.fromJson(snapshot.data()!),
-          toFirestore: (sku, _) => sku.toJson(),
-        );
-final maamoulSkuRef =
-    FirebaseFirestore.instance.collection('maamoul_sku').withConverter<SKU>(
-          fromFirestore: (snapshot, _) => SKU.fromJson(snapshot.data()!),
-          toFirestore: (sku, _) => sku.toJson(),
-        );
+final biscuitsSkuRef = FirebaseFirestore.instance
+    .collection(factory_name)
+    .doc('sku')
+    .collection('biscuits_sku')
+    .withConverter<SKU>(
+      fromFirestore: (snapshot, _) => SKU.fromJson(snapshot.data()!),
+      toFirestore: (sku, _) => sku.toJson(),
+    );
+final waferSkuRef = FirebaseFirestore.instance
+    .collection(factory_name)
+    .doc('sku')
+    .collection('wafer_sku')
+    .withConverter<SKU>(
+      fromFirestore: (snapshot, _) => SKU.fromJson(snapshot.data()!),
+      toFirestore: (sku, _) => sku.toJson(),
+    );
+final maamoulSkuRef = FirebaseFirestore.instance
+    .collection(factory_name)
+    .doc('sku')
+    .collection('maamoul_sku')
+    .withConverter<SKU>(
+      fromFirestore: (snapshot, _) => SKU.fromJson(snapshot.data()!),
+      toFirestore: (sku, _) => sku.toJson(),
+    );
 final RefSkuArr = [biscuitsSkuRef, waferSkuRef, maamoulSkuRef];
 
 class SKU {
