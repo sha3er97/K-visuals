@@ -1,8 +1,8 @@
 import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
-import 'package:cairo_bisco_app/components/utility_funcs/date_utility.dart';
-import 'package:cairo_bisco_app/components/utility_funcs/login_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';

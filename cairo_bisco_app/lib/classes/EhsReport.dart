@@ -115,6 +115,7 @@ class EhsReport {
       int month_to,
       int day_from,
       int day_to,
+      int year,
       int areaRequired,
       int lineNumRequired) {
     int temp_firstAid_incidents = 0,
@@ -131,7 +132,12 @@ class EhsReport {
         month_to,
         day_from,
         day_to,
-      )) continue;
+        year,
+      )) {
+        print('debug :: report filtered out due to its date --> ' +
+            report.data().day.toString());
+        continue;
+      }
 
       if (lineNumRequired != -1 &&
           areaRequired != -1 &&
@@ -144,6 +150,7 @@ class EhsReport {
         temp_nearMiss += report.data().nearMiss;
         temp_risk_assessment += report.data().risk_assessment;
         temp_s7_index = max(temp_s7_index, report.data().s7_index);
+        // print('debug :: report chosen in first if');
       } else if (lineNumRequired == -1 &&
           areaRequired != -1 &&
           report.data().area == areaRequired) {
@@ -154,6 +161,7 @@ class EhsReport {
         temp_nearMiss += report.data().nearMiss;
         temp_risk_assessment += report.data().risk_assessment;
         temp_s7_index = max(temp_s7_index, report.data().s7_index);
+        // print('debug :: report chosen in second if');
       } else if (areaRequired == -1) {
         // all shifts all lines all areas
         temp_firstAid_incidents += report.data().firstAid_incidents;
@@ -162,8 +170,9 @@ class EhsReport {
         temp_nearMiss += report.data().nearMiss;
         temp_risk_assessment += report.data().risk_assessment;
         temp_s7_index = max(temp_s7_index, report.data().s7_index);
+        // print('debug :: report chosen in third if');
       } else {
-        // print('debug :: report filtered out');
+        // print('debug :: report filtered out due to conditions');
       }
     }
     //return the total in capsulized form
@@ -174,9 +183,27 @@ class EhsReport {
       nearMiss: temp_nearMiss,
       recordable_incidents: temp_recordable_incidents,
       shift_index: -1,
-      line_index: -1,
+      line_index: lineNumRequired,
       lostTime_incidents: temp_lostTime_incidents,
       firstAid_incidents: temp_firstAid_incidents,
+      area: areaRequired,
+      year: -1,
+      month: -1,
+      day: -1,
+    );
+  }
+
+  static EhsReport getEmptyReport() {
+    return EhsReport(
+      supName: '',
+      s7_index: 0,
+      risk_assessment: 0,
+      nearMiss: 0,
+      recordable_incidents: 0,
+      shift_index: -1,
+      line_index: -1,
+      lostTime_incidents: 0,
+      firstAid_incidents: 0,
       area: -1,
       year: -1,
       month: -1,

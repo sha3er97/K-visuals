@@ -115,6 +115,7 @@ class QfsReport {
       int month_to,
       int day_from,
       int day_to,
+      int year,
       int areaRequired,
       int lineNumRequired) {
     int temp_quality_incidents = 0,
@@ -131,7 +132,12 @@ class QfsReport {
         month_to,
         day_from,
         day_to,
-      )) continue;
+        year,
+      )) {
+        print('debug :: report filtered out due to its date --> ' +
+            report.data().day.toString());
+        continue;
+      }
 
       if (lineNumRequired != -1 &&
           areaRequired != -1 &&
@@ -144,6 +150,7 @@ class QfsReport {
         temp_consumer_complaints += report.data().consumer_complaints;
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
+        // print('debug :: report chosen in first if');
       } else if (lineNumRequired == -1 &&
           areaRequired != -1 &&
           report.data().area == areaRequired) {
@@ -154,6 +161,7 @@ class QfsReport {
         temp_consumer_complaints += report.data().consumer_complaints;
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
+        // print('debug :: report chosen in second if');
       } else if (areaRequired == -1) {
         // all shifts all lines all areas
         temp_quality_incidents += report.data().quality_incidents;
@@ -162,6 +170,7 @@ class QfsReport {
         temp_consumer_complaints += report.data().consumer_complaints;
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
+        // print('debug :: report chosen in third if');
       } else {
         // print('debug :: report filtered out');
       }
@@ -174,9 +183,27 @@ class QfsReport {
       ccp_failure: temp_ccp_failure,
       consumer_complaints: temp_consumer_complaints,
       shift_index: -1,
-      line_index: -1,
+      line_index: lineNumRequired,
       pes_index: temp_pes_index,
       g6_index: temp_g6_index,
+      area: areaRequired,
+      year: -1,
+      month: -1,
+      day: -1,
+    );
+  }
+
+  static QfsReport getEmptyReport() {
+    return QfsReport(
+      supName: '',
+      quality_incidents: 0,
+      food_safety_incidents: 0,
+      ccp_failure: 0,
+      consumer_complaints: 0,
+      shift_index: -1,
+      line_index: -1,
+      pes_index: 0,
+      g6_index: 0,
       area: -1,
       year: -1,
       month: -1,

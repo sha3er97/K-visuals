@@ -1,15 +1,15 @@
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
+import 'package:cairo_bisco_app/classes/values/colors.dart';
+import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/classes/values/form_values.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/1kpi_good_bad_indicator.dart';
-import 'package:cairo_bisco_app/classes/values/colors.dart';
-import 'package:cairo_bisco_app/classes/values/constants.dart';
-import 'package:cairo_bisco_app/components/utility_funcs/date_utility.dart';
-import 'package:cairo_bisco_app/classes/values/form_values.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class QfsDetailedReport extends StatefulWidget {
   @override
@@ -70,13 +70,12 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
       validated_year = int.parse(getYear());
 
   void calculateInterval() {
-    // assume dates are validated (yearTo=yearFrom)
-    // to_month is now > from_month for sure
-    int modified_to_day = int.parse(_selectedDayTo) +
-        (int.parse(_selectedMonthTo) - int.parse(_selectedMonthFrom)) * 12;
-    // modified_to_day is now > from_day for sure
-    // save values
-    days_in_interval = modified_to_day - int.parse(_selectedDayFrom);
+    DateTime dateFrom = DateTime(int.parse(_selectedYearTo),
+        int.parse(_selectedMonthFrom), int.parse(_selectedDayFrom));
+    DateTime dateAfter = DateTime(int.parse(_selectedYearTo),
+        int.parse(_selectedMonthTo), int.parse(_selectedDayTo));
+
+    days_in_interval = dateFrom.difference(dateAfter).inDays.abs();
     validated_day_from = int.parse(_selectedDayFrom);
     validated_day_to = int.parse(_selectedDayTo);
     validated_month_from = int.parse(_selectedMonthFrom);
@@ -84,12 +83,16 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
     validated_year = int.parse(_selectedYearFrom);
   }
 
+  //temp variables
+  QfsReport temp_qfs = QfsReport.getEmptyReport();
+  List<QueryDocumentSnapshot<QfsReport>> reportsList = [];
+
   @override
   Widget build(BuildContext context) {
     final qualityReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('quality_reports')
-        .collection(getYear())
+        .collection(validated_year.toString())
         .withConverter<QfsReport>(
           fromFirestore: (snapshot, _) => QfsReport.fromJson(snapshot.data()!),
           toFirestore: (report, _) => report.toJson(),
@@ -332,25 +335,41 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                           content: Text(
                               "Error : invalid interval (reports of same year only are allowed)"),
                         ));
-                      else if ((int.parse(_selectedYearTo) ==
-                              int.parse(_selectedYearFrom)) &&
-                          (int.parse(_selectedMonthTo) <
-                              int.parse(_selectedMonthFrom)))
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                              "Error : invalid interval (month to < month from)"),
-                        ));
-                      else if ((int.parse(_selectedYearTo) ==
-                              int.parse(_selectedYearFrom)) &&
-                          (int.parse(_selectedMonthTo) ==
-                              int.parse(_selectedMonthFrom)) &&
-                          (int.parse(_selectedDayTo) <
-                              int.parse(_selectedYearFrom)))
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                              "Error : invalid interval (day to < day from)"),
-                        ));
-                      calculateInterval();
+                      else {
+                        DateTime dateFrom = DateTime(
+                            int.parse(_selectedYearTo),
+                            int.parse(_selectedMonthFrom),
+                            int.parse(_selectedDayFrom));
+                        DateTime dateAfter = DateTime(
+                            int.parse(_selectedYearTo),
+                            int.parse(_selectedMonthTo),
+                            int.parse(_selectedDayTo));
+                        if (dateFrom.isBefore(dateAfter) ||
+                            dateFrom.isAtSameMomentAs(dateAfter)) {
+                          calculateInterval();
+                          setState(() {
+                            temp_qfs = QfsReport.getFilteredReportOfInterval(
+                                reportsList,
+                                validated_month_from,
+                                validated_month_to,
+                                validated_day_from,
+                                validated_day_to,
+                                validated_year,
+                                -1,
+                                -1);
+                          });
+                          // print("debug :: quality incidents = " +
+                          //     temp_qfs.quality_incidents.toString());
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Report refreshed"),
+                          ));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                                "Error : invalid interval (from date must be <= to date)"),
+                          ));
+                        }
+                      }
                     },
                   ),
                 ),
@@ -366,19 +385,9 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                     return ErrorMessageHeading('Loading');
                   } else {
                     try {
-                      List<QueryDocumentSnapshot<QfsReport>> reportsList =
-                          snapshot.data!.docs
-                              as List<QueryDocumentSnapshot<QfsReport>>;
+                      reportsList = snapshot.data!.docs
+                          as List<QueryDocumentSnapshot<QfsReport>>;
                       // print("qfs ::" + reportsList.length.toString());
-                      QfsReport temp_qfs =
-                          QfsReport.getFilteredReportOfInterval(
-                              reportsList,
-                              validated_month_from,
-                              validated_month_to,
-                              validated_day_from,
-                              validated_day_to,
-                              -1,
-                              -1);
                       return Column(
                         children: [
                           SizedBox(height: defaultPadding),

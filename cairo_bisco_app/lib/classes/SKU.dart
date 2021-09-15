@@ -1,4 +1,4 @@
-import 'package:cairo_bisco_app/components/utility_funcs/calculations_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 final biscuitsSkuRef =

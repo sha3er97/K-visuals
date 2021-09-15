@@ -36,15 +36,13 @@ bool isDayInInterval(
   int month_to,
   int day_from,
   int day_to,
+  int year,
 ) {
-  if (check_month < month_from) return false;
-  if (check_month > month_to) return false;
-  //month here is in interval for sure
-  if (check_month == month_to || check_month == month_from) {
-    //month is either from or to or both
-    //--> check for both sides
-    if (check_month == month_to && check_day > day_to) return false;
-    if (check_month == month_from && check_day < day_from) return false;
-  }
-  return true;
+  DateTime dateFrom = DateTime(year, month_from, day_from);
+  DateTime dateAfter = DateTime(year, month_to, day_to);
+  DateTime dateToCheck = DateTime(year, check_month, check_day);
+
+  return (dateFrom.isBefore(dateToCheck) && dateAfter.isAfter(dateToCheck)) ||
+      dateAfter.isAtSameMomentAs(dateToCheck) ||
+      dateFrom.isAtSameMomentAs(dateToCheck);
 }

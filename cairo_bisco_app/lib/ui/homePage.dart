@@ -9,6 +9,7 @@ this screen will contain
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
 import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
@@ -16,7 +17,6 @@ import 'package:cairo_bisco_app/components/production_widgets/chart.dart';
 import 'package:cairo_bisco_app/components/production_widgets/production_info_card.dart';
 import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/6kpis_good_bad_indicator.dart';
 import 'package:cairo_bisco_app/components/special_components/side_menu.dart';
-import 'package:cairo_bisco_app/components/utility_funcs/date_utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -151,6 +151,7 @@ class _HomeState extends State<HomePage> {
                                 int.parse(getMonth()),
                                 int.parse(getDay()),
                                 int.parse(getDay()),
+                                int.parse(getYear()),
                                 -1,
                                 -1);
                         return KPI6GoodBadIndicator(
@@ -213,6 +214,7 @@ class _HomeState extends State<HomePage> {
                                 int.parse(getMonth()),
                                 int.parse(getDay()),
                                 int.parse(getDay()),
+                                int.parse(getYear()),
                                 -1,
                                 -1);
                         return KPI6GoodBadIndicator(
@@ -228,8 +230,9 @@ class _HomeState extends State<HomePage> {
                               ? KelloggColors.cockRed
                               : KelloggColors.green,
                           title3: 'Recordable\nIncidents',
-                          color4: temp_ehs.nearMiss <
-                                  (Plans.monthlyNearMissTarget / monthDays) *
+                          color4: temp_ehs.nearMiss.toDouble() <=
+                                  (Plans.monthlyNearMissTarget.toDouble() /
+                                          monthDays) *
                                       days_in_interval
                               ? KelloggColors.cockRed
                               : KelloggColors.green,

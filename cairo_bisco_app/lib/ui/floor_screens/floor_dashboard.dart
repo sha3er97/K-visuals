@@ -1,14 +1,14 @@
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/screen_widgets/ehs_column_screen.dart';
 import 'package:cairo_bisco_app/components/screen_widgets/production_column_screen.dart';
 import 'package:cairo_bisco_app/components/screen_widgets/qfs_column_screen.dart';
-import 'package:cairo_bisco_app/components/utility_funcs/date_utility.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class FloorDashBoard extends StatefulWidget {
   FloorDashBoard({
@@ -110,6 +110,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                                     int.parse(getMonth()),
                                     int.parse(getDay()),
                                     int.parse(getDay()),
+                                    int.parse(getYear()),
                                     prodType.indexOf(type),
                                     lineNum);
                             return EHSColScreen(
@@ -156,6 +157,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                                     int.parse(getMonth()),
                                     int.parse(getDay()),
                                     int.parse(getDay()),
+                                    int.parse(getYear()),
                                     prodType.indexOf(type),
                                     lineNum);
                             return QFSColScreen(
