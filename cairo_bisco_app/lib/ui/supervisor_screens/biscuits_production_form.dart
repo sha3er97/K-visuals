@@ -142,7 +142,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
               children: [
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: defaultPadding),
+                      const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
@@ -166,7 +166,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText:
-                            _sup_name_validate ? 'هذه الخانة ضرورية' : null,
+                                _sup_name_validate ? 'هذه الخانة ضرورية' : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
@@ -185,7 +185,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                          EdgeInsets.symmetric(vertical: minimumPadding),
+                              EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -197,7 +197,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                  TextStyle(color: KelloggColors.darkRed),
+                                      TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -308,7 +308,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                          EdgeInsets.symmetric(vertical: minimumPadding),
+                              EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -321,7 +321,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                  TextStyle(color: KelloggColors.darkRed),
+                                      TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -334,7 +334,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                          EdgeInsets.symmetric(vertical: minimumPadding),
+                              EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -347,7 +347,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                  TextStyle(color: KelloggColors.darkRed),
+                                      TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -836,7 +836,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText:
-                            _mc1Speed_validate ? 'هذه الخانة ضرورية' : null,
+                                _mc1Speed_validate ? 'هذه الخانة ضرورية' : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
@@ -870,7 +870,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText:
-                            _mc2Speed_validate ? 'هذه الخانة ضرورية' : null,
+                                _mc2Speed_validate ? 'هذه الخانة ضرورية' : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
