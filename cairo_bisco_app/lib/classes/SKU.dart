@@ -30,21 +30,37 @@ final RefSkuArr = [biscuitsSkuRef, waferSkuRef, maamoulSkuRef];
 
 class SKU {
   final String name;
-  final double cartonWeight, theoreticalShiftProd, targetScrap, targetFilmWaste;
+  final double cartonWeight, targetScrap, targetFilmWaste;
+  final double theoreticalShiftProd1,
+      theoreticalShiftProd2,
+      theoreticalShiftProd3,
+      theoreticalShiftProd4;
+  final int boxesPerCarton;
 
   SKU(
       {required this.name,
       required this.cartonWeight,
-      required this.theoreticalShiftProd,
+      required this.theoreticalShiftProd1,
+      required this.theoreticalShiftProd2,
+      required this.theoreticalShiftProd3,
+      required this.theoreticalShiftProd4,
       required this.targetScrap,
+      required this.boxesPerCarton,
       required this.targetFilmWaste});
 
   SKU.fromJson(Map<String, Object?> json)
       : this(
-          name: json['name']! as String,
+    name: json['name']! as String,
+          boxesPerCarton: json['boxesPerCarton']! as int,
           cartonWeight: parseJsonToDouble(json['cartonWeight']!),
-          theoreticalShiftProd:
-              parseJsonToDouble(json['theoreticalShiftProd']!),
+          theoreticalShiftProd1:
+              parseJsonToDouble(json['theoreticalShiftProd1']!),
+          theoreticalShiftProd2:
+              parseJsonToDouble(json['theoreticalShiftProd2']!),
+          theoreticalShiftProd3:
+              parseJsonToDouble(json['theoreticalShiftProd3']!),
+          theoreticalShiftProd4:
+              parseJsonToDouble(json['theoreticalShiftProd4']!),
           targetScrap: parseJsonToDouble(json['targetScrap']!),
           targetFilmWaste: parseJsonToDouble(json['targetFilmWaste']!),
         );
@@ -53,8 +69,12 @@ class SKU {
     return {
       'name': name,
       'cartonWeight': cartonWeight,
-      'theoreticalShiftProd': theoreticalShiftProd,
+      'theoreticalShiftProd1': theoreticalShiftProd1,
+      'theoreticalShiftProd2': theoreticalShiftProd2,
+      'theoreticalShiftProd3': theoreticalShiftProd3,
+      'theoreticalShiftProd4': theoreticalShiftProd4,
       'targetScrap': targetScrap,
+      'boxesPerCarton': boxesPerCarton,
       'targetFilmWaste': targetFilmWaste,
     };
   }
@@ -63,15 +83,23 @@ class SKU {
       refNum,
       String name,
       double cartonWeight,
-      double theoreticalShiftProd,
+      double theoreticalShiftProd1,
+      double theoreticalShiftProd2,
+      double theoreticalShiftProd3,
+      double theoreticalShiftProd4,
       double targetScrap,
-      double targetFilmWaste) async {
+      double targetFilmWaste,
+      int boxesPerCarton) async {
     await RefSkuArr[refNum].add(
       SKU(
           name: name,
           cartonWeight: cartonWeight,
-          theoreticalShiftProd: theoreticalShiftProd,
+          theoreticalShiftProd1: theoreticalShiftProd1,
+          theoreticalShiftProd2: theoreticalShiftProd2,
+          theoreticalShiftProd3: theoreticalShiftProd3,
+          theoreticalShiftProd4: theoreticalShiftProd4,
           targetScrap: targetScrap,
+          boxesPerCarton: boxesPerCarton,
           targetFilmWaste: targetFilmWaste),
     );
   }

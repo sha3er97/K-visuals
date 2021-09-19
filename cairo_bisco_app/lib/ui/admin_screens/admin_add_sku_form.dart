@@ -31,12 +31,21 @@ class _AddSkuFormState extends State<AddSkuForm> {
   bool showSpinner = false;
   String skuName = "",
       cartonWeight = "",
-      theoreticalShiftProd = "",
+      theoreticalShiftProd1 = "",
+      theoreticalShiftProd2 = "",
+      theoreticalShiftProd3 = "",
+      theoreticalShiftProd4 = "",
+      boxesPerCarton = "",
       targetScrap = "",
       targetFilmWaste = "";
+
   bool _skuName_validate = false,
       _cartonWeight_validate = false,
-      _theoreticalShiftProd_validate = false,
+      _theoreticalShiftProd1_validate = false,
+      _theoreticalShiftProd2_validate = false,
+      _theoreticalShiftProd3_validate = false,
+      _theoreticalShiftProd4_validate = false,
+      _boxesPerCarton_validate = false,
       _targetFilmWaste_validate = false,
       _targetScrap_validate = false;
 
@@ -141,7 +150,45 @@ class _AddSkuFormState extends State<AddSkuForm> {
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////////////////////////////////////
                         smallerHeading(
-                            'الانتاج المثالي في الوردية\nTheoretical Production Per Shift'),
+                            'عدد العلب في الكرتونة\nBoxes Per Carton'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _boxesPerCarton_validate
+                                ? 'هذه الخانة ضرورية'
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            boxesPerCarton = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        smallerHeading(
+                            'الانتاج المثالي في الوردية خط 1\nTheoretical Production Per Shift L1'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -159,7 +206,7 @@ class _AddSkuFormState extends State<AddSkuForm> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _theoreticalShiftProd_validate
+                            errorText: _theoreticalShiftProd1_validate
                                 ? 'هذه الخانة ضرورية'
                                 : null,
                             focusedBorder: OutlineInputBorder(
@@ -171,7 +218,115 @@ class _AddSkuFormState extends State<AddSkuForm> {
                             ),
                           ),
                           onChanged: (value) {
-                            theoreticalShiftProd = value;
+                            theoreticalShiftProd1 = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////
+                        smallerHeading(
+                            'الانتاج المثالي في الوردية خط 2\nTheoretical Production Per Shift L2'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _theoreticalShiftProd2_validate
+                                ? 'هذه الخانة ضرورية'
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            theoreticalShiftProd2 = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////
+                        smallerHeading(
+                            'الانتاج المثالي في الوردية خط 3\nTheoretical Production Per Shift L3'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _theoreticalShiftProd3_validate
+                                ? 'هذه الخانة ضرورية'
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            theoreticalShiftProd3 = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////
+                        smallerHeading(
+                            'الانتاج المثالي في الوردية خط 4\nTheoretical Production Per Shift L4'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _theoreticalShiftProd4_validate
+                                ? 'هذه الخانة ضرورية'
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            theoreticalShiftProd4 = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -263,22 +418,38 @@ class _AddSkuFormState extends State<AddSkuForm> {
                                       emptyField(cartonWeight);
                                   _targetScrap_validate =
                                       emptyField(targetScrap);
-                                  _theoreticalShiftProd_validate =
-                                      emptyField(theoreticalShiftProd);
+                                  _theoreticalShiftProd1_validate =
+                                      emptyField(theoreticalShiftProd1);
+                                  _theoreticalShiftProd2_validate =
+                                      emptyField(theoreticalShiftProd2);
+                                  _theoreticalShiftProd3_validate =
+                                      emptyField(theoreticalShiftProd3);
+                                  _theoreticalShiftProd4_validate =
+                                      emptyField(theoreticalShiftProd4);
+                                  _boxesPerCarton_validate =
+                                      emptyField(boxesPerCarton);
                                 });
                                 try {
                                   if (!_skuName_validate &&
                                       !_targetFilmWaste_validate &&
                                       !_cartonWeight_validate &&
                                       !_targetScrap_validate &&
-                                      !_theoreticalShiftProd_validate) {
+                                      !_boxesPerCarton_validate &&
+                                      !_theoreticalShiftProd1_validate &&
+                                      !_theoreticalShiftProd2_validate &&
+                                      !_theoreticalShiftProd3_validate &&
+                                      !_theoreticalShiftProd4_validate) {
                                     SKU.addSKU(
                                       refNum,
                                       skuName,
                                       double.parse(cartonWeight),
-                                      double.parse(theoreticalShiftProd),
+                                      double.parse(theoreticalShiftProd1),
+                                      double.parse(theoreticalShiftProd2),
+                                      double.parse(theoreticalShiftProd3),
+                                      double.parse(theoreticalShiftProd4),
                                       double.parse(targetScrap),
                                       double.parse(targetFilmWaste),
+                                      int.parse(boxesPerCarton),
                                     );
                                     Navigator.push(
                                         context,
