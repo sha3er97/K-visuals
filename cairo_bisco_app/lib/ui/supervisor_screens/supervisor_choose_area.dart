@@ -7,7 +7,7 @@
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
-import 'package:cairo_bisco_app/ui/supervisor_screens/biscuits_production_report.dart';
+import 'package:cairo_bisco_app/ui/supervisor_screens/biscuits_production_form.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/maamoul_production_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_ehs_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_qfs_report.dart';
@@ -68,7 +68,8 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => BiscuitsReport()));
+                                  builder: (context) =>
+                                      BiscuitsProductionForm()));
                         } else if (type == 1) {
                           Navigator.push(
                               context,

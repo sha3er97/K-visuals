@@ -20,16 +20,22 @@ class ProductionLine extends StatelessWidget {
   }) : super(key: key);
 
   final String productName;
-  final double cartons, oee, scrap, overweight, filmWaste, targetProd, money;
+  final int cartons, targetProd;
+  final double oee, scrap, overweight, filmWaste, money;
 
   @override
   Widget build(BuildContext context) {
-    double actual = cartons * SKU.skuDetails[productName]!.cartonWeight;
-    bool prodTargetDone = cartons - targetProd > 0;
+    bool noWork = cartons == 0;
+    double actual =
+        noWork ? 0 : cartons * SKU.skuDetails[productName]!.cartonWeight;
+    bool prodTargetDone = noWork || cartons - targetProd >= 0;
     String arrowImg = prodTargetDone ? "up" : "down";
     String arrowImg2 = overweight < Plans.targetOverWeightAbove ? "up" : "down";
-    String arrowImg3 =
-        scrap < SKU.skuDetails[productName]!.targetScrap ? "up" : "down";
+    String arrowImg3 = noWork
+        ? "up"
+        : scrap < SKU.skuDetails[productName]!.targetScrap
+            ? "up"
+            : "down";
 
     return Container(
       margin: EdgeInsets.all(defaultPadding),
@@ -68,7 +74,7 @@ class ProductionLine extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subHeading("$cartons K"),
+                      subHeading((cartons / 1000).toStringAsFixed(1) + " K"),
                     ],
                   ),
                 ),
@@ -88,7 +94,7 @@ class ProductionLine extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subHeading(actual.toStringAsFixed(1) + " K"),
+                      subHeading((actual / 1000).toStringAsFixed(1) + " K"),
                     ],
                   ),
                 ),
@@ -117,61 +123,81 @@ class ProductionLine extends StatelessWidget {
                       padding: EdgeInsets.all(minimumPadding / 2),
                       color: prodTargetDone
                           ? KelloggColors.green
-                          : KelloggColors.clearRed,
+                          : KelloggColors.cockRed,
                       child: new Image.asset(
                         'images/$arrowImg.png',
                       ),
                     ),
                   ),
-                  Spacer(flex: 2), //push numbers away
+                  // Spacer(flex: 1), //push numbers away
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: minimumPadding / 10),
-                      child: Column(
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
-                            (cartons - targetProd).toStringAsFixed(1) + " K",
-                            style: TextStyle(
-                                color: prodTargetDone
-                                    ? KelloggColors.green
-                                    : KelloggColors.clearRed,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 1.2),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: minimumPadding / 10),
+                              child: Column(
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                // crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    (prodTargetDone ? "" : "-") +
+                                        ((cartons - targetProd).abs() / 1000)
+                                            .toStringAsFixed(1) +
+                                        " K",
+                                    style: TextStyle(
+                                        color: prodTargetDone
+                                            ? KelloggColors.green
+                                            : KelloggColors.cockRed,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 1.2),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: minimumPadding),
-                  VerticalDivider(
-                    color: KelloggColors.grey,
-                    thickness: 2,
-                    indent: 0,
-                    endIndent: 0,
-                    width: 10,
-                  ),
-                  SizedBox(width: minimumPadding),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: minimumPadding / 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            ((cartons - targetProd) * 100 / targetProd)
-                                    .toStringAsFixed(1) +
-                                " %",
-                            style: TextStyle(
-                                color: prodTargetDone
-                                    ? KelloggColors.green
-                                    : KelloggColors.cockRed,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 1.2),
+                          SizedBox(width: minimumPadding),
+                          VerticalDivider(
+                            color: KelloggColors.grey,
+                            thickness: 2,
+                            indent: 0,
+                            endIndent: 0,
+                            width: 10,
+                          ),
+                          SizedBox(width: minimumPadding),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: minimumPadding / 10),
+                              child: Column(
+                                // crossAxisAlignment: CrossAxisAlignment.end,
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    (prodTargetDone ? "" : "-") +
+                                        ((cartons - targetProd).abs() *
+                                                100 /
+                                                targetProd)
+                                            .toStringAsFixed(1) +
+                                        " %",
+                                    style: TextStyle(
+                                        color: prodTargetDone
+                                            ? KelloggColors.green
+                                            : KelloggColors.cockRed,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 1.2),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -233,10 +259,14 @@ class ProductionLine extends StatelessWidget {
                   ranges: <GaugeRange>[
                     GaugeRange(
                         startValue: 0,
-                        endValue: SKU.skuDetails[productName]!.targetScrap,
+                        endValue: noWork
+                            ? maxScrap / 2
+                            : SKU.skuDetails[productName]!.targetScrap,
                         color: KelloggColors.successGreen),
                     GaugeRange(
-                        startValue: SKU.skuDetails[productName]!.targetScrap,
+                        startValue: noWork
+                            ? maxScrap / 2
+                            : SKU.skuDetails[productName]!.targetScrap,
                         endValue: maxScrap,
                         color: KelloggColors.clearRed)
                   ],
@@ -310,11 +340,14 @@ class ProductionLine extends StatelessWidget {
                   ranges: <GaugeRange>[
                     GaugeRange(
                         startValue: 0,
-                        endValue: SKU.skuDetails[productName]!.targetFilmWaste,
+                        endValue: noWork
+                            ? maxFilmWaste / 2
+                            : SKU.skuDetails[productName]!.targetFilmWaste,
                         color: KelloggColors.successGreen),
                     GaugeRange(
-                        startValue:
-                            SKU.skuDetails[productName]!.targetFilmWaste,
+                        startValue: noWork
+                            ? maxFilmWaste / 2
+                            : SKU.skuDetails[productName]!.targetFilmWaste,
                         endValue: maxFilmWaste,
                         color: KelloggColors.clearRed)
                   ],
@@ -352,10 +385,13 @@ class ProductionLine extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           textStyle: TextStyle(
                               fontSize: largeButtonFont, fontFamily: 'MyFont'),
-                          primary:
-                              scrap < SKU.skuDetails[productName]!.targetScrap
-                                  ? KelloggColors.green
-                                  : KelloggColors.cockRed,
+                          primary: scrap <
+                                  (noWork
+                                      ? maxScrap / 2
+                                      : SKU
+                                          .skuDetails[productName]!.targetScrap)
+                              ? KelloggColors.green
+                              : KelloggColors.cockRed,
                         ),
                         icon: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0), //or 15.0

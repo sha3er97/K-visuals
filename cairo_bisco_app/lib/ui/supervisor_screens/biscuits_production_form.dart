@@ -1,3 +1,4 @@
+import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
@@ -12,18 +13,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-class BiscuitsReport extends StatefulWidget {
+class BiscuitsProductionForm extends StatefulWidget {
   @override
-  _BiscuitsReportState createState() => _BiscuitsReportState();
+  _BiscuitsProductionFormState createState() => _BiscuitsProductionFormState();
 }
 
-class _BiscuitsReportState extends State<BiscuitsReport> {
+class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
   bool showSpinner = false;
+  int refNum = 0; // 0 = biscuits
 
   String supName = "",
       shiftProductionPlan = '',
       actualSpeed = '',
-      production = '',
+      productionInCartons = '',
       extrusionScrap = '',
       extrusionRework = '',
       ovenScrap = '',
@@ -48,7 +50,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
   bool _sup_name_validate = false,
       _shift_plan_validate = false,
       _actualSpeed_validate = false,
-      _production_validate = false,
+      _productionInCartons_validate = false,
       _extrusionScrap_validate = false,
       _extrusionRework_validate = false,
       _ovenScrap_validate = false,
@@ -140,7 +142,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPadding),
+                  const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
@@ -164,7 +166,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText:
-                                _sup_name_validate ? 'هذه الخانة ضرورية' : null,
+                            _sup_name_validate ? 'هذه الخانة ضرورية' : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
@@ -183,18 +185,10 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
-                            // decoration: InputDecoration(labelText: 'اختر'),
-                            // hint: Text(
-                            //   "اختر",
-                            //   style: TextStyle(
-                            //       fontWeight: FontWeight.w300,
-                            //       fontSize: 13,
-                            //       color: KelloggColors.darkRed),
-                            // ),
                             value: selectedShift,
                             isExpanded: true,
                             items: shifts.map((String value) {
@@ -203,7 +197,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -314,7 +308,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -327,7 +321,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -340,7 +334,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -353,7 +347,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -408,10 +402,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -439,7 +431,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        smallerHeading('الانتاج الفعلي بالكجم\nProduction'),
+                        smallerHeading(
+                            'الانتاج الفعلي بالكراتين\nProduction in Cartons'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -459,7 +452,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _production_validate
+                            errorText: _productionInCartons_validate
                                 ? 'هذه الخانة ضرورية'
                                 : null,
                             focusedBorder: OutlineInputBorder(
@@ -471,7 +464,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            production = value;
+                            productionInCartons = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -484,10 +477,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -521,10 +512,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -560,10 +549,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -597,10 +584,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -636,10 +621,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -673,10 +656,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -712,10 +693,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -749,10 +728,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -809,10 +786,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -848,10 +823,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -863,7 +836,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText:
-                                _mc1Speed_validate ? 'هذه الخانة ضرورية' : null,
+                            _mc1Speed_validate ? 'هذه الخانة ضرورية' : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
@@ -884,10 +857,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -899,7 +870,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText:
-                                _mc2Speed_validate ? 'هذه الخانة ضرورية' : null,
+                            _mc2Speed_validate ? 'هذه الخانة ضرورية' : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
@@ -920,10 +891,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -957,10 +926,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -994,10 +961,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1031,10 +996,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1068,10 +1031,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1107,10 +1068,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1144,10 +1103,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1181,10 +1138,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1218,10 +1173,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1264,7 +1217,8 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                                       emptyField(shiftProductionPlan);
                                   _actualSpeed_validate =
                                       emptyField(actualSpeed);
-                                  _production_validate = emptyField(production);
+                                  _productionInCartons_validate =
+                                      emptyField(productionInCartons);
                                   _extrusionScrap_validate =
                                       emptyField(extrusionScrap);
                                   _extrusionRework_validate =
@@ -1303,7 +1257,7 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                                   if (!_sup_name_validate &&
                                       !_shift_plan_validate &&
                                       !_actualSpeed_validate &&
-                                      !_production_validate &&
+                                      !_productionInCartons_validate &&
                                       !_extrusionScrap_validate &&
                                       !_extrusionRework_validate &&
                                       !_ovenScrap_validate &&
@@ -1324,7 +1278,39 @@ class _BiscuitsReportState extends State<BiscuitsReport> {
                                       !_mc2FilmUsed_validate &&
                                       !_mc1WasteKg_validate &&
                                       !_mc2WasteKg_validate) {
-                                    //TODO :: add form in database
+                                    BiscuitsReport.addReport(
+                                        supName,
+                                        sku,
+                                        double.parse(actualSpeed),
+                                        double.parse(extrusionScrap),
+                                        double.parse(extrusionRework),
+                                        double.parse(ovenScrap),
+                                        double.parse(ovenRework),
+                                        double.parse(cutterScrap),
+                                        double.parse(cutterRework),
+                                        double.parse(conveyorScrap),
+                                        double.parse(conveyorRework),
+                                        double.parse(unPackedProducts),
+                                        double.parse(mc1Speed),
+                                        double.parse(mc2Speed),
+                                        double.parse(packingScrap),
+                                        double.parse(packingRework),
+                                        double.parse(packingRepack),
+                                        double.parse(boxesWaste),
+                                        double.parse(cartonWaste),
+                                        double.parse(mc1FilmUsed),
+                                        double.parse(mc2FilmUsed),
+                                        double.parse(mc1WasteKg),
+                                        double.parse(mc2WasteKg),
+                                        int.parse(shiftProductionPlan),
+                                        int.parse(productionInCartons),
+                                        prod_lines4.indexOf(selectedProdLine) +
+                                            1,
+                                        shifts.indexOf(selectedShift),
+                                        refNum,
+                                        int.parse(selectedYear),
+                                        int.parse(selectedMonth),
+                                        int.parse(selectedDay));
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
