@@ -50,7 +50,7 @@ class SKU {
 
   SKU.fromJson(Map<String, Object?> json)
       : this(
-    name: json['name']! as String,
+          name: json['name']! as String,
           boxesPerCarton: json['boxesPerCarton']! as int,
           cartonWeight: parseJsonToDouble(json['cartonWeight']!),
           theoreticalShiftProd1:
