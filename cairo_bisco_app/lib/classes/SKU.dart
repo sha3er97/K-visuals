@@ -80,7 +80,7 @@ class SKU {
   }
 
   static void addSKU(
-      refNum,
+      int refNum,
       String name,
       double cartonWeight,
       double theoreticalShiftProd1,

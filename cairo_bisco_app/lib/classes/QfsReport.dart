@@ -69,19 +69,19 @@ class QfsReport {
   }
 
   static void addReport(
-      supName,
-      quality_incidents,
-      food_safety_incidents,
-      ccp_failure,
-      consumer_complaints,
-      year,
-      month,
-      day,
-      shift_index,
-      line_index,
-      pes_index,
-      g6_index,
-      area) async {
+      String supName,
+      int quality_incidents,
+      int food_safety_incidents,
+      int ccp_failure,
+      int consumer_complaints,
+      int year,
+      int month,
+      int day,
+      int shift_index,
+      int line_index,
+      int pes_index,
+      int g6_index,
+      int area) async {
     final qualityReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('quality_reports')
@@ -134,7 +134,7 @@ class QfsReport {
         day_to,
         year,
       )) {
-        print('debug :: report filtered out due to its date --> ' +
+        print('debug :: QfsReport filtered out due to its date --> ' +
             report.data().day.toString());
         continue;
       }
@@ -150,7 +150,7 @@ class QfsReport {
         temp_consumer_complaints += report.data().consumer_complaints;
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
-        // print('debug :: report chosen in first if');
+        // print('debug :: QfsReport chosen in first if');
       } else if (lineNumRequired == -1 &&
           areaRequired != -1 &&
           report.data().area == areaRequired) {
@@ -161,7 +161,7 @@ class QfsReport {
         temp_consumer_complaints += report.data().consumer_complaints;
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
-        // print('debug :: report chosen in second if');
+        // print('debug :: QfsReport chosen in second if');
       } else if (areaRequired == -1) {
         // all shifts all lines all areas
         temp_quality_incidents += report.data().quality_incidents;
@@ -170,9 +170,9 @@ class QfsReport {
         temp_consumer_complaints += report.data().consumer_complaints;
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
-        // print('debug :: report chosen in third if');
+        // print('debug :: QfsReport chosen in third if');
       } else {
-        // print('debug :: report filtered out');
+        // print('debug :: QfsReport filtered out');
       }
     }
     //return the total in capsulized form

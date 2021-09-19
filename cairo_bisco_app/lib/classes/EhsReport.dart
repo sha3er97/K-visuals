@@ -69,19 +69,19 @@ class EhsReport {
   }
 
   static void addReport(
-      supName,
-      firstAid_incidents,
-      lostTime_incidents,
-      recordable_incidents,
-      nearMiss,
-      risk_assessment,
-      s7_index,
-      line_index,
-      shift_index,
-      area,
-      year,
-      month,
-      day) async {
+      String supName,
+      int firstAid_incidents,
+      int lostTime_incidents,
+      int recordable_incidents,
+      int nearMiss,
+      int risk_assessment,
+      int s7_index,
+      int line_index,
+      int shift_index,
+      int area,
+      int year,
+      int month,
+      int day) async {
     final ehsReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('ehs_reports')
@@ -134,7 +134,7 @@ class EhsReport {
         day_to,
         year,
       )) {
-        print('debug :: report filtered out due to its date --> ' +
+        print('debug :: EhsReport filtered out due to its date --> ' +
             report.data().day.toString());
         continue;
       }
@@ -150,7 +150,7 @@ class EhsReport {
         temp_nearMiss += report.data().nearMiss;
         temp_risk_assessment += report.data().risk_assessment;
         temp_s7_index = max(temp_s7_index, report.data().s7_index);
-        // print('debug :: report chosen in first if');
+        // print('debug :: EhsReport chosen in first if');
       } else if (lineNumRequired == -1 &&
           areaRequired != -1 &&
           report.data().area == areaRequired) {
@@ -161,7 +161,7 @@ class EhsReport {
         temp_nearMiss += report.data().nearMiss;
         temp_risk_assessment += report.data().risk_assessment;
         temp_s7_index = max(temp_s7_index, report.data().s7_index);
-        // print('debug :: report chosen in second if');
+        // print('debug :: EhsReport chosen in second if');
       } else if (areaRequired == -1) {
         // all shifts all lines all areas
         temp_firstAid_incidents += report.data().firstAid_incidents;
@@ -170,9 +170,9 @@ class EhsReport {
         temp_nearMiss += report.data().nearMiss;
         temp_risk_assessment += report.data().risk_assessment;
         temp_s7_index = max(temp_s7_index, report.data().s7_index);
-        // print('debug :: report chosen in third if');
+        // print('debug :: EhsReport chosen in third if');
       } else {
-        // print('debug :: report filtered out due to conditions');
+        // print('debug :: EhsReport filtered out due to conditions');
       }
     }
     //return the total in capsulized form
