@@ -1,29 +1,31 @@
 import 'package:cairo_bisco_app/classes/SKU.dart';
-import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
-import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
+import 'package:cairo_bisco_app/classes/WaferReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/classes/values/form_values.dart';
+import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
+import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-class WaferReport extends StatefulWidget {
+class WaferProductionForm extends StatefulWidget {
   @override
-  _WaferReportState createState() => _WaferReportState();
+  _WaferProductionFormState createState() => _WaferProductionFormState();
 }
 
-class _WaferReportState extends State<WaferReport> {
+class _WaferProductionFormState extends State<WaferProductionForm> {
   bool showSpinner = false;
+  int refNum = 1; // 1 = wafer
 
   String supName = "",
       shiftProductionPlan = '',
       actualSpeed = '',
-      production = '',
+      productionInCartons = '',
       ovenScrap = '',
       ovenRework = '',
       creamScrap = '',
@@ -48,7 +50,7 @@ class _WaferReportState extends State<WaferReport> {
   bool _sup_name_validate = false,
       _shift_plan_validate = false,
       _actualSpeed_validate = false,
-      _production_validate = false,
+      _productionInCartons_validate = false,
       _ovenScrap_validate = false,
       _ovenRework_validate = false,
       _creamScrap_validate = false,
@@ -400,10 +402,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -431,7 +431,7 @@ class _WaferReportState extends State<WaferReport> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        smallerHeading('الانتاج الفعلي بالكجم\nProduction'),
+                        smallerHeading('الانتاج الفعلي بالكراتين\nProduction'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -451,7 +451,7 @@ class _WaferReportState extends State<WaferReport> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _production_validate
+                            errorText: _productionInCartons_validate
                                 ? 'هذه الخانة ضرورية'
                                 : null,
                             focusedBorder: OutlineInputBorder(
@@ -463,7 +463,7 @@ class _WaferReportState extends State<WaferReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            production = value;
+                            productionInCartons = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -476,10 +476,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -513,10 +511,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -552,10 +548,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -589,10 +583,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -628,10 +620,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -665,10 +655,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -704,10 +692,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -741,10 +727,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -801,10 +785,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -840,10 +822,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -876,10 +856,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -912,10 +890,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -949,10 +925,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -980,16 +954,14 @@ class _WaferReportState extends State<WaferReport> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('هالك بسكويت\nScrap'),
+                        smallerHeading('هالك ويفر\nScrap'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1023,10 +995,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1060,10 +1030,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1099,10 +1067,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1136,10 +1102,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1173,10 +1137,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1210,10 +1172,8 @@ class _WaferReportState extends State<WaferReport> {
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1255,7 +1215,8 @@ class _WaferReportState extends State<WaferReport> {
                                       emptyField(shiftProductionPlan);
                                   _actualSpeed_validate =
                                       emptyField(actualSpeed);
-                                  _production_validate = emptyField(production);
+                                  _productionInCartons_validate =
+                                      emptyField(productionInCartons);
                                   _creamScrap_validate = emptyField(creamScrap);
                                   _creamRework_validate =
                                       emptyField(creamRework);
@@ -1293,7 +1254,7 @@ class _WaferReportState extends State<WaferReport> {
                                   if (!_sup_name_validate &&
                                       !_shift_plan_validate &&
                                       !_actualSpeed_validate &&
-                                      !_production_validate &&
+                                      !_productionInCartons_validate &&
                                       !_ovenScrap_validate &&
                                       !_ovenRework_validate &&
                                       !_creamScrap_validate &&
@@ -1314,7 +1275,39 @@ class _WaferReportState extends State<WaferReport> {
                                       !_mc2FilmUsed_validate &&
                                       !_mc1WasteKg_validate &&
                                       !_mc2WasteKg_validate) {
-                                    //TODO :: add form in database
+                                    WaferReport.addReport(
+                                        supName,
+                                        sku,
+                                        double.parse(actualSpeed),
+                                        double.parse(ovenScrap),
+                                        double.parse(ovenRework),
+                                        double.parse(cutterScrap),
+                                        double.parse(cutterRework),
+                                        double.parse(creamScrap),
+                                        double.parse(creamRework),
+                                        double.parse(coolerScrap),
+                                        double.parse(coolerRework),
+                                        double.parse(unPackedProducts),
+                                        double.parse(mc1Speed),
+                                        double.parse(mc2Speed),
+                                        double.parse(packingScrap),
+                                        double.parse(packingRework),
+                                        double.parse(packingRepack),
+                                        double.parse(boxesWaste),
+                                        double.parse(cartonWaste),
+                                        double.parse(mc1FilmUsed),
+                                        double.parse(mc2FilmUsed),
+                                        double.parse(mc1WasteKg),
+                                        double.parse(mc2WasteKg),
+                                        int.parse(shiftProductionPlan),
+                                        int.parse(productionInCartons),
+                                        prod_lines4.indexOf(selectedProdLine) +
+                                            1,
+                                        shifts.indexOf(selectedShift),
+                                        refNum,
+                                        int.parse(selectedYear),
+                                        int.parse(selectedMonth),
+                                        int.parse(selectedDay));
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(

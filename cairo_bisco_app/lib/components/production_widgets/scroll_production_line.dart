@@ -149,7 +149,7 @@ class ProductionLine extends StatelessWidget {
                                   Text(
                                     (prodTargetDone ? "" : "-") +
                                         ((cartons - targetProd).abs() / 1000)
-                                            .toStringAsFixed(1) +
+                                            .toStringAsFixed(2) +
                                         " K",
                                     style: TextStyle(
                                         color: prodTargetDone

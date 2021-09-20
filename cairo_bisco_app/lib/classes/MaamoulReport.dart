@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'MiniProductionReport.dart';
 import 'SKU.dart';
 
-class BiscuitsReport {
+class MaamoulReport {
   final String supName, skuName;
   final int shiftProductionPlan,
       productionInCartons,
@@ -17,14 +17,12 @@ class BiscuitsReport {
       month,
       day;
   final double actualSpeed,
-      extrusionScrap,
-      extrusionRework,
       ovenScrap,
       ovenRework,
-      cutterScrap,
-      cutterRework,
-      conveyorScrap,
-      conveyorRework,
+      mixerScrap,
+      mixerRework,
+      stampingScrap,
+      stampingRework,
       unPackedProducts,
       mc1Speed,
       mc2Speed,
@@ -38,7 +36,7 @@ class BiscuitsReport {
       mc1WasteKg,
       mc2WasteKg;
 
-  BiscuitsReport(
+  MaamoulReport(
       {required this.area,
       required this.shift_index, //unused for now
       required this.line_index,
@@ -47,14 +45,12 @@ class BiscuitsReport {
       required this.shiftProductionPlan,
       required this.productionInCartons,
       required this.actualSpeed,
-      required this.extrusionScrap,
-      required this.extrusionRework,
       required this.ovenScrap,
       required this.ovenRework,
-      required this.cutterScrap,
-      required this.cutterRework,
-      required this.conveyorScrap,
-      required this.conveyorRework,
+      required this.mixerScrap,
+      required this.mixerRework,
+      required this.stampingScrap,
+      required this.stampingRework,
       required this.unPackedProducts,
       required this.mc1Speed,
       required this.mc2Speed,
@@ -71,7 +67,7 @@ class BiscuitsReport {
       required this.month,
       required this.day});
 
-  BiscuitsReport.fromJson(Map<String, Object?> json)
+  MaamoulReport.fromJson(Map<String, Object?> json)
       : this(
           year: json['year']! as int,
           month: json['month']! as int,
@@ -84,14 +80,12 @@ class BiscuitsReport {
           supName: json['supName']! as String,
           skuName: json['skuName']! as String,
           actualSpeed: parseJsonToDouble(json['actualSpeed']!),
-          extrusionScrap: parseJsonToDouble(json['extrusionScrap']!),
-          extrusionRework: parseJsonToDouble(json['extrusionRework']!),
           ovenScrap: parseJsonToDouble(json['ovenScrap']!),
           ovenRework: parseJsonToDouble(json['ovenRework']!),
-          cutterScrap: parseJsonToDouble(json['cutterScrap']!),
-          cutterRework: parseJsonToDouble(json['cutterRework']!),
-          conveyorScrap: parseJsonToDouble(json['conveyorScrap']!),
-          conveyorRework: parseJsonToDouble(json['conveyorRework']!),
+          mixerScrap: parseJsonToDouble(json['mixerScrap']!),
+          mixerRework: parseJsonToDouble(json['mixerRework']!),
+          stampingScrap: parseJsonToDouble(json['stampingScrap']!),
+          stampingRework: parseJsonToDouble(json['stampingRework']!),
           unPackedProducts: parseJsonToDouble(json['unPackedProducts']!),
           mc1Speed: parseJsonToDouble(json['mc1Speed']!),
           mc2Speed: parseJsonToDouble(json['mc2Speed']!),
@@ -119,14 +113,12 @@ class BiscuitsReport {
       'shiftProductionPlan': shiftProductionPlan,
       'productionInCartons': productionInCartons,
       'actualSpeed': actualSpeed,
-      'extrusionScrap': extrusionScrap,
-      'extrusionRework': extrusionRework,
       'ovenScrap': ovenScrap,
       'ovenRework': ovenRework,
-      'cutterScrap': cutterScrap,
-      'cutterRework': cutterRework,
-      'conveyorScrap': conveyorScrap,
-      'conveyorRework': conveyorRework,
+      'mixerScrap': mixerScrap,
+      'mixerRework': mixerRework,
+      'stampingScrap': stampingScrap,
+      'stampingRework': stampingRework,
       'unPackedProducts': unPackedProducts,
       'mc1Speed': mc1Speed,
       'mc2Speed': mc2Speed,
@@ -146,14 +138,12 @@ class BiscuitsReport {
     String supName,
     String skuName,
     double actualSpeed,
-    double extrusionScrap,
-    double extrusionRework,
     double ovenScrap,
     double ovenRework,
-    double cutterScrap,
-    double cutterRework,
-    double conveyorScrap,
-    double conveyorRework,
+    double mixerScrap,
+    double mixerRework,
+    double stampingScrap,
+    double stampingRework,
     double unPackedProducts,
     double mc1Speed,
     double mc2Speed,
@@ -175,17 +165,17 @@ class BiscuitsReport {
     int month,
     int day,
   ) async {
-    final biscuitsReportRef = FirebaseFirestore.instance
+    final MaamoulReportRef = FirebaseFirestore.instance
         .collection(factory_name)
-        .doc('biscuits_reports')
+        .doc('maamoul_reports')
         .collection(year.toString())
-        .withConverter<BiscuitsReport>(
+        .withConverter<MaamoulReport>(
           fromFirestore: (snapshot, _) =>
-              BiscuitsReport.fromJson(snapshot.data()!),
+              MaamoulReport.fromJson(snapshot.data()!),
           toFirestore: (report, _) => report.toJson(),
         );
-    await biscuitsReportRef.add(
-      BiscuitsReport(
+    await MaamoulReportRef.add(
+      MaamoulReport(
         year: year,
         month: month,
         day: day,
@@ -197,14 +187,12 @@ class BiscuitsReport {
         shiftProductionPlan: shiftProductionPlan,
         productionInCartons: productionInCartons,
         actualSpeed: actualSpeed,
-        extrusionScrap: extrusionScrap,
-        extrusionRework: extrusionRework,
         ovenScrap: ovenScrap,
         ovenRework: ovenRework,
-        cutterScrap: cutterScrap,
-        cutterRework: cutterRework,
-        conveyorScrap: conveyorScrap,
-        conveyorRework: conveyorRework,
+        mixerScrap: mixerScrap,
+        mixerRework: mixerRework,
+        stampingScrap: stampingScrap,
+        stampingRework: stampingRework,
         unPackedProducts: unPackedProducts,
         mc1Speed: mc1Speed,
         mc2Speed: mc2Speed,
@@ -222,7 +210,7 @@ class BiscuitsReport {
   }
 
   static MiniProductionReport getFilteredReportOfInterval(
-    List<QueryDocumentSnapshot<BiscuitsReport>> reportsList,
+    List<QueryDocumentSnapshot<MaamoulReport>> reportsList,
     int month_from,
     int month_to,
     int day_from,
@@ -249,7 +237,7 @@ class BiscuitsReport {
         day_to,
         year,
       )) {
-        print('debug :: BiscuitsReport filtered out due to its date --> ' +
+        print('debug :: MaamoulReport filtered out due to its date --> ' +
             report.data().day.toString());
         continue;
       }
@@ -273,23 +261,21 @@ class BiscuitsReport {
         temp_theoreticalPlan += theoreticals[report.data().line_index - 1];
 
         temp_productionPlan += report.data().shiftProductionPlan;
-        temp_scrap += report.data().cutterScrap +
+        temp_scrap += report.data().mixerScrap +
             report.data().packingScrap +
-            report.data().conveyorScrap +
-            report.data().ovenScrap +
-            report.data().extrusionScrap;
+            report.data().stampingScrap +
+            report.data().ovenScrap;
         temp_rework += report.data().packingRework +
-            report.data().conveyorRework +
-            report.data().cutterRework +
-            report.data().ovenRework +
-            report.data().extrusionRework;
+            report.data().mixerRework +
+            report.data().stampingRework +
+            report.data().ovenRework;
         temp_wasted_film += report.data().mc2WasteKg + report.data().mc1WasteKg;
         temp_used_film += report.data().mc2FilmUsed + report.data().mc1FilmUsed;
         lastSkuName = report.data().skuName;
-        print('debug :: BiscuitsReport chosen in first if');
+        print('debug :: MaamoulReport chosen in first if');
       } else {
         print(
-            'debug :: BiscuitsReport filtered out due to conditions ,  lineNum =' +
+            'debug :: MaamoulReport filtered out due to conditions ,  lineNum =' +
                 lineNumRequired.toString());
       }
     }

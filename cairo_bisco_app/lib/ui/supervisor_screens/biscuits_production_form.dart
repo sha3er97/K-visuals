@@ -1209,7 +1209,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               btnText: 'تسليم التقرير',
                               color: KelloggColors.darkRed,
                               onPressed: () async {
-                                // Add login code
                                 setState(() {
                                   showSpinner = true;
                                   _sup_name_validate = emptyField(supName);
