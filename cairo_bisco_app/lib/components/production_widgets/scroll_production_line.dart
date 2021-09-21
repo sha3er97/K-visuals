@@ -45,16 +45,7 @@ class ProductionLine extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-            child: Text(
-              productName,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: KelloggColors.darkRed,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 1.2),
-            ),
+            child: subHeading(productName),
           ),
           SizedBox(height: defaultPadding),
           Row(
@@ -70,7 +61,7 @@ class ProductionLine extends StatelessWidget {
                         "Cartons",
                         style: TextStyle(
                           color: KelloggColors.grey,
-                          fontSize: 12.0,
+                          fontSize: minimumFontSize,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -90,7 +81,7 @@ class ProductionLine extends StatelessWidget {
                         "Actual",
                         style: TextStyle(
                           color: KelloggColors.grey,
-                          fontSize: 12.0,
+                          fontSize: minimumFontSize,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -107,7 +98,8 @@ class ProductionLine extends StatelessWidget {
               padding: EdgeInsets.all(minimumPadding),
               decoration: BoxDecoration(
                 border: Border.all(
-                    width: 2, color: KelloggColors.darkRed.withOpacity(0.1)),
+                    width: borderWidth,
+                    color: KelloggColors.darkRed.withOpacity(0.1)),
                 borderRadius: const BorderRadius.all(
                   Radius.circular(minimumPadding),
                 ),
@@ -116,10 +108,10 @@ class ProductionLine extends StatelessWidget {
                 children: [
                   SizedBox(width: minimumPadding),
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0), //or 15.0
+                    borderRadius: BorderRadius.circular(iconImageBorder),
                     child: Container(
-                      height: 25.0,
-                      width: 25.0,
+                      height: smallIconSize,
+                      width: smallIconSize,
                       padding: EdgeInsets.all(minimumPadding / 2),
                       color: prodTargetDone
                           ? KelloggColors.green
@@ -166,7 +158,7 @@ class ProductionLine extends StatelessWidget {
                           SizedBox(width: minimumPadding),
                           VerticalDivider(
                             color: KelloggColors.grey,
-                            thickness: 2,
+                            thickness: borderWidth,
                             indent: 0,
                             endIndent: 0,
                             width: 10,
@@ -294,7 +286,6 @@ class ProductionLine extends StatelessWidget {
           Center(
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
-                  //or 15.0
                   child: ConstrainedBox(
                       constraints:
                           BoxConstraints.tightFor(width: 200, height: 150),
@@ -308,10 +299,10 @@ class ProductionLine extends StatelessWidget {
                               : KelloggColors.cockRed,
                         ),
                         icon: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0), //or 15.0
+                          borderRadius: BorderRadius.circular(iconImageBorder),
                           child: Container(
-                            height: 50.0,
-                            width: 50.0,
+                            height: indicatorBoxSize,
+                            width: indicatorBoxSize,
                             padding: EdgeInsets.all(minimumPadding / 2),
                             child: new Image.asset(
                               'images/$arrowImg2.png',
@@ -375,7 +366,6 @@ class ProductionLine extends StatelessWidget {
           Center(
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
-                  //or 15.0
                   child: ConstrainedBox(
                       constraints: BoxConstraints.tightFor(height: 150),
                       child: ElevatedButton.icon(
@@ -394,10 +384,10 @@ class ProductionLine extends StatelessWidget {
                               : KelloggColors.cockRed,
                         ),
                         icon: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0), //or 15.0
+                          borderRadius: BorderRadius.circular(iconImageBorder),
                           child: Container(
-                            height: 50.0,
-                            width: 50.0,
+                            height: indicatorBoxSize,
+                            width: indicatorBoxSize,
                             padding: EdgeInsets.all(minimumPadding / 2),
                             child: new Image.asset(
                               'images/$arrowImg3.png',

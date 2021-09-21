@@ -87,10 +87,10 @@ class DrawerListTile extends StatelessWidget {
       onTap: press,
       horizontalTitleGap: 0.0,
       leading: ClipRRect(
-        borderRadius: BorderRadius.circular(10.0), //or 15.0
+        borderRadius: BorderRadius.circular(iconImageBorder), //or 15.0
         child: Container(
-          height: 40.0,
-          width: 40.0,
+          height: regularIconSize,
+          width: regularIconSize,
           padding: EdgeInsets.all(minimumPadding / 2),
           color: KelloggColors.white,
           child: new Image.asset(

@@ -11,19 +11,13 @@ late PieChartSectionData elseSection;
 class Chart extends StatelessWidget {
   const Chart({
     Key? key,
-    required this.totalProduction,
-    required this.totalTonnage,
+    required this.other,
     required this.biscuits,
     required this.wafer,
     required this.maamoul,
-    // required this.scrap,
   }) : super(key: key);
 
-  final double totalProduction,
-      totalTonnage,
-      biscuits,
-      wafer,
-      maamoul; //add scrap;
+  final double other, biscuits, wafer, maamoul;
 
   @override
   Widget build(BuildContext context) {
@@ -31,25 +25,25 @@ class Chart extends StatelessWidget {
       color: KelloggColors.yellow,
       value: biscuits,
       showTitle: false,
-      radius: 25,
+      radius: chartRadiusCircle1111,
     );
     waferSection = PieChartSectionData(
       color: KelloggColors.green,
       value: wafer,
       showTitle: false,
-      radius: 22,
+      radius: chartRadiusCircle111,
     );
     maamoulSection = PieChartSectionData(
       color: KelloggColors.cockRed,
       value: maamoul,
       showTitle: false,
-      radius: 19,
+      radius: chartRadiusCircle11,
     );
     elseSection = PieChartSectionData(
       color: KelloggColors.darkRed.withOpacity(0.1),
-      value: totalTonnage - totalProduction,
+      value: other,
       showTitle: false,
-      radius: 13,
+      radius: chartRadiusCircle1,
     );
     return SizedBox(
       height: 200,
@@ -58,7 +52,7 @@ class Chart extends StatelessWidget {
           PieChart(
             PieChartData(
               sectionsSpace: 0,
-              centerSpaceRadius: 70,
+              centerSpaceRadius: chartInnerRadius,
               startDegreeOffset: -90,
               sections: paiChartSelectionData,
             ),
@@ -71,14 +65,18 @@ class Chart extends StatelessWidget {
                 Text("Final product"),
                 SizedBox(height: defaultPadding),
                 Text(
-                  totalProduction.toString() + " K", //29.1
+                  ((biscuits + wafer + maamoul) / 1000).toStringAsFixed(2) +
+                      " K",
                   style: Theme.of(context).textTheme.headline4!.copyWith(
                         color: KelloggColors.darkBlue,
                         fontWeight: FontWeight.w600,
                         height: 0.5,
                       ),
                 ),
-                Text("of " + totalTonnage.toString() + " K") //128 GB
+                Text("of " +
+                    ((biscuits + wafer + maamoul + other) / 1000)
+                        .toStringAsFixed(2) +
+                    " K") //128 GB
               ],
             ),
           ),
@@ -87,38 +85,6 @@ class Chart extends StatelessWidget {
     );
   }
 }
-
-// List<PieChartSectionData> paiChartSelectionData = [
-//   PieChartSectionData(
-//     color: KelloggColors.darkRed,
-//     value: 25,
-//     showTitle: false,
-//     radius: 25,
-//   ),
-//   PieChartSectionData(
-//     color: KelloggColors.yellow, //Color(0xFF26E5FF),
-//     value: 20,
-//     showTitle: false,
-//     radius: 22,
-//   ),
-//   PieChartSectionData(
-//     color: KelloggColors.clearRed, //Color(0xFFFFCF26),
-//     value: 10,
-//     showTitle: false,
-//     radius: 19,
-//   ),
-// PieChartSectionData(
-//   color: Color(0xFFEE2727),
-//   value: 15,
-//   showTitle: false,
-//   radius: 16,
-// ),
-//   PieChartSectionData(
-//     color: KelloggColors.darkRed.withOpacity(0.1),
-//     value: 25,
-//     showTitle: false,
-//     radius: 13,
-//   ),
 
 List<PieChartSectionData> paiChartSelectionData = [
   biscuitsSection,

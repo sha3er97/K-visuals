@@ -12,7 +12,8 @@ class ProductionInfoCard extends StatelessWidget {
     required this.background,
   }) : super(key: key);
 
-  final String title, image, amountInKgs;
+  final String title, image;
+  final double amountInKgs;
   final Color background;
   final int numOfCartons;
 
@@ -24,7 +25,7 @@ class ProductionInfoCard extends StatelessWidget {
       padding: EdgeInsets.all(defaultPadding),
       decoration: BoxDecoration(
         border: Border.all(
-            width: 2, color: KelloggColors.clearRed.withOpacity(0.15)),
+            width: 2, color: KelloggColors.cockRed.withOpacity(0.15)),
         borderRadius: const BorderRadius.all(
           Radius.circular(defaultPadding),
         ),
@@ -32,10 +33,10 @@ class ProductionInfoCard extends StatelessWidget {
       child: Row(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(10.0), //or 15.0
+            borderRadius: BorderRadius.circular(iconImageBorder), //or 15.0
             child: Container(
-              height: 40.0,
-              width: 40.0,
+              height: regularIconSize,
+              width: regularIconSize,
               padding: EdgeInsets.all(minimumPadding / 2),
               color: background,
               child: new Image.asset(
@@ -43,22 +44,6 @@ class ProductionInfoCard extends StatelessWidget {
               ),
             ),
           ),
-          // SizedBox(
-          //   height: 25,
-          //   width: 25,
-          //   child:
-          // CircleAvatar(
-          //   backgroundColor: KelloggColors.yellow,
-          //   radius: 20,
-          //   child: new Image.asset(
-          //     'images/$image.png',
-          //   ),
-          // ), //Text
-          // new Image.asset(
-          //   'images/$image.png',
-          // ),
-          // SvgPicture.asset(svgSrc),
-          // ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
@@ -70,18 +55,21 @@ class ProductionInfoCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Text(
-                    "$numOfCartons Cartons",
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(color: KelloggColors.darkRed),
-                  ),
+                  numOfCartons > -1
+                      ? Text(
+                          (numOfCartons / 1000).toStringAsFixed(1) +
+                              " K Cartons",
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(color: KelloggColors.darkRed),
+                        )
+                      : SizedBox(height: 0),
                 ],
               ),
             ),
           ),
-          Text("$amountInKgs")
+          Text("Tonnage : " + (amountInKgs / 1000).toStringAsFixed(1) + " K")
         ],
       ),
     );

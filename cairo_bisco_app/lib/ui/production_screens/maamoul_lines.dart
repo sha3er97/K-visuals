@@ -1,7 +1,6 @@
 import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
 import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
 import 'package:cairo_bisco_app/classes/Plans.dart';
-import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
@@ -17,7 +16,7 @@ class MaamoulLines extends StatefulWidget {
 }
 
 class _MaamoulLinesState extends State<MaamoulLines> {
-  final MaamoulReportRef = FirebaseFirestore.instance
+  final maamoulReportRef = FirebaseFirestore.instance
       .collection(factory_name)
       .doc('maamoul_reports')
       .collection(getYear())
@@ -64,7 +63,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     StreamBuilder<QuerySnapshot>(
-                      stream: MaamoulReportRef.snapshots(),
+                      stream: maamoulReportRef.snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasError) {
@@ -123,7 +122,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     StreamBuilder<QuerySnapshot>(
-                      stream: MaamoulReportRef.snapshots(),
+                      stream: maamoulReportRef.snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasError) {
@@ -182,7 +181,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     StreamBuilder<QuerySnapshot>(
-                      stream: MaamoulReportRef.snapshots(),
+                      stream: maamoulReportRef.snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasError) {

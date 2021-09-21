@@ -1,21 +1,43 @@
+/** ui design constants **/
+//padding
 const defaultPadding = 16.0;
 const minimumPadding = 8.0;
+
+//font sizes
 const largeButtonFont = 25.0;
 const largeFontSize = 20.0;
 const mediumFontSize = 14.0;
 const minimumFontSize = 12.0;
+
+// curvature radius
 const textFieldRadius = 20.0;
 const textFieldBorderRadius = 1.0;
 const textFieldFocusedBorderRadius = 1.0;
+const iconImageBorder = 10.0; //or 15.0
+const radiusDifference = 3;
+const chartRadiusCircle1 = 13.0;
+const chartRadiusCircle11 = chartRadiusCircle1 + radiusDifference;
+const chartRadiusCircle111 = chartRadiusCircle11 + radiusDifference;
+const chartRadiusCircle1111 = chartRadiusCircle111 + radiusDifference;
+const chartRadiusCircle11111 = chartRadiusCircle1111 + radiusDifference;
+const chartInnerRadius = 70.0;
 
+//line widths
+const borderWidth = 2.0;
+
+//image sizes
+const regularIconSize = 40.0;
+const smallIconSize = 25.0;
+const indicatorBoxSize = 50.0;
+
+/** factory constants **/
 const maxScrap = 20.0;
 const maxFilmWaste = 20.0;
-
 const monthDays = 28.0;
-
 const factory_name = "bisco_cairo";
-const submissionErrorText = "Error in submission .. incomplete report";
 
+/** string constants **/
+const submissionErrorText = "Error in submission .. incomplete report";
 List<String> prodType = <String>[
   'Biscuits',
   'Wafer',
