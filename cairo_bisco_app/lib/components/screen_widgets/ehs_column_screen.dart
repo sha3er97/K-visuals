@@ -16,13 +16,15 @@ class EHSColScreen extends StatelessWidget {
     required this.nearMiss,
     required this.filmWaste,
     required this.productName,
+    required this.cartons,
   }) : super(key: key);
-  final int firstAid_incidents, recordable_incidents, nearMiss;
+  final int firstAid_incidents, recordable_incidents, nearMiss, cartons;
   final double filmWaste;
   final String productName;
 
   @override
   Widget build(BuildContext context) {
+    bool noWork = cartons == 0;
     int days_in_interval = 1; //screen shows 1 day only
 
     return Column(
@@ -75,8 +77,8 @@ class EHSColScreen extends StatelessWidget {
                   margin: EdgeInsets.symmetric(vertical: minimumPadding),
                   child: KPI1GoodBadIndicator(
                     circleColor: nearMiss <
-                            (Plans.monthlyNearMissTarget / monthDays) *
-                                days_in_interval
+                        (Plans.monthlyNearMissTarget / monthDays) *
+                            days_in_interval
                         ? KelloggColors.cockRed
                         : KelloggColors.green,
                     title: 'حوادث وشيكة',
@@ -103,10 +105,14 @@ class EHSColScreen extends StatelessWidget {
             ], ranges: <GaugeRange>[
               GaugeRange(
                   startValue: 0,
-                  endValue: SKU.skuDetails[productName]!.targetFilmWaste,
+                  endValue: noWork
+                      ? maxFilmWaste / 2
+                      : SKU.skuDetails[productName]!.targetFilmWaste,
                   color: KelloggColors.successGreen),
               GaugeRange(
-                  startValue: SKU.skuDetails[productName]!.targetFilmWaste,
+                  startValue: noWork
+                      ? maxFilmWaste / 2
+                      : SKU.skuDetails[productName]!.targetFilmWaste,
                   endValue: maxFilmWaste,
                   color: KelloggColors.clearRed)
             ], annotations: <GaugeAnnotation>[

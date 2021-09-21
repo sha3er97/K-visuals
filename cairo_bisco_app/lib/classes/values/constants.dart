@@ -6,6 +6,7 @@ const minimumPadding = 8.0;
 //font sizes
 const largeButtonFont = 25.0;
 const largeFontSize = 20.0;
+const aboveMediumFontSize = 16.0;
 const mediumFontSize = 14.0;
 const minimumFontSize = 12.0;
 

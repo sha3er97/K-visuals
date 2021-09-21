@@ -1,8 +1,8 @@
+import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
+import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
-import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
-import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
@@ -27,15 +27,15 @@ class ProductionLine extends StatelessWidget {
   Widget build(BuildContext context) {
     bool noWork = cartons == 0;
     double actual =
-        noWork ? 0 : cartons * SKU.skuDetails[productName]!.cartonWeight;
+    noWork ? 0 : cartons * SKU.skuDetails[productName]!.cartonWeight;
     bool prodTargetDone = noWork || cartons - targetProd >= 0;
     String arrowImg = prodTargetDone ? "up" : "down";
     String arrowImg2 = overweight < Plans.targetOverWeightAbove ? "up" : "down";
     String arrowImg3 = noWork
         ? "up"
         : scrap < SKU.skuDetails[productName]!.targetScrap
-            ? "up"
-            : "down";
+        ? "up"
+        : "down";
 
     return Container(
       margin: EdgeInsets.all(defaultPadding),
@@ -53,7 +53,7 @@ class ProductionLine extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: minimumPadding),
+                  const EdgeInsets.symmetric(horizontal: minimumPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -73,7 +73,7 @@ class ProductionLine extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: minimumPadding),
+                  const EdgeInsets.symmetric(horizontal: minimumPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -144,12 +144,12 @@ class ProductionLine extends StatelessWidget {
                                             .toStringAsFixed(2) +
                                         " K",
                                     style: TextStyle(
-                                        color: prodTargetDone
-                                            ? KelloggColors.green
-                                            : KelloggColors.cockRed,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w500,
-                                        letterSpacing: 1.2),
+                                      color: prodTargetDone
+                                          ? KelloggColors.green
+                                          : KelloggColors.cockRed,
+                                      fontSize: aboveMediumFontSize,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -180,12 +180,12 @@ class ProductionLine extends StatelessWidget {
                                             .toStringAsFixed(1) +
                                         " %",
                                     style: TextStyle(
-                                        color: prodTargetDone
-                                            ? KelloggColors.green
-                                            : KelloggColors.cockRed,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w500,
-                                        letterSpacing: 1.2),
+                                      color: prodTargetDone
+                                          ? KelloggColors.green
+                                          : KelloggColors.cockRed,
+                                      fontSize: aboveMediumFontSize,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -288,7 +288,7 @@ class ProductionLine extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15.0),
                   child: ConstrainedBox(
                       constraints:
-                          BoxConstraints.tightFor(width: 200, height: 150),
+                      BoxConstraints.tightFor(width: 200, height: 150),
                       child: ElevatedButton.icon(
                         label: Text(overweight.toStringAsFixed(1) + " %"),
                         style: ElevatedButton.styleFrom(
@@ -376,10 +376,10 @@ class ProductionLine extends StatelessWidget {
                           textStyle: TextStyle(
                               fontSize: largeButtonFont, fontFamily: 'MyFont'),
                           primary: scrap <
-                                  (noWork
-                                      ? maxScrap / 2
-                                      : SKU
-                                          .skuDetails[productName]!.targetScrap)
+                              (noWork
+                                  ? maxScrap / 2
+                                  : SKU
+                                  .skuDetails[productName]!.targetScrap)
                               ? KelloggColors.green
                               : KelloggColors.cockRed,
                         ),

@@ -17,19 +17,23 @@ class ProductionColScreen extends StatelessWidget {
     required this.lineNum,
     required this.productName,
   }) : super(key: key);
-  final double cartons, oee, targetProd;
-  final double scrap;
-  final String prodType;
-  final int lineNum;
-  final String productName;
+  final double scrap, oee;
+  final int lineNum, cartons, targetProd;
+  final String prodType, productName;
 
   @override
   Widget build(BuildContext context) {
-    double actual = cartons * SKU.skuDetails[productName]!.cartonWeight;
-    bool prodTargetDone = cartons - targetProd > 0;
+    bool noWork = cartons == 0;
+
+    double actual =
+        noWork ? 0 : cartons * SKU.skuDetails[productName]!.cartonWeight;
+    bool prodTargetDone = noWork || cartons - targetProd >= 0;
     String arrowImg = prodTargetDone ? "up" : "down";
-    String arrowImg2 =
-        scrap < SKU.skuDetails[productName]!.targetScrap ? "up" : "down";
+    String arrowImg2 = noWork
+        ? "up"
+        : scrap < SKU.skuDetails[productName]!.targetScrap
+            ? "up"
+            : "down";
 
     return Container(
       margin: EdgeInsets.all(defaultPadding),
@@ -81,7 +85,7 @@ class ProductionColScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subHeading(" $cartons الف "),
+                      subHeading((cartons / 1000).toStringAsFixed(1) + " الف "),
                     ],
                   ),
                 ),
@@ -101,7 +105,7 @@ class ProductionColScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subHeading(actual.toStringAsFixed(1) + " طن "),
+                      subHeading((actual / 1000).toStringAsFixed(1) + " طن "),
                     ],
                   ),
                 ),
@@ -114,7 +118,8 @@ class ProductionColScreen extends StatelessWidget {
               padding: EdgeInsets.all(minimumPadding),
               decoration: BoxDecoration(
                 border: Border.all(
-                    width: 2, color: KelloggColors.darkRed.withOpacity(0.1)),
+                    width: borderWidth,
+                    color: KelloggColors.darkRed.withOpacity(0.1)),
                 borderRadius: const BorderRadius.all(
                   Radius.circular(minimumPadding),
                 ),
@@ -123,10 +128,10 @@ class ProductionColScreen extends StatelessWidget {
                 children: [
                   SizedBox(width: minimumPadding),
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0), //or 15.0
+                    borderRadius: BorderRadius.circular(iconImageBorder),
                     child: Container(
-                      height: 25.0,
-                      width: 25.0,
+                      height: smallIconSize,
+                      width: smallIconSize,
                       padding: EdgeInsets.all(minimumPadding / 2),
                       color: prodTargetDone
                           ? KelloggColors.green
@@ -136,55 +141,75 @@ class ProductionColScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Spacer(flex: 2), //push numbers away
+                  // Spacer(flex: 2), //push numbers away
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: minimumPadding / 10),
-                      child: Column(
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
-                            (cartons - targetProd).toStringAsFixed(1) + " K",
-                            style: TextStyle(
-                                color: prodTargetDone
-                                    ? KelloggColors.green
-                                    : KelloggColors.cockRed,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 1.2),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: minimumPadding / 10),
+                              child: Column(
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                // crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    (prodTargetDone ? "" : "-") +
+                                        ((cartons - targetProd).abs() / 1000)
+                                            .toStringAsFixed(2) +
+                                        " K",
+                                    style: TextStyle(
+                                      color: prodTargetDone
+                                          ? KelloggColors.green
+                                          : KelloggColors.cockRed,
+                                      fontSize: aboveMediumFontSize,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: minimumPadding),
-                  VerticalDivider(
-                    color: KelloggColors.grey,
-                    thickness: 2,
-                    indent: 0,
-                    endIndent: 0,
-                    width: 10,
-                  ),
-                  SizedBox(width: minimumPadding),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: minimumPadding / 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            ((cartons - targetProd) * 100 / targetProd)
-                                    .toStringAsFixed(1) +
-                                " %",
-                            style: TextStyle(
-                                color: prodTargetDone
-                                    ? KelloggColors.green
-                                    : KelloggColors.cockRed,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 1.2),
+                          SizedBox(width: minimumPadding),
+                          VerticalDivider(
+                            color: KelloggColors.grey,
+                            thickness: borderWidth,
+                            indent: 0,
+                            endIndent: 0,
+                            width: 10,
+                          ),
+                          SizedBox(width: minimumPadding),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: minimumPadding / 10),
+                              child: Column(
+                                // crossAxisAlignment: CrossAxisAlignment.end,
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    (prodTargetDone ? "" : "-") +
+                                        ((cartons - targetProd).abs() *
+                                                100 /
+                                                targetProd)
+                                            .toStringAsFixed(1) +
+                                        " %",
+                                    style: TextStyle(
+                                      color: prodTargetDone
+                                          ? KelloggColors.green
+                                          : KelloggColors.cockRed,
+                                      fontSize: aboveMediumFontSize,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -246,10 +271,13 @@ class ProductionColScreen extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           textStyle: TextStyle(
                               fontSize: largeButtonFont, fontFamily: 'MyFont'),
-                          primary:
-                              scrap < SKU.skuDetails[productName]!.targetScrap
-                                  ? KelloggColors.green
-                                  : KelloggColors.cockRed,
+                          primary: scrap <
+                                  (noWork
+                                      ? maxScrap / 2
+                                      : SKU
+                                          .skuDetails[productName]!.targetScrap)
+                              ? KelloggColors.green
+                              : KelloggColors.cockRed,
                         ),
                         icon: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0), //or 15.0

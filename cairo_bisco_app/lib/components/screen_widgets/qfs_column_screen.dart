@@ -13,13 +13,16 @@ class QFSColScreen extends StatelessWidget {
     required this.food_safety_incidents,
     required this.scrap,
     required this.productName,
+    required this.cartons,
   }) : super(key: key);
-  final int quality_incidents, food_safety_incidents;
+  final int quality_incidents, food_safety_incidents, cartons;
   final double scrap;
   final String productName;
 
   @override
   Widget build(BuildContext context) {
+    bool noWork = cartons == 0;
+
     return Column(
       children: [
         Center(
@@ -86,10 +89,14 @@ class QFSColScreen extends StatelessWidget {
             ], ranges: <GaugeRange>[
               GaugeRange(
                   startValue: 0,
-                  endValue: SKU.skuDetails[productName]!.targetScrap,
+                  endValue: noWork
+                      ? maxScrap / 2
+                      : SKU.skuDetails[productName]!.targetScrap,
                   color: KelloggColors.successGreen),
               GaugeRange(
-                  startValue: SKU.skuDetails[productName]!.targetScrap,
+                  startValue: noWork
+                      ? maxScrap / 2
+                      : SKU.skuDetails[productName]!.targetScrap,
                   endValue: maxScrap,
                   color: KelloggColors.clearRed)
             ], annotations: <GaugeAnnotation>[
