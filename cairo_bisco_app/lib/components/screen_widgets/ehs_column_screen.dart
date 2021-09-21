@@ -77,8 +77,8 @@ class EHSColScreen extends StatelessWidget {
                   margin: EdgeInsets.symmetric(vertical: minimumPadding),
                   child: KPI1GoodBadIndicator(
                     circleColor: nearMiss <
-                        (Plans.monthlyNearMissTarget / monthDays) *
-                            days_in_interval
+                            (Plans.monthlyNearMissTarget / monthDays) *
+                                days_in_interval
                         ? KelloggColors.cockRed
                         : KelloggColors.green,
                     title: 'حوادث وشيكة',
