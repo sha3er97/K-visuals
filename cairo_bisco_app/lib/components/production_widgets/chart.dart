@@ -21,27 +21,28 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("chart : $biscuits , $wafer , $maamoul , $other");
     biscuitsSection = PieChartSectionData(
       color: KelloggColors.yellow,
-      value: biscuits,
+      value: biscuits + dummyChartExtra,
       showTitle: false,
       radius: chartRadiusCircle1111,
     );
     waferSection = PieChartSectionData(
       color: KelloggColors.green,
-      value: wafer,
+      value: wafer + dummyChartExtra,
       showTitle: false,
       radius: chartRadiusCircle111,
     );
     maamoulSection = PieChartSectionData(
       color: KelloggColors.cockRed,
-      value: maamoul,
+      value: maamoul + dummyChartExtra,
       showTitle: false,
       radius: chartRadiusCircle11,
     );
     elseSection = PieChartSectionData(
       color: KelloggColors.darkRed.withOpacity(0.1),
-      value: other,
+      value: other + dummyChartExtra,
       showTitle: false,
       radius: chartRadiusCircle1,
     );
@@ -76,7 +77,7 @@ class Chart extends StatelessWidget {
                 Text("of " +
                     ((biscuits + wafer + maamoul + other) / 1000)
                         .toStringAsFixed(2) +
-                    " K") //128 GB
+                    " K"),
               ],
             ),
           ),

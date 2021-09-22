@@ -1,4 +1,5 @@
 /** ui design constants **/
+const dummyChartExtra = 1.0;
 //padding
 const defaultPadding = 16.0;
 const minimumPadding = 8.0;
@@ -36,6 +37,7 @@ const maxScrap = 20.0;
 const maxFilmWaste = 20.0;
 const monthDays = 28.0;
 const factory_name = "bisco_cairo";
+const appName = 'K Visuals';
 
 /** string constants **/
 const submissionErrorText = "Error in submission .. incomplete report";

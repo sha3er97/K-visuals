@@ -1,7 +1,6 @@
 import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
 import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
 import 'package:cairo_bisco_app/classes/Plans.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
@@ -11,23 +10,48 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class MaamoulLines extends StatefulWidget {
+  MaamoulLines({
+    Key? key,
+    required this.from_day,
+    required this.to_day,
+    required this.from_month,
+    required this.to_month,
+    required this.chosenYear,
+  }) : super(key: key);
+  final String from_day, to_day, from_month, to_month, chosenYear;
+
   @override
-  _MaamoulLinesState createState() => _MaamoulLinesState();
+  _MaamoulLinesState createState() => _MaamoulLinesState(
+        from_day: from_day,
+        to_day: to_day,
+        from_month: from_month,
+        to_month: to_month,
+        chosenYear: chosenYear,
+      );
 }
 
 class _MaamoulLinesState extends State<MaamoulLines> {
-  final maamoulReportRef = FirebaseFirestore.instance
-      .collection(factory_name)
-      .doc('maamoul_reports')
-      .collection(getYear())
-      .withConverter<MaamoulReport>(
-        fromFirestore: (snapshot, _) =>
-            MaamoulReport.fromJson(snapshot.data()!),
-        toFirestore: (report, _) => report.toJson(),
-      );
+  _MaamoulLinesState({
+    required this.from_day,
+    required this.to_day,
+    required this.from_month,
+    required this.to_month,
+    required this.chosenYear,
+  });
+
+  final String from_day, to_day, from_month, to_month, chosenYear;
 
   @override
   Widget build(BuildContext context) {
+    final maamoulReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('maamoul_reports')
+        .collection(chosenYear)
+        .withConverter<MaamoulReport>(
+          fromFirestore: (snapshot, _) =>
+              MaamoulReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
     return ModalProgressHUD(
       inAsyncCall: false,
       child: DefaultTabController(
@@ -78,12 +102,12 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                     QueryDocumentSnapshot<MaamoulReport>>;
                             MiniProductionReport temp_report =
                                 MaamoulReport.getFilteredReportOfInterval(
-                              reportsList,
-                              int.parse(getMonth()),
-                              int.parse(getMonth()),
-                              int.parse(getDay()),
-                              int.parse(getDay()),
-                              int.parse(getYear()),
+                                  reportsList,
+                              int.parse(from_month),
+                              int.parse(to_month),
+                              int.parse(from_day),
+                              int.parse(to_day),
+                              int.parse(chosenYear),
                               1,
                             );
                             return Center(
@@ -137,12 +161,12 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                     QueryDocumentSnapshot<MaamoulReport>>;
                             MiniProductionReport temp_report =
                                 MaamoulReport.getFilteredReportOfInterval(
-                              reportsList,
-                              int.parse(getMonth()),
-                              int.parse(getMonth()),
-                              int.parse(getDay()),
-                              int.parse(getDay()),
-                              int.parse(getYear()),
+                                  reportsList,
+                              int.parse(from_month),
+                              int.parse(to_month),
+                              int.parse(from_day),
+                              int.parse(to_day),
+                              int.parse(chosenYear),
                               2,
                             );
                             return Center(
@@ -196,12 +220,12 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                     QueryDocumentSnapshot<MaamoulReport>>;
                             MiniProductionReport temp_report =
                                 MaamoulReport.getFilteredReportOfInterval(
-                              reportsList,
-                              int.parse(getMonth()),
-                              int.parse(getMonth()),
-                              int.parse(getDay()),
-                              int.parse(getDay()),
-                              int.parse(getYear()),
+                                  reportsList,
+                              int.parse(from_month),
+                              int.parse(to_month),
+                              int.parse(from_day),
+                              int.parse(to_day),
+                              int.parse(chosenYear),
                               -1,
                             );
                             return Center(

@@ -1,7 +1,7 @@
-import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
+import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/ui/production_screens/biscuits_lines.dart';
 import 'package:cairo_bisco_app/ui/production_screens/maamoul_lines.dart';
 import 'package:cairo_bisco_app/ui/production_screens/wafer_lines.dart';
@@ -308,11 +308,45 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              BiscuitLines()));
+                                  if (int.parse(_selectedYearTo) !=
+                                      int.parse(_selectedYearFrom))
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(
+                                          "Error : invalid interval (reports of same year only are allowed)"),
+                                    ));
+                                  else {
+                                    DateTime dateFrom = DateTime(
+                                        int.parse(_selectedYearTo),
+                                        int.parse(_selectedMonthFrom),
+                                        int.parse(_selectedDayFrom));
+                                    DateTime dateAfter = DateTime(
+                                        int.parse(_selectedYearTo),
+                                        int.parse(_selectedMonthTo),
+                                        int.parse(_selectedDayTo));
+                                    if (dateFrom.isBefore(dateAfter) ||
+                                        dateFrom.isAtSameMomentAs(dateAfter)) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  BiscuitLines(
+                                                    from_month:
+                                                        _selectedMonthFrom,
+                                                    to_month: _selectedMonthTo,
+                                                    chosenYear:
+                                                        _selectedYearFrom,
+                                                    from_day: _selectedDayFrom,
+                                                    to_day: _selectedDayTo,
+                                                  )));
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text(
+                                            "Error : invalid interval (from date must be <= to date)"),
+                                      ));
+                                    }
+                                  }
                                 },
                               ))))),
               Padding(
@@ -345,10 +379,44 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => WaferLines()));
+                                  if (int.parse(_selectedYearTo) !=
+                                      int.parse(_selectedYearFrom))
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(
+                                          "Error : invalid interval (reports of same year only are allowed)"),
+                                    ));
+                                  else {
+                                    DateTime dateFrom = DateTime(
+                                        int.parse(_selectedYearTo),
+                                        int.parse(_selectedMonthFrom),
+                                        int.parse(_selectedDayFrom));
+                                    DateTime dateAfter = DateTime(
+                                        int.parse(_selectedYearTo),
+                                        int.parse(_selectedMonthTo),
+                                        int.parse(_selectedDayTo));
+                                    if (dateFrom.isBefore(dateAfter) ||
+                                        dateFrom.isAtSameMomentAs(dateAfter)) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => WaferLines(
+                                                    from_month:
+                                                        _selectedMonthFrom,
+                                                    to_month: _selectedMonthTo,
+                                                    chosenYear:
+                                                        _selectedYearFrom,
+                                                    from_day: _selectedDayFrom,
+                                                    to_day: _selectedDayTo,
+                                                  )));
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text(
+                                            "Error : invalid interval (from date must be <= to date)"),
+                                      ));
+                                    }
+                                  }
                                 },
                               ))))),
               Padding(
@@ -384,11 +452,45 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              MaamoulLines()));
+                                  if (int.parse(_selectedYearTo) !=
+                                      int.parse(_selectedYearFrom))
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(
+                                          "Error : invalid interval (reports of same year only are allowed)"),
+                                    ));
+                                  else {
+                                    DateTime dateFrom = DateTime(
+                                        int.parse(_selectedYearTo),
+                                        int.parse(_selectedMonthFrom),
+                                        int.parse(_selectedDayFrom));
+                                    DateTime dateAfter = DateTime(
+                                        int.parse(_selectedYearTo),
+                                        int.parse(_selectedMonthTo),
+                                        int.parse(_selectedDayTo));
+                                    if (dateFrom.isBefore(dateAfter) ||
+                                        dateFrom.isAtSameMomentAs(dateAfter)) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MaamoulLines(
+                                                    from_month:
+                                                        _selectedMonthFrom,
+                                                    to_month: _selectedMonthTo,
+                                                    chosenYear:
+                                                        _selectedYearFrom,
+                                                    from_day: _selectedDayFrom,
+                                                    to_day: _selectedDayTo,
+                                                  )));
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text(
+                                            "Error : invalid interval (from date must be <= to date)"),
+                                      ));
+                                    }
+                                  }
                                 },
                               ))))),
             ])));

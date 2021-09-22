@@ -4,9 +4,10 @@
     wafer
     maamoul
  *********************************/
-import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/ui/production_screens/biscuits_lines.dart';
 import 'package:cairo_bisco_app/ui/production_screens/maamoul_lines.dart';
 import 'package:cairo_bisco_app/ui/production_screens/wafer_lines.dart';
@@ -66,8 +67,13 @@ class _HomeProductionState extends State<HomeProductionPage> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              BiscuitLines()));
+                                          builder: (context) => BiscuitLines(
+                                                from_month: getMonth(),
+                                                to_month: getMonth(),
+                                                chosenYear: getYear(),
+                                                from_day: getDay(),
+                                                to_day: getDay(),
+                                              )));
                                 },
                               ))))),
               Padding(
@@ -103,7 +109,13 @@ class _HomeProductionState extends State<HomeProductionPage> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => WaferLines()));
+                                          builder: (context) => WaferLines(
+                                                from_month: getMonth(),
+                                                to_month: getMonth(),
+                                                chosenYear: getYear(),
+                                                from_day: getDay(),
+                                                to_day: getDay(),
+                                              )));
                                 },
                               ))))),
               Padding(
@@ -142,8 +154,13 @@ class _HomeProductionState extends State<HomeProductionPage> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              MaamoulLines()));
+                                          builder: (context) => MaamoulLines(
+                                                from_month: getMonth(),
+                                                to_month: getMonth(),
+                                                chosenYear: getYear(),
+                                                from_day: getDay(),
+                                                to_day: getDay(),
+                                              )));
                                 },
                               ))))),
             ])));
