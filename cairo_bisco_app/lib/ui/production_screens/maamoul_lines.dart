@@ -102,7 +102,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                     QueryDocumentSnapshot<MaamoulReport>>;
                             MiniProductionReport temp_report =
                                 MaamoulReport.getFilteredReportOfInterval(
-                                  reportsList,
+                              reportsList,
                               int.parse(from_month),
                               int.parse(to_month),
                               int.parse(from_day),
