@@ -107,7 +107,9 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
         appBar: new AppBar(
           backgroundColor: KelloggColors.white.withOpacity(0),
           shadowColor: KelloggColors.white.withOpacity(0),
-          leading: MyBackButton(),
+          leading: MyBackButton(
+            admin: false,
+          ),
           title: Text('EHS',
               style: TextStyle(
                 color: KelloggColors.darkRed,

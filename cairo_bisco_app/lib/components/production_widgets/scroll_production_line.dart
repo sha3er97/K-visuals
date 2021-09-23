@@ -291,9 +291,9 @@ class ProductionLine extends StatelessWidget {
           SizedBox(height: defaultPadding),
           Center(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(biggerImageBorder),
+              borderRadius: BorderRadius.circular(BoxImageBorder),
               child: ConstrainedBox(
-                constraints: BoxConstraints.tightFor(height: kpiBoxHeight),
+                constraints: BoxConstraints.tightFor(height: regularBoxHeight),
                 child: ElevatedButton.icon(
                   label: Text(overweight.toStringAsFixed(1) + " %"),
                   style: ElevatedButton.styleFrom(
@@ -306,8 +306,8 @@ class ProductionLine extends StatelessWidget {
                   icon: ClipRRect(
                     borderRadius: BorderRadius.circular(iconImageBorder),
                     child: Container(
-                      height: arrowBoxSize,
-                      width: arrowBoxSize,
+                      height: mediumIconSize,
+                      width: mediumIconSize,
                       padding: EdgeInsets.all(minimumPadding / 2),
                       child: new Image.asset(
                         'images/$arrowImg2.png',
@@ -373,9 +373,9 @@ class ProductionLine extends StatelessWidget {
           SizedBox(height: defaultPadding),
           Center(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(biggerImageBorder),
+              borderRadius: BorderRadius.circular(BoxImageBorder),
               child: ConstrainedBox(
-                constraints: BoxConstraints.tightFor(height: kpiBoxHeight),
+                constraints: BoxConstraints.tightFor(height: regularBoxHeight),
                 child: ElevatedButton.icon(
                   label: Text((scrap * Plans.scrapKgCost).toStringAsFixed(1) +
                       " K EGP "),
@@ -392,8 +392,8 @@ class ProductionLine extends StatelessWidget {
                   icon: ClipRRect(
                     borderRadius: BorderRadius.circular(iconImageBorder),
                     child: Container(
-                      height: arrowBoxSize,
-                      width: arrowBoxSize,
+                      height: mediumIconSize,
+                      width: mediumIconSize,
                       padding: EdgeInsets.all(minimumPadding / 2),
                       child: new Image.asset(
                         'images/$arrowImg3.png',
@@ -416,9 +416,9 @@ class ProductionLine extends StatelessWidget {
           SizedBox(height: defaultPadding),
           Center(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(biggerImageBorder),
+              borderRadius: BorderRadius.circular(BoxImageBorder),
               child: ConstrainedBox(
-                constraints: BoxConstraints.tightFor(height: kpiBoxHeight),
+                constraints: BoxConstraints.tightFor(height: regularBoxHeight),
                 child: ElevatedButton.icon(
                   label: Text(
                       calculateMPSA(targetProd, cartons).toStringAsFixed(1) +
@@ -435,8 +435,8 @@ class ProductionLine extends StatelessWidget {
                   icon: ClipRRect(
                     borderRadius: BorderRadius.circular(iconImageBorder),
                     child: Container(
-                      height: arrowBoxSize,
-                      width: arrowBoxSize,
+                      height: mediumIconSize,
+                      width: mediumIconSize,
                       padding: EdgeInsets.all(minimumPadding / 2),
                       child: new Image.asset(
                         'images/$arrowImg4.png',

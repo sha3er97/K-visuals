@@ -2,7 +2,7 @@ import 'package:cairo_bisco_app/classes/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
-import 'package:cairo_bisco_app/ui/admin_screens/admin_main_add_sku.dart';
+import 'package:cairo_bisco_app/ui/admin_screens/admin_home_page.dart';
 import 'package:cairo_bisco_app/ui/floor_screens/floor_choose_area.dart';
 import 'package:cairo_bisco_app/ui/homePage.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_home_page.dart';
@@ -199,14 +199,10 @@ class _LoginState extends State<Login> {
                                   context,
                                   MaterialPageRoute(
                                       // builder: (context) => SuccessScreen()
-                                      builder: (context) => AdminAddSku()));
+                                      builder: (context) => AdminHomePage()));
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
-                                // content: Text("incorrect E-mail : " +
-                                //     Credentials.plt_email +
-                                //     " or Password: " +
-                                //     Credentials.password),
                                 content: Text("incorrect E-mail or Password"),
                               ));
                               Navigator.push(
@@ -227,16 +223,6 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                ///////////////////// forget password part
-                // Center(
-                //   child: Text(
-                //     'Forgot Password?',
-                //     style: TextStyle(color: KelloggColors.darkRed),
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: 25,
-                // ),
                 ///////////////// for sign up
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.center,

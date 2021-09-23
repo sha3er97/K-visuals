@@ -20,7 +20,9 @@ class AdminAddSku extends StatelessWidget {
         appBar: new AppBar(
           backgroundColor: KelloggColors.white.withOpacity(0),
           shadowColor: KelloggColors.white.withOpacity(0),
-          leading: MyBackButton(),
+          leading: MyBackButton(
+            admin: false,
+          ),
         ),
         body: SingleChildScrollView(
             child: Column(
@@ -31,11 +33,10 @@ class AdminAddSku extends StatelessWidget {
                   padding: const EdgeInsets.all(minimumPadding),
                   child: Center(
                       child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          //or 15.0
+                          borderRadius: BorderRadius.circular(BoxImageBorder),
                           child: ConstrainedBox(
                               constraints: BoxConstraints.tightFor(
-                                  width: 300, height: 200),
+                                  width: TightBoxWidth, height: LargeBoxHeight),
                               child: ElevatedButton.icon(
                                 label: Text('Biscuits\nالبسكويت'),
                                 style: ElevatedButton.styleFrom(
@@ -46,10 +47,10 @@ class AdminAddSku extends StatelessWidget {
                                 ),
                                 icon: ClipRRect(
                                   borderRadius:
-                                      BorderRadius.circular(10.0), //or 15.0
+                                      BorderRadius.circular(iconImageBorder),
                                   child: Container(
-                                    height: 50.0,
-                                    width: 50.0,
+                                    height: mediumIconSize,
+                                    width: mediumIconSize,
                                     padding: EdgeInsets.all(minimumPadding / 2),
                                     child: new Image.asset(
                                       'images/colored_biscuit.png',
@@ -69,11 +70,10 @@ class AdminAddSku extends StatelessWidget {
                   padding: const EdgeInsets.all(minimumPadding),
                   child: Center(
                       child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          //or 15.0
+                          borderRadius: BorderRadius.circular(BoxImageBorder),
                           child: ConstrainedBox(
                               constraints: BoxConstraints.tightFor(
-                                  width: 300, height: 200),
+                                  width: TightBoxWidth, height: LargeBoxHeight),
                               child: ElevatedButton.icon(
                                 label: Text('Wafer\nالويفر'),
                                 style: ElevatedButton.styleFrom(
@@ -84,10 +84,10 @@ class AdminAddSku extends StatelessWidget {
                                 ),
                                 icon: ClipRRect(
                                   borderRadius:
-                                      BorderRadius.circular(10.0), //or 15.0
+                                      BorderRadius.circular(iconImageBorder),
                                   child: Container(
-                                    height: 50.0,
-                                    width: 50.0,
+                                    height: mediumIconSize,
+                                    width: mediumIconSize,
                                     padding: EdgeInsets.all(minimumPadding / 2),
                                     child: new Image.asset(
                                       'images/colored_wafer.png',
@@ -107,11 +107,10 @@ class AdminAddSku extends StatelessWidget {
                   padding: const EdgeInsets.all(minimumPadding),
                   child: Center(
                       child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          //or 15.0
+                          borderRadius: BorderRadius.circular(BoxImageBorder),
                           child: ConstrainedBox(
                               constraints: BoxConstraints.tightFor(
-                                  width: 300, height: 200),
+                                  width: TightBoxWidth, height: LargeBoxHeight),
                               child: ElevatedButton.icon(
                                 label: Text('Maamoul\nالمعمول'),
                                 style: ElevatedButton.styleFrom(
@@ -125,10 +124,10 @@ class AdminAddSku extends StatelessWidget {
                                 ),
                                 icon: ClipRRect(
                                   borderRadius:
-                                      BorderRadius.circular(10.0), //or 15.0
+                                      BorderRadius.circular(iconImageBorder),
                                   child: Container(
-                                    height: 50.0,
-                                    width: 50.0,
+                                    height: mediumIconSize,
+                                    width: mediumIconSize,
                                     padding: EdgeInsets.all(minimumPadding / 2),
                                     child: new Image.asset(
                                       'images/colored_maamoul.png',

@@ -1,5 +1,5 @@
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
-import 'package:cairo_bisco_app/components/buttons/line_num_button.dart';
+import 'package:cairo_bisco_app/components/buttons/line_num_btn.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +36,9 @@ class FloorChooseLine extends StatelessWidget {
       appBar: new AppBar(
         backgroundColor: KelloggColors.white.withOpacity(0),
         shadowColor: KelloggColors.white.withOpacity(0),
-        leading: MyBackButton(),
+        leading: MyBackButton(
+          admin: false,
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(

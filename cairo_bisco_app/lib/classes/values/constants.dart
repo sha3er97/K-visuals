@@ -16,7 +16,7 @@ const textFieldRadius = 20.0;
 const textFieldBorderRadius = 1.0;
 const textFieldFocusedBorderRadius = 1.0;
 const iconImageBorder = 10.0;
-const biggerImageBorder = 15.0;
+const BoxImageBorder = 15.0;
 const radiusDifference = 3;
 const chartRadiusCircle1 = 13.0;
 const chartRadiusCircle11 = chartRadiusCircle1 + radiusDifference;
@@ -31,8 +31,10 @@ const borderWidth = 2.0;
 //image sizes
 const regularIconSize = 40.0;
 const smallIconSize = 25.0;
-const arrowBoxSize = 50.0;
-const kpiBoxHeight = 150.0;
+const mediumIconSize = 50.0;
+const regularBoxHeight = 150.0;
+const LargeBoxHeight = 200.0;
+const TightBoxWidth = 300.0;
 
 /** factory constants **/
 const maxScrap = 20.0;

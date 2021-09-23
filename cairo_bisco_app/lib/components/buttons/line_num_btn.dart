@@ -3,12 +3,13 @@ import 'package:cairo_bisco_app/ui/floor_screens/floor_dashboard.dart';
 import 'package:flutter/material.dart';
 
 class LineNumButton extends StatelessWidget {
-  LineNumButton(
-      {required this.gradientColor1,
-      required this.gradientColor2,
-      required this.mainColor,
-      required this.type,
-      required this.lineNum});
+  LineNumButton({
+    required this.gradientColor1,
+    required this.gradientColor2,
+    required this.mainColor,
+    required this.type,
+    required this.lineNum,
+  });
 
   final Color gradientColor1;
   final Color gradientColor2;
@@ -18,16 +19,14 @@ class LineNumButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final boxHeight = 150.0;
-
     return Padding(
       padding: const EdgeInsets.all(minimumPadding),
       child: Center(
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(15.0),
-          //or 15.0
+          borderRadius: BorderRadius.circular(BoxImageBorder),
           child: ConstrainedBox(
-            constraints: BoxConstraints.tightFor(width: 300, height: boxHeight),
+            constraints: BoxConstraints.tightFor(
+                width: TightBoxWidth, height: regularBoxHeight),
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(

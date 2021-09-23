@@ -64,7 +64,9 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
         appBar: new AppBar(
           backgroundColor: KelloggColors.white.withOpacity(0),
           shadowColor: KelloggColors.white.withOpacity(0),
-          leading: MyBackButton(),
+          leading: MyBackButton(
+            admin: false,
+          ),
         ),
         body: SingleChildScrollView(
             child: Column(
