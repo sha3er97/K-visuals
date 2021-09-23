@@ -8,6 +8,7 @@ class Plans {
   static int monthlyNearMissTarget = 5;
   static int mediumRisksBoundary = 5;
   static int highRisksBoundary = 12;
+  static double mpsaTarget = 20.0;
 
   static void getPlans() {
     FirebaseFirestore.instance
@@ -26,6 +27,7 @@ class Plans {
         Plans.mediumRisksBoundary =
             documentSnapshot["mediumRisksBoundary"].toInt();
         Plans.highRisksBoundary = documentSnapshot["highRisksBoundary"].toInt();
+        Plans.mpsaTarget = documentSnapshot["mpsaTarget"].toDouble();
       } else {
         print('Document does not exist on the database');
       }

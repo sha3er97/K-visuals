@@ -1,5 +1,6 @@
 import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
@@ -34,6 +35,11 @@ class ProductionLine extends StatelessWidget {
     String arrowImg3 = noWork
         ? "up"
         : scrap < SKU.skuDetails[productName]!.targetScrap
+            ? "up"
+            : "down";
+    String arrowImg4 = noWork
+        ? "up"
+        : calculateMPSA(targetProd, cartons) > Plans.mpsaTarget
             ? "up"
             : "down";
 
@@ -284,33 +290,35 @@ class ProductionLine extends StatelessWidget {
           ),
           SizedBox(height: defaultPadding),
           Center(
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: ConstrainedBox(
-                      constraints:
-                          BoxConstraints.tightFor(width: 200, height: 150),
-                      child: ElevatedButton.icon(
-                        label: Text(overweight.toStringAsFixed(1) + " %"),
-                        style: ElevatedButton.styleFrom(
-                          textStyle: TextStyle(
-                              fontSize: largeButtonFont, fontFamily: 'MyFont'),
-                          primary: overweight < Plans.targetOverWeightAbove
-                              ? KelloggColors.green
-                              : KelloggColors.cockRed,
-                        ),
-                        icon: ClipRRect(
-                          borderRadius: BorderRadius.circular(iconImageBorder),
-                          child: Container(
-                            height: indicatorBoxSize,
-                            width: indicatorBoxSize,
-                            padding: EdgeInsets.all(minimumPadding / 2),
-                            child: new Image.asset(
-                              'images/$arrowImg2.png',
-                            ),
-                          ),
-                        ),
-                        onPressed: () {},
-                      )))),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(biggerImageBorder),
+              child: ConstrainedBox(
+                constraints: BoxConstraints.tightFor(height: kpiBoxHeight),
+                child: ElevatedButton.icon(
+                  label: Text(overweight.toStringAsFixed(1) + " %"),
+                  style: ElevatedButton.styleFrom(
+                    textStyle: TextStyle(
+                        fontSize: largeButtonFont, fontFamily: 'MyFont'),
+                    primary: overweight < Plans.targetOverWeightAbove
+                        ? KelloggColors.green
+                        : KelloggColors.cockRed,
+                  ),
+                  icon: ClipRRect(
+                    borderRadius: BorderRadius.circular(iconImageBorder),
+                    child: Container(
+                      height: arrowBoxSize,
+                      width: arrowBoxSize,
+                      padding: EdgeInsets.all(minimumPadding / 2),
+                      child: new Image.asset(
+                        'images/$arrowImg2.png',
+                      ),
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+          ),
           SizedBox(height: defaultPadding),
           SfRadialGauge(
             title: GaugeTitle(
@@ -364,38 +372,82 @@ class ProductionLine extends StatelessWidget {
           ),
           SizedBox(height: defaultPadding),
           Center(
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: ConstrainedBox(
-                      constraints: BoxConstraints.tightFor(height: 150),
-                      child: ElevatedButton.icon(
-                        label: Text(
-                            (scrap * Plans.scrapKgCost).toStringAsFixed(1) +
-                                " K EGP "),
-                        style: ElevatedButton.styleFrom(
-                          textStyle: TextStyle(
-                              fontSize: largeButtonFont, fontFamily: 'MyFont'),
-                          primary: scrap <
-                                  (noWork
-                                      ? maxScrap / 2
-                                      : SKU
-                                          .skuDetails[productName]!.targetScrap)
-                              ? KelloggColors.green
-                              : KelloggColors.cockRed,
-                        ),
-                        icon: ClipRRect(
-                          borderRadius: BorderRadius.circular(iconImageBorder),
-                          child: Container(
-                            height: indicatorBoxSize,
-                            width: indicatorBoxSize,
-                            padding: EdgeInsets.all(minimumPadding / 2),
-                            child: new Image.asset(
-                              'images/$arrowImg3.png',
-                            ),
-                          ),
-                        ),
-                        onPressed: () {},
-                      )))),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(biggerImageBorder),
+              child: ConstrainedBox(
+                constraints: BoxConstraints.tightFor(height: kpiBoxHeight),
+                child: ElevatedButton.icon(
+                  label: Text((scrap * Plans.scrapKgCost).toStringAsFixed(1) +
+                      " K EGP "),
+                  style: ElevatedButton.styleFrom(
+                    textStyle: TextStyle(
+                        fontSize: largeButtonFont, fontFamily: 'MyFont'),
+                    primary: scrap <
+                            (noWork
+                                ? maxScrap / 2
+                                : SKU.skuDetails[productName]!.targetScrap)
+                        ? KelloggColors.green
+                        : KelloggColors.cockRed,
+                  ),
+                  icon: ClipRRect(
+                    borderRadius: BorderRadius.circular(iconImageBorder),
+                    child: Container(
+                      height: arrowBoxSize,
+                      width: arrowBoxSize,
+                      padding: EdgeInsets.all(minimumPadding / 2),
+                      child: new Image.asset(
+                        'images/$arrowImg3.png',
+                      ),
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: defaultPadding),
+          Center(
+            child: Text('MPSA %',
+                style: TextStyle(
+                    fontSize: largeFontSize,
+                    fontWeight: FontWeight.bold,
+                    color: KelloggColors.darkRed)),
+          ),
+          SizedBox(height: defaultPadding),
+          Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(biggerImageBorder),
+              child: ConstrainedBox(
+                constraints: BoxConstraints.tightFor(height: kpiBoxHeight),
+                child: ElevatedButton.icon(
+                  label: Text(
+                      calculateMPSA(targetProd, cartons).toStringAsFixed(1) +
+                          " %"),
+                  style: ElevatedButton.styleFrom(
+                    textStyle: TextStyle(
+                        fontSize: largeButtonFont, fontFamily: 'MyFont'),
+                    primary: noWork
+                        ? KelloggColors.green
+                        : calculateMPSA(targetProd, cartons) > Plans.mpsaTarget
+                            ? KelloggColors.green
+                            : KelloggColors.cockRed,
+                  ),
+                  icon: ClipRRect(
+                    borderRadius: BorderRadius.circular(iconImageBorder),
+                    child: Container(
+                      height: arrowBoxSize,
+                      width: arrowBoxSize,
+                      padding: EdgeInsets.all(minimumPadding / 2),
+                      child: new Image.asset(
+                        'images/$arrowImg4.png',
+                      ),
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+          ),
           SizedBox(height: defaultPadding),
         ],
       ),

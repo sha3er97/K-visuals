@@ -1,3 +1,5 @@
+import 'dart:math';
+
 double parseJsonToDouble(dynamic dAmount) {
   double returnAmount = 0.00;
   String strAmount;
@@ -16,4 +18,10 @@ double parseJsonToDouble(dynamic dAmount) {
   }
 
   return returnAmount;
+}
+
+double calculateMPSA(int plan, int cartons) {
+  if (cartons == 0) return 0.0;
+  // return ((plan - cartons).abs().toDouble() * 100) / max(plan, cartons);
+  return (min(plan, cartons).toDouble() * 100) / max(plan, cartons);
 }
