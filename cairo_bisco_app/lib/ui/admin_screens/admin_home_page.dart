@@ -4,6 +4,7 @@ import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:flutter/material.dart';
 
 import 'admin_main_add_sku.dart';
+import 'admin_show_all_skus.dart';
 
 class AdminHomePage extends StatelessWidget {
   @override
@@ -56,9 +57,8 @@ class AdminHomePage extends StatelessWidget {
                 title: "Edit Existing SKU",
                 btn_icon: Icons.edit,
                 param_onPressed: () {
-                  //TODO :: list exiting skus with option to be edited
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => AdminAddSku()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ShowSkus()));
                 },
               ),
               AdminButton(
