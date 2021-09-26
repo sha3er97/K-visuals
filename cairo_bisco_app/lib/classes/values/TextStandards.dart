@@ -36,6 +36,16 @@ Text smallerHeading(String title) {
   );
 }
 
+Text adminHeading(String title) {
+  return Text(
+    title,
+    style: TextStyle(
+        fontSize: aboveMediumFontSize,
+        fontWeight: FontWeight.w500,
+        color: KelloggColors.darkBlue),
+  );
+}
+
 Widget myDivider() {
   return Divider(
     height: 20,

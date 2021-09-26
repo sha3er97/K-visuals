@@ -1,14 +1,51 @@
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class Plans {
   static double targetOverWeightAbove = 0.1;
   static double targetOEE = 20.0;
+  static double mpsaTarget = 20.0;
   static double scrapKgCost = 10.5;
   static int monthlyNearMissTarget = 5;
   static int mediumRisksBoundary = 5;
   static int highRisksBoundary = 12;
-  static double mpsaTarget = 20.0;
+
+  static Future<void> updateRules(
+    context,
+    double targetOverWeightAbove,
+    double targetOEE,
+    double mpsaTarget,
+    double scrapKgCost,
+    int monthlyNearMissTarget,
+    int mediumRisksBoundary,
+    int highRisksBoundary,
+  ) {
+    return FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('plans')
+        .update({
+          'targetOverWeightAbove': targetOverWeightAbove,
+          'targetOEE': targetOEE,
+          'mpsaTarget': mpsaTarget,
+          'scrapKgCost': scrapKgCost,
+          'monthlyNearMissTarget': monthlyNearMissTarget,
+          'mediumRisksBoundary': mediumRisksBoundary,
+          'highRisksBoundary': highRisksBoundary,
+        })
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Targets Updated"),
+              )),
+              getPlans(),
+              Navigator.pop(context),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to update targets: $error"),
+              ))
+            });
+  }
 
   static void getPlans() {
     FirebaseFirestore.instance

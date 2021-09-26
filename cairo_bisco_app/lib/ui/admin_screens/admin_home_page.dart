@@ -2,6 +2,8 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/components/buttons/admin_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:flutter/material.dart';
+
+import 'admin_edit_targets.dart';
 import 'admin_main_add_sku.dart';
 import 'admin_show_all_skus.dart';
 
@@ -52,9 +54,10 @@ class AdminHomePage extends StatelessWidget {
                 btn_icon: Icons.edit_road,
                 title: "Edit Targets",
                 param_onPressed: () {
-                  //TODO :: list targets with existing values and slider to edit
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => AdminAddSku()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AdminEditTargets()));
                 },
               ),
             ]),
