@@ -2,28 +2,12 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/components/buttons/admin_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:flutter/material.dart';
-
 import 'admin_main_add_sku.dart';
 import 'admin_show_all_skus.dart';
 
 class AdminHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Color gradientColor1 = type.compareTo(prodType[0]) == 0
-    //     ? KelloggColors.orange
-    //     : type.compareTo(prodType[1]) == 0
-    //         ? KelloggColors.cockRed
-    //         : KelloggColors.grey;
-    // Color gradientColor2 = type.compareTo(prodType[0]) == 0
-    //     ? KelloggColors.yellow
-    //     : type.compareTo(prodType[1]) == 0
-    //         ? KelloggColors.grey
-    //         : KelloggColors.cockRed;
-    // Color mainColor = type.compareTo(prodType[0]) == 0
-    //     ? KelloggColors.yellow.withOpacity(0.5)
-    //     : type.compareTo(prodType[1]) == 0
-    //         ? KelloggColors.green.withOpacity(0.5)
-    //         : KelloggColors.cockRed.withOpacity(0.5);
     return Scaffold(
       backgroundColor: KelloggColors.white,
       resizeToAvoidBottomInset: true,
