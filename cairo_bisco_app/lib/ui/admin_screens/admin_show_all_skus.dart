@@ -26,6 +26,7 @@ class ShowSkus extends StatelessWidget {
             ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
                 padding: const EdgeInsets.all(minimumPadding),
                 itemCount: SKU.biscuitSKU.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -39,6 +40,7 @@ class ShowSkus extends StatelessWidget {
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(minimumPadding),
                 itemCount: SKU.waferSKU.length,
+                physics: ClampingScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   return SkuItem(
                     title: SKU.waferSKU[index],
@@ -48,6 +50,7 @@ class ShowSkus extends StatelessWidget {
             ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
                 padding: const EdgeInsets.all(minimumPadding),
                 itemCount: SKU.maamoulSKU.length,
                 itemBuilder: (BuildContext context, int index) {

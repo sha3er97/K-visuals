@@ -56,7 +56,7 @@ packages:
       name: cloud_firestore
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.1"
+    version: "2.5.3"
   cloud_firestore_platform_interface:
     dependency: transitive
     description:
@@ -70,7 +70,7 @@ packages:
       name: cloud_firestore_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.4.1"
+    version: "2.4.2"
   collection:
     dependency: transitive
     description:
@@ -84,7 +84,7 @@ packages:
       name: confetti
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.5"
+    version: "0.6.0"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -112,14 +112,14 @@ packages:
       name: firebase
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "9.0.1"
+    version: "9.0.2"
   firebase_analytics:
     dependency: "direct main"
     description:
       name: firebase_analytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "8.3.1"
+    version: "8.3.2"
   firebase_analytics_platform_interface:
     dependency: transitive
     description:
@@ -225,7 +225,7 @@ packages:
       name: logging
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   matcher:
     dependency: transitive
     description:
@@ -289,13 +289,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  random_color:
-    dependency: transitive
-    description:
-      name: random_color
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.5"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -335,14 +328,14 @@ packages:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.2.60"
+    version: "19.2.62"
   syncfusion_flutter_gauges:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_gauges
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.2.60"
+    version: "19.2.62"
   term_glyph:
     dependency: transitive
     description:

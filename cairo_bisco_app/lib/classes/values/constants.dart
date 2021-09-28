@@ -1,3 +1,6 @@
+/** version number**/
+const versionNum = '1.5.0'; //edit also in pubspec.yaml
+
 /** ui design constants **/
 const dummyChartExtra = 1.0;
 //padding

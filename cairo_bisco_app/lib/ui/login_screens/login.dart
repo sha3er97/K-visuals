@@ -63,23 +63,25 @@ class _LoginState extends State<Login> {
                     style: TextStyle(
                         color: KelloggColors.darkRed,
                         fontWeight: FontWeight.w600,
-                        fontSize: 20),
+                        fontSize: largeFontSize),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Text(
                     'Please sign in to continue.',
                     style: TextStyle(
-                        color: Colors.grey[600],
+                        color: KelloggColors.grey,
                         fontWeight: FontWeight.w400,
-                        fontSize: 13),
+                        fontSize: mediumFontSize),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 10),
+                    margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -87,11 +89,11 @@ class _LoginState extends State<Login> {
                           'E-mail',
                           style: TextStyle(
                               fontWeight: FontWeight.w300,
-                              fontSize: 13,
+                              fontSize: mediumFontSize,
                               color: KelloggColors.darkRed),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: minimumPadding,
                         ),
                         TextField(
                           style: (TextStyle(
@@ -110,9 +112,10 @@ class _LoginState extends State<Login> {
                             prefixIcon: Image.asset('images/email.png'),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color: KelloggColors.yellow, width: 2.0),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
+                                  color: KelloggColors.yellow,
+                                  width: borderWidth),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(defaultPadding)),
                             ),
                           ),
                           onChanged: (value) {
@@ -124,7 +127,8 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  margin: EdgeInsets.symmetric(
+                      vertical: minimumPadding, horizontal: defaultPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -132,11 +136,11 @@ class _LoginState extends State<Login> {
                         'Password',
                         style: TextStyle(
                             fontWeight: FontWeight.w300,
-                            fontSize: 13,
+                            fontSize: mediumFontSize,
                             color: KelloggColors.darkRed),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: minimumPadding,
                       ),
                       TextField(
                         style: (TextStyle(
@@ -153,9 +157,10 @@ class _LoginState extends State<Login> {
                           prefixIcon: Image.asset('images/padlock.png'),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: KelloggColors.yellow, width: 2.0),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
+                                color: KelloggColors.yellow,
+                                width: borderWidth),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(defaultPadding)),
                           ),
                         ),
                         onChanged: (value) {
@@ -222,6 +227,19 @@ class _LoginState extends State<Login> {
                       },
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: defaultPadding,
+                ),
+                ///////////////////// forget password part
+                Center(
+                  child: Text(
+                    'Version : ' + versionNum,
+                    style: TextStyle(color: KelloggColors.grey),
+                  ),
+                ),
+                SizedBox(
+                  height: defaultPadding,
                 ),
                 ///////////////// for sign up
                 // Row(
