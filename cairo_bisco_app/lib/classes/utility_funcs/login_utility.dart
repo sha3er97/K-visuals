@@ -24,3 +24,7 @@ bool noEmptyValues(String email, String password) {
 bool emptyField(String val) {
   return val.trim().isEmpty;
 }
+
+bool isNotPercent(String val) {
+  return double.parse(val).abs() > 100.0;
+}

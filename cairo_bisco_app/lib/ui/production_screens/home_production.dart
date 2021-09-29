@@ -22,149 +22,161 @@ class _HomeProductionState extends State<HomeProductionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: KelloggColors.white,
-        resizeToAvoidBottomInset: true,
-        appBar: new AppBar(
-          backgroundColor: KelloggColors.white.withOpacity(0),
-          shadowColor: KelloggColors.white.withOpacity(0),
-          leading: MyBackButton(
-            admin: false,
-          ),
+      backgroundColor: KelloggColors.white,
+      resizeToAvoidBottomInset: true,
+      appBar: new AppBar(
+        backgroundColor: KelloggColors.white.withOpacity(0),
+        shadowColor: KelloggColors.white.withOpacity(0),
+        leading: MyBackButton(
+          admin: false,
         ),
-        body: SingleChildScrollView(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-              Padding(
-                  padding: const EdgeInsets.all(minimumPadding),
-                  child: Center(
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          //or 15.0
-                          child: ConstrainedBox(
-                              constraints: BoxConstraints.tightFor(
-                                  width: 300, height: 200),
-                              child: ElevatedButton.icon(
-                                label: Text('Biscuits'),
-                                style: ElevatedButton.styleFrom(
-                                  textStyle: TextStyle(
-                                      fontSize: largeButtonFont,
-                                      fontFamily: 'MyFont'),
-                                  primary: KelloggColors.yellow,
-                                ),
-                                icon: ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.circular(10.0), //or 15.0
-                                  child: Container(
-                                    height: 50.0,
-                                    width: 50.0,
-                                    padding: EdgeInsets.all(minimumPadding / 2),
-                                    child: new Image.asset(
-                                      'images/colored_biscuit.png',
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => BiscuitLines(
-                                                from_month: getMonth(),
-                                                to_month: getMonth(),
-                                                chosenYear: getYear(),
-                                                from_day: getDay(),
-                                                to_day: getDay(),
-                                              )));
-                                },
-                              ))))),
-              Padding(
-                  padding: const EdgeInsets.all(minimumPadding),
-                  child: Center(
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          //or 15.0
-                          child: ConstrainedBox(
-                              constraints: BoxConstraints.tightFor(
-                                  width: 300, height: 200),
-                              child: ElevatedButton.icon(
-                                label: Text('Wafer'),
-                                style: ElevatedButton.styleFrom(
-                                  textStyle: TextStyle(
-                                      fontSize: largeButtonFont,
-                                      fontFamily: 'MyFont'),
-                                  primary: KelloggColors.green,
-                                ),
-                                icon: ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.circular(10.0), //or 15.0
-                                  child: Container(
-                                    height: 50.0,
-                                    width: 50.0,
-                                    padding: EdgeInsets.all(minimumPadding / 2),
-                                    child: new Image.asset(
-                                      'images/colored_wafer.png',
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => WaferLines(
-                                                from_month: getMonth(),
-                                                to_month: getMonth(),
-                                                chosenYear: getYear(),
-                                                from_day: getDay(),
-                                                to_day: getDay(),
-                                              )));
-                                },
-                              ))))),
-              Padding(
-                  padding: const EdgeInsets.all(minimumPadding),
-                  child: Center(
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          //or 15.0
-                          child: ConstrainedBox(
-                              constraints: BoxConstraints.tightFor(
-                                  width: 300, height: 200),
-                              child: ElevatedButton.icon(
-                                label: Text('Maamoul'),
-                                style: ElevatedButton.styleFrom(
-                                  textStyle: TextStyle(
-                                      fontSize: largeButtonFont,
-                                      fontFamily: 'MyFont'),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: defaultPadding,
-                                      vertical: minimumPadding),
-                                  primary: KelloggColors.cockRed,
-                                ),
-                                icon: ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.circular(10.0), //or 15.0
-                                  child: Container(
-                                    height: 50.0,
-                                    width: 50.0,
-                                    padding: EdgeInsets.all(minimumPadding / 2),
-                                    child: new Image.asset(
-                                      'images/colored_maamoul.png',
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => MaamoulLines(
-                                                from_month: getMonth(),
-                                                to_month: getMonth(),
-                                                chosenYear: getYear(),
-                                                from_day: getDay(),
-                                                to_day: getDay(),
-                                              )));
-                                },
-                              ))))),
-            ])));
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(minimumPadding),
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(
+                        width: TightBoxWidth, height: LargeBoxHeight),
+                    child: ElevatedButton.icon(
+                      label: Text('Biscuits'),
+                      style: ElevatedButton.styleFrom(
+                        textStyle: TextStyle(
+                            fontSize: largeButtonFont, fontFamily: 'MyFont'),
+                        primary: KelloggColors.yellow,
+                      ),
+                      icon: ClipRRect(
+                        borderRadius: BorderRadius.circular(iconImageBorder),
+                        child: Container(
+                          height: mediumIconSize,
+                          width: mediumIconSize,
+                          padding: EdgeInsets.all(minimumPadding / 2),
+                          child: new Image.asset(
+                            'images/colored_biscuit.png',
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BiscuitLines(
+                              from_month: getMonth(),
+                              to_month: getMonth(),
+                              chosenYear: getYear(),
+                              from_day: getDay(),
+                              to_day: getDay(),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(minimumPadding),
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(
+                        width: TightBoxWidth, height: LargeBoxHeight),
+                    child: ElevatedButton.icon(
+                      label: Text('Wafer'),
+                      style: ElevatedButton.styleFrom(
+                        textStyle: TextStyle(
+                            fontSize: largeButtonFont, fontFamily: 'MyFont'),
+                        primary: KelloggColors.green,
+                      ),
+                      icon: ClipRRect(
+                        borderRadius: BorderRadius.circular(iconImageBorder),
+                        child: Container(
+                          height: mediumIconSize,
+                          width: mediumIconSize,
+                          padding: EdgeInsets.all(minimumPadding / 2),
+                          child: new Image.asset(
+                            'images/colored_wafer.png',
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WaferLines(
+                              from_month: getMonth(),
+                              to_month: getMonth(),
+                              chosenYear: getYear(),
+                              from_day: getDay(),
+                              to_day: getDay(),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(minimumPadding),
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(
+                        width: TightBoxWidth, height: LargeBoxHeight),
+                    child: ElevatedButton.icon(
+                      label: Text('Maamoul'),
+                      style: ElevatedButton.styleFrom(
+                        textStyle: TextStyle(
+                            fontSize: largeButtonFont, fontFamily: 'MyFont'),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: defaultPadding,
+                            vertical: minimumPadding),
+                        primary: KelloggColors.cockRed,
+                      ),
+                      icon: ClipRRect(
+                        borderRadius: BorderRadius.circular(iconImageBorder),
+                        child: Container(
+                          height: mediumIconSize,
+                          width: mediumIconSize,
+                          padding: EdgeInsets.all(minimumPadding / 2),
+                          child: new Image.asset(
+                            'images/colored_maamoul.png',
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MaamoulLines(
+                              from_month: getMonth(),
+                              to_month: getMonth(),
+                              chosenYear: getYear(),
+                              from_day: getDay(),
+                              to_day: getDay(),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

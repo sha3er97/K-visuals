@@ -7,11 +7,12 @@
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
-import 'package:cairo_bisco_app/ui/supervisor_screens/biscuits_production_form.dart';
-import 'package:cairo_bisco_app/ui/supervisor_screens/maamoul_production_form.dart';
+import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_biscuits_production_form.dart';
+import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_maamoul_production_form.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_ehs_report.dart';
+import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_overweight_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_qfs_report.dart';
-import 'package:cairo_bisco_app/ui/supervisor_screens/wafer_production_form.dart';
+import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_wafer_production_form.dart';
 import 'package:flutter/material.dart';
 
 class SupervisorChooseAreaPage extends StatelessWidget {
@@ -42,11 +43,10 @@ class SupervisorChooseAreaPage extends StatelessWidget {
               padding: const EdgeInsets.all(minimumPadding),
               child: Center(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  //or 15.0
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
                   child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints.tightFor(width: 300, height: 200),
+                    constraints: BoxConstraints.tightFor(
+                        width: TightBoxWidth, height: LargeBoxHeight),
                     child: ElevatedButton.icon(
                       label: Text('Biscuits\nالبسكويت'),
                       style: ElevatedButton.styleFrom(
@@ -55,10 +55,10 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                         primary: KelloggColors.yellow,
                       ),
                       icon: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0), //or 15.0
+                        borderRadius: BorderRadius.circular(iconImageBorder),
                         child: Container(
-                          height: 50.0,
-                          width: 50.0,
+                          height: mediumIconSize,
+                          width: mediumIconSize,
                           padding: EdgeInsets.all(minimumPadding / 2),
                           child: new Image.asset(
                             'images/colored_biscuit.png',
@@ -66,26 +66,41 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        if (type == 0) {
+                        if (type == PRODUCTION_REPORT) {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      BiscuitsProductionForm()));
-                        } else if (type == 1) {
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BiscuitsProductionForm(),
+                            ),
+                          );
+                        } else if (type == QFS_REPORT) {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SupervisorQfsReport(
-                                        refNum: 0,
-                                      )));
-                        } else {
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SupervisorQfsReport(
+                                refNum: BISCUIT_AREA,
+                              ),
+                            ),
+                          );
+                        } else if (type == EHS_REPORT) {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SupervisorEhsReport(
-                                        refNum: 0,
-                                      )));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SupervisorEhsReport(
+                                refNum: BISCUIT_AREA,
+                              ),
+                            ),
+                          );
+                        } else if (type == OVERWEIGHT_REPORT) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SupervisorOverWeightReportForm(
+                                refNum: BISCUIT_AREA,
+                              ),
+                            ),
+                          );
                         }
                       },
                     ),
@@ -97,11 +112,10 @@ class SupervisorChooseAreaPage extends StatelessWidget {
               padding: const EdgeInsets.all(minimumPadding),
               child: Center(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  //or 15.0
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
                   child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints.tightFor(width: 300, height: 200),
+                    constraints: BoxConstraints.tightFor(
+                        width: TightBoxWidth, height: LargeBoxHeight),
                     child: ElevatedButton.icon(
                       label: Text('Wafer\nالويفر'),
                       style: ElevatedButton.styleFrom(
@@ -110,10 +124,10 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                         primary: KelloggColors.green,
                       ),
                       icon: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0), //or 15.0
+                        borderRadius: BorderRadius.circular(iconImageBorder),
                         child: Container(
-                          height: 50.0,
-                          width: 50.0,
+                          height: mediumIconSize,
+                          width: mediumIconSize,
                           padding: EdgeInsets.all(minimumPadding / 2),
                           child: new Image.asset(
                             'images/colored_wafer.png',
@@ -121,25 +135,41 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        if (type == 0) {
+                        if (type == PRODUCTION_REPORT) {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => WaferProductionForm()));
-                        } else if (type == 1) {
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WaferProductionForm(),
+                            ),
+                          );
+                        } else if (type == QFS_REPORT) {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SupervisorQfsReport(
-                                        refNum: 1,
-                                      )));
-                        } else {
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SupervisorQfsReport(
+                                refNum: WAFER_AREA,
+                              ),
+                            ),
+                          );
+                        } else if (type == EHS_REPORT) {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SupervisorEhsReport(
-                                        refNum: 1,
-                                      )));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SupervisorEhsReport(
+                                refNum: WAFER_AREA,
+                              ),
+                            ),
+                          );
+                        } else if (type == OVERWEIGHT_REPORT) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SupervisorOverWeightReportForm(
+                                refNum: WAFER_AREA,
+                              ),
+                            ),
+                          );
                         }
                       },
                     ),
@@ -151,11 +181,10 @@ class SupervisorChooseAreaPage extends StatelessWidget {
               padding: const EdgeInsets.all(minimumPadding),
               child: Center(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  //or 15.0
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
                   child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints.tightFor(width: 300, height: 200),
+                    constraints: BoxConstraints.tightFor(
+                        width: TightBoxWidth, height: LargeBoxHeight),
                     child: ElevatedButton.icon(
                       label: Text('Maamoul\nالمعمول'),
                       style: ElevatedButton.styleFrom(
@@ -167,11 +196,10 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                         primary: KelloggColors.cockRed,
                       ),
                       icon: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        //or 15.0
+                        borderRadius: BorderRadius.circular(iconImageBorder),
                         child: Container(
-                          height: 50.0,
-                          width: 50.0,
+                          height: mediumIconSize,
+                          width: mediumIconSize,
                           padding: EdgeInsets.all(minimumPadding / 2),
                           child: new Image.asset(
                             'images/colored_maamoul.png',
@@ -179,26 +207,41 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        if (type == 0) {
+                        if (type == PRODUCTION_REPORT) {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      MaamoulProductionForm()));
-                        } else if (type == 1) {
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MaamoulProductionForm(),
+                            ),
+                          );
+                        } else if (type == QFS_REPORT) {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SupervisorQfsReport(
-                                        refNum: 2,
-                                      )));
-                        } else {
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SupervisorQfsReport(
+                                refNum: MAAMOUL_AREA,
+                              ),
+                            ),
+                          );
+                        } else if (type == EHS_REPORT) {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SupervisorEhsReport(
-                                        refNum: 2,
-                                      )));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SupervisorEhsReport(
+                                refNum: MAAMOUL_AREA,
+                              ),
+                            ),
+                          );
+                        } else if (type == OVERWEIGHT_REPORT) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SupervisorOverWeightReportForm(
+                                refNum: MAAMOUL_AREA,
+                              ),
+                            ),
+                          );
                         }
                       },
                     ),

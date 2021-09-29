@@ -146,8 +146,9 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText:
-                                _supName_validate ? 'هذه الخانة ضرورية' : null,
+                            errorText: _supName_validate
+                                ? missingValueErrorText
+                                : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
@@ -296,7 +297,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                             // decoration: InputDecoration(labelText: 'اختر'),
                             value: selectedProdLine,
                             isExpanded: true,
-                            items: refNum != 2
+                            items: refNum != MAAMOUL_AREA
                                 ? prod_lines4.map((String value) {
                                     return new DropdownMenuItem<String>(
                                       value: value,
@@ -345,7 +346,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _quality_incidents_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -383,7 +384,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _food_safety_incidents_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -421,7 +422,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _ccp_failure_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -458,7 +459,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _consumer_complaints_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(

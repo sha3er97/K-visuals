@@ -25,7 +25,9 @@ class _FloorChooseAreaState extends State<FloorChooseArea> {
         appBar: new AppBar(
           backgroundColor: KelloggColors.white.withOpacity(0),
           shadowColor: KelloggColors.white.withOpacity(0),
-          leading: LogOutBtn(),
+          leading: LogOutBtn(
+            admin: false,
+          ),
         ),
         body: SingleChildScrollView(
             child: Column(

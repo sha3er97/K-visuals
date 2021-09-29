@@ -1,6 +1,6 @@
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/components/buttons/admin_btn.dart';
-import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
+import 'package:cairo_bisco_app/components/buttons/log_out_btn.dart';
 import 'package:flutter/material.dart';
 
 import 'admin_edit_targets.dart';
@@ -16,7 +16,7 @@ class AdminHomePage extends StatelessWidget {
       appBar: new AppBar(
         backgroundColor: KelloggColors.white.withOpacity(0),
         shadowColor: KelloggColors.white.withOpacity(0),
-        leading: MyBackButton(
+        leading: LogOutBtn(
           admin: true,
         ),
       ),

@@ -103,7 +103,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
               } else {
                 MiniProductionReport temp_report;
                 switch (refNum) {
-                  case 0:
+                  case BISCUIT_AREA:
                     List<QueryDocumentSnapshot<BiscuitsReport>>
                         biscuitsReportsList = productionSnapshot.data!.docs
                             as List<QueryDocumentSnapshot<BiscuitsReport>>;
@@ -117,7 +117,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                       lineNum,
                     );
                     break;
-                  case 1:
+                  case WAFER_AREA:
                     List<QueryDocumentSnapshot<WaferReport>> waferReportsList =
                         productionSnapshot.data!.docs
                             as List<QueryDocumentSnapshot<WaferReport>>;
@@ -131,7 +131,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                       lineNum,
                     );
                     break;
-                  default: //case 2 :
+                  default: //case MAAMOUL_AREA :
                     List<QueryDocumentSnapshot<MaamoulReport>>
                         maamoulReportsList = productionSnapshot.data!.docs
                             as List<QueryDocumentSnapshot<MaamoulReport>>;

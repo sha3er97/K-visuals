@@ -1,5 +1,5 @@
+import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
-import 'package:cairo_bisco_app/classes/WaferReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
@@ -13,27 +13,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-class WaferProductionForm extends StatefulWidget {
+class MaamoulProductionForm extends StatefulWidget {
   @override
-  _WaferProductionFormState createState() => _WaferProductionFormState();
+  _MaamoulProductionFormState createState() => _MaamoulProductionFormState();
 }
 
-class _WaferProductionFormState extends State<WaferProductionForm> {
+class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
   bool showSpinner = false;
-  int refNum = 1; // 1 = wafer
+  int refNum = 2; // 2 = maamoul
 
   String supName = "",
       shiftProductionPlan = '',
       actualSpeed = '',
       productionInCartons = '',
+      mixerScrap = '',
+      mixerRework = '',
+      stampingScrap = '',
+      stampingRework = '',
       ovenScrap = '',
       ovenRework = '',
-      creamScrap = '',
-      creamRework = '',
-      coolerScrap = '',
-      coolerRework = '',
-      cutterScrap = '',
-      cutterRework = '',
       unPackedProducts = '',
       mc1Speed = '',
       mc2Speed = '',
@@ -51,14 +49,12 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
       _shift_plan_validate = false,
       _actualSpeed_validate = false,
       _productionInCartons_validate = false,
+      _mixerScrap_validate = false,
+      _mixerRework_validate = false,
       _ovenScrap_validate = false,
       _ovenRework_validate = false,
-      _creamScrap_validate = false,
-      _creamRework_validate = false,
-      _coolerScrap_validate = false,
-      _coolerRework_validate = false,
-      _cutterScrap_validate = false,
-      _cutterRework_validate = false,
+      _stampingScrap_validate = false,
+      _stampingRework_validate = false,
       _unPackedProducts_validate = false,
       _mc1Speed_validate = false,
       _mc2Speed_validate = false,
@@ -78,7 +74,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
   String selectedMonth = months[(int.parse(getMonth())) - 1];
   String selectedDay = days[(int.parse(getDay())) - 1];
   String selectedProdLine = prod_lines4[0];
-  String sku = SKU.waferSKU[0];
+  String sku = SKU.maamoulSKU[0];
 
   VoidCallback? onSKUChange(val) {
     setState(() {
@@ -131,9 +127,9 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
               admin: false,
             ),
             title: Text(
-              "Wafer",
+              "Maamoul",
               style: TextStyle(
-                  color: KelloggColors.green,
+                  color: KelloggColors.cockRed,
                   fontWeight: FontWeight.w300,
                   fontSize: largeFontSize),
             ),
@@ -167,8 +163,9 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText:
-                                _sup_name_validate ? 'هذه الخانة ضرورية' : null,
+                            errorText: _sup_name_validate
+                                ? missingValueErrorText
+                                : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
@@ -191,6 +188,14 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
+                            // decoration: InputDecoration(labelText: 'اختر'),
+                            // hint: Text(
+                            //   "اختر",
+                            //   style: TextStyle(
+                            //       fontWeight: FontWeight.w300,
+                            //       fontSize: 13,
+                            //       color: KelloggColors.darkRed),
+                            // ),
                             value: selectedShift,
                             isExpanded: true,
                             items: shifts.map((String value) {
@@ -317,7 +322,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                             // decoration: InputDecoration(labelText: 'اختر'),
                             value: selectedProdLine,
                             isExpanded: true,
-                            items: prod_lines4.map((String value) {
+                            items: prod_lines2.map((String value) {
                               return new DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
@@ -332,7 +337,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////
-                        smallerHeading('نوع منتج الويفر\nWafer SKU'),
+                        smallerHeading('نوع منتج المعمول\nMaamoul SKU'),
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
@@ -343,7 +348,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                             // decoration: InputDecoration(labelText: 'اختر'),
                             value: sku,
                             isExpanded: true,
-                            items: SKU.waferSKU.map((String value) {
+                            items: SKU.maamoulSKU.map((String value) {
                               return new DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
@@ -382,7 +387,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _shift_plan_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -417,7 +422,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _actualSpeed_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -454,7 +459,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _productionInCartons_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -470,6 +475,150 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
+                        sectionWithDivider('التخليط Mixer'),
+                        /////////////////////////////////////////////////////////////////////////////////
+                        smallerHeading('اعادة تشغيل\nRework'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _mixerRework_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            mixerRework = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        smallerHeading('الهالك\nScrap'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _mixerScrap_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            mixerScrap = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        sectionWithDivider('التشكيل Stamping'),
+                        /////////////////////////////////////////////////////////////////////////////////
+                        smallerHeading('اعادة تشغيل\nRework'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _stampingRework_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            stampingRework = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        smallerHeading('الهالك\nScrap'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _stampingScrap_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            stampingScrap = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
                         sectionWithDivider('الفرن Oven'),
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
@@ -491,7 +640,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _ovenRework_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -526,7 +675,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _ovenScrap_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -538,222 +687,6 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                           ),
                           onChanged: (value) {
                             ovenScrap = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////
-                        sectionWithDivider('الحشو Cream'),
-                        /////////////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اعادة تشغيل\nRework'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _creamRework_validate
-                                ? 'هذه الخانة ضرورية'
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            creamRework = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////
-                        smallerHeading('الهالك\nScrap'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _creamScrap_validate
-                                ? 'هذه الخانة ضرورية'
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            creamScrap = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////
-                        sectionWithDivider('الثلاجة Cooler'),
-                        /////////////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اعادة تشغيل\nRework'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _coolerRework_validate
-                                ? 'هذه الخانة ضرورية'
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            coolerRework = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////
-                        smallerHeading('الهالك\nScrap'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _coolerScrap_validate
-                                ? 'هذه الخانة ضرورية'
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            coolerScrap = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////
-                        sectionWithDivider('المنشار Cutter'),
-                        /////////////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اعادة تشغيل\nRework'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _cutterRework_validate
-                                ? 'هذه الخانة ضرورية'
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            cutterRework = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////
-                        smallerHeading('الهالك\nScrap'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _cutterScrap_validate
-                                ? 'هذه الخانة ضرورية'
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            cutterScrap = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -800,7 +733,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _unPackedProducts_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -836,8 +769,9 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText:
-                                _mc1Speed_validate ? 'هذه الخانة ضرورية' : null,
+                            errorText: _mc1Speed_validate
+                                ? missingValueErrorText
+                                : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
@@ -870,8 +804,9 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText:
-                                _mc2Speed_validate ? 'هذه الخانة ضرورية' : null,
+                            errorText: _mc2Speed_validate
+                                ? missingValueErrorText
+                                : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
@@ -905,7 +840,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _packingRework_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -940,7 +875,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _packingRepack_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -956,7 +891,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('هالك ويفر\nScrap'),
+                        smallerHeading('هالك معمول\nScrap'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -975,7 +910,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _packingScrap_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1010,7 +945,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _boxesWaste_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1045,7 +980,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _cartonWaste_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1082,7 +1017,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _mc1WasteKg_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1117,7 +1052,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _mc1FilmUsed_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1152,7 +1087,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _mc2WasteKg_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1187,7 +1122,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _mc2FilmUsed_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1219,19 +1154,15 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                       emptyField(actualSpeed);
                                   _productionInCartons_validate =
                                       emptyField(productionInCartons);
-                                  _creamScrap_validate = emptyField(creamScrap);
-                                  _creamRework_validate =
-                                      emptyField(creamRework);
+                                  _mixerScrap_validate = emptyField(mixerScrap);
+                                  _mixerRework_validate =
+                                      emptyField(mixerRework);
                                   _ovenScrap_validate = emptyField(ovenScrap);
                                   _ovenRework_validate = emptyField(ovenRework);
-                                  _cutterScrap_validate =
-                                      emptyField(cutterScrap);
-                                  _cutterRework_validate =
-                                      emptyField(cutterRework);
-                                  _coolerScrap_validate =
-                                      emptyField(cutterScrap);
-                                  _coolerRework_validate =
-                                      emptyField(coolerRework);
+                                  _stampingScrap_validate =
+                                      emptyField(stampingScrap);
+                                  _stampingRework_validate =
+                                      emptyField(stampingRework);
                                   _unPackedProducts_validate =
                                       emptyField(unPackedProducts);
                                   _mc1Speed_validate = emptyField(mc1Speed);
@@ -1257,14 +1188,12 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                       !_shift_plan_validate &&
                                       !_actualSpeed_validate &&
                                       !_productionInCartons_validate &&
+                                      !_mixerScrap_validate &&
+                                      !_mixerRework_validate &&
                                       !_ovenScrap_validate &&
                                       !_ovenRework_validate &&
-                                      !_creamScrap_validate &&
-                                      !_creamRework_validate &&
-                                      !_coolerScrap_validate &&
-                                      !_coolerRework_validate &&
-                                      !_cutterScrap_validate &&
-                                      !_cutterRework_validate &&
+                                      !_stampingScrap_validate &&
+                                      !_stampingRework_validate &&
                                       !_unPackedProducts_validate &&
                                       !_mc1Speed_validate &&
                                       !_mc2Speed_validate &&
@@ -1277,18 +1206,16 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                       !_mc2FilmUsed_validate &&
                                       !_mc1WasteKg_validate &&
                                       !_mc2WasteKg_validate) {
-                                    WaferReport.addReport(
+                                    MaamoulReport.addReport(
                                         supName,
                                         sku,
                                         double.parse(actualSpeed),
                                         double.parse(ovenScrap),
                                         double.parse(ovenRework),
-                                        double.parse(cutterScrap),
-                                        double.parse(cutterRework),
-                                        double.parse(creamScrap),
-                                        double.parse(creamRework),
-                                        double.parse(coolerScrap),
-                                        double.parse(coolerRework),
+                                        double.parse(mixerScrap),
+                                        double.parse(mixerRework),
+                                        double.parse(stampingScrap),
+                                        double.parse(stampingRework),
                                         double.parse(unPackedProducts),
                                         double.parse(mc1Speed),
                                         double.parse(mc2Speed),

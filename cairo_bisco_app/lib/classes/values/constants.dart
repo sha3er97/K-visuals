@@ -48,6 +48,19 @@ const appName = 'K Visuals';
 
 /** string constants **/
 const submissionErrorText = "Error in submission .. incomplete report";
+const notPercentErrorText = "النسبة لا يمكن ان تتخطي ال100%";
+const missingValueErrorText = 'هذه الخانة ضرورية';
+
+/** MACROS **/
+const BISCUIT_AREA = 0;
+const WAFER_AREA = 1;
+const MAAMOUL_AREA = 2;
+
+const PRODUCTION_REPORT = 0;
+const QFS_REPORT = 1;
+const EHS_REPORT = 2;
+const OVERWEIGHT_REPORT = 3;
+
 List<String> prodType = <String>[
   'Biscuits',
   'Wafer',

@@ -1,74 +1,53 @@
-import 'package:cairo_bisco_app/classes/EhsReport.dart';
+import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/classes/values/form_values.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-class SupervisorEhsReport extends StatefulWidget {
-  SupervisorEhsReport({
+class SupervisorOverWeightReportForm extends StatefulWidget {
+  SupervisorOverWeightReportForm({
     Key? key,
     required this.refNum,
   }) : super(key: key);
   final int refNum;
 
   @override
-  _SupervisorEhsReportState createState() =>
-      _SupervisorEhsReportState(refNum: refNum);
+  _SupervisorOverWeightReportFormState createState() =>
+      _SupervisorOverWeightReportFormState(refNum: refNum);
 }
 
-class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
-  _SupervisorEhsReportState({
+class _SupervisorOverWeightReportFormState
+    extends State<SupervisorOverWeightReportForm> {
+  _SupervisorOverWeightReportFormState({
     required this.refNum,
   });
 
   final int refNum;
 
   bool showSpinner = false;
-  String supName = "",
-      firstAid_incidents = "",
-      lostTime_incidents = "",
-      recordable_incidents = "",
-      risk_assessment = "",
-      nearMiss = "";
+  String supName = "", percentage = "";
 
   bool _supName_validate = false,
-      _firstAid_incidents_validate = false,
-      _lostTime_incidents_validate = false,
-      _recordable_incidents_validate = false,
-      _nearMiss_validate = false,
-      _risk_assessment_validate = false;
+      _percentage_missing_validate = false,
+      _percentage_value_validate = false;
 
   //drop down values
-  String selectedShift = shifts[0];
   String selectedYear = years[(int.parse(getYear())) - 2020];
   String selectedMonth = months[(int.parse(getMonth())) - 1];
   String selectedDay = days[(int.parse(getDay())) - 1];
   String selectedProdLine = prod_lines4[0];
-  String selected_S7 = S7[0];
-
-  VoidCallback? onS7Change(val) {
-    setState(() {
-      selected_S7 = val;
-    });
-  }
 
   VoidCallback? onLineChange(val) {
     setState(() {
       selectedProdLine = val;
-    });
-  }
-
-  VoidCallback? onShiftChange(val) {
-    setState(() {
-      selectedShift = val;
     });
   }
 
@@ -158,31 +137,6 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        smallerHeading('اختر الوردية\nWork Shift'),
-                        SizedBox(height: minimumPadding),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPadding),
-                          child: DropdownButtonFormField<String>(
-                            value: selectedShift,
-                            isExpanded: true,
-                            items: shifts.map((String value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style:
-                                      TextStyle(color: KelloggColors.darkRed),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: onShiftChange,
-                          ),
-                        ),
-                        SizedBox(height: defaultPadding),
-                        /////////////////////////////////////////////////////////////
                         smallerHeading('تاريخ اليوم\nToday Date'),
                         SizedBox(height: minimumPadding),
                         Row(
@@ -317,20 +271,16 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                           ),
                         ),
                         SizedBox(height: defaultPadding),
-                        /////////////////////////////////////////////////////////////
-                        sectionWithDivider('Report'),
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading(
-                            'حوادث اسعافات اولية \nFirst Aid Incidents'),
+                            'نسبة زيادة الوزن \nOverWeight Percentage'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -341,9 +291,11 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _firstAid_incidents_validate
+                            errorText: _percentage_missing_validate
                                 ? missingValueErrorText
-                                : null,
+                                : _percentage_value_validate
+                                    ? notPercentErrorText
+                                    : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
@@ -353,183 +305,8 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                             ),
                           ),
                           onChanged: (value) {
-                            firstAid_incidents = value;
+                            percentage = value;
                           },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////
-                        smallerHeading(
-                            'حوادث فقد في الوقت \nLost Time Incidents'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _lostTime_incidents_validate
-                                ? missingValueErrorText
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            lostTime_incidents = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////
-                        smallerHeading('حوادث مسجلة \nRecordable Incidents'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _recordable_incidents_validate
-                                ? missingValueErrorText
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            recordable_incidents = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////
-                        smallerHeading('حوادث وشيكة \nNear miss'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _nearMiss_validate
-                                ? missingValueErrorText
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            nearMiss = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////
-                        smallerHeading(
-                            'تقييم المخاطر قبل الوردية \nPre-Shift Risk Assessment'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _risk_assessment_validate
-                                ? missingValueErrorText
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            risk_assessment = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////
-                        smallerHeading('جولة قواعد السلامة السبعة \nS7 Tour'),
-                        SizedBox(height: minimumPadding),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPadding),
-                          child: DropdownButtonFormField<String>(
-                            value: selected_S7,
-                            isExpanded: true,
-                            items: S7.map((String value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style:
-                                      TextStyle(color: KelloggColors.darkRed),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: onS7Change,
-                          ),
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
@@ -542,36 +319,23 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                               onPressed: () async {
                                 setState(() {
                                   showSpinner = true;
-                                  _risk_assessment_validate =
-                                      emptyField(risk_assessment);
-                                  _nearMiss_validate = emptyField(nearMiss);
-                                  _recordable_incidents_validate =
-                                      emptyField(recordable_incidents);
-                                  _lostTime_incidents_validate =
-                                      emptyField(lostTime_incidents);
-                                  _firstAid_incidents_validate =
-                                      emptyField(firstAid_incidents);
+                                  _percentage_missing_validate =
+                                      emptyField(percentage);
+                                  if (!_percentage_missing_validate)
+                                    _percentage_value_validate =
+                                        isNotPercent(percentage);
                                   _supName_validate = emptyField(supName);
                                 });
                                 try {
-                                  if (!_risk_assessment_validate &&
-                                      !_nearMiss_validate &&
-                                      !_recordable_incidents_validate &&
-                                      !_lostTime_incidents_validate &&
-                                      !_firstAid_incidents_validate &&
+                                  if (!_percentage_missing_validate &&
+                                      !_percentage_value_validate &&
                                       !_supName_validate) {
-                                    EhsReport.addReport(
+                                    OverWeightReport.addReport(
                                         supName,
-                                        int.parse(firstAid_incidents),
-                                        int.parse(lostTime_incidents),
-                                        int.parse(recordable_incidents),
-                                        int.parse(nearMiss),
-                                        int.parse(risk_assessment),
-                                        S7.indexOf(selected_S7),
+                                        double.parse(percentage),
                                         prod_lines4.indexOf(selectedProdLine) +
                                             1,
                                         //line 1,2,3,4
-                                        shifts.indexOf(selectedShift),
                                         refNum,
                                         int.parse(selectedYear),
                                         int.parse(selectedMonth),

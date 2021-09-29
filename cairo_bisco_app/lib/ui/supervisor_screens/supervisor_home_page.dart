@@ -3,6 +3,7 @@
     production
     qfs
     ehs
+    overweight
  *********************************/
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
@@ -24,7 +25,9 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
       appBar: new AppBar(
         backgroundColor: KelloggColors.white.withOpacity(0),
         shadowColor: KelloggColors.white.withOpacity(0),
-        leading: LogOutBtn(),
+        leading: LogOutBtn(
+          admin: false,
+        ),
         // leading: MyBackButton(),
       ),
       body: SingleChildScrollView(
@@ -37,11 +40,10 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
               padding: const EdgeInsets.all(minimumPadding),
               child: Center(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  //or 15.0
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
                   child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints.tightFor(width: 300, height: 200),
+                    constraints: BoxConstraints.tightFor(
+                        width: TightBoxWidth, height: LargeBoxHeight),
                     child: Container(
                       decoration: const BoxDecoration(
                         gradient: const LinearGradient(
@@ -68,10 +70,10 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                           primary: KelloggColors.yellow.withOpacity(0.5),
                         ),
                         icon: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0), //or 15.0
+                          borderRadius: BorderRadius.circular(iconImageBorder),
                           child: Container(
-                            height: 50.0,
-                            width: 50.0,
+                            height: mediumIconSize,
+                            width: mediumIconSize,
                             padding: EdgeInsets.all(minimumPadding / 2),
                             child: new Image.asset(
                               'images/factory.png',
@@ -83,7 +85,8 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      SupervisorChooseAreaPage(type: 0)));
+                                      SupervisorChooseAreaPage(
+                                          type: PRODUCTION_REPORT)));
                         },
                       ),
                     ),
@@ -96,11 +99,10 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
               padding: const EdgeInsets.all(minimumPadding),
               child: Center(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  //or 15.0
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
                   child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints.tightFor(width: 300, height: 200),
+                    constraints: BoxConstraints.tightFor(
+                        width: TightBoxWidth, height: LargeBoxHeight),
                     child: Container(
                       decoration: const BoxDecoration(
                         gradient: const LinearGradient(
@@ -127,10 +129,10 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                           primary: KelloggColors.green.withOpacity(0.5),
                         ),
                         icon: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0), //or 15.0
+                          borderRadius: BorderRadius.circular(iconImageBorder),
                           child: Container(
-                            height: 50.0,
-                            width: 50.0,
+                            height: mediumIconSize,
+                            width: mediumIconSize,
                             padding: EdgeInsets.all(minimumPadding / 2),
                             child: new Image.asset(
                               'images/quality.png',
@@ -143,7 +145,8 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      SupervisorChooseAreaPage(type: 1)));
+                                      SupervisorChooseAreaPage(
+                                          type: QFS_REPORT)));
                         },
                       ),
                     ),
@@ -156,11 +159,10 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
               padding: const EdgeInsets.all(minimumPadding),
               child: Center(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  //or 15.0
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
                   child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints.tightFor(width: 300, height: 200),
+                    constraints: BoxConstraints.tightFor(
+                        width: TightBoxWidth, height: LargeBoxHeight),
                     child: Container(
                       decoration: const BoxDecoration(
                         gradient: const LinearGradient(
@@ -189,10 +191,10 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                           primary: KelloggColors.cockRed.withOpacity(0.5),
                         ),
                         icon: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0), //or 15.0
+                          borderRadius: BorderRadius.circular(iconImageBorder),
                           child: Container(
-                            height: 50.0,
-                            width: 50.0,
+                            height: mediumIconSize,
+                            width: mediumIconSize,
                             padding: EdgeInsets.all(minimumPadding / 2),
                             child: new Image.asset(
                               'images/safety.png',
@@ -205,7 +207,8 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      SupervisorChooseAreaPage(type: 2)));
+                                      SupervisorChooseAreaPage(
+                                          type: EHS_REPORT)));
                         },
                       ),
                     ),
@@ -213,6 +216,69 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                 ),
               ),
             ),
+            /////////////////fourth button///////////////////
+            Padding(
+              padding: const EdgeInsets.all(minimumPadding),
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(
+                        width: TightBoxWidth, height: LargeBoxHeight),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment(0.99, 0.0),
+                          // 10% of the width, so there are ten blinds.
+                          colors: const <Color>[
+                            KelloggColors.grey,
+                            KelloggColors.darkBlue
+                          ],
+                          // red to yellow
+                          tileMode: TileMode
+                              .repeated, // repeats the gradient over the canvas
+                        ),
+                      ),
+                      child: ElevatedButton.icon(
+                        label: Text(
+                          'OverWeight Report\n تقرير فرق الوزن',
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          textStyle: TextStyle(
+                              fontSize: largeFontSize, fontFamily: 'MyFont'),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: defaultPadding,
+                              vertical: minimumPadding),
+                          primary: KelloggColors.cockRed.withOpacity(0.5),
+                        ),
+                        icon: ClipRRect(
+                          borderRadius: BorderRadius.circular(iconImageBorder),
+                          child: Container(
+                            height: mediumIconSize,
+                            width: mediumIconSize,
+                            padding: EdgeInsets.all(minimumPadding / 2),
+                            child: new Image.asset(
+                              'images/overweight.png',
+                              color: KelloggColors.white,
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      SupervisorChooseAreaPage(
+                                          type: OVERWEIGHT_REPORT)));
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            /////////////////////////////////////////////////////////////////////
           ],
         ),
       ),

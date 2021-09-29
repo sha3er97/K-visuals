@@ -14,20 +14,20 @@ class FloorChooseLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isMaamoul = type.compareTo(prodType[2]) == 0;
-    Color gradientColor1 = type.compareTo(prodType[0]) == 0
+    bool isMaamoul = type.compareTo(prodType[MAAMOUL_AREA]) == 0;
+    Color gradientColor1 = type.compareTo(prodType[BISCUIT_AREA]) == 0
         ? KelloggColors.orange
-        : type.compareTo(prodType[1]) == 0
+        : type.compareTo(prodType[WAFER_AREA]) == 0
             ? KelloggColors.cockRed
             : KelloggColors.grey;
-    Color gradientColor2 = type.compareTo(prodType[0]) == 0
+    Color gradientColor2 = type.compareTo(prodType[BISCUIT_AREA]) == 0
         ? KelloggColors.yellow
-        : type.compareTo(prodType[1]) == 0
+        : type.compareTo(prodType[WAFER_AREA]) == 0
             ? KelloggColors.grey
             : KelloggColors.cockRed;
-    Color mainColor = type.compareTo(prodType[0]) == 0
+    Color mainColor = type.compareTo(prodType[BISCUIT_AREA]) == 0
         ? KelloggColors.yellow.withOpacity(0.5)
-        : type.compareTo(prodType[1]) == 0
+        : type.compareTo(prodType[WAFER_AREA]) == 0
             ? KelloggColors.green.withOpacity(0.5)
             : KelloggColors.cockRed.withOpacity(0.5);
     return Scaffold(

@@ -1,37 +1,39 @@
-import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
+import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
+import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
+import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/classes/values/form_values.dart';
-import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
-import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-class MaamoulProductionForm extends StatefulWidget {
+class BiscuitsProductionForm extends StatefulWidget {
   @override
-  _MaamoulProductionFormState createState() => _MaamoulProductionFormState();
+  _BiscuitsProductionFormState createState() => _BiscuitsProductionFormState();
 }
 
-class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
+class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
   bool showSpinner = false;
-  int refNum = 2; // 2 = maamoul
+  int refNum = 0; // 0 = biscuits
 
   String supName = "",
       shiftProductionPlan = '',
       actualSpeed = '',
       productionInCartons = '',
-      mixerScrap = '',
-      mixerRework = '',
-      stampingScrap = '',
-      stampingRework = '',
+      extrusionScrap = '',
+      extrusionRework = '',
       ovenScrap = '',
       ovenRework = '',
+      cutterScrap = '',
+      cutterRework = '',
+      conveyorScrap = '',
+      conveyorRework = '',
       unPackedProducts = '',
       mc1Speed = '',
       mc2Speed = '',
@@ -49,12 +51,14 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
       _shift_plan_validate = false,
       _actualSpeed_validate = false,
       _productionInCartons_validate = false,
-      _mixerScrap_validate = false,
-      _mixerRework_validate = false,
+      _extrusionScrap_validate = false,
+      _extrusionRework_validate = false,
       _ovenScrap_validate = false,
       _ovenRework_validate = false,
-      _stampingScrap_validate = false,
-      _stampingRework_validate = false,
+      _cutterScrap_validate = false,
+      _cutterRework_validate = false,
+      _conveyorScrap_validate = false,
+      _conveyorRework_validate = false,
       _unPackedProducts_validate = false,
       _mc1Speed_validate = false,
       _mc2Speed_validate = false,
@@ -74,7 +78,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
   String selectedMonth = months[(int.parse(getMonth())) - 1];
   String selectedDay = days[(int.parse(getDay())) - 1];
   String selectedProdLine = prod_lines4[0];
-  String sku = SKU.maamoulSKU[0];
+  String sku = SKU.biscuitSKU[0];
 
   VoidCallback? onSKUChange(val) {
     setState(() {
@@ -127,9 +131,9 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
               admin: false,
             ),
             title: Text(
-              "Maamoul",
+              "Biscuits",
               style: TextStyle(
-                  color: KelloggColors.cockRed,
+                  color: KelloggColors.yellow,
                   fontWeight: FontWeight.w300,
                   fontSize: largeFontSize),
             ),
@@ -163,8 +167,9 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText:
-                                _sup_name_validate ? 'هذه الخانة ضرورية' : null,
+                            errorText: _sup_name_validate
+                                ? missingValueErrorText
+                                : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
@@ -187,14 +192,6 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
-                            // decoration: InputDecoration(labelText: 'اختر'),
-                            // hint: Text(
-                            //   "اختر",
-                            //   style: TextStyle(
-                            //       fontWeight: FontWeight.w300,
-                            //       fontSize: 13,
-                            //       color: KelloggColors.darkRed),
-                            // ),
                             value: selectedShift,
                             isExpanded: true,
                             items: shifts.map((String value) {
@@ -321,7 +318,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                             // decoration: InputDecoration(labelText: 'اختر'),
                             value: selectedProdLine,
                             isExpanded: true,
-                            items: prod_lines2.map((String value) {
+                            items: prod_lines4.map((String value) {
                               return new DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
@@ -336,7 +333,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////
-                        smallerHeading('نوع منتج المعمول\nMaamoul SKU'),
+                        smallerHeading('نوع منتج البسكويت\nBiscuit SKU'),
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
@@ -347,7 +344,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                             // decoration: InputDecoration(labelText: 'اختر'),
                             value: sku,
                             isExpanded: true,
-                            items: SKU.maamoulSKU.map((String value) {
+                            items: SKU.biscuitSKU.map((String value) {
                               return new DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
@@ -386,7 +383,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _shift_plan_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -421,7 +418,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _actualSpeed_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -437,7 +434,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        smallerHeading('الانتاج الفعلي بالكراتين\nProduction'),
+                        smallerHeading(
+                            'الانتاج الفعلي بالكراتين\nProduction in Cartons'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -458,7 +456,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _productionInCartons_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -474,7 +472,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        sectionWithDivider('التخليط Mixer'),
+                        sectionWithDivider('التشكيل Extrusion'),
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
                         SizedBox(height: minimumPadding),
@@ -494,8 +492,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _mixerRework_validate
-                                ? 'هذه الخانة ضرورية'
+                            errorText: _extrusionRework_validate
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -506,7 +504,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                             ),
                           ),
                           onChanged: (value) {
-                            mixerRework = value;
+                            extrusionRework = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -529,8 +527,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _mixerScrap_validate
-                                ? 'هذه الخانة ضرورية'
+                            errorText: _extrusionScrap_validate
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -541,79 +539,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                             ),
                           ),
                           onChanged: (value) {
-                            mixerScrap = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////
-                        sectionWithDivider('التشكيل Stamping'),
-                        /////////////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اعادة تشغيل\nRework'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _stampingRework_validate
-                                ? 'هذه الخانة ضرورية'
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            stampingRework = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////
-                        smallerHeading('الهالك\nScrap'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _stampingScrap_validate
-                                ? 'هذه الخانة ضرورية'
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            stampingScrap = value;
+                            extrusionScrap = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -639,7 +565,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _ovenRework_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -674,7 +600,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _ovenScrap_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -686,6 +612,150 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                           ),
                           onChanged: (value) {
                             ovenScrap = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        sectionWithDivider('السكينة Cutter'),
+                        /////////////////////////////////////////////////////////////////////////////////
+                        smallerHeading('اعادة تشغيل\nRework'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _cutterRework_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            cutterRework = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        smallerHeading('الهالك\nScrap'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _cutterScrap_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            cutterScrap = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        sectionWithDivider('السير Conveyor'),
+                        /////////////////////////////////////////////////////////////////////////////////
+                        smallerHeading('اعادة تشغيل\nRework'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _conveyorRework_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            conveyorRework = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        smallerHeading('الهالك\nScrap'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _conveyorScrap_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            conveyorScrap = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -732,7 +802,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _unPackedProducts_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -750,7 +820,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         sectionWithDivider('التعبئة Packaging'),
                         //////////////////////////////////////////////////////////////////
-                        smallerHeading('السرعة الفعلية mc1'),
+                        smallerHeading('السرعة الفعلية MC1'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -768,8 +838,9 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText:
-                                _mc1Speed_validate ? 'هذه الخانة ضرورية' : null,
+                            errorText: _mc1Speed_validate
+                                ? missingValueErrorText
+                                : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
@@ -784,7 +855,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('السرعة الفعلية mc2'),
+                        smallerHeading('السرعة الفعلية MC2'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -802,8 +873,9 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText:
-                                _mc2Speed_validate ? 'هذه الخانة ضرورية' : null,
+                            errorText: _mc2Speed_validate
+                                ? missingValueErrorText
+                                : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
@@ -837,7 +909,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _packingRework_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -872,7 +944,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _packingRepack_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -888,7 +960,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('هالك معمول\nScrap'),
+                        smallerHeading('هالك بسكويت\nScrap'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -907,7 +979,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _packingScrap_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -942,7 +1014,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _boxesWaste_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -977,7 +1049,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _cartonWaste_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -995,7 +1067,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         sectionWithDivider('هالك الموبينات Film Waste'),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('الهالك بالكجم mc1'),
+                        smallerHeading('الهالك بالكجم MC1'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -1014,7 +1086,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _mc1WasteKg_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1030,7 +1102,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اجمالي الفيلم المستخدم mc1'),
+                        smallerHeading('اجمالي الفيلم المستخدم MC1'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -1049,7 +1121,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _mc1FilmUsed_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1065,7 +1137,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('الهالك بالكجم mc2'),
+                        smallerHeading('الهالك بالكجم MC2'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -1084,7 +1156,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _mc2WasteKg_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1100,7 +1172,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اجمالي الفيلم المستخدم mc2'),
+                        smallerHeading('اجمالي الفيلم المستخدم MC2'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -1119,7 +1191,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                             errorText: _mc2FilmUsed_validate
-                                ? 'هذه الخانة ضرورية'
+                                ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1151,15 +1223,20 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                       emptyField(actualSpeed);
                                   _productionInCartons_validate =
                                       emptyField(productionInCartons);
-                                  _mixerScrap_validate = emptyField(mixerScrap);
-                                  _mixerRework_validate =
-                                      emptyField(mixerRework);
+                                  _extrusionScrap_validate =
+                                      emptyField(extrusionScrap);
+                                  _extrusionRework_validate =
+                                      emptyField(extrusionRework);
                                   _ovenScrap_validate = emptyField(ovenScrap);
                                   _ovenRework_validate = emptyField(ovenRework);
-                                  _stampingScrap_validate =
-                                      emptyField(stampingScrap);
-                                  _stampingRework_validate =
-                                      emptyField(stampingRework);
+                                  _cutterScrap_validate =
+                                      emptyField(cutterScrap);
+                                  _cutterRework_validate =
+                                      emptyField(cutterRework);
+                                  _conveyorScrap_validate =
+                                      emptyField(conveyorScrap);
+                                  _conveyorRework_validate =
+                                      emptyField(conveyorRework);
                                   _unPackedProducts_validate =
                                       emptyField(unPackedProducts);
                                   _mc1Speed_validate = emptyField(mc1Speed);
@@ -1185,12 +1262,14 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                       !_shift_plan_validate &&
                                       !_actualSpeed_validate &&
                                       !_productionInCartons_validate &&
-                                      !_mixerScrap_validate &&
-                                      !_mixerRework_validate &&
+                                      !_extrusionScrap_validate &&
+                                      !_extrusionRework_validate &&
                                       !_ovenScrap_validate &&
                                       !_ovenRework_validate &&
-                                      !_stampingScrap_validate &&
-                                      !_stampingRework_validate &&
+                                      !_cutterScrap_validate &&
+                                      !_cutterRework_validate &&
+                                      !_conveyorScrap_validate &&
+                                      !_conveyorRework_validate &&
                                       !_unPackedProducts_validate &&
                                       !_mc1Speed_validate &&
                                       !_mc2Speed_validate &&
@@ -1203,16 +1282,18 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                       !_mc2FilmUsed_validate &&
                                       !_mc1WasteKg_validate &&
                                       !_mc2WasteKg_validate) {
-                                    MaamoulReport.addReport(
+                                    BiscuitsReport.addReport(
                                         supName,
                                         sku,
                                         double.parse(actualSpeed),
+                                        double.parse(extrusionScrap),
+                                        double.parse(extrusionRework),
                                         double.parse(ovenScrap),
                                         double.parse(ovenRework),
-                                        double.parse(mixerScrap),
-                                        double.parse(mixerRework),
-                                        double.parse(stampingScrap),
-                                        double.parse(stampingRework),
+                                        double.parse(cutterScrap),
+                                        double.parse(cutterRework),
+                                        double.parse(conveyorScrap),
+                                        double.parse(conveyorRework),
                                         double.parse(unPackedProducts),
                                         double.parse(mc1Speed),
                                         double.parse(mc2Speed),

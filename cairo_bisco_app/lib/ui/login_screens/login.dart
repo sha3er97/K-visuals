@@ -231,7 +231,6 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   height: defaultPadding,
                 ),
-                ///////////////////// forget password part
                 Center(
                   child: Text(
                     'Version : ' + versionNum,

@@ -15,134 +15,149 @@ class AdminAddSku extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: KelloggColors.white,
-        resizeToAvoidBottomInset: true,
-        appBar: new AppBar(
-          backgroundColor: KelloggColors.white.withOpacity(0),
-          shadowColor: KelloggColors.white.withOpacity(0),
-          leading: MyBackButton(
-            admin: false,
-          ),
+      backgroundColor: KelloggColors.white,
+      resizeToAvoidBottomInset: true,
+      appBar: new AppBar(
+        backgroundColor: KelloggColors.white.withOpacity(0),
+        shadowColor: KelloggColors.white.withOpacity(0),
+        leading: MyBackButton(
+          admin: false,
         ),
-        body: SingleChildScrollView(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-              Padding(
-                  padding: const EdgeInsets.all(minimumPadding),
-                  child: Center(
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(BoxImageBorder),
-                          child: ConstrainedBox(
-                              constraints: BoxConstraints.tightFor(
-                                  width: TightBoxWidth, height: LargeBoxHeight),
-                              child: ElevatedButton.icon(
-                                label: Text('Biscuits\nالبسكويت'),
-                                style: ElevatedButton.styleFrom(
-                                  textStyle: TextStyle(
-                                      fontSize: largeButtonFont,
-                                      fontFamily: 'MyFont'),
-                                  primary: KelloggColors.yellow,
-                                ),
-                                icon: ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.circular(iconImageBorder),
-                                  child: Container(
-                                    height: mediumIconSize,
-                                    width: mediumIconSize,
-                                    padding: EdgeInsets.all(minimumPadding / 2),
-                                    child: new Image.asset(
-                                      'images/colored_biscuit.png',
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => AddSkuForm(
-                                                refNum: 0,
-                                              )));
-                                },
-                              ))))),
-              Padding(
-                  padding: const EdgeInsets.all(minimumPadding),
-                  child: Center(
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(BoxImageBorder),
-                          child: ConstrainedBox(
-                              constraints: BoxConstraints.tightFor(
-                                  width: TightBoxWidth, height: LargeBoxHeight),
-                              child: ElevatedButton.icon(
-                                label: Text('Wafer\nالويفر'),
-                                style: ElevatedButton.styleFrom(
-                                  textStyle: TextStyle(
-                                      fontSize: largeButtonFont,
-                                      fontFamily: 'MyFont'),
-                                  primary: KelloggColors.green,
-                                ),
-                                icon: ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.circular(iconImageBorder),
-                                  child: Container(
-                                    height: mediumIconSize,
-                                    width: mediumIconSize,
-                                    padding: EdgeInsets.all(minimumPadding / 2),
-                                    child: new Image.asset(
-                                      'images/colored_wafer.png',
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => AddSkuForm(
-                                                refNum: 1,
-                                              )));
-                                },
-                              ))))),
-              Padding(
-                  padding: const EdgeInsets.all(minimumPadding),
-                  child: Center(
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(BoxImageBorder),
-                          child: ConstrainedBox(
-                              constraints: BoxConstraints.tightFor(
-                                  width: TightBoxWidth, height: LargeBoxHeight),
-                              child: ElevatedButton.icon(
-                                label: Text('Maamoul\nالمعمول'),
-                                style: ElevatedButton.styleFrom(
-                                  textStyle: TextStyle(
-                                      fontSize: largeButtonFont,
-                                      fontFamily: 'MyFont'),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: defaultPadding,
-                                      vertical: minimumPadding),
-                                  primary: KelloggColors.cockRed,
-                                ),
-                                icon: ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.circular(iconImageBorder),
-                                  child: Container(
-                                    height: mediumIconSize,
-                                    width: mediumIconSize,
-                                    padding: EdgeInsets.all(minimumPadding / 2),
-                                    child: new Image.asset(
-                                      'images/colored_maamoul.png',
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => AddSkuForm(
-                                                refNum: 2,
-                                              )));
-                                },
-                              ))))),
-            ])));
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(minimumPadding),
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(
+                        width: TightBoxWidth, height: LargeBoxHeight),
+                    child: ElevatedButton.icon(
+                      label: Text('Biscuits\nالبسكويت'),
+                      style: ElevatedButton.styleFrom(
+                        textStyle: TextStyle(
+                            fontSize: largeButtonFont, fontFamily: 'MyFont'),
+                        primary: KelloggColors.yellow,
+                      ),
+                      icon: ClipRRect(
+                        borderRadius: BorderRadius.circular(iconImageBorder),
+                        child: Container(
+                          height: mediumIconSize,
+                          width: mediumIconSize,
+                          padding: EdgeInsets.all(minimumPadding / 2),
+                          child: new Image.asset(
+                            'images/colored_biscuit.png',
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddSkuForm(
+                              refNum: BISCUIT_AREA,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(minimumPadding),
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(
+                        width: TightBoxWidth, height: LargeBoxHeight),
+                    child: ElevatedButton.icon(
+                      label: Text('Wafer\nالويفر'),
+                      style: ElevatedButton.styleFrom(
+                        textStyle: TextStyle(
+                            fontSize: largeButtonFont, fontFamily: 'MyFont'),
+                        primary: KelloggColors.green,
+                      ),
+                      icon: ClipRRect(
+                        borderRadius: BorderRadius.circular(iconImageBorder),
+                        child: Container(
+                          height: mediumIconSize,
+                          width: mediumIconSize,
+                          padding: EdgeInsets.all(minimumPadding / 2),
+                          child: new Image.asset(
+                            'images/colored_wafer.png',
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddSkuForm(
+                              refNum: WAFER_AREA,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(minimumPadding),
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(
+                        width: TightBoxWidth, height: LargeBoxHeight),
+                    child: ElevatedButton.icon(
+                      label: Text('Maamoul\nالمعمول'),
+                      style: ElevatedButton.styleFrom(
+                        textStyle: TextStyle(
+                            fontSize: largeButtonFont, fontFamily: 'MyFont'),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: defaultPadding,
+                            vertical: minimumPadding),
+                        primary: KelloggColors.cockRed,
+                      ),
+                      icon: ClipRRect(
+                        borderRadius: BorderRadius.circular(iconImageBorder),
+                        child: Container(
+                          height: mediumIconSize,
+                          width: mediumIconSize,
+                          padding: EdgeInsets.all(minimumPadding / 2),
+                          child: new Image.asset(
+                            'images/colored_maamoul.png',
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddSkuForm(
+                              refNum: MAAMOUL_AREA,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
