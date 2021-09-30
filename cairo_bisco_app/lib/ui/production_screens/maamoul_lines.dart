@@ -1,5 +1,6 @@
 import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
 import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
+import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
@@ -52,6 +53,15 @@ class _MaamoulLinesState extends State<MaamoulLines> {
               MaamoulReport.fromJson(snapshot.data()!),
           toFirestore: (report, _) => report.toJson(),
         );
+    final overWeightReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('overWeight_reports')
+        .collection(chosenYear)
+        .withConverter<OverWeightReport>(
+          fromFirestore: (snapshot, _) =>
+              OverWeightReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
     return ModalProgressHUD(
       inAsyncCall: false,
       child: DefaultTabController(
@@ -87,56 +97,92 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     StreamBuilder<QuerySnapshot>(
-                      stream: maamoulReportRef.snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (snapshot.hasError) {
-                          return ErrorMessageHeading('Something went wrong');
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return ErrorMessageHeading("Loading");
-                        } else {
-                          try {
-                            List<QueryDocumentSnapshot<MaamoulReport>>
-                                reportsList = snapshot.data!.docs as List<
-                                    QueryDocumentSnapshot<MaamoulReport>>;
-                            MiniProductionReport temp_report =
-                                MaamoulReport.getFilteredReportOfInterval(
+                        stream: overWeightReportRef.snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
+                          if (overweightSnapshot.hasError) {
+                            return ErrorMessageHeading('Something went wrong');
+                          } else if (overweightSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return ErrorMessageHeading("Loading");
+                          } else {
+                            List<QueryDocumentSnapshot<OverWeightReport>>
+                                reportsList =
+                                overweightSnapshot.data!.docs as List<
+                                    QueryDocumentSnapshot<OverWeightReport>>;
+                            OverWeightReport temp_overweight_report =
+                                OverWeightReport.getFilteredReportOfInterval(
                               reportsList,
                               int.parse(from_month),
                               int.parse(to_month),
                               int.parse(from_day),
                               int.parse(to_day),
                               int.parse(chosenYear),
+                              MAAMOUL_AREA,
                               1,
                             );
-                            return Center(
-                                child: ProductionLine(
-                              cartons: temp_report.productionInCartons,
-                              oee: (temp_report.productionInKg.toDouble() /
-                                      temp_report.theoreticalAverage) *
-                                  100,
-                              scrap: temp_report.scrap *
-                                  100 /
-                                  (temp_report.scrap +
-                                      temp_report.rework +
-                                      temp_report.productionInKg),
-                              money: temp_report.scrap * Plans.scrapKgCost,
-                              overweight: 0.5,
-                              //TODO :: integrate overweight cycle
-                              filmWaste: (temp_report.totalFilmWasted /
-                                      temp_report.totalFilmUsed) *
-                                  100,
-                              targetProd: temp_report.shiftProductionPlan,
-                              productName: temp_report.skuName,
-                            ));
-                          } catch (e) {
-                            print(e);
-                            return ErrorMessageHeading('Something went wrong');
+                            return StreamBuilder<QuerySnapshot>(
+                              stream: maamoulReportRef.snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot>
+                                      productionSnapshot) {
+                                if (productionSnapshot.hasError) {
+                                  return ErrorMessageHeading(
+                                      'Something went wrong');
+                                } else if (productionSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return ErrorMessageHeading("Loading");
+                                } else {
+                                  try {
+                                    List<QueryDocumentSnapshot<MaamoulReport>>
+                                        reportsList =
+                                        productionSnapshot.data!.docs as List<
+                                            QueryDocumentSnapshot<
+                                                MaamoulReport>>;
+                                    MiniProductionReport temp_report =
+                                        MaamoulReport
+                                            .getFilteredReportOfInterval(
+                                      reportsList,
+                                      int.parse(from_month),
+                                      int.parse(to_month),
+                                      int.parse(from_day),
+                                      int.parse(to_day),
+                                      int.parse(chosenYear),
+                                      1,
+                                    );
+                                    return Center(
+                                        child: ProductionLine(
+                                      cartons: temp_report.productionInCartons,
+                                      oee: (temp_report.productionInKg
+                                                  .toDouble() /
+                                              temp_report.theoreticalAverage) *
+                                          100,
+                                      scrap: temp_report.scrap *
+                                          100 /
+                                          (temp_report.scrap +
+                                              temp_report.rework +
+                                              temp_report.productionInKg),
+                                      money:
+                                          temp_report.scrap * Plans.scrapKgCost,
+                                      overweight:
+                                          temp_overweight_report.percent,
+                                      filmWaste: (temp_report.totalFilmWasted /
+                                              temp_report.totalFilmUsed) *
+                                          100,
+                                      targetProd:
+                                          temp_report.shiftProductionPlan,
+                                      productName: temp_report.skuName,
+                                    ));
+                                  } catch (e) {
+                                    print(e);
+                                    return ErrorMessageHeading(
+                                        'Something went wrong');
+                                  }
+                                }
+                              },
+                            );
                           }
-                        }
-                      },
-                    ),
+                        }),
                   ],
                 ),
               ),
@@ -146,56 +192,92 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     StreamBuilder<QuerySnapshot>(
-                      stream: maamoulReportRef.snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (snapshot.hasError) {
-                          return ErrorMessageHeading('Something went wrong');
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return ErrorMessageHeading("Loading");
-                        } else {
-                          try {
-                            List<QueryDocumentSnapshot<MaamoulReport>>
-                                reportsList = snapshot.data!.docs as List<
-                                    QueryDocumentSnapshot<MaamoulReport>>;
-                            MiniProductionReport temp_report =
-                                MaamoulReport.getFilteredReportOfInterval(
+                        stream: overWeightReportRef.snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
+                          if (overweightSnapshot.hasError) {
+                            return ErrorMessageHeading('Something went wrong');
+                          } else if (overweightSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return ErrorMessageHeading("Loading");
+                          } else {
+                            List<QueryDocumentSnapshot<OverWeightReport>>
+                                reportsList =
+                                overweightSnapshot.data!.docs as List<
+                                    QueryDocumentSnapshot<OverWeightReport>>;
+                            OverWeightReport temp_overweight_report =
+                                OverWeightReport.getFilteredReportOfInterval(
                               reportsList,
                               int.parse(from_month),
                               int.parse(to_month),
                               int.parse(from_day),
                               int.parse(to_day),
                               int.parse(chosenYear),
+                              MAAMOUL_AREA,
                               2,
                             );
-                            return Center(
-                                child: ProductionLine(
-                              cartons: temp_report.productionInCartons,
-                              oee: (temp_report.productionInKg.toDouble() /
-                                      temp_report.theoreticalAverage) *
-                                  100,
-                              scrap: temp_report.scrap *
-                                  100 /
-                                  (temp_report.scrap +
-                                      temp_report.rework +
-                                      temp_report.productionInKg),
-                              money: temp_report.scrap * Plans.scrapKgCost,
-                              overweight: 0.5,
-                              //TODO :: integrate overweight cycle
-                              filmWaste: (temp_report.totalFilmWasted /
-                                      temp_report.totalFilmUsed) *
-                                  100,
-                              targetProd: temp_report.shiftProductionPlan,
-                              productName: temp_report.skuName,
-                            ));
-                          } catch (e) {
-                            print(e);
-                            return ErrorMessageHeading('Something went wrong');
+                            return StreamBuilder<QuerySnapshot>(
+                              stream: maamoulReportRef.snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot>
+                                      productionSnapshot) {
+                                if (productionSnapshot.hasError) {
+                                  return ErrorMessageHeading(
+                                      'Something went wrong');
+                                } else if (productionSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return ErrorMessageHeading("Loading");
+                                } else {
+                                  try {
+                                    List<QueryDocumentSnapshot<MaamoulReport>>
+                                        reportsList =
+                                        productionSnapshot.data!.docs as List<
+                                            QueryDocumentSnapshot<
+                                                MaamoulReport>>;
+                                    MiniProductionReport temp_report =
+                                        MaamoulReport
+                                            .getFilteredReportOfInterval(
+                                      reportsList,
+                                      int.parse(from_month),
+                                      int.parse(to_month),
+                                      int.parse(from_day),
+                                      int.parse(to_day),
+                                      int.parse(chosenYear),
+                                      2,
+                                    );
+                                    return Center(
+                                        child: ProductionLine(
+                                      cartons: temp_report.productionInCartons,
+                                      oee: (temp_report.productionInKg
+                                                  .toDouble() /
+                                              temp_report.theoreticalAverage) *
+                                          100,
+                                      scrap: temp_report.scrap *
+                                          100 /
+                                          (temp_report.scrap +
+                                              temp_report.rework +
+                                              temp_report.productionInKg),
+                                      money:
+                                          temp_report.scrap * Plans.scrapKgCost,
+                                      overweight:
+                                          temp_overweight_report.percent,
+                                      filmWaste: (temp_report.totalFilmWasted /
+                                              temp_report.totalFilmUsed) *
+                                          100,
+                                      targetProd:
+                                          temp_report.shiftProductionPlan,
+                                      productName: temp_report.skuName,
+                                    ));
+                                  } catch (e) {
+                                    print(e);
+                                    return ErrorMessageHeading(
+                                        'Something went wrong');
+                                  }
+                                }
+                              },
+                            );
                           }
-                        }
-                      },
-                    ),
+                        }),
                   ],
                 ),
               ),
@@ -205,56 +287,92 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     StreamBuilder<QuerySnapshot>(
-                      stream: maamoulReportRef.snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (snapshot.hasError) {
-                          return ErrorMessageHeading('Something went wrong');
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return ErrorMessageHeading("Loading");
-                        } else {
-                          try {
-                            List<QueryDocumentSnapshot<MaamoulReport>>
-                                reportsList = snapshot.data!.docs as List<
-                                    QueryDocumentSnapshot<MaamoulReport>>;
-                            MiniProductionReport temp_report =
-                                MaamoulReport.getFilteredReportOfInterval(
+                        stream: overWeightReportRef.snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
+                          if (overweightSnapshot.hasError) {
+                            return ErrorMessageHeading('Something went wrong');
+                          } else if (overweightSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return ErrorMessageHeading("Loading");
+                          } else {
+                            List<QueryDocumentSnapshot<OverWeightReport>>
+                                reportsList =
+                                overweightSnapshot.data!.docs as List<
+                                    QueryDocumentSnapshot<OverWeightReport>>;
+                            OverWeightReport temp_overweight_report =
+                                OverWeightReport.getFilteredReportOfInterval(
                               reportsList,
                               int.parse(from_month),
                               int.parse(to_month),
                               int.parse(from_day),
                               int.parse(to_day),
                               int.parse(chosenYear),
+                              MAAMOUL_AREA,
                               -1,
                             );
-                            return Center(
-                                child: ProductionLine(
-                              cartons: temp_report.productionInCartons,
-                              oee: (temp_report.productionInKg.toDouble() /
-                                      temp_report.theoreticalAverage) *
-                                  100,
-                              scrap: temp_report.scrap *
-                                  100 /
-                                  (temp_report.scrap +
-                                      temp_report.rework +
-                                      temp_report.productionInKg),
-                              money: temp_report.scrap * Plans.scrapKgCost,
-                              overweight: 0.5,
-                              //TODO :: integrate overweight cycle
-                              filmWaste: (temp_report.totalFilmWasted /
-                                      temp_report.totalFilmUsed) *
-                                  100,
-                              targetProd: temp_report.shiftProductionPlan,
-                              productName: temp_report.skuName,
-                            ));
-                          } catch (e) {
-                            print(e);
-                            return ErrorMessageHeading('Something went wrong');
+                            return StreamBuilder<QuerySnapshot>(
+                              stream: maamoulReportRef.snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot>
+                                      productionSnapshot) {
+                                if (productionSnapshot.hasError) {
+                                  return ErrorMessageHeading(
+                                      'Something went wrong');
+                                } else if (productionSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return ErrorMessageHeading("Loading");
+                                } else {
+                                  try {
+                                    List<QueryDocumentSnapshot<MaamoulReport>>
+                                        reportsList =
+                                        productionSnapshot.data!.docs as List<
+                                            QueryDocumentSnapshot<
+                                                MaamoulReport>>;
+                                    MiniProductionReport temp_report =
+                                        MaamoulReport
+                                            .getFilteredReportOfInterval(
+                                      reportsList,
+                                      int.parse(from_month),
+                                      int.parse(to_month),
+                                      int.parse(from_day),
+                                      int.parse(to_day),
+                                      int.parse(chosenYear),
+                                      -1,
+                                    );
+                                    return Center(
+                                        child: ProductionLine(
+                                      cartons: temp_report.productionInCartons,
+                                      oee: (temp_report.productionInKg
+                                                  .toDouble() /
+                                              temp_report.theoreticalAverage) *
+                                          100,
+                                      scrap: temp_report.scrap *
+                                          100 /
+                                          (temp_report.scrap +
+                                              temp_report.rework +
+                                              temp_report.productionInKg),
+                                      money:
+                                          temp_report.scrap * Plans.scrapKgCost,
+                                      overweight:
+                                          temp_overweight_report.percent,
+                                      filmWaste: (temp_report.totalFilmWasted /
+                                              temp_report.totalFilmUsed) *
+                                          100,
+                                      targetProd:
+                                          temp_report.shiftProductionPlan,
+                                      productName: temp_report.skuName,
+                                    ));
+                                  } catch (e) {
+                                    print(e);
+                                    return ErrorMessageHeading(
+                                        'Something went wrong');
+                                  }
+                                }
+                              },
+                            );
                           }
-                        }
-                      },
-                    ),
+                        }),
                   ],
                 ),
               ),
