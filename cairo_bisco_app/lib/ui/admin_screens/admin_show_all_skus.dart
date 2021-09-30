@@ -32,7 +32,7 @@ class ShowSkus extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return SkuItem(
                     title: SKU.biscuitSKU[index],
-                    type: prodType[0],
+                    refNum: BISCUIT_AREA,
                   );
                 }),
             ListView.builder(
@@ -44,7 +44,7 @@ class ShowSkus extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return SkuItem(
                     title: SKU.waferSKU[index],
-                    type: prodType[1],
+                    refNum: WAFER_AREA,
                   );
                 }),
             ListView.builder(
@@ -56,7 +56,7 @@ class ShowSkus extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return SkuItem(
                     title: SKU.maamoulSKU[index],
-                    type: prodType[2],
+                    refNum: MAAMOUL_AREA,
                   );
                 }),
           ],

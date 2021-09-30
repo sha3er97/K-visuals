@@ -1,5 +1,5 @@
 /** version number**/
-const versionNum = '1.5.0'; //edit also in pubspec.yaml
+const versionNum = '1.5.1'; //edit also in pubspec.yaml
 
 /** ui design constants **/
 const dummyChartExtra = 1.0;
@@ -50,6 +50,7 @@ const appName = 'K Visuals';
 const submissionErrorText = "Error in submission .. incomplete report";
 const notPercentErrorText = "النسبة لا يمكن ان تتخطي ال100%";
 const missingValueErrorText = 'هذه الخانة ضرورية';
+const uneditableLabelText = 'Uneditable';
 
 /** MACROS **/
 const BISCUIT_AREA = 0;

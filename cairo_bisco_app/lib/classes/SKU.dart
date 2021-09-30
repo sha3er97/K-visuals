@@ -1,6 +1,8 @@
 import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 final biscuitsSkuRef = FirebaseFirestore.instance
     .collection(factory_name)
@@ -104,6 +106,69 @@ class SKU {
     );
   }
 
+  static Future<void> editSKU(
+      context,
+      int refNum,
+      String name,
+      double cartonWeight,
+      double theoreticalShiftProd1,
+      double theoreticalShiftProd2,
+      double theoreticalShiftProd3,
+      double theoreticalShiftProd4,
+      double targetScrap,
+      double targetFilmWaste,
+      int boxesPerCarton) {
+    return RefSkuArr[refNum]
+        .doc(skuDocumentNames[name])
+        .update({
+          // 'name': name,
+          'cartonWeight': cartonWeight,
+          'theoreticalShiftProd1': theoreticalShiftProd1,
+          'theoreticalShiftProd2': theoreticalShiftProd2,
+          'theoreticalShiftProd3': theoreticalShiftProd3,
+          'theoreticalShiftProd4': theoreticalShiftProd4,
+          'targetScrap': targetScrap,
+          'boxesPerCarton': boxesPerCarton,
+          'targetFilmWaste': targetFilmWaste,
+        })
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("SKU Updated"),
+              )),
+              getAllSku(),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to update SKU: $error"),
+              ))
+            });
+  }
+
+  static Future<void> deleteSku(
+    context,
+    int refNum,
+    String name,
+  ) {
+    return RefSkuArr[refNum]
+        .doc(skuDocumentNames[name])
+        .delete()
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("SKU Deleted"),
+              )),
+              getAllSku(),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to delete SKU: $error"),
+              ))
+            });
+  }
+
   static List<String> biscuitSKU = <String>[
     // 'COLO Soft Melt Striped Bar سوفت ميلت فانيليا',
     // 'COLO Soft Melt Cocoa Bar سوفت ميلت شوكلاتة',
@@ -145,11 +210,15 @@ class SKU {
     // 'Plain Ghorayeba غريبة سادة'
   ];
   static Map<String, SKU> skuDetails = new Map<String, SKU>();
+  static Map<String, String> skuDocumentNames = new Map<String, String>();
 
   static void getAllSku() {
-    getSKU(0, biscuitSKU);
-    getSKU(1, waferSKU);
-    getSKU(2, maamoulSKU);
+    biscuitSKU.clear();
+    getSKU(BISCUIT_AREA, biscuitSKU);
+    waferSKU.clear();
+    getSKU(WAFER_AREA, waferSKU);
+    maamoulSKU.clear();
+    getSKU(MAAMOUL_AREA, maamoulSKU);
   }
 
   static void getSKU(refNum, skuNamesList) async {
@@ -161,6 +230,7 @@ class SKU {
         skuNamesList.add(sku.data().name.toString());
 
         skuDetails[sku.data().name.toString()] = sku.data();
+        skuDocumentNames[sku.data().name.toString()] = sku.id;
       }
     }
   }

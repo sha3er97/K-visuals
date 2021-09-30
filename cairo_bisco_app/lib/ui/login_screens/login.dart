@@ -1,3 +1,5 @@
+import 'package:cairo_bisco_app/classes/Plans.dart';
+import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
@@ -68,7 +70,7 @@ class _LoginState extends State<Login> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPadding),
+                  const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Text(
                     'Please sign in to continue.',
                     style: TextStyle(
@@ -79,7 +81,7 @@ class _LoginState extends State<Login> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPadding),
+                  const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
@@ -187,6 +189,8 @@ class _LoginState extends State<Login> {
                           // final user = await _auth.signInWithEmailAndPassword(
                           //     email: email, password: password);
                           if (noEmptyValues(email, password)) {
+                            Plans.getPlans();
+                            SKU.getAllSku();
                             if (isPlt(email, password)) {
                               Navigator.push(
                                   context,
@@ -203,7 +207,7 @@ class _LoginState extends State<Login> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      // builder: (context) => SuccessScreen()
+                                    // builder: (context) => SuccessScreen()
                                       builder: (context) => AdminHomePage()));
                             } else {
                               ScaffoldMessenger.of(context)
@@ -213,7 +217,7 @@ class _LoginState extends State<Login> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      // builder: (context) => SuccessScreen()
+                                    // builder: (context) => SuccessScreen()
                                       builder: (context) =>
                                           SupervisorHomePage()));
                             }

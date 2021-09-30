@@ -18,24 +18,20 @@ class _SplashState extends State<SplashScreen> {
         Duration(seconds: 3),
         () => {
               Credentials.getCredentials(),
-              Plans.getPlans(),
-              SKU.getAllSku(),
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (BuildContext context) => Login()))
             });
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: KelloggColors.white,
-        body: SafeArea(
-            child: Center(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          child:
-              //your widgets here...
-              new Image.asset(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: KelloggColors.white,
+      body: SafeArea(
+        child: Center(
+          child: new Image.asset(
             'images/kws_logo.png',
             fit: BoxFit.cover,
           ),
-        )));
+        ),
+      ),
+    );
   }
 }

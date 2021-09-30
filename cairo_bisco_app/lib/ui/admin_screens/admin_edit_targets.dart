@@ -5,7 +5,6 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
-import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -92,7 +91,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                         Radius.circular(textFieldRadius)),
                                   ),
                                   errorText: _targetOverWeightAbove_validate
-                                      ? 'هذه الخانة ضرورية'
+                                      ? missingValueErrorText
                                       : null,
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -135,7 +134,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                         Radius.circular(textFieldRadius)),
                                   ),
                                   errorText: _targetOEE_validate
-                                      ? 'هذه الخانة ضرورية'
+                                      ? missingValueErrorText
                                       : null,
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -178,7 +177,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                         Radius.circular(textFieldRadius)),
                                   ),
                                   errorText: _mpsaTarget_validate
-                                      ? 'هذه الخانة ضرورية'
+                                      ? missingValueErrorText
                                       : null,
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -221,7 +220,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                         Radius.circular(textFieldRadius)),
                                   ),
                                   errorText: _scrapKgCost_validate
-                                      ? 'هذه الخانة ضرورية'
+                                      ? missingValueErrorText
                                       : null,
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -267,7 +266,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                         Radius.circular(textFieldRadius)),
                                   ),
                                   errorText: _monthlyNearMissTarget_validate
-                                      ? 'هذه الخانة ضرورية'
+                                      ? missingValueErrorText
                                       : null,
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -313,7 +312,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                         Radius.circular(textFieldRadius)),
                                   ),
                                   errorText: _mediumRisksBoundary_validate
-                                      ? 'هذه الخانة ضرورية'
+                                      ? missingValueErrorText
                                       : null,
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -359,7 +358,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                         Radius.circular(textFieldRadius)),
                                   ),
                                   errorText: _highRisksBoundary_validate
-                                      ? 'هذه الخانة ضرورية'
+                                      ? missingValueErrorText
                                       : null,
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(

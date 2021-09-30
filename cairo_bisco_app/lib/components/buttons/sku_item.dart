@@ -1,25 +1,27 @@
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/ui/admin_screens/admin_edit_sku.dart';
 import 'package:flutter/material.dart';
 
 class SkuItem extends StatelessWidget {
   SkuItem({
-    required this.type,
+    required this.refNum,
     required this.title,
     // required this.param_onPressed,
     // required this.btn_icon,
   });
 
-  final String title, type;
+  final String title;
+  final int refNum;
 
   // final VoidCallback param_onPressed;
   // final IconData btn_icon;
 
   @override
   Widget build(BuildContext context) {
-    Color gradientColor1 = type.compareTo(prodType[0]) == 0
+    Color gradientColor1 = refNum == BISCUIT_AREA
         ? KelloggColors.yellow
-        : type.compareTo(prodType[1]) == 0
+        : refNum == WAFER_AREA
             ? KelloggColors.green
             : KelloggColors.darkRed;
     Color gradientColor2 = KelloggColors.grey;
@@ -61,7 +63,15 @@ class SkuItem extends StatelessWidget {
                   primary: mainColor,
                 ),
                 onPressed: () {
-                  //TODO :: pass type,name to edit sku form
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AdminEditSku(
+                        refNum: refNum,
+                        skuName: title,
+                      ),
+                    ),
+                  );
                 },
               ),
             ),

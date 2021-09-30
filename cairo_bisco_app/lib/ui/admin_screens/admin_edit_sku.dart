@@ -1,46 +1,42 @@
 import 'package:cairo_bisco_app/classes/SKU.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/login_utility.dart';
-import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-class AddSkuForm extends StatefulWidget {
-  AddSkuForm({
+class AdminEditSku extends StatefulWidget {
+  AdminEditSku({
     Key? key,
     required this.refNum,
+    required this.skuName,
   }) : super(key: key);
   final int refNum;
+  final String skuName;
 
   @override
-  _AddSkuFormState createState() => _AddSkuFormState(refNum: refNum);
+  _AdminEditSkuState createState() => _AdminEditSkuState(
+        refNum: refNum,
+        skuName: skuName,
+      );
 }
 
-class _AddSkuFormState extends State<AddSkuForm> {
-  _AddSkuFormState({
+class _AdminEditSkuState extends State<AdminEditSku> {
+  _AdminEditSkuState({
     required this.refNum,
+    required this.skuName,
   });
 
+  final String skuName;
   final int refNum;
 
   bool showSpinner = false;
-  String skuName = "",
-      cartonWeight = "",
-      theoreticalShiftProd1 = "",
-      theoreticalShiftProd2 = "",
-      theoreticalShiftProd3 = "",
-      theoreticalShiftProd4 = "",
-      boxesPerCarton = "",
-      targetScrap = "",
-      targetFilmWaste = "";
 
-  bool _skuName_validate = false,
-      _cartonWeight_validate = false,
+  bool _cartonWeight_validate = false,
       _theoreticalShiftProd1_validate = false,
       _theoreticalShiftProd2_validate = false,
       _theoreticalShiftProd3_validate = false,
@@ -51,6 +47,18 @@ class _AddSkuFormState extends State<AddSkuForm> {
 
   @override
   Widget build(BuildContext context) {
+    String cartonWeight = SKU.skuDetails[skuName]!.cartonWeight.toString(),
+        theoreticalShiftProd1 =
+            SKU.skuDetails[skuName]!.theoreticalShiftProd1.toString(),
+        theoreticalShiftProd2 =
+            SKU.skuDetails[skuName]!.theoreticalShiftProd2.toString(),
+        theoreticalShiftProd3 =
+            SKU.skuDetails[skuName]!.theoreticalShiftProd3.toString(),
+        theoreticalShiftProd4 =
+            SKU.skuDetails[skuName]!.theoreticalShiftProd4.toString(),
+        boxesPerCarton = SKU.skuDetails[skuName]!.boxesPerCarton.toString(),
+        targetScrap = SKU.skuDetails[skuName]!.targetScrap.toString(),
+        targetFilmWaste = SKU.skuDetails[skuName]!.targetFilmWaste.toString();
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: SafeArea(
@@ -85,7 +93,9 @@ class _AddSkuFormState extends State<AddSkuForm> {
                       children: [
                         smallerHeading('SKU Name'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: skuName,
+                          readOnly: true,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -93,6 +103,7 @@ class _AddSkuFormState extends State<AddSkuForm> {
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
+                            labelText: uneditableLabelText,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.darkRed,
@@ -100,9 +111,6 @@ class _AddSkuFormState extends State<AddSkuForm> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _skuName_validate
-                                ? missingValueErrorText
-                                : null,
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
@@ -111,15 +119,13 @@ class _AddSkuFormState extends State<AddSkuForm> {
                                   Radius.circular(textFieldRadius)),
                             ),
                           ),
-                          onChanged: (value) {
-                            skuName = value;
-                          },
                         ),
                         SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////
                         smallerHeading('وزن الكرتونة بالكجم\nCarton Weight'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: cartonWeight,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -155,7 +161,8 @@ class _AddSkuFormState extends State<AddSkuForm> {
                         smallerHeading(
                             'عدد العلب في الكرتونة\nBoxes Per Carton'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: boxesPerCarton,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -193,7 +200,8 @@ class _AddSkuFormState extends State<AddSkuForm> {
                         smallerHeading(
                             'الانتاج المثالي في الوردية خط 1\nTheoretical Production Per Shift L1'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: theoreticalShiftProd1,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -229,7 +237,8 @@ class _AddSkuFormState extends State<AddSkuForm> {
                         smallerHeading(
                             'الانتاج المثالي في الوردية خط 2\nTheoretical Production Per Shift L2'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: theoreticalShiftProd2,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -265,7 +274,8 @@ class _AddSkuFormState extends State<AddSkuForm> {
                         smallerHeading(
                             'الانتاج المثالي في الوردية خط 3\nTheoretical Production Per Shift L3'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: theoreticalShiftProd3,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -301,7 +311,8 @@ class _AddSkuFormState extends State<AddSkuForm> {
                         smallerHeading(
                             'الانتاج المثالي في الوردية خط 4\nTheoretical Production Per Shift L4'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: theoreticalShiftProd4,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -336,7 +347,8 @@ class _AddSkuFormState extends State<AddSkuForm> {
                         /////////////////////////////////////////////////////////////////////////
                         smallerHeading('مستهدف الهالك للمنتج\nTarget Scrap'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: targetScrap,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -372,7 +384,8 @@ class _AddSkuFormState extends State<AddSkuForm> {
                         smallerHeading(
                             'مستهدف هالك التغليف للمنتج\nTarget Film Waste'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: targetFilmWaste,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -409,12 +422,11 @@ class _AddSkuFormState extends State<AddSkuForm> {
                           padding: const EdgeInsets.all(minimumPadding),
                           child: Center(
                             child: RoundedButton(
-                              btnText: 'Add Sku',
-                              color: KelloggColors.darkRed,
-                              onPressed: () async {
+                              btnText: 'Edit Sku',
+                              color: KelloggColors.darkBlue,
+                              onPressed: () {
                                 setState(() {
                                   showSpinner = true;
-                                  _skuName_validate = emptyField(skuName);
                                   _targetFilmWaste_validate =
                                       emptyField(targetFilmWaste);
                                   _cartonWeight_validate =
@@ -433,8 +445,7 @@ class _AddSkuFormState extends State<AddSkuForm> {
                                       emptyField(boxesPerCarton);
                                 });
                                 try {
-                                  if (!_skuName_validate &&
-                                      !_targetFilmWaste_validate &&
+                                  if (!_targetFilmWaste_validate &&
                                       !_cartonWeight_validate &&
                                       !_targetScrap_validate &&
                                       !_boxesPerCarton_validate &&
@@ -442,7 +453,8 @@ class _AddSkuFormState extends State<AddSkuForm> {
                                       !_theoreticalShiftProd2_validate &&
                                       !_theoreticalShiftProd3_validate &&
                                       !_theoreticalShiftProd4_validate) {
-                                    SKU.addSKU(
+                                    SKU.editSKU(
+                                      context,
                                       refNum,
                                       skuName,
                                       double.parse(cartonWeight),
@@ -454,17 +466,40 @@ class _AddSkuFormState extends State<AddSkuForm> {
                                       double.parse(targetFilmWaste),
                                       int.parse(boxesPerCarton),
                                     );
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SuccessScreen()));
                                   } else {
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
                                       content: Text(submissionErrorText),
                                     ));
                                   }
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                        //////////////////////////////////////////////////////////////////
+                        SizedBox(height: minimumPadding),
+                        Padding(
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                              btnText: 'Delete Sku',
+                              color: KelloggColors.cockRed,
+                              onPressed: () {
+                                setState(() {
+                                  showSpinner = true;
+                                });
+                                try {
+                                  SKU.deleteSku(
+                                    context,
+                                    refNum,
+                                    skuName,
+                                  );
                                   setState(() {
                                     showSpinner = false;
                                   });
