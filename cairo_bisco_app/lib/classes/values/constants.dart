@@ -61,6 +61,8 @@ const PRODUCTION_REPORT = 0;
 const QFS_REPORT = 1;
 const EHS_REPORT = 2;
 const OVERWEIGHT_REPORT = 3;
+const PEOPLE_REPORT = 4;
+const NRC_REPORT = 5;
 
 List<String> prodType = <String>[
   'Biscuits',

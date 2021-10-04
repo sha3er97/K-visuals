@@ -11,6 +11,7 @@ import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_biscuits_produc
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_maamoul_production_form.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_ehs_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_overweight_report.dart';
+import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_people_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_qfs_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_wafer_production_form.dart';
 import 'package:flutter/material.dart';
@@ -101,6 +102,15 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                               ),
                             ),
                           );
+                        } else if (type == PEOPLE_REPORT) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SupervisorPeopleReportForm(
+                                refNum: BISCUIT_AREA,
+                              ),
+                            ),
+                          );
                         }
                       },
                     ),
@@ -166,6 +176,15 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) =>
                                   SupervisorOverWeightReportForm(
+                                refNum: WAFER_AREA,
+                              ),
+                            ),
+                          );
+                        } else if (type == PEOPLE_REPORT) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SupervisorPeopleReportForm(
                                 refNum: WAFER_AREA,
                               ),
                             ),
@@ -238,6 +257,15 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) =>
                                   SupervisorOverWeightReportForm(
+                                refNum: MAAMOUL_AREA,
+                              ),
+                            ),
+                          );
+                        } else if (type == PEOPLE_REPORT) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SupervisorPeopleReportForm(
                                 refNum: MAAMOUL_AREA,
                               ),
                             ),
