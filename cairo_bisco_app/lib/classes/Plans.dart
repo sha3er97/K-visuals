@@ -7,6 +7,7 @@ class Plans {
   static double targetOEE = 20.0;
   static double mpsaTarget = 20.0;
   static double scrapKgCost = 10.5;
+  static double target_absence = 0.1;
   static int monthlyNearMissTarget = 5;
   static int mediumRisksBoundary = 5;
   static int highRisksBoundary = 12;
@@ -20,6 +21,7 @@ class Plans {
     int monthlyNearMissTarget,
     int mediumRisksBoundary,
     int highRisksBoundary,
+    double target_absence,
   ) {
     return FirebaseFirestore.instance
         .collection(factory_name)
@@ -32,6 +34,7 @@ class Plans {
           'monthlyNearMissTarget': monthlyNearMissTarget,
           'mediumRisksBoundary': mediumRisksBoundary,
           'highRisksBoundary': highRisksBoundary,
+          'target_absence': target_absence,
         })
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -65,6 +68,7 @@ class Plans {
             documentSnapshot["mediumRisksBoundary"].toInt();
         Plans.highRisksBoundary = documentSnapshot["highRisksBoundary"].toInt();
         Plans.mpsaTarget = documentSnapshot["mpsaTarget"].toDouble();
+        Plans.target_absence = documentSnapshot["target_absence"].toDouble();
       } else {
         print('Document does not exist on the database');
       }

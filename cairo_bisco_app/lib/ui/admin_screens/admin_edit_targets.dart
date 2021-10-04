@@ -22,6 +22,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
       monthlyNearMissTarget = Plans.monthlyNearMissTarget.toString(),
       mediumRisksBoundary = Plans.mediumRisksBoundary.toString(),
       highRisksBoundary = Plans.highRisksBoundary.toString(),
+      target_absence = Plans.target_absence.toString(),
       mpsaTarget = Plans.mpsaTarget.toString();
 
   bool _targetOverWeightAbove_validate = false,
@@ -30,6 +31,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
       _monthlyNearMissTarget_validate = false,
       _mediumRisksBoundary_validate = false,
       _highRisksBoundary_validate = false,
+      _target_absence_validate = false,
       _mpsaTarget_validate = false;
 
   @override
@@ -377,6 +379,51 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                         ),
                         SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            adminHeading('Maximum Absence Target :'),
+                            SizedBox(width: minimumPadding),
+                            Expanded(
+                              child: TextFormField(
+                                initialValue: Plans.target_absence.toString(),
+                                style: (TextStyle(
+                                    color: KelloggColors.darkBlue,
+                                    fontWeight: FontWeight.w400)),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                cursorColor: Colors.white,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: KelloggColors.darkBlue,
+                                        width: textFieldBorderRadius),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(textFieldRadius)),
+                                  ),
+                                  errorText: _target_absence_validate
+                                      ? missingValueErrorText
+                                      : null,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: KelloggColors.yellow,
+                                        width: textFieldFocusedBorderRadius),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(textFieldRadius)),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  target_absence = value;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////
                         Padding(
                           padding: const EdgeInsets.all(minimumPadding),
                           child: Center(
@@ -398,6 +445,8 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                   _targetOEE_validate = emptyField(targetOEE);
                                   _targetOverWeightAbove_validate =
                                       emptyField(targetOverWeightAbove);
+                                  _target_absence_validate =
+                                      emptyField(target_absence);
                                 });
                                 try {
                                   if (!_highRisksBoundary_validate &&
@@ -416,6 +465,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                       int.parse(monthlyNearMissTarget),
                                       int.parse(mediumRisksBoundary),
                                       int.parse(highRisksBoundary),
+                                      double.parse(target_absence),
                                     );
                                   } else {
                                     ScaffoldMessenger.of(context)
