@@ -8,8 +8,9 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_biscuits_production_form.dart';
-import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_maamoul_production_form.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_ehs_report.dart';
+import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_maamoul_production_form.dart';
+import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_nrc_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_overweight_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_people_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_qfs_report.dart';
@@ -111,6 +112,15 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                               ),
                             ),
                           );
+                        } else if (type == NRC_REPORT) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SupervisorNRCReportForm(
+                                refNum: BISCUIT_AREA,
+                              ),
+                            ),
+                          );
                         }
                       },
                     ),
@@ -185,6 +195,15 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => SupervisorPeopleReportForm(
+                                refNum: WAFER_AREA,
+                              ),
+                            ),
+                          );
+                        } else if (type == NRC_REPORT) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SupervisorNRCReportForm(
                                 refNum: WAFER_AREA,
                               ),
                             ),
@@ -266,6 +285,15 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => SupervisorPeopleReportForm(
+                                refNum: MAAMOUL_AREA,
+                              ),
+                            ),
+                          );
+                        } else if (type == NRC_REPORT) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SupervisorNRCReportForm(
                                 refNum: MAAMOUL_AREA,
                               ),
                             ),

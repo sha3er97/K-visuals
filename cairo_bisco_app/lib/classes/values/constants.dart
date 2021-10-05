@@ -50,6 +50,8 @@ const appName = 'K Visuals';
 const submissionErrorText = "Error in submission .. incomplete report";
 const notPercentErrorText = "النسبة لا يمكن ان تتخطي ال100%";
 const missingValueErrorText = 'هذه الخانة ضرورية';
+const conditionalMissingValueErrorText =
+    'هذه الخانة ضرورية اذا كان العدد اكبر من صفر';
 const uneditableLabelText = 'Uneditable';
 
 /** MACROS **/

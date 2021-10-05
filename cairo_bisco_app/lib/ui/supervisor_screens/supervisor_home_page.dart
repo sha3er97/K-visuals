@@ -4,6 +4,8 @@
     qfs
     ehs
     overweight
+    people
+    NRC
  *********************************/
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
@@ -312,7 +314,7 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                           padding: EdgeInsets.symmetric(
                               horizontal: defaultPadding,
                               vertical: minimumPadding),
-                          primary: KelloggColors.cockRed.withOpacity(0.5),
+                          primary: KelloggColors.yellow.withOpacity(0.5),
                         ),
                         icon: ClipRRect(
                           borderRadius: BorderRadius.circular(iconImageBorder),
@@ -333,6 +335,68 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                                   builder: (context) =>
                                       SupervisorChooseAreaPage(
                                           type: PEOPLE_REPORT)));
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            /////////////////sixth button///////////////////
+            Padding(
+              padding: const EdgeInsets.all(minimumPadding),
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(
+                        width: TightBoxWidth, height: LargeBoxHeight),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment(0.99, 0.0),
+                          // 10% of the width, so there are ten blinds.
+                          colors: const <Color>[
+                            KelloggColors.grey,
+                            KelloggColors.white
+                          ],
+                          // red to yellow
+                          tileMode: TileMode
+                              .repeated, // repeats the gradient over the canvas
+                        ),
+                      ),
+                      child: ElevatedButton.icon(
+                        label: Text(
+                          'NRC Report\n تقرير الموارد الطبيعية',
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          textStyle: TextStyle(
+                              fontSize: largeFontSize, fontFamily: 'MyFont'),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: defaultPadding,
+                              vertical: minimumPadding),
+                          primary: KelloggColors.darkBlue.withOpacity(0.5),
+                        ),
+                        icon: ClipRRect(
+                          borderRadius: BorderRadius.circular(iconImageBorder),
+                          child: Container(
+                            height: mediumIconSize,
+                            width: mediumIconSize,
+                            padding: EdgeInsets.all(minimumPadding / 2),
+                            child: new Image.asset(
+                              'images/nrc.png',
+                              color: KelloggColors.white,
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      SupervisorChooseAreaPage(
+                                          type: NRC_REPORT)));
                         },
                       ),
                     ),

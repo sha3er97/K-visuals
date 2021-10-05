@@ -20,11 +20,3 @@ bool isAdmin(String email, String password) {
 bool noEmptyValues(String email, String password) {
   return email.trim().isNotEmpty && password.trim().isNotEmpty;
 }
-
-bool emptyField(String val) {
-  return val.trim().isEmpty;
-}
-
-bool isNotPercent(String val) {
-  return double.parse(val).abs() > 100.0;
-}
