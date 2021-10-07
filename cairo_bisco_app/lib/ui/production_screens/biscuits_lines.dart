@@ -104,8 +104,8 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: overWeightReportRef.snapshots(),
+                    FutureBuilder<QuerySnapshot>(
+                        future: overWeightReportRef.get(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
                           if (overweightSnapshot.hasError) {
@@ -129,8 +129,8 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                               BISCUIT_AREA,
                               1,
                             );
-                            return StreamBuilder<QuerySnapshot>(
-                              stream: biscuitsReportRef.snapshots(),
+                            return FutureBuilder<QuerySnapshot>(
+                              future: biscuitsReportRef.get(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot>
                                       productionSnapshot) {
@@ -199,8 +199,8 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: overWeightReportRef.snapshots(),
+                    FutureBuilder<QuerySnapshot>(
+                        future: overWeightReportRef.get(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
                           if (overweightSnapshot.hasError) {
@@ -224,8 +224,8 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                               BISCUIT_AREA,
                               2,
                             );
-                            return StreamBuilder<QuerySnapshot>(
-                              stream: biscuitsReportRef.snapshots(),
+                            return FutureBuilder<QuerySnapshot>(
+                              future: biscuitsReportRef.get(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot>
                                       productionSnapshot) {
@@ -294,8 +294,8 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: overWeightReportRef.snapshots(),
+                    FutureBuilder<QuerySnapshot>(
+                        future: overWeightReportRef.get(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
                           if (overweightSnapshot.hasError) {
@@ -319,8 +319,8 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                               BISCUIT_AREA,
                               3,
                             );
-                            return StreamBuilder<QuerySnapshot>(
-                              stream: biscuitsReportRef.snapshots(),
+                            return FutureBuilder<QuerySnapshot>(
+                              future: biscuitsReportRef.get(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot>
                                       productionSnapshot) {
@@ -389,8 +389,8 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: overWeightReportRef.snapshots(),
+                    FutureBuilder<QuerySnapshot>(
+                        future: overWeightReportRef.get(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
                           if (overweightSnapshot.hasError) {
@@ -414,8 +414,8 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                               BISCUIT_AREA,
                               4,
                             );
-                            return StreamBuilder<QuerySnapshot>(
-                              stream: biscuitsReportRef.snapshots(),
+                            return FutureBuilder<QuerySnapshot>(
+                              future: biscuitsReportRef.get(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot>
                                       productionSnapshot) {
@@ -484,8 +484,8 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: overWeightReportRef.snapshots(),
+                    FutureBuilder<QuerySnapshot>(
+                        future: overWeightReportRef.get(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
                           if (overweightSnapshot.hasError) {
@@ -509,8 +509,8 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                               BISCUIT_AREA,
                               -1,
                             );
-                            return StreamBuilder<QuerySnapshot>(
-                              stream: biscuitsReportRef.snapshots(),
+                            return FutureBuilder<QuerySnapshot>(
+                              future: biscuitsReportRef.get(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot>
                                       productionSnapshot) {

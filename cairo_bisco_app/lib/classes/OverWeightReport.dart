@@ -106,21 +106,21 @@ class OverWeightReport {
         //all shifts in one line in one area
         temp_percent += report.data().percent;
         valid_reports_count++;
-        // print('debug :: OverWeightReport chosen in first if');
+        print('debug :: OverWeightReport chosen in first if');
       } else if (lineNumRequired == -1 &&
           areaRequired != -1 &&
           report.data().area == areaRequired) {
         // all shifts all lines in one area
         temp_percent += report.data().percent;
         valid_reports_count++;
-        // print('debug :: OverWeightReport chosen in second if');
+        print('debug :: OverWeightReport chosen in second if');
       } else if (areaRequired == -1) {
         // all shifts all lines all areas
         temp_percent += report.data().percent;
         valid_reports_count++;
-        // print('debug :: OverWeightReport chosen in third if');
+        print('debug :: OverWeightReport chosen in third if');
       } else {
-        // print('debug :: OverWeightReport filtered out due to conditions');
+        print('debug :: OverWeightReport filtered out due to conditions');
       }
     }
     //return the total in capsulized form

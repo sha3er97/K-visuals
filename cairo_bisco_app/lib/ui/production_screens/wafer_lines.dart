@@ -104,8 +104,8 @@ class _WaferLinesState extends State<WaferLines> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: overWeightReportRef.snapshots(),
+                    FutureBuilder<QuerySnapshot>(
+                        future: overWeightReportRef.get(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
                           if (overweightSnapshot.hasError) {
@@ -129,8 +129,8 @@ class _WaferLinesState extends State<WaferLines> {
                               WAFER_AREA,
                               1,
                             );
-                            return StreamBuilder<QuerySnapshot>(
-                              stream: waferReportRef.snapshots(),
+                            return FutureBuilder<QuerySnapshot>(
+                              future: waferReportRef.get(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot>
                                       productionSnapshot) {
@@ -197,8 +197,8 @@ class _WaferLinesState extends State<WaferLines> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: overWeightReportRef.snapshots(),
+                    FutureBuilder<QuerySnapshot>(
+                        future: overWeightReportRef.get(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
                           if (overweightSnapshot.hasError) {
@@ -222,8 +222,8 @@ class _WaferLinesState extends State<WaferLines> {
                               WAFER_AREA,
                               2,
                             );
-                            return StreamBuilder<QuerySnapshot>(
-                              stream: waferReportRef.snapshots(),
+                            return FutureBuilder<QuerySnapshot>(
+                              future: waferReportRef.get(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot>
                                       productionSnapshot) {
@@ -290,8 +290,8 @@ class _WaferLinesState extends State<WaferLines> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: overWeightReportRef.snapshots(),
+                    FutureBuilder<QuerySnapshot>(
+                        future: overWeightReportRef.get(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
                           if (overweightSnapshot.hasError) {
@@ -315,8 +315,8 @@ class _WaferLinesState extends State<WaferLines> {
                               WAFER_AREA,
                               3,
                             );
-                            return StreamBuilder<QuerySnapshot>(
-                              stream: waferReportRef.snapshots(),
+                            return FutureBuilder<QuerySnapshot>(
+                              future: waferReportRef.get(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot>
                                       productionSnapshot) {
@@ -383,8 +383,8 @@ class _WaferLinesState extends State<WaferLines> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: overWeightReportRef.snapshots(),
+                    FutureBuilder<QuerySnapshot>(
+                        future: overWeightReportRef.get(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
                           if (overweightSnapshot.hasError) {
@@ -408,8 +408,8 @@ class _WaferLinesState extends State<WaferLines> {
                               WAFER_AREA,
                               4,
                             );
-                            return StreamBuilder<QuerySnapshot>(
-                              stream: waferReportRef.snapshots(),
+                            return FutureBuilder<QuerySnapshot>(
+                              future: waferReportRef.get(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot>
                                       productionSnapshot) {
@@ -476,8 +476,8 @@ class _WaferLinesState extends State<WaferLines> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: overWeightReportRef.snapshots(),
+                    FutureBuilder<QuerySnapshot>(
+                        future: overWeightReportRef.get(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
                           if (overweightSnapshot.hasError) {
@@ -499,10 +499,10 @@ class _WaferLinesState extends State<WaferLines> {
                               int.parse(to_day),
                               int.parse(chosenYear),
                               WAFER_AREA,
-                              1,
+                              -1,
                             );
-                            return StreamBuilder<QuerySnapshot>(
-                              stream: waferReportRef.snapshots(),
+                            return FutureBuilder<QuerySnapshot>(
+                              future: waferReportRef.get(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot>
                                       productionSnapshot) {
@@ -520,13 +520,13 @@ class _WaferLinesState extends State<WaferLines> {
                                             QueryDocumentSnapshot<WaferReport>>;
                                     MiniProductionReport temp_report =
                                         WaferReport.getFilteredReportOfInterval(
-                                      reportsList,
+                                          reportsList,
                                       int.parse(from_month),
                                       int.parse(to_month),
                                       int.parse(from_day),
                                       int.parse(to_day),
                                       int.parse(chosenYear),
-                                      1,
+                                      -1,
                                     );
                                     return Center(
                                         child: ProductionLine(

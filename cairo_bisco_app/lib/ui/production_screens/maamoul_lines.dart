@@ -96,8 +96,8 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: overWeightReportRef.snapshots(),
+                    FutureBuilder<QuerySnapshot>(
+                        future: overWeightReportRef.get(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
                           if (overweightSnapshot.hasError) {
@@ -121,8 +121,8 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                               MAAMOUL_AREA,
                               1,
                             );
-                            return StreamBuilder<QuerySnapshot>(
-                              stream: maamoulReportRef.snapshots(),
+                            return FutureBuilder<QuerySnapshot>(
+                              future: maamoulReportRef.get(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot>
                                       productionSnapshot) {
@@ -191,8 +191,8 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: overWeightReportRef.snapshots(),
+                    FutureBuilder<QuerySnapshot>(
+                        future: overWeightReportRef.get(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
                           if (overweightSnapshot.hasError) {
@@ -216,8 +216,8 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                               MAAMOUL_AREA,
                               2,
                             );
-                            return StreamBuilder<QuerySnapshot>(
-                              stream: maamoulReportRef.snapshots(),
+                            return FutureBuilder<QuerySnapshot>(
+                              future: maamoulReportRef.get(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot>
                                       productionSnapshot) {
@@ -286,8 +286,8 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: overWeightReportRef.snapshots(),
+                    FutureBuilder<QuerySnapshot>(
+                        future: overWeightReportRef.get(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
                           if (overweightSnapshot.hasError) {
@@ -311,8 +311,8 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                               MAAMOUL_AREA,
                               -1,
                             );
-                            return StreamBuilder<QuerySnapshot>(
-                              stream: maamoulReportRef.snapshots(),
+                            return FutureBuilder<QuerySnapshot>(
+                              future: maamoulReportRef.get(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot>
                                       productionSnapshot) {
