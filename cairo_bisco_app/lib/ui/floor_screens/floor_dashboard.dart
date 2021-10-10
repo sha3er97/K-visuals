@@ -45,43 +45,43 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
       .doc('quality_reports')
       .collection(getYear())
       .withConverter<QfsReport>(
-    fromFirestore: (snapshot, _) => QfsReport.fromJson(snapshot.data()!),
-    toFirestore: (report, _) => report.toJson(),
-  );
+        fromFirestore: (snapshot, _) => QfsReport.fromJson(snapshot.data()!),
+        toFirestore: (report, _) => report.toJson(),
+      );
   final ehsReportRef = FirebaseFirestore.instance
       .collection(factory_name)
       .doc('ehs_reports')
       .collection(getYear())
       .withConverter<EhsReport>(
-    fromFirestore: (snapshot, _) => EhsReport.fromJson(snapshot.data()!),
-    toFirestore: (report, _) => report.toJson(),
-  );
+        fromFirestore: (snapshot, _) => EhsReport.fromJson(snapshot.data()!),
+        toFirestore: (report, _) => report.toJson(),
+      );
   final biscuitsReportRef = FirebaseFirestore.instance
       .collection(factory_name)
       .doc('biscuits_reports')
       .collection(getYear())
       .withConverter<BiscuitsReport>(
-    fromFirestore: (snapshot, _) =>
-        BiscuitsReport.fromJson(snapshot.data()!),
-    toFirestore: (report, _) => report.toJson(),
-  );
+        fromFirestore: (snapshot, _) =>
+            BiscuitsReport.fromJson(snapshot.data()!),
+        toFirestore: (report, _) => report.toJson(),
+      );
   final waferReportRef = FirebaseFirestore.instance
       .collection(factory_name)
       .doc('wafer_reports')
       .collection(getYear())
       .withConverter<WaferReport>(
-    fromFirestore: (snapshot, _) => WaferReport.fromJson(snapshot.data()!),
-    toFirestore: (report, _) => report.toJson(),
-  );
+        fromFirestore: (snapshot, _) => WaferReport.fromJson(snapshot.data()!),
+        toFirestore: (report, _) => report.toJson(),
+      );
   final maamoulReportRef = FirebaseFirestore.instance
       .collection(factory_name)
       .doc('maamoul_reports')
       .collection(getYear())
       .withConverter<MaamoulReport>(
-    fromFirestore: (snapshot, _) =>
-        MaamoulReport.fromJson(snapshot.data()!),
-    toFirestore: (report, _) => report.toJson(),
-  );
+        fromFirestore: (snapshot, _) =>
+            MaamoulReport.fromJson(snapshot.data()!),
+        toFirestore: (report, _) => report.toJson(),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -122,8 +122,8 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                 switch (refNum) {
                   case BISCUIT_AREA:
                     List<QueryDocumentSnapshot<BiscuitsReport>>
-                    biscuitsReportsList = productionSnapshot.data!.docs
-                    as List<QueryDocumentSnapshot<BiscuitsReport>>;
+                        biscuitsReportsList = productionSnapshot.data!.docs
+                            as List<QueryDocumentSnapshot<BiscuitsReport>>;
                     temp_report = BiscuitsReport.getFilteredReportOfInterval(
                       biscuitsReportsList,
                       int.parse(getMonth()),
@@ -136,8 +136,8 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                     break;
                   case WAFER_AREA:
                     List<QueryDocumentSnapshot<WaferReport>> waferReportsList =
-                    productionSnapshot.data!.docs
-                    as List<QueryDocumentSnapshot<WaferReport>>;
+                        productionSnapshot.data!.docs
+                            as List<QueryDocumentSnapshot<WaferReport>>;
                     temp_report = WaferReport.getFilteredReportOfInterval(
                       waferReportsList,
                       int.parse(getMonth()),
@@ -150,8 +150,8 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                     break;
                   default: //case MAAMOUL_AREA :
                     List<QueryDocumentSnapshot<MaamoulReport>>
-                    maamoulReportsList = productionSnapshot.data!.docs
-                    as List<QueryDocumentSnapshot<MaamoulReport>>;
+                        maamoulReportsList = productionSnapshot.data!.docs
+                            as List<QueryDocumentSnapshot<MaamoulReport>>;
                     temp_report = MaamoulReport.getFilteredReportOfInterval(
                       maamoulReportsList,
                       int.parse(getMonth()),
@@ -205,20 +205,20 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                                 } else {
                                   try {
                                     List<QueryDocumentSnapshot<EhsReport>>
-                                    reportsList =
-                                    snapshot.data!.docs as List<
-                                        QueryDocumentSnapshot<EhsReport>>;
+                                        reportsList =
+                                        snapshot.data!.docs as List<
+                                            QueryDocumentSnapshot<EhsReport>>;
                                     // print("ehs ::" + reportsList.length.toString());
                                     EhsReport temp_ehs =
-                                    EhsReport.getFilteredReportOfInterval(
-                                        reportsList,
-                                        int.parse(getMonth()),
-                                        int.parse(getMonth()),
-                                        int.parse(getDay()),
-                                        int.parse(getDay()),
-                                        int.parse(getYear()),
-                                        prodType.indexOf(type),
-                                        lineNum);
+                                        EhsReport.getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(getMonth()),
+                                            int.parse(getMonth()),
+                                            int.parse(getDay()),
+                                            int.parse(getDay()),
+                                            int.parse(getYear()),
+                                            prodType.indexOf(type),
+                                            lineNum);
                                     return EHSColScreen(
                                       recordable_incidents:
                                           temp_ehs.recordable_incidents,
@@ -255,20 +255,20 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                                 } else {
                                   try {
                                     List<QueryDocumentSnapshot<QfsReport>>
-                                    reportsList =
-                                    snapshot.data!.docs as List<
-                                        QueryDocumentSnapshot<QfsReport>>;
+                                        reportsList =
+                                        snapshot.data!.docs as List<
+                                            QueryDocumentSnapshot<QfsReport>>;
                                     // print("qfs ::" + reportsList.length.toString());
                                     QfsReport temp_qfs =
-                                    QfsReport.getFilteredReportOfInterval(
-                                        reportsList,
-                                        int.parse(getMonth()),
-                                        int.parse(getMonth()),
-                                        int.parse(getDay()),
-                                        int.parse(getDay()),
-                                        int.parse(getYear()),
-                                        prodType.indexOf(type),
-                                        lineNum);
+                                        QfsReport.getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(getMonth()),
+                                            int.parse(getMonth()),
+                                            int.parse(getDay()),
+                                            int.parse(getDay()),
+                                            int.parse(getYear()),
+                                            prodType.indexOf(type),
+                                            lineNum);
                                     return QFSColScreen(
                                       report: temp_report,
                                       quality_incidents:

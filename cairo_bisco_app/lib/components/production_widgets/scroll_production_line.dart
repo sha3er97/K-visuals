@@ -59,7 +59,7 @@ class ProductionLine extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: minimumPadding),
+                      const EdgeInsets.symmetric(horizontal: minimumPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -81,7 +81,7 @@ class ProductionLine extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: minimumPadding),
+                      const EdgeInsets.symmetric(horizontal: minimumPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
