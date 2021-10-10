@@ -1,4 +1,6 @@
+import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
@@ -11,28 +13,24 @@ class QFSColScreen extends StatelessWidget {
     Key? key,
     required this.quality_incidents,
     required this.food_safety_incidents,
-    required this.scrap,
-    required this.productName,
-    required this.cartons,
+    required this.report,
   }) : super(key: key);
-  final int quality_incidents, food_safety_incidents, cartons;
-  final double scrap;
-  final String productName;
+  final int quality_incidents, food_safety_incidents;
+  final MiniProductionReport report;
 
   @override
   Widget build(BuildContext context) {
-    bool noWork = cartons == 0;
+    bool noWork = report.productionInCartons == 0;
 
     return Column(
       children: [
         Center(
           child: SizedBox(
-            width: 300,
-            height: 175,
+            width: TightBoxWidth,
+            height: logoHeight,
             child: new Image.asset(
               'images/logo.png',
-              // width: 300.0,
-              height: 175.0,
+              height: logoHeight,
               fit: BoxFit.scaleDown,
             ),
             // child: SvgPicture.asset('images/login.svg')
@@ -85,24 +83,25 @@ class QFSColScreen extends StatelessWidget {
           animationDuration: 2000,
           axes: <RadialAxis>[
             RadialAxis(minimum: 0, maximum: maxScrap, pointers: <GaugePointer>[
-              NeedlePointer(value: scrap, enableAnimation: true)
+              NeedlePointer(
+                  value: calculateScrapPercent(report), enableAnimation: true)
             ], ranges: <GaugeRange>[
               GaugeRange(
                   startValue: 0,
                   endValue: noWork
                       ? maxScrap / 2
-                      : SKU.skuDetails[productName]!.targetScrap,
+                      : SKU.skuDetails[report.skuName]!.targetScrap,
                   color: KelloggColors.successGreen),
               GaugeRange(
                   startValue: noWork
                       ? maxScrap / 2
-                      : SKU.skuDetails[productName]!.targetScrap,
+                      : SKU.skuDetails[report.skuName]!.targetScrap,
                   endValue: maxScrap,
                   color: KelloggColors.clearRed)
             ], annotations: <GaugeAnnotation>[
               GaugeAnnotation(
                   widget: Text(
-                    scrap.toStringAsFixed(1) + ' %',
+                    calculateScrapPercent(report).toStringAsFixed(1) + ' %',
                     style: TextStyle(
                         fontSize: largeFontSize, fontWeight: FontWeight.bold),
                   ),

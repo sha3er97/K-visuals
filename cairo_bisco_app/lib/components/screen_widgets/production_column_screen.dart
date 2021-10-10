@@ -1,5 +1,7 @@
+import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
 import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
@@ -9,29 +11,30 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 class ProductionColScreen extends StatelessWidget {
   const ProductionColScreen({
     Key? key,
-    required this.cartons,
-    required this.targetProd,
-    required this.oee,
-    required this.scrap,
-    required this.prodType,
     required this.lineNum,
-    required this.productName,
+    required this.report,
+    required this.prodType,
   }) : super(key: key);
-  final double scrap, oee;
-  final int lineNum, cartons, targetProd;
-  final String prodType, productName;
+  final MiniProductionReport report;
+
+  final int lineNum;
+  final String prodType;
 
   @override
   Widget build(BuildContext context) {
-    bool noWork = cartons == 0;
+    bool noWork = report.productionInCartons == 0;
 
-    double actual =
-        noWork ? 0 : cartons * SKU.skuDetails[productName]!.cartonWeight;
-    bool prodTargetDone = noWork || cartons - targetProd >= 0;
+    double actual = noWork
+        ? 0
+        : report.productionInCartons *
+            SKU.skuDetails[report.skuName]!.cartonWeight;
+    bool prodTargetDone =
+        noWork || report.productionInCartons - report.shiftProductionPlan >= 0;
     String arrowImg = prodTargetDone ? "up" : "down";
     String arrowImg2 = noWork
         ? "up"
-        : scrap < SKU.skuDetails[productName]!.targetScrap
+        : calculateScrapPercent(report) <
+                SKU.skuDetails[report.skuName]!.targetScrap
             ? "up"
             : "down";
 
@@ -73,7 +76,7 @@ class ProductionColScreen extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: minimumPadding),
+                  const EdgeInsets.symmetric(horizontal: minimumPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -85,7 +88,9 @@ class ProductionColScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subHeading((cartons / 1000).toStringAsFixed(1) + " الف "),
+                      subHeading((report.productionInCartons / 1000)
+                              .toStringAsFixed(1) +
+                          " الف "),
                     ],
                   ),
                 ),
@@ -93,7 +98,7 @@ class ProductionColScreen extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: minimumPadding),
+                  const EdgeInsets.symmetric(horizontal: minimumPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -160,7 +165,11 @@ class ProductionColScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     (prodTargetDone ? "" : "-") +
-                                        ((cartons - targetProd).abs() / 1000)
+                                        ((report.productionInCartons -
+                                                        report
+                                                            .shiftProductionPlan)
+                                                    .abs() /
+                                                1000)
                                             .toStringAsFixed(2) +
                                         " K",
                                     style: TextStyle(
@@ -194,9 +203,12 @@ class ProductionColScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     (prodTargetDone ? "" : "-") +
-                                        ((cartons - targetProd).abs() *
+                                        ((report.productionInCartons -
+                                                        report
+                                                            .shiftProductionPlan)
+                                                    .abs() *
                                                 100 /
-                                                targetProd)
+                                                report.shiftProductionPlan)
                                             .toStringAsFixed(1) +
                                         " %",
                                     style: TextStyle(
@@ -231,18 +243,19 @@ class ProductionColScreen extends StatelessWidget {
             animationDuration: 2000,
             axes: <RadialAxis>[
               RadialAxis(minimum: 0, maximum: 100, pointers: <GaugePointer>[
-                NeedlePointer(value: oee, enableAnimation: true)
+                NeedlePointer(
+                    value: calculateOEE(report), enableAnimation: true)
               ], ranges: <GaugeRange>[
                 GaugeRange(
                     startValue: Plans.targetOEE - 1,
                     endValue: Plans.targetOEE + 1,
                     color: KelloggColors.darkBlue),
                 // GaugeRange(startValue: 50, endValue: 100, color: Colors.orange),
-                // GaugeRange(startValue: 100, endValue: 150, color: Colors.red)
+                // GaugeRange(startValue: 100, endValue: regularBoxHeight, color: Colors.red)
               ], annotations: <GaugeAnnotation>[
                 GaugeAnnotation(
                     widget: Text(
-                      oee.toStringAsFixed(1) + ' %',
+                      calculateOEE(report).toStringAsFixed(1) + ' %',
                       style: TextStyle(
                           fontSize: largeFontSize, fontWeight: FontWeight.bold),
                     ),
@@ -261,29 +274,26 @@ class ProductionColScreen extends StatelessWidget {
           SizedBox(height: defaultPadding),
           Center(
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  //or 15.0
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
                   child: ConstrainedBox(
-                      constraints: BoxConstraints.tightFor(height: 150),
+                      constraints:
+                          BoxConstraints.tightFor(height: regularBoxHeight),
                       child: ElevatedButton.icon(
                         label: Text(" الف جنيه " +
-                            (scrap * Plans.scrapKgCost).toStringAsFixed(1)),
+                            calculateScrapMoney(report.scrap)
+                                .toStringAsFixed(1)),
                         style: ElevatedButton.styleFrom(
                           textStyle: TextStyle(
                               fontSize: largeButtonFont, fontFamily: 'MyFont'),
-                          primary: scrap <
-                                  (noWork
-                                      ? maxScrap / 2
-                                      : SKU
-                                          .skuDetails[productName]!.targetScrap)
-                              ? KelloggColors.green
-                              : KelloggColors.cockRed,
+                          primary: BadFinanceDriver(report)
+                              ? KelloggColors.cockRed
+                              : KelloggColors.green,
                         ),
                         icon: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0), //or 15.0
+                          borderRadius: BorderRadius.circular(iconImageBorder),
                           child: Container(
-                            height: 50.0,
-                            width: 50.0,
+                            height: mediumIconSize,
+                            width: mediumIconSize,
                             padding: EdgeInsets.all(minimumPadding / 2),
                             child: new Image.asset(
                               'images/$arrowImg2.png',

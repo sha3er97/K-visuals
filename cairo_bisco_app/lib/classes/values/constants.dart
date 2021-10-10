@@ -1,5 +1,5 @@
 /** version number**/
-const versionNum = '1.6.1'; //edit also in pubspec.yaml
+const versionNum = '1.7.0'; //edit also in pubspec.yaml
 
 /** ui design constants **/
 const dummyChartExtra = 1.0;
@@ -38,11 +38,16 @@ const mediumIconSize = 50.0;
 const regularBoxHeight = 150.0;
 const LargeBoxHeight = 200.0;
 const TightBoxWidth = 300.0;
+const logoHeight = 175.0;
+
+/** time constants in seconds **/
+const splashScreenDuration = 3;
+const FloorScreenSwitchTime = 10; //30 seconds
 
 /** factory constants **/
 const maxScrap = 20.0;
 const maxFilmWaste = 20.0;
-const monthDays = 28.0;
+const monthDays = 28.0; // month is 28 days
 const factory_name = "bisco_cairo";
 const appName = 'K Visuals';
 

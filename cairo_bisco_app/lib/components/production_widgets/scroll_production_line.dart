@@ -1,3 +1,4 @@
+import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
 import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
@@ -10,36 +11,35 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 class ProductionLine extends StatelessWidget {
   const ProductionLine({
     Key? key,
-    required this.cartons,
-    required this.oee,
-    required this.scrap,
     required this.overweight,
-    required this.filmWaste,
-    required this.productName,
-    required this.targetProd,
-    required this.money,
+    required this.report,
   }) : super(key: key);
+  final MiniProductionReport report;
 
-  final String productName;
-  final int cartons, targetProd;
-  final double oee, scrap, overweight, filmWaste, money;
+  final double overweight;
 
   @override
   Widget build(BuildContext context) {
-    bool noWork = cartons == 0;
-    double actual =
-        noWork ? 0 : cartons * SKU.skuDetails[productName]!.cartonWeight;
-    bool prodTargetDone = noWork || cartons - targetProd >= 0;
+    bool noWork = report.productionInCartons == 0;
+    double actual = noWork
+        ? 0
+        : report.productionInCartons *
+            SKU.skuDetails[report.skuName]!.cartonWeight;
+    bool prodTargetDone =
+        noWork || report.productionInCartons - report.shiftProductionPlan >= 0;
     String arrowImg = prodTargetDone ? "up" : "down";
-    String arrowImg2 = overweight < Plans.targetOverWeightAbove ? "up" : "down";
+    String arrowImg2 = BadOverweightDriver(overweight) ? "down" : "up";
     String arrowImg3 = noWork
         ? "up"
-        : scrap < SKU.skuDetails[productName]!.targetScrap
+        : calculateScrapPercent(report) <
+                SKU.skuDetails[report.skuName]!.targetScrap
             ? "up"
             : "down";
     String arrowImg4 = noWork
         ? "up"
-        : calculateMPSA(targetProd, cartons) > Plans.mpsaTarget
+        : calculateMPSA(
+                    report.shiftProductionPlan, report.productionInCartons) >
+                Plans.mpsaTarget
             ? "up"
             : "down";
 
@@ -51,7 +51,7 @@ class ProductionLine extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-            child: subHeading(productName),
+            child: subHeading(report.skuName),
           ),
           SizedBox(height: defaultPadding),
           Row(
@@ -59,19 +59,21 @@ class ProductionLine extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: minimumPadding),
+                  const EdgeInsets.symmetric(horizontal: minimumPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Cartons",
+                        "report.productionInCartons",
                         style: TextStyle(
                           color: KelloggColors.grey,
                           fontSize: minimumFontSize,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subHeading((cartons / 1000).toStringAsFixed(1) + " K"),
+                      subHeading((report.productionInCartons / 1000)
+                              .toStringAsFixed(1) +
+                          " K"),
                     ],
                   ),
                 ),
@@ -79,7 +81,7 @@ class ProductionLine extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: minimumPadding),
+                  const EdgeInsets.symmetric(horizontal: minimumPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -146,7 +148,11 @@ class ProductionLine extends StatelessWidget {
                                 children: [
                                   Text(
                                     (prodTargetDone ? "" : "-") +
-                                        ((cartons - targetProd).abs() / 1000)
+                                        ((report.productionInCartons -
+                                                        report
+                                                            .shiftProductionPlan)
+                                                    .abs() /
+                                                1000)
                                             .toStringAsFixed(2) +
                                         " K",
                                     style: TextStyle(
@@ -180,9 +186,12 @@ class ProductionLine extends StatelessWidget {
                                 children: [
                                   Text(
                                     (prodTargetDone ? "" : "-") +
-                                        ((cartons - targetProd).abs() *
+                                        ((report.productionInCartons -
+                                                        report
+                                                            .shiftProductionPlan)
+                                                    .abs() *
                                                 100 /
-                                                targetProd)
+                                                report.shiftProductionPlan)
                                             .toStringAsFixed(1) +
                                         " %",
                                     style: TextStyle(
@@ -217,7 +226,8 @@ class ProductionLine extends StatelessWidget {
             animationDuration: 2000,
             axes: <RadialAxis>[
               RadialAxis(minimum: 0, maximum: 100, pointers: <GaugePointer>[
-                NeedlePointer(value: oee, enableAnimation: true)
+                NeedlePointer(
+                    value: calculateOEE(report), enableAnimation: true)
               ], ranges: <GaugeRange>[
                 GaugeRange(
                     startValue: Plans.targetOEE - 1,
@@ -228,7 +238,7 @@ class ProductionLine extends StatelessWidget {
               ], annotations: <GaugeAnnotation>[
                 GaugeAnnotation(
                     widget: Text(
-                      oee.toStringAsFixed(1) + ' %',
+                      calculateOEE(report).toStringAsFixed(1) + ' %',
                       style: TextStyle(
                           fontSize: largeFontSize, fontWeight: FontWeight.bold),
                     ),
@@ -252,26 +262,29 @@ class ProductionLine extends StatelessWidget {
                   minimum: 0,
                   maximum: maxScrap,
                   pointers: <GaugePointer>[
-                    NeedlePointer(value: scrap, enableAnimation: true)
+                    NeedlePointer(
+                        value: calculateScrapPercent(report),
+                        enableAnimation: true)
                   ],
                   ranges: <GaugeRange>[
                     GaugeRange(
                         startValue: 0,
                         endValue: noWork
                             ? maxScrap / 2
-                            : SKU.skuDetails[productName]!.targetScrap,
+                            : SKU.skuDetails[report.skuName]!.targetScrap,
                         color: KelloggColors.successGreen),
                     GaugeRange(
                         startValue: noWork
                             ? maxScrap / 2
-                            : SKU.skuDetails[productName]!.targetScrap,
+                            : SKU.skuDetails[report.skuName]!.targetScrap,
                         endValue: maxScrap,
                         color: KelloggColors.clearRed)
                   ],
                   annotations: <GaugeAnnotation>[
                     GaugeAnnotation(
                         widget: Text(
-                          scrap.toStringAsFixed(1) + ' %',
+                          calculateScrapPercent(report).toStringAsFixed(1) +
+                              ' %',
                           style: TextStyle(
                               fontSize: largeFontSize,
                               fontWeight: FontWeight.bold),
@@ -299,7 +312,7 @@ class ProductionLine extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     textStyle: TextStyle(
                         fontSize: largeButtonFont, fontFamily: 'MyFont'),
-                    primary: overweight < Plans.targetOverWeightAbove
+                    primary: BadOverweightDriver(overweight)
                         ? KelloggColors.green
                         : KelloggColors.cockRed,
                   ),
@@ -334,26 +347,32 @@ class ProductionLine extends StatelessWidget {
                   minimum: 0,
                   maximum: maxScrap,
                   pointers: <GaugePointer>[
-                    NeedlePointer(value: filmWaste, enableAnimation: true)
+                    NeedlePointer(
+                        value: calculateWastePercent(
+                            report.totalFilmUsed, report.totalFilmWasted),
+                        enableAnimation: true)
                   ],
                   ranges: <GaugeRange>[
                     GaugeRange(
                         startValue: 0,
                         endValue: noWork
                             ? maxFilmWaste / 2
-                            : SKU.skuDetails[productName]!.targetFilmWaste,
+                            : SKU.skuDetails[report.skuName]!.targetFilmWaste,
                         color: KelloggColors.successGreen),
                     GaugeRange(
                         startValue: noWork
                             ? maxFilmWaste / 2
-                            : SKU.skuDetails[productName]!.targetFilmWaste,
+                            : SKU.skuDetails[report.skuName]!.targetFilmWaste,
                         endValue: maxFilmWaste,
                         color: KelloggColors.clearRed)
                   ],
                   annotations: <GaugeAnnotation>[
                     GaugeAnnotation(
                         widget: Text(
-                          filmWaste.toStringAsFixed(1) + ' %',
+                          calculateWastePercent(report.totalFilmUsed,
+                                      report.totalFilmWasted)
+                                  .toStringAsFixed(1) +
+                              ' %',
                           style: TextStyle(
                               fontSize: largeFontSize,
                               fontWeight: FontWeight.bold),
@@ -377,15 +396,13 @@ class ProductionLine extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: BoxConstraints.tightFor(height: regularBoxHeight),
                 child: ElevatedButton.icon(
-                  label: Text((scrap * Plans.scrapKgCost).toStringAsFixed(1) +
-                      " K EGP "),
+                  label: Text(
+                      calculateScrapMoney(report.scrap).toStringAsFixed(1) +
+                          " K EGP "),
                   style: ElevatedButton.styleFrom(
                     textStyle: TextStyle(
                         fontSize: largeButtonFont, fontFamily: 'MyFont'),
-                    primary: scrap <
-                            (noWork
-                                ? maxScrap / 2
-                                : SKU.skuDetails[productName]!.targetScrap)
+                    primary: BadFinanceDriver(report)
                         ? KelloggColors.green
                         : KelloggColors.cockRed,
                   ),
@@ -420,15 +437,18 @@ class ProductionLine extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: BoxConstraints.tightFor(height: regularBoxHeight),
                 child: ElevatedButton.icon(
-                  label: Text(
-                      calculateMPSA(targetProd, cartons).toStringAsFixed(1) +
-                          " %"),
+                  label: Text(calculateMPSA(report.shiftProductionPlan,
+                              report.productionInCartons)
+                          .toStringAsFixed(1) +
+                      " %"),
                   style: ElevatedButton.styleFrom(
                     textStyle: TextStyle(
                         fontSize: largeButtonFont, fontFamily: 'MyFont'),
                     primary: noWork
                         ? KelloggColors.green
-                        : calculateMPSA(targetProd, cartons) > Plans.mpsaTarget
+                        : calculateMPSA(report.shiftProductionPlan,
+                                    report.productionInCartons) >
+                                Plans.mpsaTarget
                             ? KelloggColors.green
                             : KelloggColors.cockRed,
                   ),

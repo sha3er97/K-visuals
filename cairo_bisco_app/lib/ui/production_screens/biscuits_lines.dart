@@ -2,6 +2,7 @@ import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
 import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/Plans.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
@@ -159,28 +160,12 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                       1,
                                     );
                                     return Center(
-                                        child: ProductionLine(
-                                      cartons: temp_report.productionInCartons,
-                                      oee: (temp_report.productionInKg
-                                                  .toDouble() /
-                                              temp_report.theoreticalAverage) *
-                                          100,
-                                      scrap: temp_report.scrap *
-                                          100 /
-                                          (temp_report.scrap +
-                                              temp_report.rework +
-                                              temp_report.productionInKg),
-                                      money:
-                                          temp_report.scrap * Plans.scrapKgCost,
-                                      overweight:
-                                          temp_overweight_report.percent,
-                                      filmWaste: (temp_report.totalFilmWasted /
-                                              temp_report.totalFilmUsed) *
-                                          100,
-                                      targetProd:
-                                          temp_report.shiftProductionPlan,
-                                      productName: temp_report.skuName,
-                                    ));
+                                      child: ProductionLine(
+                                        report: temp_report,
+                                        overweight:
+                                            temp_overweight_report.percent,
+                                      ),
+                                    );
                                   } catch (e) {
                                     print(e);
                                     return ErrorMessageHeading(
@@ -254,28 +239,12 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                       2,
                                     );
                                     return Center(
-                                        child: ProductionLine(
-                                      cartons: temp_report.productionInCartons,
-                                      oee: (temp_report.productionInKg
-                                                  .toDouble() /
-                                              temp_report.theoreticalAverage) *
-                                          100,
-                                      scrap: temp_report.scrap *
-                                          100 /
-                                          (temp_report.scrap +
-                                              temp_report.rework +
-                                              temp_report.productionInKg),
-                                      money:
-                                          temp_report.scrap * Plans.scrapKgCost,
-                                      overweight:
-                                          temp_overweight_report.percent,
-                                      filmWaste: (temp_report.totalFilmWasted /
-                                              temp_report.totalFilmUsed) *
-                                          100,
-                                      targetProd:
-                                          temp_report.shiftProductionPlan,
-                                      productName: temp_report.skuName,
-                                    ));
+                                      child: ProductionLine(
+                                        report: temp_report,
+                                        overweight:
+                                            temp_overweight_report.percent,
+                                      ),
+                                    );
                                   } catch (e) {
                                     print(e);
                                     return ErrorMessageHeading(
@@ -349,28 +318,12 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                       3,
                                     );
                                     return Center(
-                                        child: ProductionLine(
-                                      cartons: temp_report.productionInCartons,
-                                      oee: (temp_report.productionInKg
-                                                  .toDouble() /
-                                              temp_report.theoreticalAverage) *
-                                          100,
-                                      scrap: temp_report.scrap *
-                                          100 /
-                                          (temp_report.scrap +
-                                              temp_report.rework +
-                                              temp_report.productionInKg),
-                                      money:
-                                          temp_report.scrap * Plans.scrapKgCost,
-                                      overweight:
-                                          temp_overweight_report.percent,
-                                      filmWaste: (temp_report.totalFilmWasted /
-                                              temp_report.totalFilmUsed) *
-                                          100,
-                                      targetProd:
-                                          temp_report.shiftProductionPlan,
-                                      productName: temp_report.skuName,
-                                    ));
+                                      child: ProductionLine(
+                                        report: temp_report,
+                                        overweight:
+                                            temp_overweight_report.percent,
+                                      ),
+                                    );
                                   } catch (e) {
                                     print(e);
                                     return ErrorMessageHeading(
@@ -444,28 +397,12 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                       4,
                                     );
                                     return Center(
-                                        child: ProductionLine(
-                                      cartons: temp_report.productionInCartons,
-                                      oee: (temp_report.productionInKg
-                                                  .toDouble() /
-                                              temp_report.theoreticalAverage) *
-                                          100,
-                                      scrap: temp_report.scrap *
-                                          100 /
-                                          (temp_report.scrap +
-                                              temp_report.rework +
-                                              temp_report.productionInKg),
-                                      money:
-                                          temp_report.scrap * Plans.scrapKgCost,
-                                      overweight:
-                                          temp_overweight_report.percent,
-                                      filmWaste: (temp_report.totalFilmWasted /
-                                              temp_report.totalFilmUsed) *
-                                          100,
-                                      targetProd:
-                                          temp_report.shiftProductionPlan,
-                                      productName: temp_report.skuName,
-                                    ));
+                                      child: ProductionLine(
+                                        report: temp_report,
+                                        overweight:
+                                            temp_overweight_report.percent,
+                                      ),
+                                    );
                                   } catch (e) {
                                     print(e);
                                     return ErrorMessageHeading(
@@ -539,28 +476,12 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                       -1,
                                     );
                                     return Center(
-                                        child: ProductionLine(
-                                      cartons: temp_report.productionInCartons,
-                                      oee: (temp_report.productionInKg
-                                                  .toDouble() /
-                                              temp_report.theoreticalAverage) *
-                                          100,
-                                      scrap: temp_report.scrap *
-                                          100 /
-                                          (temp_report.scrap +
-                                              temp_report.rework +
-                                              temp_report.productionInKg),
-                                      money:
-                                          temp_report.scrap * Plans.scrapKgCost,
-                                      overweight:
-                                          temp_overweight_report.percent,
-                                      filmWaste: (temp_report.totalFilmWasted /
-                                              temp_report.totalFilmUsed) *
-                                          100,
-                                      targetProd:
-                                          temp_report.shiftProductionPlan,
-                                      productName: temp_report.skuName,
-                                    ));
+                                      child: ProductionLine(
+                                        report: temp_report,
+                                        overweight:
+                                            temp_overweight_report.percent,
+                                      ),
+                                    );
                                   } catch (e) {
                                     print(e);
                                     return ErrorMessageHeading(

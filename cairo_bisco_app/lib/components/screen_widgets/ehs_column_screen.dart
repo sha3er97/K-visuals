@@ -1,5 +1,6 @@
-import 'package:cairo_bisco_app/classes/Plans.dart';
+import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
@@ -14,17 +15,14 @@ class EHSColScreen extends StatelessWidget {
     required this.firstAid_incidents,
     required this.recordable_incidents,
     required this.nearMiss,
-    required this.filmWaste,
-    required this.productName,
-    required this.cartons,
+    required this.report,
   }) : super(key: key);
-  final int firstAid_incidents, recordable_incidents, nearMiss, cartons;
-  final double filmWaste;
-  final String productName;
+  final int firstAid_incidents, recordable_incidents, nearMiss;
+  final MiniProductionReport report;
 
   @override
   Widget build(BuildContext context) {
-    bool noWork = cartons == 0;
+    bool noWork = report.productionInCartons == 0;
     int days_in_interval = 1; //screen shows 1 day only
 
     return Column(
@@ -76,11 +74,10 @@ class EHSColScreen extends StatelessWidget {
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: minimumPadding),
                   child: KPI1GoodBadIndicator(
-                    circleColor: nearMiss <
-                            (Plans.monthlyNearMissTarget / monthDays) *
-                                days_in_interval
-                        ? KelloggColors.cockRed
-                        : KelloggColors.green,
+                    circleColor:
+                        BadNearMissIndicator(nearMiss, days_in_interval)
+                            ? KelloggColors.cockRed
+                            : KelloggColors.green,
                     title: 'حوادث وشيكة',
                     circleText: nearMiss.toString(),
                   ),
@@ -101,24 +98,30 @@ class EHSColScreen extends StatelessWidget {
           animationDuration: 2000,
           axes: <RadialAxis>[
             RadialAxis(minimum: 0, maximum: maxScrap, pointers: <GaugePointer>[
-              NeedlePointer(value: filmWaste, enableAnimation: true)
+              NeedlePointer(
+                  value: calculateWastePercent(
+                      report.totalFilmUsed, report.totalFilmWasted),
+                  enableAnimation: true)
             ], ranges: <GaugeRange>[
               GaugeRange(
                   startValue: 0,
                   endValue: noWork
                       ? maxFilmWaste / 2
-                      : SKU.skuDetails[productName]!.targetFilmWaste,
+                      : SKU.skuDetails[report.skuName]!.targetFilmWaste,
                   color: KelloggColors.successGreen),
               GaugeRange(
                   startValue: noWork
                       ? maxFilmWaste / 2
-                      : SKU.skuDetails[productName]!.targetFilmWaste,
+                      : SKU.skuDetails[report.skuName]!.targetFilmWaste,
                   endValue: maxFilmWaste,
                   color: KelloggColors.clearRed)
             ], annotations: <GaugeAnnotation>[
               GaugeAnnotation(
                   widget: Text(
-                    filmWaste.toStringAsFixed(1) + ' %',
+                    calculateWastePercent(
+                                report.totalFilmUsed, report.totalFilmWasted)
+                            .toStringAsFixed(1) +
+                        ' %',
                     style: TextStyle(
                         fontSize: largeFontSize, fontWeight: FontWeight.bold),
                   ),

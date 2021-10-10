@@ -1,5 +1,6 @@
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
 import 'package:cairo_bisco_app/classes/Plans.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
@@ -468,14 +469,11 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
                                     margin: EdgeInsets.symmetric(
                                         vertical: minimumPadding),
                                     child: KPI1GoodBadIndicator(
-                                      circleColor:
-                                          temp_ehs.nearMiss.toDouble() <=
-                                                  (Plans.monthlyNearMissTarget
-                                                              .toDouble() /
-                                                          monthDays) *
-                                                      days_in_interval
-                                              ? KelloggColors.cockRed
-                                              : KelloggColors.green,
+                                      circleColor: BadNearMissIndicator(
+                                              temp_ehs.nearMiss,
+                                              days_in_interval)
+                                          ? KelloggColors.cockRed
+                                          : KelloggColors.green,
                                       title: 'Near Miss',
                                       circleText: temp_ehs.nearMiss.toString(),
                                     ),

@@ -13,6 +13,7 @@ import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
 import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
 import 'package:cairo_bisco_app/classes/WaferReport.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
@@ -534,10 +535,8 @@ class _HomeState extends State<HomePage> {
                           ? KelloggColors.cockRed
                           : KelloggColors.green,
                       title3: 'Recordable\nIncidents',
-                      color4: temp_ehs.nearMiss.toDouble() <=
-                              (Plans.monthlyNearMissTarget.toDouble() /
-                                      monthDays) *
-                                  days_in_interval
+                      color4: BadNearMissIndicator(
+                              temp_ehs.nearMiss, days_in_interval)
                           ? KelloggColors.cockRed
                           : KelloggColors.green,
                       title4: 'Near Miss',
