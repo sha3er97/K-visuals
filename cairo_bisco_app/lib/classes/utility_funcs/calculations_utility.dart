@@ -67,9 +67,14 @@ bool BadEHSDriver(EhsReport report) {
 }
 
 bool BadProductionDriver(MiniProductionReport report) {
-  return calculateMPSA(report.shiftProductionPlan, report.productionInCartons) <
-          Plans.mpsaTarget ||
-      calculateOEE(report) < Plans.targetOEE;
+  bool noWork = report.productionInCartons == 0;
+  if (noWork)
+    return false;
+  else
+    return calculateMPSA(
+                report.shiftProductionPlan, report.productionInCartons) <
+            Plans.mpsaTarget ||
+        calculateOEE(report) < Plans.targetOEE;
 }
 
 bool BadPeopleDriver(PeopleReport report) {
@@ -84,9 +89,10 @@ bool BadNRCDriver(NRCReport report) {
 
 bool BadFinanceDriver(MiniProductionReport report) {
   bool noWork = report.productionInCartons == 0;
-
-  return report.scrap <
-      (noWork ? maxScrap / 2 : SKU.skuDetails[report.skuName]!.targetScrap);
+  if (noWork)
+    return false;
+  else
+    return report.scrap < SKU.skuDetails[report.skuName]!.targetScrap;
 }
 
 bool BadOverweightDriver(double overweight) {

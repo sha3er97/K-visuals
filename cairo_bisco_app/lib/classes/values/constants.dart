@@ -27,6 +27,8 @@ const chartRadiusCircle111 = chartRadiusCircle11 + radiusDifference;
 const chartRadiusCircle1111 = chartRadiusCircle111 + radiusDifference;
 const chartRadiusCircle11111 = chartRadiusCircle1111 + radiusDifference;
 const chartInnerRadius = 70.0;
+const sectionedCircleRadiusMobile = 150.0;
+const sectionedCircleRadiusScreen = 250.0;
 
 //line widths
 const borderWidth = 2.0;
@@ -42,7 +44,8 @@ const logoHeight = 175.0;
 
 /** time constants in seconds **/
 const splashScreenDuration = 3;
-const FloorScreenSwitchTime = 10; //30 seconds
+const floorScreenWheelDuration = 30; //30 seconds
+const floorScreenDashBoardDuration = 90; //1.5 minutes
 
 /** factory constants **/
 const maxScrap = 20.0;

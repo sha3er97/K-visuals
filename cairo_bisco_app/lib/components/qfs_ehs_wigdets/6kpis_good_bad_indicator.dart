@@ -18,24 +18,23 @@ class KPI6GoodBadIndicator extends StatelessWidget {
     required this.title4,
     required this.title5,
     required this.title6,
+    required this.isScreenOnly,
   }) : super(key: key);
   final Color color1, color2, color3, color4, color5, color6;
   final String title1, title2, title3, title4, title5, title6;
-  final opacity = 0.99;
+  final opacity = 1.0;
+  final bool isScreenOnly;
 
   // int touchedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1.05,
+      aspectRatio: isScreenOnly ? 2.0 : 1.05,
       child: Card(
         // color: Colors.white,
         child: Row(
           children: <Widget>[
-            // const SizedBox(
-            //   height: 18,
-            // ),
             Expanded(
               child: AspectRatio(
                 aspectRatio: 1,
@@ -128,10 +127,12 @@ class KPI6GoodBadIndicator extends StatelessWidget {
 
   List<PieChartSectionData> showingSections() {
     return List.generate(6, (i) {
-      final fontSize = mediumFontSize;
-      final radius = 150.0;
+      final fontSize = isScreenOnly ? largeFontSize : mediumFontSize;
+      final radius = isScreenOnly
+          ? sectionedCircleRadiusScreen
+          : sectionedCircleRadiusMobile;
       final offset = 0.65;
-      final weight = FontWeight.w500;
+      final weight = isScreenOnly ? FontWeight.bold : FontWeight.w500;
       switch (i) {
         case 0:
           return PieChartSectionData(

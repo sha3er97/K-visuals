@@ -49,7 +49,7 @@ class ProductionColScreen extends StatelessWidget {
             child: Text(
               prodType,
               style: TextStyle(
-                color: KelloggColors.yellow,
+                color: KelloggColors.darkBlue,
                 fontSize: largeFontSize,
                 fontWeight: FontWeight.bold,
               ),

@@ -92,7 +92,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
     ];
     final int refNum = prodType.indexOf(type);
     Timer(
-        Duration(seconds: FloorScreenSwitchTime),
+        Duration(seconds: floorScreenDashBoardDuration),
         () => {
               Navigator.push(
                 context,
