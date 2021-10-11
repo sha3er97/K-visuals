@@ -477,8 +477,8 @@ class _HomeState extends State<HomePage> {
                       color4: temp_qfs.pes_index == 2
                           ? KelloggColors.cockRed
                           : temp_qfs.pes_index == 1
-                          ? KelloggColors.yellow
-                          : KelloggColors.green,
+                              ? KelloggColors.yellow
+                              : KelloggColors.green,
                       title4: 'PES\n(B&C Defects)',
                       color5: temp_qfs.consumer_complaints > 0
                           ? KelloggColors.cockRed
@@ -487,8 +487,8 @@ class _HomeState extends State<HomePage> {
                       color6: temp_qfs.g6_index == 2
                           ? KelloggColors.cockRed
                           : temp_qfs.g6_index == 1
-                          ? KelloggColors.yellow
-                          : KelloggColors.green,
+                              ? KelloggColors.yellow
+                              : KelloggColors.green,
                       title6: 'G6 Escalation',
                     );
                   } catch (e) {
@@ -538,15 +538,15 @@ class _HomeState extends State<HomePage> {
                           : KelloggColors.green,
                       title3: 'Recordable\nIncidents',
                       color4: BadNearMissIndicator(
-                          temp_ehs.nearMiss, days_in_interval)
+                              temp_ehs.nearMiss, days_in_interval)
                           ? KelloggColors.cockRed
                           : KelloggColors.green,
                       title4: 'Near Miss',
                       color5: temp_ehs.risk_assessment > Plans.highRisksBoundary
                           ? KelloggColors.cockRed
                           : temp_ehs.risk_assessment > Plans.mediumRisksBoundary
-                          ? KelloggColors.yellow
-                          : KelloggColors.green,
+                              ? KelloggColors.yellow
+                              : KelloggColors.green,
                       title5: 'pre-shift\nRisk\nAssessment',
                       color6: temp_ehs.s7_index == 1
                           ? KelloggColors.cockRed
