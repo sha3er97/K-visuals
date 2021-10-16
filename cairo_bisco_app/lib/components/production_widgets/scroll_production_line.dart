@@ -64,7 +64,7 @@ class ProductionLine extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "report.productionInCartons",
+                        "Cartons",
                         style: TextStyle(
                           color: KelloggColors.grey,
                           fontSize: minimumFontSize,
