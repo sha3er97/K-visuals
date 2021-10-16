@@ -6,7 +6,7 @@ Project for Bisco Misr Cairo Plant
 1. delete all contents of build/web
 
 2. Build for web :
-   > flutter build web --no-sound-null-safety
+   > flutter build web --web-renderer html --release --no-sound-null-safety
 3. Move build/web --> /public 3.1 Move firestore.indexes.json , firebase.json , firestore.rules -->
    /public - if changed -
 
