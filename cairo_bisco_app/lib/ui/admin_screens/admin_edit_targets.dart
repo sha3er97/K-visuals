@@ -1,5 +1,5 @@
 import 'package:cairo_bisco_app/classes/Plans.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/form_utilities.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';

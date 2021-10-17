@@ -19,10 +19,10 @@ Text subHeading(String title) {
   return Text(
     title,
     style: TextStyle(
-        color: KelloggColors.darkRed,
-        fontSize: largeFontSize,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 1.2),
+      color: KelloggColors.darkRed,
+      fontSize: largeFontSize,
+      fontWeight: FontWeight.bold,
+    ),
   );
 }
 

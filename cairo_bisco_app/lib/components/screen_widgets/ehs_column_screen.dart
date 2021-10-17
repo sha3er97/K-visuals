@@ -28,7 +28,8 @@ class EHSColScreen extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: minimumPadding),
-        Center(child: subHeading("تاريخ اليوم \n" + todayDateText())),
+        Center(child: subHeading("تاريخ اليوم")),
+        Center(child: subHeading(todayDateText())),
         sectionTitle('الامن و السلامة'),
         IntrinsicHeight(
           child: Row(

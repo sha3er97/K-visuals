@@ -90,7 +90,7 @@ class ProductionColScreen extends StatelessWidget {
                       ),
                       subHeading((report.productionInCartons / 1000)
                               .toStringAsFixed(1) +
-                          " الف "),
+                          " K "),
                     ],
                   ),
                 ),
@@ -110,7 +110,7 @@ class ProductionColScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subHeading((actual / 1000).toStringAsFixed(1) + " طن "),
+                      subHeading((actual / 1000).toStringAsFixed(1) + " K "),
                     ],
                   ),
                 ),
