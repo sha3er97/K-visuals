@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:convert';
+import 'dart:html' as html;
 
 import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
 import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
@@ -33,15 +35,26 @@ class ExcelUtilities {
     String from_month,
     String to_month,
   ) async {
-    String fileName = "";
+    String fileName =
+        "$areaName report $from_day-$from_month to $to_day-$to_month.xlsx";
     if (kIsWeb) {
       // running on the web!
+      // io.File file;
+      excel.encode().then((onValue) {
+        // file = io.File(fileName);
+        // final rawData = file.readAsBytesSync();
+        // final content = base64Encode(rawData);
+        // final blob = html.Blob([onValue], 'application/vnd.ms-excel');
+
+        final anchor =
+            html.AnchorElement(href: "application/vnd.ms-excel,$onValue")
+              ..setAttribute("download", fileName)
+              ..click();
+      });
     } else {
       // NOT running on the web! You can check for additional platforms here.
       if (await Permission.storage.request().isGranted) {
-        fileName = "/storage/emulated/0/Download" +
-            '/' +
-            "K Visuals/$areaName report $from_day-$from_month to $to_day-$to_month.xlsx";
+        fileName = "/storage/emulated/0/Download" + '/K viuals' + fileName;
         excel.encode().then((onValue) {
           File(fileName)
             ..createSync(recursive: true)
