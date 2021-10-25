@@ -244,7 +244,8 @@ class ProductionColScreen extends StatelessWidget {
             axes: <RadialAxis>[
               RadialAxis(minimum: 0, maximum: 100, pointers: <GaugePointer>[
                 NeedlePointer(
-                    value: calculateOEE(report), enableAnimation: true)
+                    value: calculateOeeFromMiniReport(report),
+                    enableAnimation: true)
               ], ranges: <GaugeRange>[
                 GaugeRange(
                     startValue: Plans.targetOEE - 1,
@@ -255,7 +256,8 @@ class ProductionColScreen extends StatelessWidget {
               ], annotations: <GaugeAnnotation>[
                 GaugeAnnotation(
                     widget: Text(
-                      calculateOEE(report).toStringAsFixed(1) + ' %',
+                      calculateOeeFromMiniReport(report).toStringAsFixed(1) +
+                          ' %',
                       style: TextStyle(
                           fontSize: largeFontSize, fontWeight: FontWeight.bold),
                     ),

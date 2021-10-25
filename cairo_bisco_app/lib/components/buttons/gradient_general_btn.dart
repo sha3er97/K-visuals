@@ -2,8 +2,8 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:flutter/material.dart';
 
-class AdminButton extends StatelessWidget {
-  AdminButton({
+class GradientGeneralButton extends StatelessWidget {
+  GradientGeneralButton({
     required this.gradientColor1,
     required this.gradientColor2,
     required this.mainColor,

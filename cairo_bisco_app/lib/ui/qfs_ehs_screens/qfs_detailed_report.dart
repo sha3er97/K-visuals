@@ -120,9 +120,10 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
               Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: defaultPadding),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Text(
                         "From : ",
                         style: TextStyle(
@@ -135,9 +136,10 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPadding),
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
                           children: [
                             DropdownButton<String>(
@@ -163,9 +165,10 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPadding),
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
                           children: [
                             DropdownButton<String>(
@@ -192,9 +195,10 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   Expanded(
                     flex: 2,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPadding),
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
                           children: [
                             DropdownButton<String>(
@@ -223,9 +227,10 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
               Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: defaultPadding),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Text(
                         "To :     ",
                         style: TextStyle(
@@ -238,9 +243,10 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPadding),
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
                           children: [
                             DropdownButton<String>(
@@ -266,9 +272,10 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPadding),
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
                           children: [
                             DropdownButton<String>(
@@ -295,9 +302,10 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   Expanded(
                     flex: 2,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPadding),
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
                           children: [
                             DropdownButton<String>(

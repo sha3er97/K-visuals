@@ -25,7 +25,6 @@ class BiscuitsReport {
       cutterRework,
       conveyorScrap,
       conveyorRework,
-      unPackedProducts,
       mc1Speed,
       mc2Speed,
       packingScrap,
@@ -55,7 +54,6 @@ class BiscuitsReport {
       required this.cutterRework,
       required this.conveyorScrap,
       required this.conveyorRework,
-      required this.unPackedProducts,
       required this.mc1Speed,
       required this.mc2Speed,
       required this.packingScrap,
@@ -92,7 +90,6 @@ class BiscuitsReport {
           cutterRework: parseJsonToDouble(json['cutterRework']!),
           conveyorScrap: parseJsonToDouble(json['conveyorScrap']!),
           conveyorRework: parseJsonToDouble(json['conveyorRework']!),
-          unPackedProducts: parseJsonToDouble(json['unPackedProducts']!),
           mc1Speed: parseJsonToDouble(json['mc1Speed']!),
           mc2Speed: parseJsonToDouble(json['mc2Speed']!),
           packingScrap: parseJsonToDouble(json['packingScrap']!),
@@ -127,7 +124,6 @@ class BiscuitsReport {
       'cutterRework': cutterRework,
       'conveyorScrap': conveyorScrap,
       'conveyorRework': conveyorRework,
-      'unPackedProducts': unPackedProducts,
       'mc1Speed': mc1Speed,
       'mc2Speed': mc2Speed,
       'packingScrap': packingScrap,
@@ -154,7 +150,6 @@ class BiscuitsReport {
     double cutterRework,
     double conveyorScrap,
     double conveyorRework,
-    double unPackedProducts,
     double mc1Speed,
     double mc2Speed,
     double packingScrap,
@@ -205,7 +200,6 @@ class BiscuitsReport {
         cutterRework: cutterRework,
         conveyorScrap: conveyorScrap,
         conveyorRework: conveyorRework,
-        unPackedProducts: unPackedProducts,
         mc1Speed: mc1Speed,
         mc2Speed: mc2Speed,
         packingScrap: packingScrap,
@@ -219,6 +213,34 @@ class BiscuitsReport {
         mc2WasteKg: mc2WasteKg,
       ),
     );
+  }
+
+  static List<BiscuitsReport> getAllReportsOfInterval(
+    List<QueryDocumentSnapshot<BiscuitsReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+  ) {
+    List<BiscuitsReport> tempList = [];
+    for (var report in reportsList) {
+      if (!isDayInInterval(
+        report.data().day,
+        report.data().month,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+        year,
+      )) {
+        print('debug :: BiscuitsReport filtered out due to its date --> ' +
+            report.data().day.toString());
+        continue;
+      }
+      tempList.add(report.data());
+    }
+    return tempList;
   }
 
   static MiniProductionReport getFilteredReportOfInterval(
@@ -266,23 +288,14 @@ class BiscuitsReport {
         print(theoreticals);
         //all shifts in one line in one area
         temp_productionInCartons += report.data().productionInCartons;
-        //TODO :: should add unpacked products ?
         temp_productionInKg += report.data().productionInCartons *
             SKU.skuDetails[report.data().skuName]!.cartonWeight;
 
         temp_theoreticalPlan += theoreticals[report.data().line_index - 1];
 
         temp_productionPlan += report.data().shiftProductionPlan;
-        temp_scrap += report.data().cutterScrap +
-            report.data().packingScrap +
-            report.data().conveyorScrap +
-            report.data().ovenScrap +
-            report.data().extrusionScrap;
-        temp_rework += report.data().packingRework +
-            report.data().conveyorRework +
-            report.data().cutterRework +
-            report.data().ovenRework +
-            report.data().extrusionRework;
+        temp_scrap += calculateAllScrap(BISCUIT_AREA, report.data());
+        temp_rework += calculateAllRework(BISCUIT_AREA, report.data());
         temp_wasted_film += report.data().mc2WasteKg + report.data().mc1WasteKg;
         temp_used_film += report.data().mc2FilmUsed + report.data().mc1FilmUsed;
         lastSkuName = report.data().skuName;

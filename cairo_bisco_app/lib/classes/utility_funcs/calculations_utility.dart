@@ -37,7 +37,7 @@ double calculateMPSA(int plan, int cartons) {
   return (min(plan, cartons).toDouble() * 100) / max(plan, cartons);
 }
 
-double calculateOEE(MiniProductionReport report) {
+double calculateOeeFromMiniReport(MiniProductionReport report) {
   return (report.productionInKg.toDouble() / report.theoreticalAverage) * 100;
 }
 
@@ -53,6 +53,65 @@ double calculateScrapPercent(MiniProductionReport report) {
   return report.scrap *
       100 /
       (report.scrap + report.rework + report.productionInKg);
+}
+
+double calculateAllScrap(refNum, report) {
+  switch (refNum) {
+    case BISCUIT_AREA:
+      return report.cutterScrap +
+          report.packingScrap +
+          report.conveyorScrap +
+          report.ovenScrap +
+          report.extrusionScrap;
+    case WAFER_AREA:
+      return report.cutterScrap +
+          report.packingScrap +
+          report.coolerScrap +
+          report.creamScrap +
+          report.ovenScrap;
+    case MAAMOUL_AREA:
+      return report.mixerScrap +
+          report.packingScrap +
+          report.stampingScrap +
+          report.ovenScrap;
+  }
+  return 0;
+}
+
+double calculateAllRework(refNum, report) {
+  switch (refNum) {
+    case BISCUIT_AREA:
+      return report.packingRework +
+          report.conveyorRework +
+          report.cutterRework +
+          report.ovenRework +
+          report.extrusionRework;
+    case WAFER_AREA:
+      return report.packingRework +
+          report.coolerRework +
+          report.creamRework +
+          report.cutterRework +
+          report.ovenRework;
+    case MAAMOUL_AREA:
+      return report.packingRework +
+          report.mixerRework +
+          report.stampingRework +
+          report.ovenRework;
+  }
+  return 0;
+}
+
+double calculateAllWeight(refNum, report) {
+  return calculateAllRework(refNum, report) +
+      calculateAllScrap(refNum, report) +
+      report.productionInCartons * SKU.skuDetails[report.skuName]!.cartonWeight;
+}
+
+double calculateOeeFromOriginalReport(report, theoretical) {
+  return ((report.productionInCartons *
+              SKU.skuDetails[report.skuName]!.cartonWeight) /
+          theoretical) *
+      100;
 }
 
 /************************************DRIVERS*************************************************/
@@ -74,7 +133,7 @@ bool BadProductionDriver(MiniProductionReport report) {
     return calculateMPSA(
                 report.shiftProductionPlan, report.productionInCartons) <
             Plans.mpsaTarget ||
-        calculateOEE(report) < Plans.targetOEE;
+        calculateOeeFromMiniReport(report) < Plans.targetOEE;
 }
 
 bool BadPeopleDriver(PeopleReport report) {

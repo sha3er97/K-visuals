@@ -2,7 +2,7 @@ import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
-import 'package:cairo_bisco_app/components/buttons/sku_item.dart';
+import 'package:cairo_bisco_app/components/list_items/sku_item.dart';
 import 'package:flutter/material.dart';
 
 class ShowSkus extends StatelessWidget {

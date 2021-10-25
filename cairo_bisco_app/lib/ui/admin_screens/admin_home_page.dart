@@ -1,5 +1,5 @@
 import 'package:cairo_bisco_app/classes/values/colors.dart';
-import 'package:cairo_bisco_app/components/buttons/admin_btn.dart';
+import 'package:cairo_bisco_app/components/buttons/gradient_general_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/log_out_btn.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,7 @@ class AdminHomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AdminButton(
+              GradientGeneralButton(
                 gradientColor1: KelloggColors.cockRed,
                 gradientColor2: KelloggColors.grey,
                 mainColor: KelloggColors.darkBlue.withOpacity(0.5),
@@ -36,7 +36,7 @@ class AdminHomePage extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => AdminAddSku()));
                 },
               ),
-              AdminButton(
+              GradientGeneralButton(
                 gradientColor1: KelloggColors.yellow,
                 gradientColor2: KelloggColors.grey,
                 mainColor: KelloggColors.darkBlue.withOpacity(0.5),
@@ -47,7 +47,7 @@ class AdminHomePage extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => ShowSkus()));
                 },
               ),
-              AdminButton(
+              GradientGeneralButton(
                 gradientColor1: KelloggColors.white,
                 gradientColor2: KelloggColors.grey,
                 mainColor: KelloggColors.darkBlue.withOpacity(0.5),

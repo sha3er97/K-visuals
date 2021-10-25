@@ -1,4 +1,4 @@
-/*
+/********************************
     this screen will have 3 big buttons
     biscuits
     wafer
@@ -13,12 +13,7 @@ import 'package:cairo_bisco_app/ui/production_screens/maamoul_lines.dart';
 import 'package:cairo_bisco_app/ui/production_screens/wafer_lines.dart';
 import 'package:flutter/material.dart';
 
-class HomeProductionPage extends StatefulWidget {
-  @override
-  _HomeProductionState createState() => _HomeProductionState();
-}
-
-class _HomeProductionState extends State<HomeProductionPage> {
+class HomeProductionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

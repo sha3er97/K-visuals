@@ -2,9 +2,7 @@ import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
-import 'package:cairo_bisco_app/ui/production_screens/biscuits_lines.dart';
-import 'package:cairo_bisco_app/ui/production_screens/maamoul_lines.dart';
-import 'package:cairo_bisco_app/ui/production_screens/wafer_lines.dart';
+import 'package:cairo_bisco_app/ui/production_screens/choose_visuals_or_excel.dart';
 import 'package:flutter/material.dart';
 
 class HomeProductionIntervalPage extends StatefulWidget {
@@ -76,14 +74,15 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: defaultPadding * 0.75),
                   child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 10),
+                    margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Text(
                       "From : ",
                       style: TextStyle(
                           color: KelloggColors.darkRed,
-                          fontSize: 16.0,
+                          fontSize: aboveMediumFontSize,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 1.2),
                     ),
@@ -91,9 +90,10 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPadding * 0.75),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Column(
                         children: [
                           DropdownButton<String>(
@@ -119,9 +119,10 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPadding * 0.75),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Column(
                         children: [
                           DropdownButton<String>(
@@ -148,9 +149,10 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                 Expanded(
                   flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPadding * 0.75),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Column(
                         children: [
                           DropdownButton<String>(
@@ -179,14 +181,15 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: defaultPadding * 0.75),
                   child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 10),
+                    margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Text(
                       "To :     ",
                       style: TextStyle(
                           color: KelloggColors.darkRed,
-                          fontSize: 16.0,
+                          fontSize: aboveMediumFontSize,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 1.2),
                     ),
@@ -194,9 +197,10 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPadding * 0.75),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Column(
                         children: [
                           DropdownButton<String>(
@@ -222,9 +226,10 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPadding * 0.75),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Column(
                         children: [
                           DropdownButton<String>(
@@ -251,9 +256,10 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                 Expanded(
                   flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPadding * 0.75),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Column(
                         children: [
                           DropdownButton<String>(
@@ -331,13 +337,15 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => BiscuitLines(
-                                        from_month: _selectedMonthFrom,
-                                        to_month: _selectedMonthTo,
-                                        chosenYear: _selectedYearFrom,
-                                        from_day: _selectedDayFrom,
-                                        to_day: _selectedDayTo,
-                                      )),
+                                builder: (context) => ChooseVisualsOrExcel(
+                                  from_month: _selectedMonthFrom,
+                                  to_month: _selectedMonthTo,
+                                  chosenYear: _selectedYearFrom,
+                                  from_day: _selectedDayFrom,
+                                  to_day: _selectedDayTo,
+                                  refNum: BISCUIT_AREA,
+                                ),
+                              ),
                             );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -405,13 +413,15 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => WaferLines(
-                                        from_month: _selectedMonthFrom,
-                                        to_month: _selectedMonthTo,
-                                        chosenYear: _selectedYearFrom,
-                                        from_day: _selectedDayFrom,
-                                        to_day: _selectedDayTo,
-                                      )),
+                                builder: (context) => ChooseVisualsOrExcel(
+                                  from_month: _selectedMonthFrom,
+                                  to_month: _selectedMonthTo,
+                                  chosenYear: _selectedYearFrom,
+                                  from_day: _selectedDayFrom,
+                                  to_day: _selectedDayTo,
+                                  refNum: WAFER_AREA,
+                                ),
+                              ),
                             );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -482,12 +492,13 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MaamoulLines(
+                                builder: (context) => ChooseVisualsOrExcel(
                                   from_month: _selectedMonthFrom,
                                   to_month: _selectedMonthTo,
                                   chosenYear: _selectedYearFrom,
                                   from_day: _selectedDayFrom,
                                   to_day: _selectedDayTo,
+                                  refNum: MAAMOUL_AREA,
                                 ),
                               ),
                             );

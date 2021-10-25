@@ -46,3 +46,22 @@ bool isDayInInterval(
       dateAfter.isAtSameMomentAs(dateToCheck) ||
       dateFrom.isAtSameMomentAs(dateToCheck);
 }
+
+String constructDate(int day, int month, int year) {
+  return day.toString() + "/" + month.toString() + "/" + year.toString();
+}
+
+int getWeekNumber(int day, int month, int year) {
+  final yearStart = new DateTime(year, 1, 1);
+  final reportDate = new DateTime(year, month, day);
+  final diff = reportDate.difference(yearStart);
+//   final firstMonday = startOfYear.weekday;
+//   final daysInFirstWeek = 8 - firstMonday;
+//   final diff = date.difference(startOfYear);
+//   var weeks = ((diff.inDays - daysInFirstWeek) / 7).ceil();
+// // It might differ how you want to treat the first week
+//   if(daysInFirstWeek > 3) {
+//     weeks += 1;
+//   }
+  return (diff.inDays / 7).ceil();
+}

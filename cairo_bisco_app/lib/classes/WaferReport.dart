@@ -25,7 +25,6 @@ class WaferReport {
       creamRework,
       coolerScrap,
       coolerRework,
-      unPackedProducts,
       mc1Speed,
       mc2Speed,
       packingScrap,
@@ -40,7 +39,7 @@ class WaferReport {
 
   WaferReport(
       {required this.area,
-      required this.shift_index, //unused for now
+      required this.shift_index,
       required this.line_index,
       required this.supName,
       required this.skuName,
@@ -55,7 +54,6 @@ class WaferReport {
       required this.creamRework,
       required this.coolerScrap,
       required this.coolerRework,
-      required this.unPackedProducts,
       required this.mc1Speed,
       required this.mc2Speed,
       required this.packingScrap,
@@ -92,7 +90,6 @@ class WaferReport {
           creamRework: parseJsonToDouble(json['creamRework']!),
           coolerScrap: parseJsonToDouble(json['coolerScrap']!),
           coolerRework: parseJsonToDouble(json['coolerRework']!),
-          unPackedProducts: parseJsonToDouble(json['unPackedProducts']!),
           mc1Speed: parseJsonToDouble(json['mc1Speed']!),
           mc2Speed: parseJsonToDouble(json['mc2Speed']!),
           packingScrap: parseJsonToDouble(json['packingScrap']!),
@@ -127,7 +124,6 @@ class WaferReport {
       'creamRework': creamRework,
       'coolerScrap': coolerScrap,
       'coolerRework': coolerRework,
-      'unPackedProducts': unPackedProducts,
       'mc1Speed': mc1Speed,
       'mc2Speed': mc2Speed,
       'packingScrap': packingScrap,
@@ -154,7 +150,6 @@ class WaferReport {
     double creamRework,
     double coolerScrap,
     double coolerRework,
-    double unPackedProducts,
     double mc1Speed,
     double mc2Speed,
     double packingScrap,
@@ -205,7 +200,6 @@ class WaferReport {
         creamRework: creamRework,
         coolerScrap: coolerScrap,
         coolerRework: coolerRework,
-        unPackedProducts: unPackedProducts,
         mc1Speed: mc1Speed,
         mc2Speed: mc2Speed,
         packingScrap: packingScrap,
@@ -219,6 +213,34 @@ class WaferReport {
         mc2WasteKg: mc2WasteKg,
       ),
     );
+  }
+
+  static List<WaferReport> getAllReportsOfInterval(
+    List<QueryDocumentSnapshot<WaferReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+  ) {
+    List<WaferReport> tempList = [];
+    for (var report in reportsList) {
+      if (!isDayInInterval(
+        report.data().day,
+        report.data().month,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+        year,
+      )) {
+        print('debug :: WaferReport filtered out due to its date --> ' +
+            report.data().day.toString());
+        continue;
+      }
+      tempList.add(report.data());
+    }
+    return tempList;
   }
 
   static MiniProductionReport getFilteredReportOfInterval(
@@ -266,23 +288,14 @@ class WaferReport {
         print(theoreticals);
         //all shifts in one line in one area
         temp_productionInCartons += report.data().productionInCartons;
-        //TODO :: should add unpacked products ?
         temp_productionInKg += report.data().productionInCartons *
             SKU.skuDetails[report.data().skuName]!.cartonWeight;
 
         temp_theoreticalPlan += theoreticals[report.data().line_index - 1];
 
         temp_productionPlan += report.data().shiftProductionPlan;
-        temp_scrap += report.data().cutterScrap +
-            report.data().packingScrap +
-            report.data().coolerScrap +
-            report.data().creamScrap +
-            report.data().ovenScrap;
-        temp_rework += report.data().packingRework +
-            report.data().coolerRework +
-            report.data().creamRework +
-            report.data().cutterRework +
-            report.data().ovenRework;
+        temp_scrap += calculateAllScrap(WAFER_AREA, report.data());
+        temp_rework += calculateAllRework(WAFER_AREA, report.data());
         temp_wasted_film += report.data().mc2WasteKg + report.data().mc1WasteKg;
         temp_used_film += report.data().mc2FilmUsed + report.data().mc1FilmUsed;
         lastSkuName = report.data().skuName;

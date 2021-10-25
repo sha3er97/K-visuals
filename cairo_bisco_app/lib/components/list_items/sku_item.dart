@@ -33,7 +33,9 @@ class SkuItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(BoxImageBorder),
           child: ConstrainedBox(
             constraints: BoxConstraints.tightFor(
-                width: TightBoxWidth, height: regularBoxHeight),
+              width: TightBoxWidth,
+              height: regularBoxHeight,
+            ),
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -59,7 +61,9 @@ class SkuItem extends StatelessWidget {
                 ),
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(
-                      horizontal: defaultPadding, vertical: minimumPadding),
+                    horizontal: defaultPadding,
+                    vertical: minimumPadding,
+                  ),
                   primary: mainColor,
                 ),
                 onPressed: () {

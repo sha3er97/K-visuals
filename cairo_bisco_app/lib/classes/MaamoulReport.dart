@@ -23,7 +23,6 @@ class MaamoulReport {
       mixerRework,
       stampingScrap,
       stampingRework,
-      unPackedProducts,
       mc1Speed,
       mc2Speed,
       packingScrap,
@@ -51,7 +50,6 @@ class MaamoulReport {
       required this.mixerRework,
       required this.stampingScrap,
       required this.stampingRework,
-      required this.unPackedProducts,
       required this.mc1Speed,
       required this.mc2Speed,
       required this.packingScrap,
@@ -86,7 +84,6 @@ class MaamoulReport {
           mixerRework: parseJsonToDouble(json['mixerRework']!),
           stampingScrap: parseJsonToDouble(json['stampingScrap']!),
           stampingRework: parseJsonToDouble(json['stampingRework']!),
-          unPackedProducts: parseJsonToDouble(json['unPackedProducts']!),
           mc1Speed: parseJsonToDouble(json['mc1Speed']!),
           mc2Speed: parseJsonToDouble(json['mc2Speed']!),
           packingScrap: parseJsonToDouble(json['packingScrap']!),
@@ -119,7 +116,6 @@ class MaamoulReport {
       'mixerRework': mixerRework,
       'stampingScrap': stampingScrap,
       'stampingRework': stampingRework,
-      'unPackedProducts': unPackedProducts,
       'mc1Speed': mc1Speed,
       'mc2Speed': mc2Speed,
       'packingScrap': packingScrap,
@@ -144,7 +140,6 @@ class MaamoulReport {
     double mixerRework,
     double stampingScrap,
     double stampingRework,
-    double unPackedProducts,
     double mc1Speed,
     double mc2Speed,
     double packingScrap,
@@ -193,7 +188,6 @@ class MaamoulReport {
         mixerRework: mixerRework,
         stampingScrap: stampingScrap,
         stampingRework: stampingRework,
-        unPackedProducts: unPackedProducts,
         mc1Speed: mc1Speed,
         mc2Speed: mc2Speed,
         packingScrap: packingScrap,
@@ -207,6 +201,34 @@ class MaamoulReport {
         mc2WasteKg: mc2WasteKg,
       ),
     );
+  }
+
+  static List<MaamoulReport> getAllReportsOfInterval(
+    List<QueryDocumentSnapshot<MaamoulReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+  ) {
+    List<MaamoulReport> tempList = [];
+    for (var report in reportsList) {
+      if (!isDayInInterval(
+        report.data().day,
+        report.data().month,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+        year,
+      )) {
+        print('debug :: MaamoulReport filtered out due to its date --> ' +
+            report.data().day.toString());
+        continue;
+      }
+      tempList.add(report.data());
+    }
+    return tempList;
   }
 
   static MiniProductionReport getFilteredReportOfInterval(
@@ -254,21 +276,14 @@ class MaamoulReport {
         print(theoreticals);
         //all shifts in one line in one area
         temp_productionInCartons += report.data().productionInCartons;
-        //TODO :: should add unpacked products ?
         temp_productionInKg += report.data().productionInCartons *
             SKU.skuDetails[report.data().skuName]!.cartonWeight;
 
         temp_theoreticalPlan += theoreticals[report.data().line_index - 1];
 
         temp_productionPlan += report.data().shiftProductionPlan;
-        temp_scrap += report.data().mixerScrap +
-            report.data().packingScrap +
-            report.data().stampingScrap +
-            report.data().ovenScrap;
-        temp_rework += report.data().packingRework +
-            report.data().mixerRework +
-            report.data().stampingRework +
-            report.data().ovenRework;
+        temp_scrap += calculateAllScrap(MAAMOUL_AREA, report.data());
+        temp_rework += calculateAllRework(MAAMOUL_AREA, report.data());
         temp_wasted_film += report.data().mc2WasteKg + report.data().mc1WasteKg;
         temp_used_film += report.data().mc2FilmUsed + report.data().mc1FilmUsed;
         lastSkuName = report.data().skuName;
