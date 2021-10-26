@@ -5,6 +5,7 @@
  *********************************/
 import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
 import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
+import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/WaferReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/excel_utilities.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
@@ -63,6 +64,15 @@ class ChooseVisualsOrExcel extends StatelessWidget {
       waferReportRef,
       maamoulReportRef
     ];
+    final overWeightReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('overWeight_reports')
+        .collection(chosenYear)
+        .withConverter<OverWeightReport>(
+          fromFirestore: (snapshot, _) =>
+              OverWeightReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
     return Scaffold(
       backgroundColor: KelloggColors.white,
       resizeToAvoidBottomInset: true,
@@ -132,58 +142,77 @@ class ChooseVisualsOrExcel extends StatelessWidget {
                 try {
                   ExcelUtilities util = ExcelUtilities(refNum: refNum);
                   util.insertHeaders();
-                  productionRefs[refNum]
+                  overWeightReportRef
                       .get()
-                      .then((QuerySnapshot productionSnapshot) {
-                    switch (refNum) {
-                      case BISCUIT_AREA:
-                        List<QueryDocumentSnapshot<BiscuitsReport>>
-                            reportslist = productionSnapshot.docs
-                                as List<QueryDocumentSnapshot<BiscuitsReport>>;
-                        List<BiscuitsReport> tempList =
-                            BiscuitsReport.getAllReportsOfInterval(
-                          reportslist,
-                          int.parse(from_month),
-                          int.parse(to_month),
-                          int.parse(from_day),
-                          int.parse(to_day),
-                          int.parse(chosenYear),
-                        );
-                        util.insertBiscuitReportRows(tempList);
-                        break;
-                      case WAFER_AREA:
-                        List<QueryDocumentSnapshot<WaferReport>> reportslist =
-                            productionSnapshot.docs
-                                as List<QueryDocumentSnapshot<WaferReport>>;
-                        List<WaferReport> tempList =
-                            WaferReport.getAllReportsOfInterval(
-                          reportslist,
-                          int.parse(from_month),
-                          int.parse(to_month),
-                          int.parse(from_day),
-                          int.parse(to_day),
-                          int.parse(chosenYear),
-                        );
-                        util.insertWaferReportRows(tempList);
-                        break;
-                      case MAAMOUL_AREA:
-                        List<QueryDocumentSnapshot<MaamoulReport>> reportslist =
-                            productionSnapshot.docs
-                                as List<QueryDocumentSnapshot<MaamoulReport>>;
-                        List<MaamoulReport> tempList =
-                            MaamoulReport.getAllReportsOfInterval(
-                          reportslist,
-                          int.parse(from_month),
-                          int.parse(to_month),
-                          int.parse(from_day),
-                          int.parse(to_day),
-                          int.parse(chosenYear),
-                        );
-                        util.insertMaamoulReportRows(tempList);
-                        break;
-                    }
-                    util.saveFile(
-                        context, from_day, to_day, from_month, to_month);
+                      .then((QuerySnapshot overweightSnapshot) {
+                    productionRefs[refNum]
+                        .get()
+                        .then((QuerySnapshot productionSnapshot) {
+                      List<QueryDocumentSnapshot<OverWeightReport>>
+                          overWeightReportsList = overweightSnapshot.docs
+                              as List<QueryDocumentSnapshot<OverWeightReport>>;
+                      List<OverWeightReport> overweightTempList =
+                          OverWeightReport.getAllReportsOfInterval(
+                        overWeightReportsList,
+                        int.parse(from_month),
+                        int.parse(to_month),
+                        int.parse(from_day),
+                        int.parse(to_day),
+                        int.parse(chosenYear),
+                        refNum,
+                      );
+                      util.setOverweightList(overweightTempList);
+
+                      switch (refNum) {
+                        case BISCUIT_AREA:
+                          List<QueryDocumentSnapshot<BiscuitsReport>>
+                              prodReportsList = productionSnapshot.docs as List<
+                                  QueryDocumentSnapshot<BiscuitsReport>>;
+                          List<BiscuitsReport> prodTempList =
+                              BiscuitsReport.getAllReportsOfInterval(
+                            prodReportsList,
+                            int.parse(from_month),
+                            int.parse(to_month),
+                            int.parse(from_day),
+                            int.parse(to_day),
+                            int.parse(chosenYear),
+                          );
+                          util.insertBiscuitReportRows(prodTempList);
+                          break;
+                        case WAFER_AREA:
+                          List<QueryDocumentSnapshot<WaferReport>>
+                              prodReportsList = productionSnapshot.docs
+                                  as List<QueryDocumentSnapshot<WaferReport>>;
+                          List<WaferReport> prodTempList =
+                              WaferReport.getAllReportsOfInterval(
+                            prodReportsList,
+                            int.parse(from_month),
+                            int.parse(to_month),
+                            int.parse(from_day),
+                            int.parse(to_day),
+                            int.parse(chosenYear),
+                          );
+                          util.insertWaferReportRows(prodTempList);
+                          break;
+                        case MAAMOUL_AREA:
+                          List<QueryDocumentSnapshot<MaamoulReport>>
+                              prodReportsList = productionSnapshot.docs
+                                  as List<QueryDocumentSnapshot<MaamoulReport>>;
+                          List<MaamoulReport> prodTempList =
+                              MaamoulReport.getAllReportsOfInterval(
+                            prodReportsList,
+                            int.parse(from_month),
+                            int.parse(to_month),
+                            int.parse(from_day),
+                            int.parse(to_day),
+                            int.parse(chosenYear),
+                          );
+                          util.insertMaamoulReportRows(prodTempList);
+                          break;
+                      }
+                      util.saveFile(
+                          context, from_day, to_day, from_month, to_month);
+                    });
                   });
                 } catch (e) {
                   showExcelAlertDialog(context, false, "");

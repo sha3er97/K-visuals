@@ -1,8 +1,9 @@
-import 'dart:html' as html;
 import 'dart:io';
+import 'package:cross_file/cross_file.dart';
 
 import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
 import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
+import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/WaferReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
@@ -19,12 +20,17 @@ class ExcelUtilities {
   late Sheet sheetObject;
   final int refNum;
   late String areaName;
+  late List<OverWeightReport> overweightList;
 
   ExcelUtilities({required this.refNum}) {
     excel = Excel.createExcel(); // automatically creates 1 empty sheet: Sheet1
     areaName = prodType[refNum];
     sheetObject = excel[areaName];
     excel.delete('Sheet1');
+  }
+
+  void setOverweightList(List<OverWeightReport> overweightList) {
+    this.overweightList = overweightList;
   }
 
   Future<void> saveFile(
@@ -42,27 +48,31 @@ class ExcelUtilities {
       excel.encode().then((onValue) {
         // file = io.File(fileName);
         // final rawData = file.readAsBytesSync();
-        // final content = base64Encode(rawData);
-        final format = "vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        // final content = base64Encode(onValue);
+        final format =
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         // final format = "application/vnd.ms-excel";
-        final blob = html.Blob([onValue], format);
-        final url = html.Url.createObjectUrlFromBlob(blob);
-
-        final anchor = html.document.createElement('a') as html.AnchorElement
-          ..href = url
-          ..style.display = 'none'
-          ..download = fileName;
-        html.document.body?.children.add(anchor);
-
-        anchor.click();
-
-        html.document.body?.children.remove(anchor);
-        html.Url.revokeObjectUrl(url);
-
+        /***********************************************************/
+        // final blob = html.Blob([onValue], format);
+        // final url = html.Url.createObjectUrlFromBlob(blob);
+        //
+        // final anchor = html.document.createElement('a') as html.AnchorElement
+        //   ..href = url
+        //   ..style.display = 'none'
+        //   ..download = fileName;
+        // html.document.body?.children.add(anchor);
+        //
+        // anchor.click();
+        //
+        // html.document.body?.children.remove(anchor);
+        // html.Url.revokeObjectUrl(url);
+        /****************************************************************/
         // final anchor = html.AnchorElement(href: "$format,$onValue")
         //   ..setAttribute("download", fileName);
         // anchor.click();
         // anchor.remove();
+        XFile.fromData(onValue, mimeType: format, name: fileName)
+            .saveTo(fileName);
       });
     } else {
       // NOT running on the web! You can check for additional platforms here.
@@ -92,6 +102,41 @@ class ExcelUtilities {
     }
   }
 
+  double getCorrespondingOverweight(prodReport) {
+    if (doesHaveCorrespondingOverweight(prodReport)) {
+      for (OverWeightReport report in this.overweightList) {
+        if (report.day == prodReport.day &&
+            report.month == prodReport.month &&
+            report.line_index == prodReport.line_index &&
+            report.year == prodReport.year) {
+          print(report.day.toString() +
+              " " +
+              report.month.toString() +
+              " " +
+              report.line_index.toString() +
+              " " +
+              report.year.toString() +
+              " " +
+              report.percent.toString());
+          return report.percent;
+        }
+      }
+    }
+    return 99.9;
+  }
+
+  bool doesHaveCorrespondingOverweight(prodReport) {
+    for (OverWeightReport report in this.overweightList) {
+      if (report.day == prodReport.day &&
+          report.month == prodReport.month &&
+          report.line_index == prodReport.line_index &&
+          report.year == prodReport.year) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   void insertBiscuitReportRows(
     List<BiscuitsReport> reportsList,
   ) {
@@ -112,9 +157,7 @@ class ExcelUtilities {
         theoreticals[report.line_index - 1].toString(),
         "Kg",
         report.actualSpeed.toString(),
-        (report.productionInCartons *
-                SKU.skuDetails[report.skuName]!.cartonWeight)
-            .toString(),
+        calculateProductionKg(report).toString(),
         calculateAllRework(refNum, report).toString(),
         report.extrusionRework.toString(),
         report.extrusionScrap.toString(),
@@ -136,7 +179,9 @@ class ExcelUtilities {
         "MC2",
         calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg)
             .toStringAsFixed(1),
-        "Overweight%",
+        doesHaveCorrespondingOverweight(report)
+            ? getCorrespondingOverweight(report).toString()
+            : "-",
         calculateAllScrap(refNum, report).toString(),
         (calculateAllRework(refNum, report) *
                 100 /
@@ -152,7 +197,11 @@ class ExcelUtilities {
         calculateOeeFromOriginalReport(
                 report, theoreticals[report.line_index - 1])
             .toStringAsFixed(1),
-        "Overweight KG",
+        doesHaveCorrespondingOverweight(report)
+            ? (calculateProductionKg(report) *
+                    getCorrespondingOverweight(report))
+                .toString()
+            : "-",
         report.productionInCartons.toString(),
         getWeekNumber(report.day, report.month, report.year).toString(),
         report.year.toString(),
@@ -182,9 +231,7 @@ class ExcelUtilities {
         theoreticals[report.line_index - 1].toString(),
         "Kg",
         report.actualSpeed.toString(),
-        (report.productionInCartons *
-                SKU.skuDetails[report.skuName]!.cartonWeight)
-            .toString(),
+        calculateProductionKg(report).toString(),
         calculateAllRework(refNum, report).toString(),
         report.ovenRework.toString(),
         report.ovenScrap.toString(),
@@ -206,7 +253,9 @@ class ExcelUtilities {
         "MC2",
         calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg)
             .toStringAsFixed(1),
-        "Overweight%",
+        doesHaveCorrespondingOverweight(report)
+            ? getCorrespondingOverweight(report).toString()
+            : "-",
         calculateAllScrap(refNum, report).toString(),
         (calculateAllRework(refNum, report) *
                 100 /
@@ -222,7 +271,11 @@ class ExcelUtilities {
         calculateOeeFromOriginalReport(
                 report, theoreticals[report.line_index - 1])
             .toStringAsFixed(1),
-        "Overweight KG",
+        doesHaveCorrespondingOverweight(report)
+            ? (calculateProductionKg(report) *
+                    getCorrespondingOverweight(report))
+                .toString()
+            : "-",
         report.productionInCartons.toString(),
         getWeekNumber(report.day, report.month, report.year).toString(),
         report.year.toString(),
@@ -252,9 +305,7 @@ class ExcelUtilities {
         theoreticals[report.line_index - 1].toString(),
         "Kg",
         report.actualSpeed.toString(),
-        (report.productionInCartons *
-                SKU.skuDetails[report.skuName]!.cartonWeight)
-            .toString(),
+        calculateProductionKg(report).toString(),
         calculateAllRework(refNum, report).toString(),
         report.mixerRework.toString(),
         report.mixerScrap.toString(),
@@ -274,7 +325,9 @@ class ExcelUtilities {
         "MC2",
         calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg)
             .toStringAsFixed(1),
-        "Overweight%",
+        doesHaveCorrespondingOverweight(report)
+            ? getCorrespondingOverweight(report).toString()
+            : "-",
         calculateAllScrap(refNum, report).toString(),
         (calculateAllRework(refNum, report) *
                 100 /
@@ -290,7 +343,11 @@ class ExcelUtilities {
         calculateOeeFromOriginalReport(
                 report, theoreticals[report.line_index - 1])
             .toStringAsFixed(1),
-        "Overweight KG",
+        doesHaveCorrespondingOverweight(report)
+            ? (calculateProductionKg(report) *
+                    getCorrespondingOverweight(report))
+                .toString()
+            : "-",
         report.productionInCartons.toString(),
         getWeekNumber(report.day, report.month, report.year).toString(),
         report.year.toString(),
