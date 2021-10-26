@@ -1,6 +1,5 @@
-import 'dart:io';
-import 'dart:convert';
 import 'dart:html' as html;
+import 'dart:io';
 
 import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
 import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
@@ -44,12 +43,26 @@ class ExcelUtilities {
         // file = io.File(fileName);
         // final rawData = file.readAsBytesSync();
         // final content = base64Encode(rawData);
-        // final blob = html.Blob([onValue], 'application/vnd.ms-excel');
+        final format = "vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        // final format = "application/vnd.ms-excel";
+        final blob = html.Blob([onValue], format);
+        final url = html.Url.createObjectUrlFromBlob(blob);
 
-        final anchor =
-            html.AnchorElement(href: "application/vnd.ms-excel,$onValue")
-              ..setAttribute("download", fileName)
-              ..click();
+        final anchor = html.document.createElement('a') as html.AnchorElement
+          ..href = url
+          ..style.display = 'none'
+          ..download = fileName;
+        html.document.body?.children.add(anchor);
+
+        anchor.click();
+
+        html.document.body?.children.remove(anchor);
+        html.Url.revokeObjectUrl(url);
+
+        // final anchor = html.AnchorElement(href: "$format,$onValue")
+        //   ..setAttribute("download", fileName);
+        // anchor.click();
+        // anchor.remove();
       });
     } else {
       // NOT running on the web! You can check for additional platforms here.
