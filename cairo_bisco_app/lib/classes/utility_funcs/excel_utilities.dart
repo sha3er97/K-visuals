@@ -170,13 +170,13 @@ class ExcelUtilities {
         report.mc1Speed.toString(),
         report.mc2Speed.toString(),
         report.packingRework.toString(),
-        report.packingRepack.toString(),
+        '-',
         report.boxesWaste.toString(),
         report.cartonWaste.toString(),
-        "MC1",
+        report.mc1WasteKg.toString(),
         calculateWastePercent(report.mc1FilmUsed, report.mc1WasteKg)
             .toStringAsFixed(1),
-        "MC2",
+        report.mc2WasteKg.toString(),
         calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg)
             .toStringAsFixed(1),
         doesHaveCorrespondingOverweight(report)
@@ -244,13 +244,13 @@ class ExcelUtilities {
         report.mc1Speed.toString(),
         report.mc2Speed.toString(),
         report.packingRework.toString(),
-        report.packingRepack.toString(),
+        '-',
         report.boxesWaste.toString(),
         report.cartonWaste.toString(),
-        "MC1",
+        report.mc1WasteKg.toString(),
         calculateWastePercent(report.mc1FilmUsed, report.mc1WasteKg)
             .toStringAsFixed(1),
-        "MC2",
+        report.mc2WasteKg.toString(),
         calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg)
             .toStringAsFixed(1),
         doesHaveCorrespondingOverweight(report)
@@ -316,13 +316,13 @@ class ExcelUtilities {
         report.mc1Speed.toString(),
         report.mc2Speed.toString(),
         report.packingRework.toString(),
-        report.packingRepack.toString(),
+        '-',
         report.boxesWaste.toString(),
         report.cartonWaste.toString(),
-        "MC1",
+        report.mc1WasteKg.toString(),
         calculateWastePercent(report.mc1FilmUsed, report.mc1WasteKg)
             .toStringAsFixed(1),
-        "MC2",
+        report.mc2WasteKg.toString(),
         calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg)
             .toStringAsFixed(1),
         doesHaveCorrespondingOverweight(report)

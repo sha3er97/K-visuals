@@ -1,5 +1,5 @@
 /** version number**/
-const versionNum = '1.9.2'; //edit also in pubspec.yaml
+const versionNum = '1.9.3'; //edit also in pubspec.yaml
 
 /** ui design constants **/
 const dummyChartExtra = 1.0;

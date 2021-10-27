@@ -34,12 +34,10 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
       cutterRework = '',
       conveyorScrap = '',
       conveyorRework = '',
-      unPackedProducts = '',
       mc1Speed = '',
       mc2Speed = '',
       packingScrap = '',
       packingRework = '',
-      packingRepack = '',
       boxesWaste = '',
       cartonWaste = '',
       mc1FilmUsed = '',
@@ -59,12 +57,10 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
       _cutterRework_validate = false,
       _conveyorScrap_validate = false,
       _conveyorRework_validate = false,
-      _unPackedProducts_validate = false,
       _mc1Speed_validate = false,
       _mc2Speed_validate = false,
       _packingScrap_validate = false,
       _packingRework_validate = false,
-      _packingRepack_validate = false,
       _boxesWaste_validate = false,
       _cartonWaste_validate = false,
       _mc1FilmUsed_validate = false,
@@ -760,64 +756,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////////////////////////////////////
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            myDivider(),
-                            Text(
-                              'الانتاج الغير معبأ',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: largeFontSize,
-                                  color: KelloggColors.darkBlue),
-                            ),
-                            Text(
-                              'Unpacked Products',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: largeFontSize,
-                                  color: KelloggColors.darkBlue),
-                            ),
-                            SizedBox(height: defaultPadding),
-                          ],
-                        ),
-                        //////////////////////////////////////////////////////////////////
-                        smallerHeading('الوزن بالكجم\nWeight in Kg'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _unPackedProducts_validate
-                                ? missingValueErrorText
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            unPackedProducts = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////
                         sectionWithDivider('التعبئة Packaging'),
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('السرعة الفعلية MC1'),
@@ -890,7 +828,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اعادة التشغيل\nRework'),
+                        smallerHeading(
+                            'اعادة تشغيل بسكويت منطقة التغليف\nRework'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -925,42 +864,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اعادة التغليف\nRepack'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _packingRepack_validate
-                                ? missingValueErrorText
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            packingRepack = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('هالك بسكويت\nScrap'),
+                        smallerHeading('هالك بسكويت منطقة التغليف\nScrap'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -1237,16 +1141,12 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                       emptyField(conveyorScrap);
                                   _conveyorRework_validate =
                                       emptyField(conveyorRework);
-                                  _unPackedProducts_validate =
-                                      emptyField(unPackedProducts);
                                   _mc1Speed_validate = emptyField(mc1Speed);
                                   _mc2Speed_validate = emptyField(mc2Speed);
                                   _packingScrap_validate =
                                       emptyField(packingScrap);
                                   _packingRework_validate =
                                       emptyField(packingRework);
-                                  _packingRepack_validate =
-                                      emptyField(packingRepack);
                                   _boxesWaste_validate = emptyField(boxesWaste);
                                   _cartonWaste_validate =
                                       emptyField(cartonWaste);
@@ -1270,12 +1170,10 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                       !_cutterRework_validate &&
                                       !_conveyorScrap_validate &&
                                       !_conveyorRework_validate &&
-                                      !_unPackedProducts_validate &&
                                       !_mc1Speed_validate &&
                                       !_mc2Speed_validate &&
                                       !_packingScrap_validate &&
                                       !_packingRework_validate &&
-                                      !_packingRepack_validate &&
                                       !_boxesWaste_validate &&
                                       !_cartonWaste_validate &&
                                       !_mc1FilmUsed_validate &&
@@ -1294,12 +1192,10 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                         double.parse(cutterRework),
                                         double.parse(conveyorScrap),
                                         double.parse(conveyorRework),
-                                        double.parse(unPackedProducts),
                                         double.parse(mc1Speed),
                                         double.parse(mc2Speed),
                                         double.parse(packingScrap),
                                         double.parse(packingRework),
-                                        double.parse(packingRepack),
                                         double.parse(boxesWaste),
                                         double.parse(cartonWaste),
                                         double.parse(mc1FilmUsed),

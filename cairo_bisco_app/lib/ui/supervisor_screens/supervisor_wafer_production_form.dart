@@ -34,12 +34,10 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
       coolerRework = '',
       cutterScrap = '',
       cutterRework = '',
-      unPackedProducts = '',
       mc1Speed = '',
       mc2Speed = '',
       packingScrap = '',
       packingRework = '',
-      packingRepack = '',
       boxesWaste = '',
       cartonWaste = '',
       mc1FilmUsed = '',
@@ -59,12 +57,10 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
       _coolerRework_validate = false,
       _cutterScrap_validate = false,
       _cutterRework_validate = false,
-      _unPackedProducts_validate = false,
       _mc1Speed_validate = false,
       _mc2Speed_validate = false,
       _packingScrap_validate = false,
       _packingRework_validate = false,
-      _packingRepack_validate = false,
       _boxesWaste_validate = false,
       _cartonWaste_validate = false,
       _mc1FilmUsed_validate = false,
@@ -759,64 +755,6 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////////////////////////////////////
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            myDivider(),
-                            Text(
-                              'الانتاج الغير معبأ',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: largeFontSize,
-                                  color: KelloggColors.darkBlue),
-                            ),
-                            Text(
-                              'Unpacked Products',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: largeFontSize,
-                                  color: KelloggColors.darkBlue),
-                            ),
-                            SizedBox(height: defaultPadding),
-                          ],
-                        ),
-                        //////////////////////////////////////////////////////////////////
-                        smallerHeading('الوزن بالكجم\nWeight in Kg'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _unPackedProducts_validate
-                                ? missingValueErrorText
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            unPackedProducts = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////
                         sectionWithDivider('التعبئة Packaging'),
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('السرعة الفعلية mc1'),
@@ -889,7 +827,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اعادة التشغيل\nRework'),
+                        smallerHeading(
+                            'اعادة تشغيل ويفر منطقة التغليف\nRework'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -924,42 +863,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اعادة التغليف\nRepack'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _packingRepack_validate
-                                ? missingValueErrorText
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            packingRepack = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('هالك ويفر\nScrap'),
+                        smallerHeading('هالك ويفر منطقة التغليف\nScrap'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -1235,16 +1139,12 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                       emptyField(cutterScrap);
                                   _coolerRework_validate =
                                       emptyField(coolerRework);
-                                  _unPackedProducts_validate =
-                                      emptyField(unPackedProducts);
                                   _mc1Speed_validate = emptyField(mc1Speed);
                                   _mc2Speed_validate = emptyField(mc2Speed);
                                   _packingScrap_validate =
                                       emptyField(packingScrap);
                                   _packingRework_validate =
                                       emptyField(packingRework);
-                                  _packingRepack_validate =
-                                      emptyField(packingRepack);
                                   _boxesWaste_validate = emptyField(boxesWaste);
                                   _cartonWaste_validate =
                                       emptyField(cartonWaste);
@@ -1268,12 +1168,10 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                       !_coolerRework_validate &&
                                       !_cutterScrap_validate &&
                                       !_cutterRework_validate &&
-                                      !_unPackedProducts_validate &&
                                       !_mc1Speed_validate &&
                                       !_mc2Speed_validate &&
                                       !_packingScrap_validate &&
                                       !_packingRework_validate &&
-                                      !_packingRepack_validate &&
                                       !_boxesWaste_validate &&
                                       !_cartonWaste_validate &&
                                       !_mc1FilmUsed_validate &&
@@ -1292,12 +1190,10 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                         double.parse(creamRework),
                                         double.parse(coolerScrap),
                                         double.parse(coolerRework),
-                                        double.parse(unPackedProducts),
                                         double.parse(mc1Speed),
                                         double.parse(mc2Speed),
                                         double.parse(packingScrap),
                                         double.parse(packingRework),
-                                        double.parse(packingRepack),
                                         double.parse(boxesWaste),
                                         double.parse(cartonWaste),
                                         double.parse(mc1FilmUsed),
