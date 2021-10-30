@@ -260,7 +260,7 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) =>
                                       SupervisorOverWeightReportForm(
-                                        refNum: WAFER_AREA,
+                                    refNum: WAFER_AREA,
                                     reportDetails:
                                         OverWeightReport.getEmptyReport(),
                                     reportID: '',
