@@ -159,7 +159,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
               children: [
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: defaultPadding),
+                      const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
@@ -203,7 +203,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                          EdgeInsets.symmetric(vertical: minimumPadding),
+                              EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -215,7 +215,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                  TextStyle(color: KelloggColors.darkRed),
+                                      TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -326,7 +326,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                          EdgeInsets.symmetric(vertical: minimumPadding),
+                              EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -339,7 +339,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                  TextStyle(color: KelloggColors.darkRed),
+                                      TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -352,7 +352,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                          EdgeInsets.symmetric(vertical: minimumPadding),
+                              EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -365,7 +365,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                  TextStyle(color: KelloggColors.darkRed),
+                                      TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -421,7 +421,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -496,7 +496,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -531,7 +531,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -568,7 +568,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -603,7 +603,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -640,7 +640,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -675,7 +675,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -712,7 +712,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -747,7 +747,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -784,7 +784,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -819,7 +819,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -855,7 +855,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -890,7 +890,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -925,7 +925,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -960,7 +960,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -997,7 +997,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1032,7 +1032,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1067,7 +1067,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1102,7 +1102,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                              TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
