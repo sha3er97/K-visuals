@@ -1,10 +1,11 @@
+import 'dart:collection';
+
+import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
+import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'MiniProductionReport.dart';
-import 'SKU.dart';
 
 class WaferReport {
   final String supName, skuName;
@@ -36,69 +37,68 @@ class WaferReport {
       mc1WasteKg,
       mc2WasteKg;
 
-  WaferReport(
-      {required this.area,
-      required this.shift_index,
-      required this.line_index,
-      required this.supName,
-      required this.skuName,
-      required this.shiftProductionPlan,
-      required this.productionInCartons,
-      required this.actualSpeed,
-      required this.ovenScrap,
-      required this.ovenRework,
-      required this.cutterScrap,
-      required this.cutterRework,
-      required this.creamScrap,
-      required this.creamRework,
-      required this.coolerScrap,
-      required this.coolerRework,
-      required this.mc1Speed,
-      required this.mc2Speed,
-      required this.packingScrap,
-      required this.packingRework,
-      required this.boxesWaste,
-      required this.cartonWaste,
-      required this.mc1FilmUsed,
-      required this.mc2FilmUsed,
-      required this.mc1WasteKg,
-      required this.mc2WasteKg,
-      required this.year,
-      required this.month,
-      required this.day});
+  WaferReport({required this.area,
+    required this.shift_index,
+    required this.line_index,
+    required this.supName,
+    required this.skuName,
+    required this.shiftProductionPlan,
+    required this.productionInCartons,
+    required this.actualSpeed,
+    required this.ovenScrap,
+    required this.ovenRework,
+    required this.cutterScrap,
+    required this.cutterRework,
+    required this.creamScrap,
+    required this.creamRework,
+    required this.coolerScrap,
+    required this.coolerRework,
+    required this.mc1Speed,
+    required this.mc2Speed,
+    required this.packingScrap,
+    required this.packingRework,
+    required this.boxesWaste,
+    required this.cartonWaste,
+    required this.mc1FilmUsed,
+    required this.mc2FilmUsed,
+    required this.mc1WasteKg,
+    required this.mc2WasteKg,
+    required this.year,
+    required this.month,
+    required this.day});
 
   WaferReport.fromJson(Map<String, Object?> json)
       : this(
-          year: json['year']! as int,
-          month: json['month']! as int,
-          day: json['day']! as int,
-          area: json['area']! as int,
-          shift_index: json['shift_index']! as int,
-          line_index: json['line_index']! as int,
-          shiftProductionPlan: json['shiftProductionPlan']! as int,
-          productionInCartons: json['productionInCartons']! as int,
-          supName: json['supName']! as String,
-          skuName: json['skuName']! as String,
-          actualSpeed: parseJsonToDouble(json['actualSpeed']!),
-          ovenScrap: parseJsonToDouble(json['ovenScrap']!),
-          ovenRework: parseJsonToDouble(json['ovenRework']!),
-          cutterScrap: parseJsonToDouble(json['cutterScrap']!),
-          cutterRework: parseJsonToDouble(json['cutterRework']!),
-          creamScrap: parseJsonToDouble(json['creamScrap']!),
-          creamRework: parseJsonToDouble(json['creamRework']!),
-          coolerScrap: parseJsonToDouble(json['coolerScrap']!),
-          coolerRework: parseJsonToDouble(json['coolerRework']!),
-          mc1Speed: parseJsonToDouble(json['mc1Speed']!),
-          mc2Speed: parseJsonToDouble(json['mc2Speed']!),
-          packingScrap: parseJsonToDouble(json['packingScrap']!),
-          packingRework: parseJsonToDouble(json['packingRework']!),
-          boxesWaste: parseJsonToDouble(json['boxesWaste']!),
-          cartonWaste: parseJsonToDouble(json['cartonWaste']!),
-          mc1FilmUsed: parseJsonToDouble(json['mc1FilmUsed']!),
-          mc2FilmUsed: parseJsonToDouble(json['mc2FilmUsed']!),
-          mc1WasteKg: parseJsonToDouble(json['mc1WasteKg']!),
-          mc2WasteKg: parseJsonToDouble(json['mc2WasteKg']!),
-        );
+    year: json['year']! as int,
+    month: json['month']! as int,
+    day: json['day']! as int,
+    area: json['area']! as int,
+    shift_index: json['shift_index']! as int,
+    line_index: json['line_index']! as int,
+    shiftProductionPlan: json['shiftProductionPlan']! as int,
+    productionInCartons: json['productionInCartons']! as int,
+    supName: json['supName']! as String,
+    skuName: json['skuName']! as String,
+    actualSpeed: parseJsonToDouble(json['actualSpeed']!),
+    ovenScrap: parseJsonToDouble(json['ovenScrap']!),
+    ovenRework: parseJsonToDouble(json['ovenRework']!),
+    cutterScrap: parseJsonToDouble(json['cutterScrap']!),
+    cutterRework: parseJsonToDouble(json['cutterRework']!),
+    creamScrap: parseJsonToDouble(json['creamScrap']!),
+    creamRework: parseJsonToDouble(json['creamRework']!),
+    coolerScrap: parseJsonToDouble(json['coolerScrap']!),
+    coolerRework: parseJsonToDouble(json['coolerRework']!),
+    mc1Speed: parseJsonToDouble(json['mc1Speed']!),
+    mc2Speed: parseJsonToDouble(json['mc2Speed']!),
+    packingScrap: parseJsonToDouble(json['packingScrap']!),
+    packingRework: parseJsonToDouble(json['packingRework']!),
+    boxesWaste: parseJsonToDouble(json['boxesWaste']!),
+    cartonWaste: parseJsonToDouble(json['cartonWaste']!),
+    mc1FilmUsed: parseJsonToDouble(json['mc1FilmUsed']!),
+    mc2FilmUsed: parseJsonToDouble(json['mc2FilmUsed']!),
+    mc1WasteKg: parseJsonToDouble(json['mc1WasteKg']!),
+    mc2WasteKg: parseJsonToDouble(json['mc2WasteKg']!),
+  );
 
   Map<String, Object?> toJson() {
     return {
@@ -134,46 +134,44 @@ class WaferReport {
     };
   }
 
-  static void addReport(
-    String supName,
-    String skuName,
-    double actualSpeed,
-    double ovenScrap,
-    double ovenRework,
-    double cutterScrap,
-    double cutterRework,
-    double creamScrap,
-    double creamRework,
-    double coolerScrap,
-    double coolerRework,
-    double mc1Speed,
-    double mc2Speed,
-    double packingScrap,
-    double packingRework,
-    double boxesWaste,
-    double cartonWaste,
-    double mc1FilmUsed,
-    double mc2FilmUsed,
-    double mc1WasteKg,
-    double mc2WasteKg,
-    int shiftProductionPlan,
-    int productionInCartons,
-    int line_index,
-    int shift_index,
-    int area,
-    int year,
-    int month,
-    int day,
-  ) async {
+  static void addReport(String supName,
+      String skuName,
+      double actualSpeed,
+      double ovenScrap,
+      double ovenRework,
+      double cutterScrap,
+      double cutterRework,
+      double creamScrap,
+      double creamRework,
+      double coolerScrap,
+      double coolerRework,
+      double mc1Speed,
+      double mc2Speed,
+      double packingScrap,
+      double packingRework,
+      double boxesWaste,
+      double cartonWaste,
+      double mc1FilmUsed,
+      double mc2FilmUsed,
+      double mc1WasteKg,
+      double mc2WasteKg,
+      int shiftProductionPlan,
+      int productionInCartons,
+      int line_index,
+      int shift_index,
+      int area,
+      int year,
+      int month,
+      int day,) async {
     final waferReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('wafer_reports')
         .collection(year.toString())
         .withConverter<WaferReport>(
-          fromFirestore: (snapshot, _) =>
-              WaferReport.fromJson(snapshot.data()!),
-          toFirestore: (report, _) => report.toJson(),
-        );
+      fromFirestore: (snapshot, _) =>
+          WaferReport.fromJson(snapshot.data()!),
+      toFirestore: (report, _) => report.toJson(),
+    );
     await waferReportRef.add(
       WaferReport(
         year: year,
@@ -209,7 +207,7 @@ class WaferReport {
     );
   }
 
-  static List<WaferReport> getAllReportsOfInterval(
+  static HashMap<String, WaferReport> getAllReportsOfInterval(
     List<QueryDocumentSnapshot<WaferReport>> reportsList,
     int month_from,
     int month_to,
@@ -217,7 +215,7 @@ class WaferReport {
     int day_to,
     int year,
   ) {
-    List<WaferReport> tempList = [];
+    HashMap hashMap = new HashMap<String, WaferReport>();
     for (var report in reportsList) {
       if (!isDayInInterval(
         report.data().day,
@@ -232,20 +230,18 @@ class WaferReport {
             report.data().day.toString());
         continue;
       }
-      tempList.add(report.data());
+      hashMap[report.id] = report.data();
     }
-    return tempList;
+    return hashMap as HashMap<String, WaferReport>;
   }
 
-  static MiniProductionReport getFilteredReportOfInterval(
-    List<QueryDocumentSnapshot<WaferReport>> reportsList,
-    int month_from,
-    int month_to,
-    int day_from,
-    int day_to,
-    int year,
-    int lineNumRequired,
-  ) {
+  static MiniProductionReport getFilteredReportOfInterval(List<QueryDocumentSnapshot<WaferReport>> reportsList,
+      int month_from,
+      int month_to,
+      int day_from,
+      int day_to,
+      int year,
+      int lineNumRequired,) {
     double temp_scrap = 0.0,
         temp_used_film = 0.0,
         temp_wasted_film = 0.0,

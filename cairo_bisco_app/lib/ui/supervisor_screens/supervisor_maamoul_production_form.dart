@@ -17,15 +17,18 @@ class MaamoulProductionForm extends StatefulWidget {
   MaamoulProductionForm({
     required this.reportDetails,
     required this.isEdit,
+    required this.reportID,
   });
 
   final dynamic reportDetails;
   final bool isEdit;
+  final String reportID;
 
   @override
   _MaamoulProductionFormState createState() => _MaamoulProductionFormState(
         reportDetails: reportDetails,
         isEdit: isEdit,
+        reportID: reportID,
       );
 }
 
@@ -33,8 +36,10 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
   _MaamoulProductionFormState({
     required this.reportDetails,
     required this.isEdit,
+    required this.reportID,
   });
 
+  final String reportID;
   final dynamic reportDetails;
   final bool isEdit;
 

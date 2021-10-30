@@ -1,4 +1,6 @@
+import 'dart:collection';
 import 'dart:math';
+
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,37 +20,36 @@ class EhsReport {
       month,
       day;
 
-  EhsReport(
-      {required this.area,
-      required this.shift_index, //unused for now
-      required this.line_index,
-      required this.nearMiss,
-      required this.risk_assessment,
-      required this.supName,
-      required this.firstAid_incidents,
-      required this.lostTime_incidents,
-      required this.recordable_incidents,
-      required this.year,
-      required this.month,
-      required this.day,
-      required this.s7_index});
+  EhsReport({required this.area,
+    required this.shift_index, //unused for now
+    required this.line_index,
+    required this.nearMiss,
+    required this.risk_assessment,
+    required this.supName,
+    required this.firstAid_incidents,
+    required this.lostTime_incidents,
+    required this.recordable_incidents,
+    required this.year,
+    required this.month,
+    required this.day,
+    required this.s7_index});
 
   EhsReport.fromJson(Map<String, Object?> json)
       : this(
-          year: json['year']! as int,
-          month: json['month']! as int,
-          day: json['day']! as int,
-          area: json['area']! as int,
-          shift_index: json['shift_index']! as int,
-          line_index: json['line_index']! as int,
-          s7_index: json['s7_index']! as int,
-          nearMiss: json['nearMiss']! as int,
-          supName: json['supName']! as String,
-          risk_assessment: json['risk_assessment']! as int,
-          firstAid_incidents: json['firstAid_incidents']! as int,
-          lostTime_incidents: json['lostTime_incidents']! as int,
-          recordable_incidents: json['recordable_incidents']! as int,
-        );
+    year: json['year']! as int,
+    month: json['month']! as int,
+    day: json['day']! as int,
+    area: json['area']! as int,
+    shift_index: json['shift_index']! as int,
+    line_index: json['line_index']! as int,
+    s7_index: json['s7_index']! as int,
+    nearMiss: json['nearMiss']! as int,
+    supName: json['supName']! as String,
+    risk_assessment: json['risk_assessment']! as int,
+    firstAid_incidents: json['firstAid_incidents']! as int,
+    lostTime_incidents: json['lostTime_incidents']! as int,
+    recordable_incidents: json['recordable_incidents']! as int,
+  );
 
   Map<String, Object?> toJson() {
     return {
@@ -68,8 +69,7 @@ class EhsReport {
     };
   }
 
-  static void addReport(
-      String supName,
+  static void addReport(String supName,
       int firstAid_incidents,
       int lostTime_incidents,
       int recordable_incidents,
@@ -87,9 +87,9 @@ class EhsReport {
         .doc('ehs_reports')
         .collection(year.toString())
         .withConverter<EhsReport>(
-          fromFirestore: (snapshot, _) => EhsReport.fromJson(snapshot.data()!),
-          toFirestore: (report, _) => report.toJson(),
-        );
+      fromFirestore: (snapshot, _) => EhsReport.fromJson(snapshot.data()!),
+      toFirestore: (report, _) => report.toJson(),
+    );
     await ehsReportRef.add(
       EhsReport(
         supName: supName,
@@ -109,16 +109,16 @@ class EhsReport {
     );
   }
 
-  static List<EhsReport> getAllReportsOfInterval(
+  static HashMap<String, EhsReport> getAllReportsOfInterval(
     List<QueryDocumentSnapshot<EhsReport>> reportsList,
     int month_from,
     int month_to,
     int day_from,
     int day_to,
     int year,
-    int area,
+    int refNum,
   ) {
-    List<EhsReport> tempList = [];
+    HashMap hashMap = new HashMap<String, EhsReport>();
     for (var report in reportsList) {
       if (!isDayInInterval(
         report.data().day,
@@ -133,15 +133,12 @@ class EhsReport {
             report.data().day.toString());
         continue;
       }
-      if (report.data().area == area) {
-        tempList.add(report.data());
-      }
+      if (report.data().area == refNum) hashMap[report.id] = report.data();
     }
-    return tempList;
+    return hashMap as HashMap<String, EhsReport>;
   }
 
-  static EhsReport getFilteredReportOfInterval(
-      List<QueryDocumentSnapshot<EhsReport>> reportsList,
+  static EhsReport getFilteredReportOfInterval(List<QueryDocumentSnapshot<EhsReport>> reportsList,
       int month_from,
       int month_to,
       int day_from,

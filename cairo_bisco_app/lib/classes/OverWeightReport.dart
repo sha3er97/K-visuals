@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,14 +21,14 @@ class OverWeightReport {
 
   OverWeightReport.fromJson(Map<String, Object?> json)
       : this(
-          year: json['year']! as int,
-          month: json['month']! as int,
-          day: json['day']! as int,
-          area: json['area']! as int,
-          line_index: json['line_index']! as int,
-          supName: json['supName']! as String,
-          percent: json['percent']! as double,
-        );
+    year: json['year']! as int,
+    month: json['month']! as int,
+    day: json['day']! as int,
+    area: json['area']! as int,
+    line_index: json['line_index']! as int,
+    supName: json['supName']! as String,
+    percent: json['percent']! as double,
+  );
 
   Map<String, Object?> toJson() {
     return {
@@ -40,24 +42,22 @@ class OverWeightReport {
     };
   }
 
-  static void addReport(
-    String supName,
-    double percent,
-    int line_index,
-    int area,
-    int year,
-    int month,
-    int day,
-  ) async {
+  static void addReport(String supName,
+      double percent,
+      int line_index,
+      int area,
+      int year,
+      int month,
+      int day,) async {
     final overWeightReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('overWeight_reports')
         .collection(year.toString())
         .withConverter<OverWeightReport>(
-          fromFirestore: (snapshot, _) =>
-              OverWeightReport.fromJson(snapshot.data()!),
-          toFirestore: (report, _) => report.toJson(),
-        );
+      fromFirestore: (snapshot, _) =>
+          OverWeightReport.fromJson(snapshot.data()!),
+      toFirestore: (report, _) => report.toJson(),
+    );
     await overWeightReportRef.add(
       OverWeightReport(
         supName: supName,
@@ -71,16 +71,16 @@ class OverWeightReport {
     );
   }
 
-  static List<OverWeightReport> getAllReportsOfInterval(
+  static HashMap<String, OverWeightReport> getAllReportsOfInterval(
     List<QueryDocumentSnapshot<OverWeightReport>> reportsList,
     int month_from,
     int month_to,
     int day_from,
     int day_to,
     int year,
-    int area,
+    int refNum,
   ) {
-    List<OverWeightReport> tempList = [];
+    HashMap hashMap = new HashMap<String, OverWeightReport>();
     for (var report in reportsList) {
       if (!isDayInInterval(
         report.data().day,
@@ -95,23 +95,19 @@ class OverWeightReport {
             report.data().day.toString());
         continue;
       }
-      if (report.data().area == area) {
-        tempList.add(report.data());
-      }
+      if (report.data().area == refNum) hashMap[report.id] = report.data();
     }
-    return tempList;
+    return hashMap as HashMap<String, OverWeightReport>;
   }
 
-  static OverWeightReport getFilteredReportOfInterval(
-    List<QueryDocumentSnapshot<OverWeightReport>> reportsList,
-    int month_from,
-    int month_to,
-    int day_from,
-    int day_to,
-    int year,
-    int areaRequired,
-    int lineNumRequired,
-  ) {
+  static OverWeightReport getFilteredReportOfInterval(List<QueryDocumentSnapshot<OverWeightReport>> reportsList,
+      int month_from,
+      int month_to,
+      int day_from,
+      int day_to,
+      int year,
+      int areaRequired,
+      int lineNumRequired,) {
     double temp_percent = 0.0;
     int valid_reports_count = 0;
 

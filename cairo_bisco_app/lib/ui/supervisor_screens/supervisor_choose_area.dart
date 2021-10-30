@@ -96,6 +96,7 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                   builder: (context) => BiscuitsProductionForm(
                                     reportDetails:
                                         BiscuitsReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -108,6 +109,7 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                   builder: (context) => SupervisorQfsReport(
                                     refNum: BISCUIT_AREA,
                                     reportDetails: QfsReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -120,6 +122,7 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                   builder: (context) => SupervisorEhsReport(
                                     refNum: BISCUIT_AREA,
                                     reportDetails: EhsReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -131,9 +134,10 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) =>
                                       SupervisorOverWeightReportForm(
-                                    refNum: BISCUIT_AREA,
+                                        refNum: BISCUIT_AREA,
                                     reportDetails:
                                         OverWeightReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -145,9 +149,10 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) =>
                                       SupervisorPeopleReportForm(
-                                    refNum: BISCUIT_AREA,
+                                        refNum: BISCUIT_AREA,
                                     reportDetails:
                                         PeopleReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -160,6 +165,7 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                   builder: (context) => SupervisorNRCReportForm(
                                     refNum: BISCUIT_AREA,
                                     reportDetails: NRCReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -216,6 +222,7 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) => WaferProductionForm(
                                     reportDetails: WaferReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -228,6 +235,7 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                   builder: (context) => SupervisorQfsReport(
                                     refNum: WAFER_AREA,
                                     reportDetails: QfsReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -240,6 +248,7 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                   builder: (context) => SupervisorEhsReport(
                                     refNum: WAFER_AREA,
                                     reportDetails: EhsReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -251,9 +260,10 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) =>
                                       SupervisorOverWeightReportForm(
-                                    refNum: WAFER_AREA,
+                                        refNum: WAFER_AREA,
                                     reportDetails:
                                         OverWeightReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -265,9 +275,10 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) =>
                                       SupervisorPeopleReportForm(
-                                    refNum: WAFER_AREA,
+                                        refNum: WAFER_AREA,
                                     reportDetails:
                                         PeopleReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -280,6 +291,7 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                   builder: (context) => SupervisorNRCReportForm(
                                     refNum: WAFER_AREA,
                                     reportDetails: NRCReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -339,6 +351,7 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                   builder: (context) => MaamoulProductionForm(
                                     reportDetails:
                                         MaamoulReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -351,6 +364,7 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                   builder: (context) => SupervisorQfsReport(
                                     refNum: MAAMOUL_AREA,
                                     reportDetails: QfsReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -363,6 +377,7 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                   builder: (context) => SupervisorEhsReport(
                                     refNum: MAAMOUL_AREA,
                                     reportDetails: EhsReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -374,9 +389,10 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) =>
                                       SupervisorOverWeightReportForm(
-                                    refNum: MAAMOUL_AREA,
+                                        refNum: MAAMOUL_AREA,
                                     reportDetails:
                                         OverWeightReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -388,9 +404,10 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) =>
                                       SupervisorPeopleReportForm(
-                                    refNum: MAAMOUL_AREA,
+                                        refNum: MAAMOUL_AREA,
                                     reportDetails:
                                         PeopleReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),
@@ -403,6 +420,7 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                   builder: (context) => SupervisorNRCReportForm(
                                     refNum: MAAMOUL_AREA,
                                     reportDetails: NRCReport.getEmptyReport(),
+                                    reportID: '',
                                     isEdit: false,
                                   ),
                                 ),

@@ -17,15 +17,18 @@ class WaferProductionForm extends StatefulWidget {
   WaferProductionForm({
     required this.reportDetails,
     required this.isEdit,
+    required this.reportID,
   });
 
   final dynamic reportDetails;
   final bool isEdit;
+  final String reportID;
 
   @override
   _WaferProductionFormState createState() => _WaferProductionFormState(
         reportDetails: reportDetails,
         isEdit: isEdit,
+        reportID: reportID,
       );
 }
 
@@ -33,8 +36,10 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
   _WaferProductionFormState({
     required this.reportDetails,
     required this.isEdit,
+    required this.reportID,
   });
 
+  final String reportID;
   final dynamic reportDetails;
   final bool isEdit;
 

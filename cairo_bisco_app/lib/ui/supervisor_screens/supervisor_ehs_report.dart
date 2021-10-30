@@ -18,16 +18,19 @@ class SupervisorEhsReport extends StatefulWidget {
     required this.refNum,
     required this.reportDetails,
     required this.isEdit,
+    required this.reportID,
   }) : super(key: key);
   final int refNum;
   final dynamic reportDetails;
   final bool isEdit;
+  final String reportID;
 
   @override
   _SupervisorEhsReportState createState() => _SupervisorEhsReportState(
         refNum: refNum,
         reportDetails: reportDetails,
         isEdit: isEdit,
+        reportID: reportID,
       );
 }
 
@@ -36,8 +39,10 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
     required this.refNum,
     required this.reportDetails,
     required this.isEdit,
+    required this.reportID,
   });
 
+  final String reportID;
   final bool isEdit;
   final int refNum;
   final dynamic reportDetails;

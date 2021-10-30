@@ -19,16 +19,19 @@ class SupervisorNRCReportForm extends StatefulWidget {
     required this.refNum,
     required this.reportDetails,
     required this.isEdit,
+    required this.reportID,
   }) : super(key: key);
   final int refNum;
   final dynamic reportDetails;
   final bool isEdit;
+  final String reportID;
 
   @override
   _SupervisorNRCReportFormState createState() => _SupervisorNRCReportFormState(
         refNum: refNum,
         reportDetails: reportDetails,
         isEdit: isEdit,
+        reportID: reportID,
       );
 }
 
@@ -37,8 +40,10 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
     required this.refNum,
     required this.reportDetails,
     required this.isEdit,
+    required this.reportID,
   });
 
+  final String reportID;
   final dynamic reportDetails;
   final int refNum;
   final bool isEdit;

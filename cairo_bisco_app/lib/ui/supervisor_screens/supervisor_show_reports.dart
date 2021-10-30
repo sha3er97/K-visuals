@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
 import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
@@ -105,70 +107,70 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
         .doc('quality_reports')
         .collection(validated_year.toString())
         .withConverter<QfsReport>(
-          fromFirestore: (snapshot, _) => QfsReport.fromJson(snapshot.data()!),
-          toFirestore: (report, _) => report.toJson(),
-        );
+      fromFirestore: (snapshot, _) => QfsReport.fromJson(snapshot.data()!),
+      toFirestore: (report, _) => report.toJson(),
+    );
     final ehsReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('ehs_reports')
         .collection(validated_year.toString())
         .withConverter<EhsReport>(
-          fromFirestore: (snapshot, _) => EhsReport.fromJson(snapshot.data()!),
-          toFirestore: (report, _) => report.toJson(),
-        );
+      fromFirestore: (snapshot, _) => EhsReport.fromJson(snapshot.data()!),
+      toFirestore: (report, _) => report.toJson(),
+    );
     final biscuitsReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('biscuits_reports')
         .collection(validated_year.toString())
         .withConverter<BiscuitsReport>(
-          fromFirestore: (snapshot, _) =>
-              BiscuitsReport.fromJson(snapshot.data()!),
-          toFirestore: (report, _) => report.toJson(),
-        );
+      fromFirestore: (snapshot, _) =>
+          BiscuitsReport.fromJson(snapshot.data()!),
+      toFirestore: (report, _) => report.toJson(),
+    );
     final waferReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('wafer_reports')
         .collection(validated_year.toString())
         .withConverter<WaferReport>(
-          fromFirestore: (snapshot, _) =>
-              WaferReport.fromJson(snapshot.data()!),
-          toFirestore: (report, _) => report.toJson(),
-        );
+      fromFirestore: (snapshot, _) =>
+          WaferReport.fromJson(snapshot.data()!),
+      toFirestore: (report, _) => report.toJson(),
+    );
     final maamoulReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('maamoul_reports')
         .collection(validated_year.toString())
         .withConverter<MaamoulReport>(
-          fromFirestore: (snapshot, _) =>
-              MaamoulReport.fromJson(snapshot.data()!),
-          toFirestore: (report, _) => report.toJson(),
-        );
+      fromFirestore: (snapshot, _) =>
+          MaamoulReport.fromJson(snapshot.data()!),
+      toFirestore: (report, _) => report.toJson(),
+    );
     final nrcReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('nrc_reports')
         .collection(validated_year.toString())
         .withConverter<NRCReport>(
-          fromFirestore: (snapshot, _) => NRCReport.fromJson(snapshot.data()!),
-          toFirestore: (report, _) => report.toJson(),
-        );
+      fromFirestore: (snapshot, _) => NRCReport.fromJson(snapshot.data()!),
+      toFirestore: (report, _) => report.toJson(),
+    );
     final peopleReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('people_reports')
         .collection(validated_year.toString())
         .withConverter<PeopleReport>(
-          fromFirestore: (snapshot, _) =>
-              PeopleReport.fromJson(snapshot.data()!),
-          toFirestore: (report, _) => report.toJson(),
-        );
+      fromFirestore: (snapshot, _) =>
+          PeopleReport.fromJson(snapshot.data()!),
+      toFirestore: (report, _) => report.toJson(),
+    );
     final overWeightReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('overWeight_reports')
         .collection(validated_year.toString())
         .withConverter<OverWeightReport>(
-          fromFirestore: (snapshot, _) =>
-              OverWeightReport.fromJson(snapshot.data()!),
-          toFirestore: (report, _) => report.toJson(),
-        );
+      fromFirestore: (snapshot, _) =>
+          OverWeightReport.fromJson(snapshot.data()!),
+      toFirestore: (report, _) => report.toJson(),
+    );
     final allRefs = [
       biscuitsReportRef,
       waferReportRef,
@@ -205,7 +207,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                 children: [
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: mediumPadding),
+                    const EdgeInsets.symmetric(horizontal: mediumPadding),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Text(
@@ -221,7 +223,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                   Expanded(
                     child: Padding(
                       padding:
-                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -236,7 +238,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -250,7 +252,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                   Expanded(
                     child: Padding(
                       padding:
-                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -265,7 +267,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -280,7 +282,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                     flex: 2,
                     child: Padding(
                       padding:
-                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -295,7 +297,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -312,7 +314,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                 children: [
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: mediumPadding),
+                    const EdgeInsets.symmetric(horizontal: mediumPadding),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Text(
@@ -328,7 +330,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                   Expanded(
                     child: Padding(
                       padding:
-                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -343,7 +345,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -357,7 +359,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                   Expanded(
                     child: Padding(
                       padding:
-                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -372,7 +374,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -387,7 +389,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                     flex: 2,
                     child: Padding(
                       padding:
-                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -402,7 +404,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -454,13 +456,13 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                   switch (refNum) {
                                     case BISCUIT_AREA:
                                       List<
-                                              QueryDocumentSnapshot<
-                                                  BiscuitsReport>>
-                                          prodSnapshotReportsList =
-                                          snapshot.docs as List<
-                                              QueryDocumentSnapshot<
-                                                  BiscuitsReport>>;
-                                      List<BiscuitsReport> ProdReportsList =
+                                          QueryDocumentSnapshot<
+                                              BiscuitsReport>>
+                                      prodSnapshotReportsList =
+                                      snapshot.docs as List<
+                                          QueryDocumentSnapshot<
+                                              BiscuitsReport>>;
+                                      HashMap<String, dynamic> ProdReportsList =
                                           BiscuitsReport
                                               .getAllReportsOfInterval(
                                         prodSnapshotReportsList,
@@ -476,11 +478,11 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                       break;
                                     case WAFER_AREA:
                                       List<QueryDocumentSnapshot<WaferReport>>
-                                          prodSnapshotReportsList =
-                                          snapshot.docs as List<
-                                              QueryDocumentSnapshot<
-                                                  WaferReport>>;
-                                      List<WaferReport> ProdReportsList =
+                                      prodSnapshotReportsList =
+                                      snapshot.docs as List<
+                                          QueryDocumentSnapshot<
+                                              WaferReport>>;
+                                      HashMap<String, dynamic> ProdReportsList =
                                           WaferReport.getAllReportsOfInterval(
                                         prodSnapshotReportsList,
                                         validated_month_from,
@@ -495,11 +497,11 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                       break;
                                     case MAAMOUL_AREA:
                                       List<QueryDocumentSnapshot<MaamoulReport>>
-                                          prodSnapshotReportsList =
-                                          snapshot.docs as List<
-                                              QueryDocumentSnapshot<
-                                                  MaamoulReport>>;
-                                      List<MaamoulReport> ProdReportsList =
+                                      prodSnapshotReportsList =
+                                      snapshot.docs as List<
+                                          QueryDocumentSnapshot<
+                                              MaamoulReport>>;
+                                      HashMap<String, dynamic> ProdReportsList =
                                           MaamoulReport.getAllReportsOfInterval(
                                         prodSnapshotReportsList,
                                         validated_month_from,
@@ -516,10 +518,10 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                   break;
                                 case QFS_REPORT:
                                   List<QueryDocumentSnapshot<QfsReport>>
-                                      qfsSnapshotReportsList = snapshot.docs
-                                          as List<
-                                              QueryDocumentSnapshot<QfsReport>>;
-                                  List<QfsReport> QfsReportsList =
+                                  qfsSnapshotReportsList = snapshot.docs
+                                  as List<
+                                      QueryDocumentSnapshot<QfsReport>>;
+                                  HashMap<String, dynamic> QfsReportsList =
                                       QfsReport.getAllReportsOfInterval(
                                     qfsSnapshotReportsList,
                                     validated_month_from,
@@ -535,10 +537,10 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                   break;
                                 case EHS_REPORT:
                                   List<QueryDocumentSnapshot<EhsReport>>
-                                      ehsSnapshotReportsList = snapshot.docs
-                                          as List<
-                                              QueryDocumentSnapshot<EhsReport>>;
-                                  List<EhsReport> ehsReportsList =
+                                  ehsSnapshotReportsList = snapshot.docs
+                                  as List<
+                                      QueryDocumentSnapshot<EhsReport>>;
+                                  HashMap<String, dynamic> ehsReportsList =
                                       EhsReport.getAllReportsOfInterval(
                                     ehsSnapshotReportsList,
                                     validated_month_from,
@@ -558,7 +560,8 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                       snapshot.docs as List<
                                           QueryDocumentSnapshot<
                                               OverWeightReport>>;
-                                  List<OverWeightReport> overweightReportsList =
+                                  HashMap<String, dynamic>
+                                      overweightReportsList =
                                       OverWeightReport.getAllReportsOfInterval(
                                     overWeightSnapshotReportsList,
                                     validated_month_from,
@@ -574,10 +577,10 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                   break;
                                 case PEOPLE_REPORT:
                                   List<QueryDocumentSnapshot<PeopleReport>>
-                                      peopleSnapshotReportsList =
-                                      snapshot.docs as List<
-                                          QueryDocumentSnapshot<PeopleReport>>;
-                                  List<PeopleReport> peopleReportsList =
+                                  peopleSnapshotReportsList =
+                                  snapshot.docs as List<
+                                      QueryDocumentSnapshot<PeopleReport>>;
+                                  HashMap<String, dynamic> peopleReportsList =
                                       PeopleReport.getAllReportsOfInterval(
                                     peopleSnapshotReportsList,
                                     validated_month_from,
@@ -593,10 +596,10 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                   break;
                                 case NRC_REPORT:
                                   List<QueryDocumentSnapshot<NRCReport>>
-                                      nrcSnapshotReportsList = snapshot.docs
-                                          as List<
-                                              QueryDocumentSnapshot<NRCReport>>;
-                                  List<NRCReport> nrcReportsList =
+                                  nrcSnapshotReportsList = snapshot.docs
+                                  as List<
+                                      QueryDocumentSnapshot<NRCReport>>;
+                                  HashMap<String, dynamic> nrcReportsList =
                                       NRCReport.getAllReportsOfInterval(
                                     nrcSnapshotReportsList,
                                     validated_month_from,
@@ -640,6 +643,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                       date: reportsTitlesList[index].date,
                       supName: reportsTitlesList[index].supName,
                       reportDetails: reportsTitlesList[index].reportDetails,
+                      reportID: reportsTitlesList[index].reportID,
                       refNum: refNum,
                       type: type,
                     );

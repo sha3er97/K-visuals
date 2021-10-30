@@ -160,7 +160,7 @@ class ChooseVisualsOrExcel extends StatelessWidget {
                         int.parse(to_day),
                         int.parse(chosenYear),
                         refNum,
-                      );
+                      ).values.toList();
                       util.setOverweightList(overweightTempList);
 
                       switch (refNum) {
@@ -176,7 +176,7 @@ class ChooseVisualsOrExcel extends StatelessWidget {
                             int.parse(from_day),
                             int.parse(to_day),
                             int.parse(chosenYear),
-                          );
+                          ).values.toList();
                           util.insertBiscuitReportRows(prodTempList);
                           break;
                         case WAFER_AREA:
@@ -191,7 +191,7 @@ class ChooseVisualsOrExcel extends StatelessWidget {
                             int.parse(from_day),
                             int.parse(to_day),
                             int.parse(chosenYear),
-                          );
+                          ).values.toList();
                           util.insertWaferReportRows(prodTempList);
                           break;
                         case MAAMOUL_AREA:
@@ -206,7 +206,7 @@ class ChooseVisualsOrExcel extends StatelessWidget {
                             int.parse(from_day),
                             int.parse(to_day),
                             int.parse(chosenYear),
-                          );
+                          ).values.toList();
                           util.insertMaamoulReportRows(prodTempList);
                           break;
                       }

@@ -20,12 +20,12 @@ class ReportItem extends StatelessWidget {
     required this.refNum,
     required this.type,
     required this.reportDetails,
-    isEdit: true,
+    required this.reportID,
     // required this.param_onPressed,
     // required this.btn_icon,
   });
 
-  final String date, supName;
+  final String date, supName, reportID;
   final int line, shift, refNum, type;
   final dynamic reportDetails;
 
@@ -93,6 +93,7 @@ class ReportItem extends StatelessWidget {
                               builder: (context) => BiscuitsProductionForm(
                                 reportDetails: reportDetails,
                                 isEdit: true,
+                                reportID: reportID,
                               ),
                             ),
                           );
@@ -104,6 +105,7 @@ class ReportItem extends StatelessWidget {
                               builder: (context) => WaferProductionForm(
                                 reportDetails: reportDetails,
                                 isEdit: true,
+                                reportID: reportID,
                               ),
                             ),
                           );
@@ -115,6 +117,7 @@ class ReportItem extends StatelessWidget {
                               builder: (context) => MaamoulProductionForm(
                                 reportDetails: reportDetails,
                                 isEdit: true,
+                                reportID: reportID,
                               ),
                             ),
                           );
@@ -129,6 +132,7 @@ class ReportItem extends StatelessWidget {
                             refNum: refNum,
                             reportDetails: reportDetails,
                             isEdit: true,
+                            reportID: reportID,
                           ),
                         ),
                       );
@@ -141,6 +145,7 @@ class ReportItem extends StatelessWidget {
                             refNum: refNum,
                             reportDetails: reportDetails,
                             isEdit: true,
+                            reportID: reportID,
                           ),
                         ),
                       );
@@ -153,6 +158,7 @@ class ReportItem extends StatelessWidget {
                             refNum: refNum,
                             reportDetails: reportDetails,
                             isEdit: true,
+                            reportID: reportID,
                           ),
                         ),
                       );
@@ -165,6 +171,7 @@ class ReportItem extends StatelessWidget {
                             refNum: refNum,
                             reportDetails: reportDetails,
                             isEdit: true,
+                            reportID: reportID,
                           ),
                         ),
                       );
@@ -177,6 +184,7 @@ class ReportItem extends StatelessWidget {
                             refNum: refNum,
                             reportDetails: reportDetails,
                             isEdit: true,
+                            reportID: reportID,
                           ),
                         ),
                       );

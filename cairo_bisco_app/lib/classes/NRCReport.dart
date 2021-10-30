@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,15 +21,15 @@ class NRCReport {
 
   NRCReport.fromJson(Map<String, Object?> json)
       : this(
-          year: json['year']! as int,
-          month: json['month']! as int,
-          day: json['day']! as int,
-          area: json['area']! as int,
-          shift_index: json['shift_index']! as int,
-          supName: json['supName']! as String,
-          notes_count: json['notes_count']! as int,
-          notes_details: json['notes_details']! as String,
-        );
+    year: json['year']! as int,
+    month: json['month']! as int,
+    day: json['day']! as int,
+    area: json['area']! as int,
+    shift_index: json['shift_index']! as int,
+    supName: json['supName']! as String,
+    notes_count: json['notes_count']! as int,
+    notes_details: json['notes_details']! as String,
+  );
 
   Map<String, Object?> toJson() {
     return {
@@ -42,24 +44,22 @@ class NRCReport {
     };
   }
 
-  static void addReport(
-    String supName,
-    int notes_count,
-    String notes_details,
-    int shift_index,
-    int area,
-    int year,
-    int month,
-    int day,
-  ) async {
+  static void addReport(String supName,
+      int notes_count,
+      String notes_details,
+      int shift_index,
+      int area,
+      int year,
+      int month,
+      int day,) async {
     final nrcReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('nrc_reports')
         .collection(year.toString())
         .withConverter<NRCReport>(
-          fromFirestore: (snapshot, _) => NRCReport.fromJson(snapshot.data()!),
-          toFirestore: (report, _) => report.toJson(),
-        );
+      fromFirestore: (snapshot, _) => NRCReport.fromJson(snapshot.data()!),
+      toFirestore: (report, _) => report.toJson(),
+    );
     await nrcReportRef.add(
       NRCReport(
         supName: supName,
@@ -74,16 +74,16 @@ class NRCReport {
     );
   }
 
-  static List<NRCReport> getAllReportsOfInterval(
+  static HashMap<String, NRCReport> getAllReportsOfInterval(
     List<QueryDocumentSnapshot<NRCReport>> reportsList,
     int month_from,
     int month_to,
     int day_from,
     int day_to,
     int year,
-    int area,
+    int refNum,
   ) {
-    List<NRCReport> tempList = [];
+    HashMap hashMap = new HashMap<String, NRCReport>();
     for (var report in reportsList) {
       if (!isDayInInterval(
         report.data().day,
@@ -98,22 +98,18 @@ class NRCReport {
             report.data().day.toString());
         continue;
       }
-      if (report.data().area == area) {
-        tempList.add(report.data());
-      }
+      if (report.data().area == refNum) hashMap[report.id] = report.data();
     }
-    return tempList;
+    return hashMap as HashMap<String, NRCReport>;
   }
 
-  static NRCReport getFilteredReportOfInterval(
-    List<QueryDocumentSnapshot<NRCReport>> reportsList,
-    int month_from,
-    int month_to,
-    int day_from,
-    int day_to,
-    int year,
-    int areaRequired,
-  ) {
+  static NRCReport getFilteredReportOfInterval(List<QueryDocumentSnapshot<NRCReport>> reportsList,
+      int month_from,
+      int month_to,
+      int day_from,
+      int day_to,
+      int year,
+      int areaRequired,) {
     int temp_total_notes = 0;
     String temp_all_notes_details = '';
 

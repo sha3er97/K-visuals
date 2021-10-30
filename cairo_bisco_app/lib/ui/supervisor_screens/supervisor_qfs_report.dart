@@ -18,16 +18,19 @@ class SupervisorQfsReport extends StatefulWidget {
     required this.refNum,
     required this.reportDetails,
     required this.isEdit,
+    required this.reportID,
   }) : super(key: key);
   final int refNum;
   final dynamic reportDetails;
   final bool isEdit;
+  final String reportID;
 
   @override
   _SupervisorQfsReportState createState() => _SupervisorQfsReportState(
         refNum: refNum,
         reportDetails: reportDetails,
         isEdit: isEdit,
+        reportID: reportID,
       );
 }
 
@@ -36,8 +39,10 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
     required this.refNum,
     required this.reportDetails,
     required this.isEdit,
+    required this.reportID,
   });
 
+  final String reportID;
   final int refNum;
   final dynamic reportDetails;
   final bool isEdit;

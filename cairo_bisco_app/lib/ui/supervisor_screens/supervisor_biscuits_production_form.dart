@@ -17,15 +17,18 @@ class BiscuitsProductionForm extends StatefulWidget {
   BiscuitsProductionForm({
     required this.reportDetails,
     required this.isEdit,
+    required this.reportID,
   });
 
   final dynamic reportDetails;
   final bool isEdit;
+  final String reportID;
 
   @override
   _BiscuitsProductionFormState createState() => _BiscuitsProductionFormState(
         reportDetails: reportDetails,
         isEdit: isEdit,
+        reportID: reportID,
       );
 }
 
@@ -33,36 +36,38 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
   _BiscuitsProductionFormState({
     required this.reportDetails,
     required this.isEdit,
+    required this.reportID,
   });
 
+  final String reportID;
   final bool isEdit;
   final dynamic reportDetails;
 
   bool showSpinner = false;
   int refNum = 0; // 0 = biscuits
 
-  String supName = "",
-      shiftProductionPlan = '',
-      actualSpeed = '',
-      productionInCartons = '',
-      extrusionScrap = '',
-      extrusionRework = '',
-      ovenScrap = '',
-      ovenRework = '',
-      cutterScrap = '',
-      cutterRework = '',
-      conveyorScrap = '',
-      conveyorRework = '',
-      mc1Speed = '',
-      mc2Speed = '',
-      packingScrap = '',
-      packingRework = '',
-      boxesWaste = '',
-      cartonWaste = '',
-      mc1FilmUsed = '',
-      mc2FilmUsed = '',
-      mc1WasteKg = '',
-      mc2WasteKg = '';
+  late String supName,
+      shiftProductionPlan,
+      actualSpeed,
+      productionInCartons,
+      extrusionScrap,
+      extrusionRework,
+      ovenScrap,
+      ovenRework,
+      cutterScrap,
+      cutterRework,
+      conveyorScrap,
+      conveyorRework,
+      mc1Speed,
+      mc2Speed,
+      packingScrap,
+      packingRework,
+      boxesWaste,
+      cartonWaste,
+      mc1FilmUsed,
+      mc2FilmUsed,
+      mc1WasteKg,
+      mc2WasteKg;
 
   bool _sup_name_validate = false,
       _shift_plan_validate = false,
@@ -88,12 +93,12 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
       _mc2WasteKg_validate = false;
 
   //drop down values
-  String selectedShift = shifts[0];
-  String selectedYear = years[(int.parse(getYear())) - 2020];
-  String selectedMonth = months[(int.parse(getMonth())) - 1];
-  String selectedDay = days[(int.parse(getDay())) - 1];
-  String selectedProdLine = prod_lines4[0];
-  String sku = SKU.biscuitSKU[0];
+  late String selectedShift,
+      selectedYear,
+      selectedMonth,
+      selectedDay,
+      selectedProdLine,
+      sku;
 
   VoidCallback? onSKUChange(val) {
     setState(() {
@@ -133,6 +138,40 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
 
   @override
   Widget build(BuildContext context) {
+    supName = isEdit ? reportDetails.supName : '';
+    shiftProductionPlan =
+        isEdit ? reportDetails.shiftProductionPlan.toString() : '';
+    actualSpeed = isEdit ? reportDetails.actualSpeed.toString() : '';
+    productionInCartons =
+        isEdit ? reportDetails.productionInCartons.toString() : '';
+    extrusionScrap = isEdit ? reportDetails.extrusionScrap.toString() : '';
+    extrusionRework = isEdit ? reportDetails.extrusionRework.toString() : '';
+    ovenScrap = isEdit ? reportDetails.ovenScrap.toString() : '';
+    ovenRework = isEdit ? reportDetails.ovenRework.toString() : '';
+    cutterScrap = isEdit ? reportDetails.cutterScrap.toString() : '';
+    cutterRework = isEdit ? reportDetails.cutterRework.toString() : '';
+    conveyorScrap = isEdit ? reportDetails.conveyorScrap.toString() : '';
+    conveyorRework = isEdit ? reportDetails.conveyorRework.toString() : '';
+    mc1Speed = isEdit ? reportDetails.mc1Speed.toString() : '';
+    mc2Speed = isEdit ? reportDetails.mc2Speed.toString() : '';
+    packingScrap = isEdit ? reportDetails.packingScrap.toString() : '';
+    packingRework = isEdit ? reportDetails.packingRework.toString() : '';
+    boxesWaste = isEdit ? reportDetails.boxesWaste.toString() : '';
+    cartonWaste = isEdit ? reportDetails.cartonWaste.toString() : '';
+    mc1FilmUsed = isEdit ? reportDetails.mc1FilmUsed.toString() : '';
+    mc2FilmUsed = isEdit ? reportDetails.mc2FilmUsed.toString() : '';
+    mc1WasteKg = isEdit ? reportDetails.mc1WasteKg.toString() : '';
+    mc2WasteKg = isEdit ? reportDetails.mc2WasteKg.toString() : '';
+    ///////////////////////////////////////////////////////////////////////////////
+    selectedShift = shifts[reportDetails.shift_index];
+    selectedYear =
+        years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
+    selectedMonth =
+        months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
+    selectedDay =
+        days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
+    selectedProdLine = prod_lines4[reportDetails.line_index - 1];
+    sku = isEdit ? reportDetails.skuName : SKU.biscuitSKU[0];
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: SafeArea(
@@ -159,15 +198,16 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPadding),
+                  const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        smallerHeading('اسم المشرف المسؤول\nSupervisor Name'),
+                        smallerHeading('اسم المسؤول\nSupervisor Name'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: supName,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -203,7 +243,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -215,7 +255,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -231,9 +271,10 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(vertical: 10),
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: minimumPadding),
                                   child: Column(
                                     children: [
                                       DropdownButton<String>(
@@ -260,7 +301,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(
                                       vertical: minimumPadding),
@@ -291,7 +332,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               flex: 2,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(
                                       vertical: minimumPadding),
@@ -326,7 +367,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -339,7 +380,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -352,7 +393,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -365,7 +406,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -379,7 +420,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         smallerHeading(
                             'خطة انتاج الوردية\nShift Production Plan'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: shiftProductionPlan,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -416,7 +458,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ///////////////////////////////////////////////////////////////
                         smallerHeading('السرعة الفعلية\nActual Speed'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: actualSpeed,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -452,7 +495,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         smallerHeading(
                             'الانتاج الفعلي بالكراتين\nProduction in Cartons'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: productionInCartons,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -491,7 +535,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: extrusionRework,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -526,7 +571,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك\nScrap'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: extrusionScrap,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -563,7 +609,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: ovenRework,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -598,7 +645,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك\nScrap'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: ovenScrap,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -635,7 +683,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: cutterRework,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -670,7 +719,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك\nScrap'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: cutterScrap,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -707,7 +757,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: conveyorRework,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -742,7 +793,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك\nScrap'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: conveyorScrap,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -779,7 +831,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('السرعة الفعلية MC1'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc1Speed,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -814,7 +867,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('السرعة الفعلية MC2'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc2Speed,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -848,9 +902,10 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading(
-                            'اعادة تشغيل بسكويت منطقة التغليف\nRework'),
+                            'اعادة تشغيل بسكويت منطقة التغليف\nPacking Rework'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: packingRework,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -883,9 +938,11 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('هالك بسكويت منطقة التغليف\nScrap'),
+                        smallerHeading(
+                            'هالك بسكويت منطقة التغليف\nPacking Scrap'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: packingScrap,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -920,7 +977,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('هالك علب\nBoxes Waste'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: boxesWaste,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -955,7 +1013,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('هالك كرتون\nCarton Waste'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: cartonWaste,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -992,7 +1051,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك بالكجم MC1'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc1WasteKg,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -1027,7 +1087,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('اجمالي الفيلم المستخدم MC1'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc1FilmUsed,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -1062,7 +1123,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك بالكجم MC2'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc2WasteKg,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -1097,7 +1159,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('اجمالي الفيلم المستخدم MC2'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc2FilmUsed,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -1130,127 +1193,302 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////button//////////////////////////
-                        Padding(
-                          padding: const EdgeInsets.all(minimumPadding),
-                          child: Center(
-                            child: RoundedButton(
-                              btnText: 'تسليم التقرير',
-                              color: KelloggColors.darkRed,
-                              onPressed: () async {
-                                setState(() {
-                                  showSpinner = true;
-                                  _sup_name_validate = emptyField(supName);
-                                  _shift_plan_validate =
-                                      emptyField(shiftProductionPlan);
-                                  _actualSpeed_validate =
-                                      emptyField(actualSpeed);
-                                  _productionInCartons_validate =
-                                      emptyField(productionInCartons);
-                                  _extrusionScrap_validate =
-                                      emptyField(extrusionScrap);
-                                  _extrusionRework_validate =
-                                      emptyField(extrusionRework);
-                                  _ovenScrap_validate = emptyField(ovenScrap);
-                                  _ovenRework_validate = emptyField(ovenRework);
-                                  _cutterScrap_validate =
-                                      emptyField(cutterScrap);
-                                  _cutterRework_validate =
-                                      emptyField(cutterRework);
-                                  _conveyorScrap_validate =
-                                      emptyField(conveyorScrap);
-                                  _conveyorRework_validate =
-                                      emptyField(conveyorRework);
-                                  _mc1Speed_validate = emptyField(mc1Speed);
-                                  _mc2Speed_validate = emptyField(mc2Speed);
-                                  _packingScrap_validate =
-                                      emptyField(packingScrap);
-                                  _packingRework_validate =
-                                      emptyField(packingRework);
-                                  _boxesWaste_validate = emptyField(boxesWaste);
-                                  _cartonWaste_validate =
-                                      emptyField(cartonWaste);
-                                  _mc1FilmUsed_validate =
-                                      emptyField(mc1FilmUsed);
-                                  _mc2FilmUsed_validate =
-                                      emptyField(mc2FilmUsed);
-                                  _mc1WasteKg_validate = emptyField(mc1WasteKg);
-                                  _mc2WasteKg_validate = emptyField(mc2WasteKg);
-                                });
-                                try {
-                                  if (!_sup_name_validate &&
-                                      !_shift_plan_validate &&
-                                      !_actualSpeed_validate &&
-                                      !_productionInCartons_validate &&
-                                      !_extrusionScrap_validate &&
-                                      !_extrusionRework_validate &&
-                                      !_ovenScrap_validate &&
-                                      !_ovenRework_validate &&
-                                      !_cutterScrap_validate &&
-                                      !_cutterRework_validate &&
-                                      !_conveyorScrap_validate &&
-                                      !_conveyorRework_validate &&
-                                      !_mc1Speed_validate &&
-                                      !_mc2Speed_validate &&
-                                      !_packingScrap_validate &&
-                                      !_packingRework_validate &&
-                                      !_boxesWaste_validate &&
-                                      !_cartonWaste_validate &&
-                                      !_mc1FilmUsed_validate &&
-                                      !_mc2FilmUsed_validate &&
-                                      !_mc1WasteKg_validate &&
-                                      !_mc2WasteKg_validate) {
-                                    BiscuitsReport.addReport(
-                                        supName,
-                                        sku,
-                                        double.parse(actualSpeed),
-                                        double.parse(extrusionScrap),
-                                        double.parse(extrusionRework),
-                                        double.parse(ovenScrap),
-                                        double.parse(ovenRework),
-                                        double.parse(cutterScrap),
-                                        double.parse(cutterRework),
-                                        double.parse(conveyorScrap),
-                                        double.parse(conveyorRework),
-                                        double.parse(mc1Speed),
-                                        double.parse(mc2Speed),
-                                        double.parse(packingScrap),
-                                        double.parse(packingRework),
-                                        double.parse(boxesWaste),
-                                        double.parse(cartonWaste),
-                                        double.parse(mc1FilmUsed),
-                                        double.parse(mc2FilmUsed),
-                                        double.parse(mc1WasteKg),
-                                        double.parse(mc2WasteKg),
-                                        int.parse(shiftProductionPlan),
-                                        int.parse(productionInCartons),
-                                        prod_lines4.indexOf(selectedProdLine) +
-                                            1,
-                                        shifts.indexOf(selectedShift),
-                                        refNum,
-                                        int.parse(selectedYear),
-                                        int.parse(selectedMonth),
-                                        int.parse(selectedDay));
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SuccessScreen()));
-                                  } else {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text(submissionErrorText),
-                                    ));
-                                  }
-                                  setState(() {
-                                    showSpinner = false;
-                                  });
-                                } catch (e) {
-                                  print(e);
-                                }
-                              },
-                            ),
-                          ),
-                        ),
+                        isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'تسليم التقرير',
+                                    color: KelloggColors.darkRed,
+                                    onPressed: () async {
+                                      setState(() {
+                                        showSpinner = true;
+                                        _sup_name_validate =
+                                            emptyField(supName);
+                                        _shift_plan_validate =
+                                            emptyField(shiftProductionPlan);
+                                        _actualSpeed_validate =
+                                            emptyField(actualSpeed);
+                                        _productionInCartons_validate =
+                                            emptyField(productionInCartons);
+                                        _extrusionScrap_validate =
+                                            emptyField(extrusionScrap);
+                                        _extrusionRework_validate =
+                                            emptyField(extrusionRework);
+                                        _ovenScrap_validate =
+                                            emptyField(ovenScrap);
+                                        _ovenRework_validate =
+                                            emptyField(ovenRework);
+                                        _cutterScrap_validate =
+                                            emptyField(cutterScrap);
+                                        _cutterRework_validate =
+                                            emptyField(cutterRework);
+                                        _conveyorScrap_validate =
+                                            emptyField(conveyorScrap);
+                                        _conveyorRework_validate =
+                                            emptyField(conveyorRework);
+                                        _mc1Speed_validate =
+                                            emptyField(mc1Speed);
+                                        _mc2Speed_validate =
+                                            emptyField(mc2Speed);
+                                        _packingScrap_validate =
+                                            emptyField(packingScrap);
+                                        _packingRework_validate =
+                                            emptyField(packingRework);
+                                        _boxesWaste_validate =
+                                            emptyField(boxesWaste);
+                                        _cartonWaste_validate =
+                                            emptyField(cartonWaste);
+                                        _mc1FilmUsed_validate =
+                                            emptyField(mc1FilmUsed);
+                                        _mc2FilmUsed_validate =
+                                            emptyField(mc2FilmUsed);
+                                        _mc1WasteKg_validate =
+                                            emptyField(mc1WasteKg);
+                                        _mc2WasteKg_validate =
+                                            emptyField(mc2WasteKg);
+                                      });
+                                      try {
+                                        if (!_sup_name_validate &&
+                                            !_shift_plan_validate &&
+                                            !_actualSpeed_validate &&
+                                            !_productionInCartons_validate &&
+                                            !_extrusionScrap_validate &&
+                                            !_extrusionRework_validate &&
+                                            !_ovenScrap_validate &&
+                                            !_ovenRework_validate &&
+                                            !_cutterScrap_validate &&
+                                            !_cutterRework_validate &&
+                                            !_conveyorScrap_validate &&
+                                            !_conveyorRework_validate &&
+                                            !_mc1Speed_validate &&
+                                            !_mc2Speed_validate &&
+                                            !_packingScrap_validate &&
+                                            !_packingRework_validate &&
+                                            !_boxesWaste_validate &&
+                                            !_cartonWaste_validate &&
+                                            !_mc1FilmUsed_validate &&
+                                            !_mc2FilmUsed_validate &&
+                                            !_mc1WasteKg_validate &&
+                                            !_mc2WasteKg_validate) {
+                                          BiscuitsReport.addReport(
+                                              supName,
+                                              sku,
+                                              double.parse(actualSpeed),
+                                              double.parse(extrusionScrap),
+                                              double.parse(extrusionRework),
+                                              double.parse(ovenScrap),
+                                              double.parse(ovenRework),
+                                              double.parse(cutterScrap),
+                                              double.parse(cutterRework),
+                                              double.parse(conveyorScrap),
+                                              double.parse(conveyorRework),
+                                              double.parse(mc1Speed),
+                                              double.parse(mc2Speed),
+                                              double.parse(packingScrap),
+                                              double.parse(packingRework),
+                                              double.parse(boxesWaste),
+                                              double.parse(cartonWaste),
+                                              double.parse(mc1FilmUsed),
+                                              double.parse(mc2FilmUsed),
+                                              double.parse(mc1WasteKg),
+                                              double.parse(mc2WasteKg),
+                                              int.parse(shiftProductionPlan),
+                                              int.parse(productionInCartons),
+                                              prod_lines4.indexOf(
+                                                      selectedProdLine) +
+                                                  1,
+                                              shifts.indexOf(selectedShift),
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SuccessScreen()));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Edit Report',
+                                    color: KelloggColors.darkBlue,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+
+                                        _sup_name_validate =
+                                            emptyField(supName);
+                                        _shift_plan_validate =
+                                            emptyField(shiftProductionPlan);
+                                        _actualSpeed_validate =
+                                            emptyField(actualSpeed);
+                                        _productionInCartons_validate =
+                                            emptyField(productionInCartons);
+                                        _extrusionScrap_validate =
+                                            emptyField(extrusionScrap);
+                                        _extrusionRework_validate =
+                                            emptyField(extrusionRework);
+                                        _ovenScrap_validate =
+                                            emptyField(ovenScrap);
+                                        _ovenRework_validate =
+                                            emptyField(ovenRework);
+                                        _cutterScrap_validate =
+                                            emptyField(cutterScrap);
+                                        _cutterRework_validate =
+                                            emptyField(cutterRework);
+                                        _conveyorScrap_validate =
+                                            emptyField(conveyorScrap);
+                                        _conveyorRework_validate =
+                                            emptyField(conveyorRework);
+                                        _mc1Speed_validate =
+                                            emptyField(mc1Speed);
+                                        _mc2Speed_validate =
+                                            emptyField(mc2Speed);
+                                        _packingScrap_validate =
+                                            emptyField(packingScrap);
+                                        _packingRework_validate =
+                                            emptyField(packingRework);
+                                        _boxesWaste_validate =
+                                            emptyField(boxesWaste);
+                                        _cartonWaste_validate =
+                                            emptyField(cartonWaste);
+                                        _mc1FilmUsed_validate =
+                                            emptyField(mc1FilmUsed);
+                                        _mc2FilmUsed_validate =
+                                            emptyField(mc2FilmUsed);
+                                        _mc1WasteKg_validate =
+                                            emptyField(mc1WasteKg);
+                                        _mc2WasteKg_validate =
+                                            emptyField(mc2WasteKg);
+                                      });
+                                      try {
+                                        if (!_sup_name_validate &&
+                                            !_shift_plan_validate &&
+                                            !_actualSpeed_validate &&
+                                            !_productionInCartons_validate &&
+                                            !_extrusionScrap_validate &&
+                                            !_extrusionRework_validate &&
+                                            !_ovenScrap_validate &&
+                                            !_ovenRework_validate &&
+                                            !_cutterScrap_validate &&
+                                            !_cutterRework_validate &&
+                                            !_conveyorScrap_validate &&
+                                            !_conveyorRework_validate &&
+                                            !_mc1Speed_validate &&
+                                            !_mc2Speed_validate &&
+                                            !_packingScrap_validate &&
+                                            !_packingRework_validate &&
+                                            !_boxesWaste_validate &&
+                                            !_cartonWaste_validate &&
+                                            !_mc1FilmUsed_validate &&
+                                            !_mc2FilmUsed_validate &&
+                                            !_mc1WasteKg_validate &&
+                                            !_mc2WasteKg_validate) {
+                                          BiscuitsReport.editReport(
+                                              context,
+                                              reportID,
+                                              supName,
+                                              sku,
+                                              double.parse(actualSpeed),
+                                              double.parse(extrusionScrap),
+                                              double.parse(extrusionRework),
+                                              double.parse(ovenScrap),
+                                              double.parse(ovenRework),
+                                              double.parse(cutterScrap),
+                                              double.parse(cutterRework),
+                                              double.parse(conveyorScrap),
+                                              double.parse(conveyorRework),
+                                              double.parse(mc1Speed),
+                                              double.parse(mc2Speed),
+                                              double.parse(packingScrap),
+                                              double.parse(packingRework),
+                                              double.parse(boxesWaste),
+                                              double.parse(cartonWaste),
+                                              double.parse(mc1FilmUsed),
+                                              double.parse(mc2FilmUsed),
+                                              double.parse(mc1WasteKg),
+                                              double.parse(mc2WasteKg),
+                                              int.parse(shiftProductionPlan),
+                                              int.parse(productionInCartons),
+                                              prod_lines4.indexOf(
+                                                      selectedProdLine) +
+                                                  1,
+                                              shifts.indexOf(selectedShift),
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : SizedBox(height: minimumPadding),
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Delete Report',
+                                    color: KelloggColors.cockRed,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+                                      });
+                                      try {
+                                        BiscuitsReport.deleteReport(
+                                          context,
+                                          reportID,
+                                          int.parse(selectedYear),
+                                        );
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
                       ],
                     ),
                   ),

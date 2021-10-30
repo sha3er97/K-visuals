@@ -1,10 +1,13 @@
+import 'dart:collection';
+
+import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
+import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'MiniProductionReport.dart';
-import 'SKU.dart';
+import 'package:flutter/material.dart';
 
 class BiscuitsReport {
   final String supName, skuName;
@@ -36,69 +39,68 @@ class BiscuitsReport {
       mc1WasteKg,
       mc2WasteKg;
 
-  BiscuitsReport(
-      {required this.area,
-      required this.shift_index, //unused for now
-      required this.line_index,
-      required this.supName,
-      required this.skuName,
-      required this.shiftProductionPlan,
-      required this.productionInCartons,
-      required this.actualSpeed,
-      required this.extrusionScrap,
-      required this.extrusionRework,
-      required this.ovenScrap,
-      required this.ovenRework,
-      required this.cutterScrap,
-      required this.cutterRework,
-      required this.conveyorScrap,
-      required this.conveyorRework,
-      required this.mc1Speed,
-      required this.mc2Speed,
-      required this.packingScrap,
-      required this.packingRework,
-      required this.boxesWaste,
-      required this.cartonWaste,
-      required this.mc1FilmUsed,
-      required this.mc2FilmUsed,
-      required this.mc1WasteKg,
-      required this.mc2WasteKg,
-      required this.year,
-      required this.month,
-      required this.day});
+  BiscuitsReport({required this.area,
+    required this.shift_index, //unused for now
+    required this.line_index,
+    required this.supName,
+    required this.skuName,
+    required this.shiftProductionPlan,
+    required this.productionInCartons,
+    required this.actualSpeed,
+    required this.extrusionScrap,
+    required this.extrusionRework,
+    required this.ovenScrap,
+    required this.ovenRework,
+    required this.cutterScrap,
+    required this.cutterRework,
+    required this.conveyorScrap,
+    required this.conveyorRework,
+    required this.mc1Speed,
+    required this.mc2Speed,
+    required this.packingScrap,
+    required this.packingRework,
+    required this.boxesWaste,
+    required this.cartonWaste,
+    required this.mc1FilmUsed,
+    required this.mc2FilmUsed,
+    required this.mc1WasteKg,
+    required this.mc2WasteKg,
+    required this.year,
+    required this.month,
+    required this.day});
 
   BiscuitsReport.fromJson(Map<String, Object?> json)
       : this(
-          year: json['year']! as int,
-          month: json['month']! as int,
-          day: json['day']! as int,
-          area: json['area']! as int,
-          shift_index: json['shift_index']! as int,
-          line_index: json['line_index']! as int,
-          shiftProductionPlan: json['shiftProductionPlan']! as int,
-          productionInCartons: json['productionInCartons']! as int,
-          supName: json['supName']! as String,
-          skuName: json['skuName']! as String,
-          actualSpeed: parseJsonToDouble(json['actualSpeed']!),
-          extrusionScrap: parseJsonToDouble(json['extrusionScrap']!),
-          extrusionRework: parseJsonToDouble(json['extrusionRework']!),
-          ovenScrap: parseJsonToDouble(json['ovenScrap']!),
-          ovenRework: parseJsonToDouble(json['ovenRework']!),
-          cutterScrap: parseJsonToDouble(json['cutterScrap']!),
-          cutterRework: parseJsonToDouble(json['cutterRework']!),
-          conveyorScrap: parseJsonToDouble(json['conveyorScrap']!),
-          conveyorRework: parseJsonToDouble(json['conveyorRework']!),
-          mc1Speed: parseJsonToDouble(json['mc1Speed']!),
-          mc2Speed: parseJsonToDouble(json['mc2Speed']!),
-          packingScrap: parseJsonToDouble(json['packingScrap']!),
-          packingRework: parseJsonToDouble(json['packingRework']!),
-          boxesWaste: parseJsonToDouble(json['boxesWaste']!),
-          cartonWaste: parseJsonToDouble(json['cartonWaste']!),
-          mc1FilmUsed: parseJsonToDouble(json['mc1FilmUsed']!),
-          mc2FilmUsed: parseJsonToDouble(json['mc2FilmUsed']!),
-          mc1WasteKg: parseJsonToDouble(json['mc1WasteKg']!),
-          mc2WasteKg: parseJsonToDouble(json['mc2WasteKg']!),
-        );
+    year: json['year']! as int,
+    month: json['month']! as int,
+    day: json['day']! as int,
+    area: json['area']! as int,
+    shift_index: json['shift_index']! as int,
+    line_index: json['line_index']! as int,
+    shiftProductionPlan: json['shiftProductionPlan']! as int,
+    productionInCartons: json['productionInCartons']! as int,
+    supName: json['supName']! as String,
+    skuName: json['skuName']! as String,
+    actualSpeed: parseJsonToDouble(json['actualSpeed']!),
+    extrusionScrap: parseJsonToDouble(json['extrusionScrap']!),
+    extrusionRework: parseJsonToDouble(json['extrusionRework']!),
+    ovenScrap: parseJsonToDouble(json['ovenScrap']!),
+    ovenRework: parseJsonToDouble(json['ovenRework']!),
+    cutterScrap: parseJsonToDouble(json['cutterScrap']!),
+    cutterRework: parseJsonToDouble(json['cutterRework']!),
+    conveyorScrap: parseJsonToDouble(json['conveyorScrap']!),
+    conveyorRework: parseJsonToDouble(json['conveyorRework']!),
+    mc1Speed: parseJsonToDouble(json['mc1Speed']!),
+    mc2Speed: parseJsonToDouble(json['mc2Speed']!),
+    packingScrap: parseJsonToDouble(json['packingScrap']!),
+    packingRework: parseJsonToDouble(json['packingRework']!),
+    boxesWaste: parseJsonToDouble(json['boxesWaste']!),
+    cartonWaste: parseJsonToDouble(json['cartonWaste']!),
+    mc1FilmUsed: parseJsonToDouble(json['mc1FilmUsed']!),
+    mc2FilmUsed: parseJsonToDouble(json['mc2FilmUsed']!),
+    mc1WasteKg: parseJsonToDouble(json['mc1WasteKg']!),
+    mc2WasteKg: parseJsonToDouble(json['mc2WasteKg']!),
+  );
 
   Map<String, Object?> toJson() {
     return {
@@ -134,7 +136,82 @@ class BiscuitsReport {
     };
   }
 
-  static void addReport(
+  static void addReport(String supName,
+      String skuName,
+      double actualSpeed,
+      double extrusionScrap,
+      double extrusionRework,
+      double ovenScrap,
+      double ovenRework,
+      double cutterScrap,
+      double cutterRework,
+      double conveyorScrap,
+      double conveyorRework,
+      double mc1Speed,
+      double mc2Speed,
+      double packingScrap,
+      double packingRework,
+      double boxesWaste,
+      double cartonWaste,
+      double mc1FilmUsed,
+      double mc2FilmUsed,
+      double mc1WasteKg,
+      double mc2WasteKg,
+      int shiftProductionPlan,
+      int productionInCartons,
+      int line_index,
+      int shift_index,
+      int area,
+      int year,
+      int month,
+      int day,) async {
+    final biscuitsReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('biscuits_reports')
+        .collection(year.toString())
+        .withConverter<BiscuitsReport>(
+      fromFirestore: (snapshot, _) =>
+          BiscuitsReport.fromJson(snapshot.data()!),
+      toFirestore: (report, _) => report.toJson(),
+    );
+    await biscuitsReportRef.add(
+      BiscuitsReport(
+        year: year,
+        month: month,
+        day: day,
+        area: area,
+        shift_index: shift_index,
+        line_index: line_index,
+        supName: supName,
+        skuName: skuName,
+        shiftProductionPlan: shiftProductionPlan,
+        productionInCartons: productionInCartons,
+        actualSpeed: actualSpeed,
+        extrusionScrap: extrusionScrap,
+        extrusionRework: extrusionRework,
+        ovenScrap: ovenScrap,
+        ovenRework: ovenRework,
+        cutterScrap: cutterScrap,
+        cutterRework: cutterRework,
+        conveyorScrap: conveyorScrap,
+        conveyorRework: conveyorRework,
+        mc1Speed: mc1Speed,
+        mc2Speed: mc2Speed,
+        packingScrap: packingScrap,
+        packingRework: packingRework,
+        boxesWaste: boxesWaste,
+        cartonWaste: cartonWaste,
+        mc1FilmUsed: mc1FilmUsed,
+        mc2FilmUsed: mc2FilmUsed,
+        mc1WasteKg: mc1WasteKg,
+        mc2WasteKg: mc2WasteKg,
+      ),
+    );
+  }
+
+  static void editReport(
+    context,
+    String id,
     String supName,
     String skuName,
     double actualSpeed,
@@ -174,42 +251,85 @@ class BiscuitsReport {
               BiscuitsReport.fromJson(snapshot.data()!),
           toFirestore: (report, _) => report.toJson(),
         );
-    await biscuitsReportRef.add(
-      BiscuitsReport(
-        year: year,
-        month: month,
-        day: day,
-        area: area,
-        shift_index: shift_index,
-        line_index: line_index,
-        supName: supName,
-        skuName: skuName,
-        shiftProductionPlan: shiftProductionPlan,
-        productionInCartons: productionInCartons,
-        actualSpeed: actualSpeed,
-        extrusionScrap: extrusionScrap,
-        extrusionRework: extrusionRework,
-        ovenScrap: ovenScrap,
-        ovenRework: ovenRework,
-        cutterScrap: cutterScrap,
-        cutterRework: cutterRework,
-        conveyorScrap: conveyorScrap,
-        conveyorRework: conveyorRework,
-        mc1Speed: mc1Speed,
-        mc2Speed: mc2Speed,
-        packingScrap: packingScrap,
-        packingRework: packingRework,
-        boxesWaste: boxesWaste,
-        cartonWaste: cartonWaste,
-        mc1FilmUsed: mc1FilmUsed,
-        mc2FilmUsed: mc2FilmUsed,
-        mc1WasteKg: mc1WasteKg,
-        mc2WasteKg: mc2WasteKg,
-      ),
-    );
+    await biscuitsReportRef
+        .doc(id)
+        .update({
+          'year': year,
+          'month': month,
+          'day': day,
+          'area': area,
+          'shift_index': shift_index,
+          'line_index': line_index,
+          'supName': supName,
+          'skuName': skuName,
+          'shiftProductionPlan': shiftProductionPlan,
+          'productionInCartons': productionInCartons,
+          'actualSpeed': actualSpeed,
+          'extrusionScrap': extrusionScrap,
+          'extrusionRework': extrusionRework,
+          'ovenScrap': ovenScrap,
+          'ovenRework': ovenRework,
+          'cutterScrap': cutterScrap,
+          'cutterRework': cutterRework,
+          'conveyorScrap': conveyorScrap,
+          'conveyorRework': conveyorRework,
+          'mc1Speed': mc1Speed,
+          'mc2Speed': mc2Speed,
+          'packingScrap': packingScrap,
+          'packingRework': packingRework,
+          'boxesWaste': boxesWaste,
+          'cartonWaste': cartonWaste,
+          'mc1FilmUsed': mc1FilmUsed,
+          'mc2FilmUsed': mc2FilmUsed,
+          'mc1WasteKg': mc1WasteKg,
+          'mc2WasteKg': mc2WasteKg,
+        })
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Report Updated"),
+              )),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to update Report: $error"),
+              ))
+            });
   }
 
-  static List<BiscuitsReport> getAllReportsOfInterval(
+  static void deleteReport(
+    context,
+    String id,
+    int year,
+  ) async {
+    final biscuitsReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('biscuits_reports')
+        .collection(year.toString())
+        .withConverter<BiscuitsReport>(
+          fromFirestore: (snapshot, _) =>
+              BiscuitsReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    await biscuitsReportRef
+        .doc(id)
+        .delete()
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Report Deleted"),
+              )),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to delete Report: $error"),
+              ))
+            });
+  }
+
+  static HashMap<String, BiscuitsReport> getAllReportsOfInterval(
     List<QueryDocumentSnapshot<BiscuitsReport>> reportsList,
     int month_from,
     int month_to,
@@ -217,7 +337,7 @@ class BiscuitsReport {
     int day_to,
     int year,
   ) {
-    List<BiscuitsReport> tempList = [];
+    HashMap hashMap = new HashMap<String, BiscuitsReport>();
     for (var report in reportsList) {
       if (!isDayInInterval(
         report.data().day,
@@ -232,20 +352,19 @@ class BiscuitsReport {
             report.data().day.toString());
         continue;
       }
-      tempList.add(report.data());
+      hashMap[report.id] = report.data();
     }
-    return tempList;
+    return hashMap as HashMap<String, BiscuitsReport>;
   }
 
   static MiniProductionReport getFilteredReportOfInterval(
-    List<QueryDocumentSnapshot<BiscuitsReport>> reportsList,
-    int month_from,
-    int month_to,
-    int day_from,
-    int day_to,
-    int year,
-    int lineNumRequired,
-  ) {
+      List<QueryDocumentSnapshot<BiscuitsReport>> reportsList,
+      int month_from,
+      int month_to,
+      int day_from,
+      int day_to,
+      int year,
+      int lineNumRequired,) {
     double temp_scrap = 0.0,
         temp_used_film = 0.0,
         temp_wasted_film = 0.0,
@@ -323,8 +442,8 @@ class BiscuitsReport {
   static BiscuitsReport getEmptyReport() {
     return BiscuitsReport(
       supName: '',
-      shift_index: -1,
-      line_index: -1,
+      shift_index: 0,
+      line_index: 1,
       area: -1,
       year: -1,
       month: -1,
