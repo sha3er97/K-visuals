@@ -14,11 +14,30 @@ import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class WaferProductionForm extends StatefulWidget {
+  WaferProductionForm({
+    required this.reportDetails,
+    required this.isEdit,
+  });
+
+  final dynamic reportDetails;
+  final bool isEdit;
+
   @override
-  _WaferProductionFormState createState() => _WaferProductionFormState();
+  _WaferProductionFormState createState() => _WaferProductionFormState(
+        reportDetails: reportDetails,
+        isEdit: isEdit,
+      );
 }
 
 class _WaferProductionFormState extends State<WaferProductionForm> {
+  _WaferProductionFormState({
+    required this.reportDetails,
+    required this.isEdit,
+  });
+
+  final dynamic reportDetails;
+  final bool isEdit;
+
   bool showSpinner = false;
   int refNum = 1; // 1 = wafer
 
@@ -140,7 +159,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPadding),
+                  const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
@@ -184,7 +203,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -196,7 +215,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -307,7 +326,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -320,7 +339,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -333,7 +352,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -346,7 +365,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -402,7 +421,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -476,7 +495,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -511,7 +530,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -548,7 +567,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -583,7 +602,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -620,7 +639,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -655,7 +674,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -692,7 +711,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -727,7 +746,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -764,7 +783,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -799,7 +818,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -835,7 +854,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -870,7 +889,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -905,7 +924,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -940,7 +959,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -977,7 +996,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1012,7 +1031,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1047,7 +1066,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1082,7 +1101,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(

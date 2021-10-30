@@ -107,11 +107,13 @@ double calculateAllWeight(refNum, report) {
       report.productionInCartons * SKU.skuDetails[report.skuName]!.cartonWeight;
 }
 
-double calculateOeeFromOriginalReport(report, theoretical) {
-  return ((report.productionInCartons *
-              SKU.skuDetails[report.skuName]!.cartonWeight) /
-          theoretical) *
-      100;
+double calculateOeeFromOriginalReport(report, theoreticalKg) {
+  return (calculateProductionKg(report) / theoreticalKg) * 100;
+}
+
+double calculateProductionKg(report) {
+  return (report.productionInCartons *
+      SKU.skuDetails[report.skuName]!.cartonWeight);
 }
 
 /************************************DRIVERS*************************************************/

@@ -123,14 +123,15 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
               Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: defaultPadding),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Text(
                         "From : ",
                         style: TextStyle(
                             color: KelloggColors.darkRed,
-                            fontSize: 16.0,
+                            fontSize: aboveMediumFontSize,
                             fontWeight: FontWeight.w500,
                             letterSpacing: 1.2),
                       ),
@@ -138,9 +139,10 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
                           children: [
                             DropdownButton<String>(
@@ -166,9 +168,10 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
                           children: [
                             DropdownButton<String>(
@@ -195,9 +198,10 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
                   Expanded(
                     flex: 2,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
                           children: [
                             DropdownButton<String>(
@@ -226,14 +230,15 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
               Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: defaultPadding),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Text(
                         "To :     ",
                         style: TextStyle(
                             color: KelloggColors.darkRed,
-                            fontSize: 16.0,
+                            fontSize: aboveMediumFontSize,
                             fontWeight: FontWeight.w500,
                             letterSpacing: 1.2),
                       ),
@@ -241,9 +246,10 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
                           children: [
                             DropdownButton<String>(
@@ -269,9 +275,10 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
                           children: [
                             DropdownButton<String>(
@@ -298,9 +305,10 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
                   Expanded(
                     flex: 2,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
                           children: [
                             DropdownButton<String>(

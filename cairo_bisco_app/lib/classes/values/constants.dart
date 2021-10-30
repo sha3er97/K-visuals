@@ -5,6 +5,7 @@ const versionNum = '1.9.3'; //edit also in pubspec.yaml
 const dummyChartExtra = 1.0;
 //padding
 const defaultPadding = 16.0;
+const mediumPadding = 12.0;
 const minimumPadding = 8.0;
 
 //font sizes
@@ -69,12 +70,12 @@ const BISCUIT_AREA = 0;
 const WAFER_AREA = 1;
 const MAAMOUL_AREA = 2;
 
-const PRODUCTION_REPORT = 0;
-const QFS_REPORT = 1;
-const EHS_REPORT = 2;
-const OVERWEIGHT_REPORT = 3;
-const PEOPLE_REPORT = 4;
-const NRC_REPORT = 5;
+const PRODUCTION_REPORT = 0; //0,1,2 are left for 3 production areas
+const QFS_REPORT = 3;
+const EHS_REPORT = 4;
+const OVERWEIGHT_REPORT = 5;
+const PEOPLE_REPORT = 6;
+const NRC_REPORT = 7;
 
 List<String> prodType = <String>[
   'Biscuits',

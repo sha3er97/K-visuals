@@ -1,3 +1,4 @@
+import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:flutter/material.dart';
 
 class KelloggColors {
@@ -11,4 +12,58 @@ class KelloggColors {
   static const Color green = Color(0xff07984c);
   static const Color darkBlue = Color(0xff0249ae);
   static const Color grey = Color(0xffA7A7A7);
+
+  static Color getGradient1(int type) {
+    switch (type) {
+      case PRODUCTION_REPORT:
+        return orange;
+      case QFS_REPORT:
+        return cockRed;
+      case EHS_REPORT:
+        return grey;
+      case OVERWEIGHT_REPORT:
+        return grey;
+      case PEOPLE_REPORT:
+        return grey;
+      case NRC_REPORT:
+        return grey;
+    }
+    return white;
+  }
+
+  static Color getGradient2(int type) {
+    switch (type) {
+      case PRODUCTION_REPORT:
+        return yellow;
+      case QFS_REPORT:
+        return grey;
+      case EHS_REPORT:
+        return cockRed;
+      case OVERWEIGHT_REPORT:
+        return darkBlue;
+      case PEOPLE_REPORT:
+        return orange;
+      case NRC_REPORT:
+        return white;
+    }
+    return white;
+  }
+
+  static Color getBaseColor(int type) {
+    switch (type) {
+      case PRODUCTION_REPORT:
+        return yellow.withOpacity(0.5);
+      case QFS_REPORT:
+        return green.withOpacity(0.5);
+      case EHS_REPORT:
+        return cockRed.withOpacity(0.5);
+      case OVERWEIGHT_REPORT:
+        return cockRed.withOpacity(0.5);
+      case PEOPLE_REPORT:
+        return yellow.withOpacity(0.5);
+      case NRC_REPORT:
+        return darkBlue.withOpacity(0.5);
+    }
+    return white;
+  }
 }

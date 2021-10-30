@@ -16,21 +16,33 @@ class SupervisorPeopleReportForm extends StatefulWidget {
   SupervisorPeopleReportForm({
     Key? key,
     required this.refNum,
+    required this.reportDetails,
+    required this.isEdit,
   }) : super(key: key);
   final int refNum;
+  final dynamic reportDetails;
+  final bool isEdit;
 
   @override
   _SupervisorPeopleReportFormState createState() =>
-      _SupervisorPeopleReportFormState(refNum: refNum);
+      _SupervisorPeopleReportFormState(
+        refNum: refNum,
+        reportDetails: reportDetails,
+        isEdit: isEdit,
+      );
 }
 
 class _SupervisorPeopleReportFormState
     extends State<SupervisorPeopleReportForm> {
   _SupervisorPeopleReportFormState({
     required this.refNum,
+    required this.reportDetails,
+    required this.isEdit,
   });
 
   final int refNum;
+  final dynamic reportDetails;
+  final bool isEdit;
 
   bool showSpinner = false;
   String supName = "", original_people = "", attended_people = "";

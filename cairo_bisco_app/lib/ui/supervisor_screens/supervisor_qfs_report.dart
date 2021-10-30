@@ -16,20 +16,31 @@ class SupervisorQfsReport extends StatefulWidget {
   SupervisorQfsReport({
     Key? key,
     required this.refNum,
+    required this.reportDetails,
+    required this.isEdit,
   }) : super(key: key);
   final int refNum;
+  final dynamic reportDetails;
+  final bool isEdit;
 
   @override
-  _SupervisorQfsReportState createState() =>
-      _SupervisorQfsReportState(refNum: refNum);
+  _SupervisorQfsReportState createState() => _SupervisorQfsReportState(
+        refNum: refNum,
+        reportDetails: reportDetails,
+        isEdit: isEdit,
+      );
 }
 
 class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
   _SupervisorQfsReportState({
     required this.refNum,
+    required this.reportDetails,
+    required this.isEdit,
   });
 
   final int refNum;
+  final dynamic reportDetails;
+  final bool isEdit;
 
   bool showSpinner = false;
   String supName = "",

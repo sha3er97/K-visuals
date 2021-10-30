@@ -17,20 +17,31 @@ class SupervisorNRCReportForm extends StatefulWidget {
   SupervisorNRCReportForm({
     Key? key,
     required this.refNum,
+    required this.reportDetails,
+    required this.isEdit,
   }) : super(key: key);
   final int refNum;
+  final dynamic reportDetails;
+  final bool isEdit;
 
   @override
-  _SupervisorNRCReportFormState createState() =>
-      _SupervisorNRCReportFormState(refNum: refNum);
+  _SupervisorNRCReportFormState createState() => _SupervisorNRCReportFormState(
+        refNum: refNum,
+        reportDetails: reportDetails,
+        isEdit: isEdit,
+      );
 }
 
 class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
   _SupervisorNRCReportFormState({
     required this.refNum,
+    required this.reportDetails,
+    required this.isEdit,
   });
 
+  final dynamic reportDetails;
   final int refNum;
+  final bool isEdit;
 
   bool showSpinner = false;
   String supName = "", notes_count = "", notes_details = "";

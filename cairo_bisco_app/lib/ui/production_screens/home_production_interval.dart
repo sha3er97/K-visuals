@@ -74,8 +74,8 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: defaultPadding * 0.75),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: mediumPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Text(
@@ -90,8 +90,8 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPadding * 0.75),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: mediumPadding),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Column(
@@ -119,8 +119,8 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPadding * 0.75),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: mediumPadding),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Column(
@@ -149,8 +149,8 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                 Expanded(
                   flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPadding * 0.75),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: mediumPadding),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Column(
@@ -181,8 +181,8 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: defaultPadding * 0.75),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: mediumPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Text(
@@ -197,8 +197,8 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPadding * 0.75),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: mediumPadding),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Column(
@@ -226,8 +226,8 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPadding * 0.75),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: mediumPadding),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Column(
@@ -256,8 +256,8 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                 Expanded(
                   flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPadding * 0.75),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: mediumPadding),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Column(

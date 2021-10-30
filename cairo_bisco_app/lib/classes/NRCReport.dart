@@ -74,6 +74,37 @@ class NRCReport {
     );
   }
 
+  static List<NRCReport> getAllReportsOfInterval(
+    List<QueryDocumentSnapshot<NRCReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+    int area,
+  ) {
+    List<NRCReport> tempList = [];
+    for (var report in reportsList) {
+      if (!isDayInInterval(
+        report.data().day,
+        report.data().month,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+        year,
+      )) {
+        print('debug :: NRCReport filtered out due to its date --> ' +
+            report.data().day.toString());
+        continue;
+      }
+      if (report.data().area == area) {
+        tempList.add(report.data());
+      }
+    }
+    return tempList;
+  }
+
   static NRCReport getFilteredReportOfInterval(
     List<QueryDocumentSnapshot<NRCReport>> reportsList,
     int month_from,

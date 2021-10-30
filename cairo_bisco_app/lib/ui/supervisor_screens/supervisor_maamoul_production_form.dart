@@ -14,11 +14,30 @@ import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class MaamoulProductionForm extends StatefulWidget {
+  MaamoulProductionForm({
+    required this.reportDetails,
+    required this.isEdit,
+  });
+
+  final dynamic reportDetails;
+  final bool isEdit;
+
   @override
-  _MaamoulProductionFormState createState() => _MaamoulProductionFormState();
+  _MaamoulProductionFormState createState() => _MaamoulProductionFormState(
+        reportDetails: reportDetails,
+        isEdit: isEdit,
+      );
 }
 
 class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
+  _MaamoulProductionFormState({
+    required this.reportDetails,
+    required this.isEdit,
+  });
+
+  final dynamic reportDetails;
+  final bool isEdit;
+
   bool showSpinner = false;
   int refNum = 2; // 2 = maamoul
 
@@ -32,12 +51,10 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
       stampingRework = '',
       ovenScrap = '',
       ovenRework = '',
-      unPackedProducts = '',
       mc1Speed = '',
       mc2Speed = '',
       packingScrap = '',
       packingRework = '',
-      packingRepack = '',
       boxesWaste = '',
       cartonWaste = '',
       mc1FilmUsed = '',
@@ -55,12 +72,10 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
       _ovenRework_validate = false,
       _stampingScrap_validate = false,
       _stampingRework_validate = false,
-      _unPackedProducts_validate = false,
       _mc1Speed_validate = false,
       _mc2Speed_validate = false,
       _packingScrap_validate = false,
       _packingRework_validate = false,
-      _packingRepack_validate = false,
       _boxesWaste_validate = false,
       _cartonWaste_validate = false,
       _mc1FilmUsed_validate = false,
@@ -140,7 +155,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPadding),
+                  const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
@@ -184,7 +199,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -204,7 +219,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -315,7 +330,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -328,7 +343,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -341,7 +356,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -354,7 +369,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -410,7 +425,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -484,7 +499,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -519,7 +534,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -556,7 +571,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -591,7 +606,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -628,7 +643,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -663,7 +678,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -691,64 +706,6 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////////////////////////////////////
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            myDivider(),
-                            Text(
-                              'الانتاج الغير معبأ',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: largeFontSize,
-                                  color: KelloggColors.darkBlue),
-                            ),
-                            Text(
-                              'Unpacked Products',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: largeFontSize,
-                                  color: KelloggColors.darkBlue),
-                            ),
-                            SizedBox(height: defaultPadding),
-                          ],
-                        ),
-                        //////////////////////////////////////////////////////////////////
-                        smallerHeading('الوزن بالكجم\nWeight in Kg'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _unPackedProducts_validate
-                                ? missingValueErrorText
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            unPackedProducts = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////
                         sectionWithDivider('التعبئة Packaging'),
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('السرعة الفعلية mc1'),
@@ -758,7 +715,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -793,7 +750,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -821,7 +778,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اعادة التشغيل\nRework'),
+                        smallerHeading(
+                            'اعادة تشغيل معمول منطقة التغليف\nRework'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -856,42 +814,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اعادة التغليف\nRepack'),
-                        SizedBox(height: minimumPadding),
-                        TextField(
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _packingRepack_validate
-                                ? missingValueErrorText
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            packingRepack = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('هالك معمول\nScrap'),
+                        smallerHeading('هالك معمول منطقة التغليف\nScrap'),
                         SizedBox(height: minimumPadding),
                         TextField(
                           style: (TextStyle(
@@ -933,7 +856,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -968,7 +891,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1005,7 +928,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1040,7 +963,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1075,7 +998,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1110,7 +1033,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1163,16 +1086,12 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                       emptyField(stampingScrap);
                                   _stampingRework_validate =
                                       emptyField(stampingRework);
-                                  _unPackedProducts_validate =
-                                      emptyField(unPackedProducts);
                                   _mc1Speed_validate = emptyField(mc1Speed);
                                   _mc2Speed_validate = emptyField(mc2Speed);
                                   _packingScrap_validate =
                                       emptyField(packingScrap);
                                   _packingRework_validate =
                                       emptyField(packingRework);
-                                  _packingRepack_validate =
-                                      emptyField(packingRepack);
                                   _boxesWaste_validate = emptyField(boxesWaste);
                                   _cartonWaste_validate =
                                       emptyField(cartonWaste);
@@ -1194,12 +1113,10 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                       !_ovenRework_validate &&
                                       !_stampingScrap_validate &&
                                       !_stampingRework_validate &&
-                                      !_unPackedProducts_validate &&
                                       !_mc1Speed_validate &&
                                       !_mc2Speed_validate &&
                                       !_packingScrap_validate &&
                                       !_packingRework_validate &&
-                                      !_packingRepack_validate &&
                                       !_boxesWaste_validate &&
                                       !_cartonWaste_validate &&
                                       !_mc1FilmUsed_validate &&
@@ -1216,12 +1133,10 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                         double.parse(mixerRework),
                                         double.parse(stampingScrap),
                                         double.parse(stampingRework),
-                                        double.parse(unPackedProducts),
                                         double.parse(mc1Speed),
                                         double.parse(mc2Speed),
                                         double.parse(packingScrap),
                                         double.parse(packingRework),
-                                        double.parse(packingRepack),
                                         double.parse(boxesWaste),
                                         double.parse(cartonWaste),
                                         double.parse(mc1FilmUsed),

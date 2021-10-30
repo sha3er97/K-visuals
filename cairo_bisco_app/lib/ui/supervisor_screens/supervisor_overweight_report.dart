@@ -16,21 +16,33 @@ class SupervisorOverWeightReportForm extends StatefulWidget {
   SupervisorOverWeightReportForm({
     Key? key,
     required this.refNum,
+    required this.reportDetails,
+    required this.isEdit,
   }) : super(key: key);
   final int refNum;
+  final dynamic reportDetails;
+  final bool isEdit;
 
   @override
   _SupervisorOverWeightReportFormState createState() =>
-      _SupervisorOverWeightReportFormState(refNum: refNum);
+      _SupervisorOverWeightReportFormState(
+        refNum: refNum,
+        reportDetails: reportDetails,
+        isEdit: isEdit,
+      );
 }
 
 class _SupervisorOverWeightReportFormState
     extends State<SupervisorOverWeightReportForm> {
   _SupervisorOverWeightReportFormState({
     required this.refNum,
+    required this.reportDetails,
+    required this.isEdit,
   });
 
   final int refNum;
+  final dynamic reportDetails;
+  final bool isEdit;
 
   bool showSpinner = false;
   String supName = "", percentage = "";

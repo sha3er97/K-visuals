@@ -1,9 +1,17 @@
-/*
+/*********************************
     this screen will have 3 big buttons
     biscuits
     wafer
     maamoul
  *********************************/
+import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
+import 'package:cairo_bisco_app/classes/EhsReport.dart';
+import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
+import 'package:cairo_bisco_app/classes/NRCReport.dart';
+import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
+import 'package:cairo_bisco_app/classes/PeopleReport.dart';
+import 'package:cairo_bisco_app/classes/QfsReport.dart';
+import 'package:cairo_bisco_app/classes/WaferReport.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
@@ -14,6 +22,7 @@ import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_nrc_report.dart
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_overweight_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_people_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_qfs_report.dart';
+import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_show_reports.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_wafer_production_form.dart';
 import 'package:flutter/material.dart';
 
@@ -21,8 +30,10 @@ class SupervisorChooseAreaPage extends StatelessWidget {
   SupervisorChooseAreaPage({
     Key? key,
     required this.type,
+    required this.isEdit,
   }) : super(key: key);
   final int type;
+  final bool isEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -68,59 +79,93 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        if (type == PRODUCTION_REPORT) {
+                        if (isEdit) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => BiscuitsProductionForm(),
+                              builder: (context) => SupervisorShowAllReports(
+                                  type: type, refNum: BISCUIT_AREA),
                             ),
                           );
-                        } else if (type == QFS_REPORT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SupervisorQfsReport(
-                                refNum: BISCUIT_AREA,
-                              ),
-                            ),
-                          );
-                        } else if (type == EHS_REPORT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SupervisorEhsReport(
-                                refNum: BISCUIT_AREA,
-                              ),
-                            ),
-                          );
-                        } else if (type == OVERWEIGHT_REPORT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  SupervisorOverWeightReportForm(
-                                refNum: BISCUIT_AREA,
-                              ),
-                            ),
-                          );
-                        } else if (type == PEOPLE_REPORT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SupervisorPeopleReportForm(
-                                refNum: BISCUIT_AREA,
-                              ),
-                            ),
-                          );
-                        } else if (type == NRC_REPORT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SupervisorNRCReportForm(
-                                refNum: BISCUIT_AREA,
-                              ),
-                            ),
-                          );
+                        } else {
+                          switch (type) {
+                            case PRODUCTION_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BiscuitsProductionForm(
+                                    reportDetails:
+                                        BiscuitsReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                            case QFS_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SupervisorQfsReport(
+                                    refNum: BISCUIT_AREA,
+                                    reportDetails: QfsReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                            case EHS_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SupervisorEhsReport(
+                                    refNum: BISCUIT_AREA,
+                                    reportDetails: EhsReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                            case OVERWEIGHT_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SupervisorOverWeightReportForm(
+                                    refNum: BISCUIT_AREA,
+                                    reportDetails:
+                                        OverWeightReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                            case PEOPLE_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SupervisorPeopleReportForm(
+                                    refNum: BISCUIT_AREA,
+                                    reportDetails:
+                                        PeopleReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                            case NRC_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SupervisorNRCReportForm(
+                                    refNum: BISCUIT_AREA,
+                                    reportDetails: NRCReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                          }
                         }
                       },
                     ),
@@ -155,59 +200,91 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        if (type == PRODUCTION_REPORT) {
+                        if (isEdit) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => WaferProductionForm(),
+                              builder: (context) => SupervisorShowAllReports(
+                                  type: type, refNum: WAFER_AREA),
                             ),
                           );
-                        } else if (type == QFS_REPORT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SupervisorQfsReport(
-                                refNum: WAFER_AREA,
-                              ),
-                            ),
-                          );
-                        } else if (type == EHS_REPORT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SupervisorEhsReport(
-                                refNum: WAFER_AREA,
-                              ),
-                            ),
-                          );
-                        } else if (type == OVERWEIGHT_REPORT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  SupervisorOverWeightReportForm(
-                                refNum: WAFER_AREA,
-                              ),
-                            ),
-                          );
-                        } else if (type == PEOPLE_REPORT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SupervisorPeopleReportForm(
-                                refNum: WAFER_AREA,
-                              ),
-                            ),
-                          );
-                        } else if (type == NRC_REPORT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SupervisorNRCReportForm(
-                                refNum: WAFER_AREA,
-                              ),
-                            ),
-                          );
+                        } else {
+                          switch (type) {
+                            case PRODUCTION_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => WaferProductionForm(
+                                    reportDetails: WaferReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                            case QFS_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SupervisorQfsReport(
+                                    refNum: WAFER_AREA,
+                                    reportDetails: QfsReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                            case EHS_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SupervisorEhsReport(
+                                    refNum: WAFER_AREA,
+                                    reportDetails: EhsReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                            case OVERWEIGHT_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SupervisorOverWeightReportForm(
+                                    refNum: WAFER_AREA,
+                                    reportDetails:
+                                        OverWeightReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                            case PEOPLE_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SupervisorPeopleReportForm(
+                                    refNum: WAFER_AREA,
+                                    reportDetails:
+                                        PeopleReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                            case NRC_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SupervisorNRCReportForm(
+                                    refNum: WAFER_AREA,
+                                    reportDetails: NRCReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                          }
                         }
                       },
                     ),
@@ -245,59 +322,92 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        if (type == PRODUCTION_REPORT) {
+                        if (isEdit) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MaamoulProductionForm(),
+                              builder: (context) => SupervisorShowAllReports(
+                                  type: type, refNum: MAAMOUL_AREA),
                             ),
                           );
-                        } else if (type == QFS_REPORT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SupervisorQfsReport(
-                                refNum: MAAMOUL_AREA,
-                              ),
-                            ),
-                          );
-                        } else if (type == EHS_REPORT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SupervisorEhsReport(
-                                refNum: MAAMOUL_AREA,
-                              ),
-                            ),
-                          );
-                        } else if (type == OVERWEIGHT_REPORT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  SupervisorOverWeightReportForm(
-                                refNum: MAAMOUL_AREA,
-                              ),
-                            ),
-                          );
-                        } else if (type == PEOPLE_REPORT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SupervisorPeopleReportForm(
-                                refNum: MAAMOUL_AREA,
-                              ),
-                            ),
-                          );
-                        } else if (type == NRC_REPORT) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SupervisorNRCReportForm(
-                                refNum: MAAMOUL_AREA,
-                              ),
-                            ),
-                          );
+                        } else {
+                          switch (type) {
+                            case PRODUCTION_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MaamoulProductionForm(
+                                    reportDetails:
+                                        MaamoulReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                            case QFS_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SupervisorQfsReport(
+                                    refNum: MAAMOUL_AREA,
+                                    reportDetails: QfsReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                            case EHS_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SupervisorEhsReport(
+                                    refNum: MAAMOUL_AREA,
+                                    reportDetails: EhsReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                            case OVERWEIGHT_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SupervisorOverWeightReportForm(
+                                    refNum: MAAMOUL_AREA,
+                                    reportDetails:
+                                        OverWeightReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                            case PEOPLE_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SupervisorPeopleReportForm(
+                                    refNum: MAAMOUL_AREA,
+                                    reportDetails:
+                                        PeopleReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
+                            case NRC_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SupervisorNRCReportForm(
+                                    refNum: MAAMOUL_AREA,
+                                    reportDetails: NRCReport.getEmptyReport(),
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                          }
                         }
                       },
                     ),

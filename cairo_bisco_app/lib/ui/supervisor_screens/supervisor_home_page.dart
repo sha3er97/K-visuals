@@ -1,5 +1,5 @@
 /*
-    this screen will have 3 big buttons
+    this screen will have 6 big buttons
     production
     qfs
     ehs
@@ -10,15 +10,11 @@
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/log_out_btn.dart';
-import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_choose_area.dart';
 import 'package:flutter/material.dart';
 
-class SupervisorHomePage extends StatefulWidget {
-  @override
-  _SupervisorHomeState createState() => _SupervisorHomeState();
-}
+import 'choose_add_or_edit_report.dart';
 
-class _SupervisorHomeState extends State<SupervisorHomePage> {
+class SupervisorHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +26,6 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
         leading: LogOutBtn(
           admin: false,
         ),
-        // leading: MyBackButton(),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -86,9 +81,8 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      SupervisorChooseAreaPage(
-                                          type: PRODUCTION_REPORT)));
+                                  builder: (context) => ChooseAddOrEditReport(
+                                      type: PRODUCTION_REPORT)));
                         },
                       ),
                     ),
@@ -147,8 +141,7 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      SupervisorChooseAreaPage(
-                                          type: QFS_REPORT)));
+                                      ChooseAddOrEditReport(type: QFS_REPORT)));
                         },
                       ),
                     ),
@@ -209,8 +202,7 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      SupervisorChooseAreaPage(
-                                          type: EHS_REPORT)));
+                                      ChooseAddOrEditReport(type: EHS_REPORT)));
                         },
                       ),
                     ),
@@ -270,9 +262,8 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      SupervisorChooseAreaPage(
-                                          type: OVERWEIGHT_REPORT)));
+                                  builder: (context) => ChooseAddOrEditReport(
+                                      type: OVERWEIGHT_REPORT)));
                         },
                       ),
                     ),
@@ -332,9 +323,8 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      SupervisorChooseAreaPage(
-                                          type: PEOPLE_REPORT)));
+                                  builder: (context) => ChooseAddOrEditReport(
+                                      type: PEOPLE_REPORT)));
                         },
                       ),
                     ),
@@ -395,8 +385,7 @@ class _SupervisorHomeState extends State<SupervisorHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      SupervisorChooseAreaPage(
-                                          type: NRC_REPORT)));
+                                      ChooseAddOrEditReport(type: NRC_REPORT)));
                         },
                       ),
                     ),

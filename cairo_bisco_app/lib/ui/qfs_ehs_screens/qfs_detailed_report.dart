@@ -128,7 +128,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                         "From : ",
                         style: TextStyle(
                             color: KelloggColors.darkRed,
-                            fontSize: 16.0,
+                            fontSize: aboveMediumFontSize,
                             fontWeight: FontWeight.w500,
                             letterSpacing: 1.2),
                       ),
@@ -136,8 +136,8 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPadding),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -165,8 +165,8 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPadding),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -195,8 +195,8 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   Expanded(
                     flex: 2,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPadding),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -235,7 +235,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                         "To :     ",
                         style: TextStyle(
                             color: KelloggColors.darkRed,
-                            fontSize: 16.0,
+                            fontSize: aboveMediumFontSize,
                             fontWeight: FontWeight.w500,
                             letterSpacing: 1.2),
                       ),
@@ -243,8 +243,8 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPadding),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -272,8 +272,8 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPadding),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -302,8 +302,8 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   Expanded(
                     flex: 2,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPadding),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(

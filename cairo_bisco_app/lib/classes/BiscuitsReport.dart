@@ -319,4 +319,38 @@ class BiscuitsReport {
       theoreticalAverage: temp_theoreticalPlan == 0 ? 1 : temp_theoreticalPlan,
     );
   }
+
+  static BiscuitsReport getEmptyReport() {
+    return BiscuitsReport(
+      supName: '',
+      shift_index: -1,
+      line_index: -1,
+      area: -1,
+      year: -1,
+      month: -1,
+      day: -1,
+      mc2FilmUsed: 0.0,
+      extrusionScrap: 0.0,
+      ovenScrap: 0.0,
+      cutterScrap: 0.0,
+      mc1Speed: 0.0,
+      conveyorScrap: 0.0,
+      cutterRework: 0.0,
+      shiftProductionPlan: 0,
+      mc1WasteKg: 0.0,
+      ovenRework: 0.0,
+      mc2Speed: 0.0,
+      mc2WasteKg: 0.0,
+      cartonWaste: 0.0,
+      packingRework: 0.0,
+      mc1FilmUsed: 0.0,
+      productionInCartons: 0,
+      boxesWaste: 0.0,
+      packingScrap: 0.0,
+      conveyorRework: 0.0,
+      extrusionRework: 0.0,
+      actualSpeed: 0.0,
+      skuName: '',
+    );
+  }
 }

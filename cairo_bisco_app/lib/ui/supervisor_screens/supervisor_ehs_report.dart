@@ -16,20 +16,31 @@ class SupervisorEhsReport extends StatefulWidget {
   SupervisorEhsReport({
     Key? key,
     required this.refNum,
+    required this.reportDetails,
+    required this.isEdit,
   }) : super(key: key);
   final int refNum;
+  final dynamic reportDetails;
+  final bool isEdit;
 
   @override
-  _SupervisorEhsReportState createState() =>
-      _SupervisorEhsReportState(refNum: refNum);
+  _SupervisorEhsReportState createState() => _SupervisorEhsReportState(
+        refNum: refNum,
+        reportDetails: reportDetails,
+        isEdit: isEdit,
+      );
 }
 
 class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
   _SupervisorEhsReportState({
     required this.refNum,
+    required this.reportDetails,
+    required this.isEdit,
   });
 
+  final bool isEdit;
   final int refNum;
+  final dynamic reportDetails;
 
   bool showSpinner = false;
   String supName = "",
