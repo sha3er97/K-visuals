@@ -21,14 +21,14 @@ class OverWeightReport {
 
   OverWeightReport.fromJson(Map<String, Object?> json)
       : this(
-    year: json['year']! as int,
-    month: json['month']! as int,
-    day: json['day']! as int,
-    area: json['area']! as int,
-    line_index: json['line_index']! as int,
-    supName: json['supName']! as String,
-    percent: json['percent']! as double,
-  );
+          year: json['year']! as int,
+          month: json['month']! as int,
+          day: json['day']! as int,
+          area: json['area']! as int,
+          line_index: json['line_index']! as int,
+          supName: json['supName']! as String,
+          percent: json['percent']! as double,
+        );
 
   Map<String, Object?> toJson() {
     return {
@@ -42,22 +42,24 @@ class OverWeightReport {
     };
   }
 
-  static void addReport(String supName,
-      double percent,
-      int line_index,
-      int area,
-      int year,
-      int month,
-      int day,) async {
+  static void addReport(
+    String supName,
+    double percent,
+    int line_index,
+    int area,
+    int year,
+    int month,
+    int day,
+  ) async {
     final overWeightReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('overWeight_reports')
         .collection(year.toString())
         .withConverter<OverWeightReport>(
-      fromFirestore: (snapshot, _) =>
-          OverWeightReport.fromJson(snapshot.data()!),
-      toFirestore: (report, _) => report.toJson(),
-    );
+          fromFirestore: (snapshot, _) =>
+              OverWeightReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
     await overWeightReportRef.add(
       OverWeightReport(
         supName: supName,
@@ -100,14 +102,16 @@ class OverWeightReport {
     return hashMap as HashMap<String, OverWeightReport>;
   }
 
-  static OverWeightReport getFilteredReportOfInterval(List<QueryDocumentSnapshot<OverWeightReport>> reportsList,
-      int month_from,
-      int month_to,
-      int day_from,
-      int day_to,
-      int year,
-      int areaRequired,
-      int lineNumRequired,) {
+  static OverWeightReport getFilteredReportOfInterval(
+    List<QueryDocumentSnapshot<OverWeightReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+    int areaRequired,
+    int lineNumRequired,
+  ) {
     double temp_percent = 0.0;
     int valid_reports_count = 0;
 

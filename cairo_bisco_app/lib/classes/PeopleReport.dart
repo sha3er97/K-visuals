@@ -27,15 +27,15 @@ class PeopleReport {
 
   PeopleReport.fromJson(Map<String, Object?> json)
       : this(
-    year: json['year']! as int,
-    month: json['month']! as int,
-    day: json['day']! as int,
-    area: json['area']! as int,
-    shift_index: json['shift_index']! as int,
-    supName: json['supName']! as String,
-    original_people: json['original_people']! as int,
-    attended_people: json['attended_people']! as int,
-  );
+          year: json['year']! as int,
+          month: json['month']! as int,
+          day: json['day']! as int,
+          area: json['area']! as int,
+          shift_index: json['shift_index']! as int,
+          supName: json['supName']! as String,
+          original_people: json['original_people']! as int,
+          attended_people: json['attended_people']! as int,
+        );
 
   Map<String, Object?> toJson() {
     return {
@@ -50,23 +50,25 @@ class PeopleReport {
     };
   }
 
-  static void addReport(String supName,
-      int original_people,
-      int attended_people,
-      int shift_index,
-      int area,
-      int year,
-      int month,
-      int day,) async {
+  static void addReport(
+    String supName,
+    int original_people,
+    int attended_people,
+    int shift_index,
+    int area,
+    int year,
+    int month,
+    int day,
+  ) async {
     final peopleReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('people_reports')
         .collection(year.toString())
         .withConverter<PeopleReport>(
-      fromFirestore: (snapshot, _) =>
-          PeopleReport.fromJson(snapshot.data()!),
-      toFirestore: (report, _) => report.toJson(),
-    );
+          fromFirestore: (snapshot, _) =>
+              PeopleReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
     await peopleReportRef.add(
       PeopleReport(
         supName: supName,
@@ -110,13 +112,15 @@ class PeopleReport {
     return hashMap as HashMap<String, PeopleReport>;
   }
 
-  static PeopleReport getFilteredReportOfInterval(List<QueryDocumentSnapshot<PeopleReport>> reportsList,
-      int month_from,
-      int month_to,
-      int day_from,
-      int day_to,
-      int year,
-      int areaRequired,) {
+  static PeopleReport getFilteredReportOfInterval(
+    List<QueryDocumentSnapshot<PeopleReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+    int areaRequired,
+  ) {
     int temp_total_people = 0, temp_attended_people = 0;
 
     for (var report in reportsList) {

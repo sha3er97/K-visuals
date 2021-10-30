@@ -21,15 +21,15 @@ class NRCReport {
 
   NRCReport.fromJson(Map<String, Object?> json)
       : this(
-    year: json['year']! as int,
-    month: json['month']! as int,
-    day: json['day']! as int,
-    area: json['area']! as int,
-    shift_index: json['shift_index']! as int,
-    supName: json['supName']! as String,
-    notes_count: json['notes_count']! as int,
-    notes_details: json['notes_details']! as String,
-  );
+          year: json['year']! as int,
+          month: json['month']! as int,
+          day: json['day']! as int,
+          area: json['area']! as int,
+          shift_index: json['shift_index']! as int,
+          supName: json['supName']! as String,
+          notes_count: json['notes_count']! as int,
+          notes_details: json['notes_details']! as String,
+        );
 
   Map<String, Object?> toJson() {
     return {
@@ -44,22 +44,24 @@ class NRCReport {
     };
   }
 
-  static void addReport(String supName,
-      int notes_count,
-      String notes_details,
-      int shift_index,
-      int area,
-      int year,
-      int month,
-      int day,) async {
+  static void addReport(
+    String supName,
+    int notes_count,
+    String notes_details,
+    int shift_index,
+    int area,
+    int year,
+    int month,
+    int day,
+  ) async {
     final nrcReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('nrc_reports')
         .collection(year.toString())
         .withConverter<NRCReport>(
-      fromFirestore: (snapshot, _) => NRCReport.fromJson(snapshot.data()!),
-      toFirestore: (report, _) => report.toJson(),
-    );
+          fromFirestore: (snapshot, _) => NRCReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
     await nrcReportRef.add(
       NRCReport(
         supName: supName,
@@ -103,13 +105,15 @@ class NRCReport {
     return hashMap as HashMap<String, NRCReport>;
   }
 
-  static NRCReport getFilteredReportOfInterval(List<QueryDocumentSnapshot<NRCReport>> reportsList,
-      int month_from,
-      int month_to,
-      int day_from,
-      int day_to,
-      int year,
-      int areaRequired,) {
+  static NRCReport getFilteredReportOfInterval(
+    List<QueryDocumentSnapshot<NRCReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+    int areaRequired,
+  ) {
     int temp_total_notes = 0;
     String temp_all_notes_details = '';
 

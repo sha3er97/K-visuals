@@ -20,36 +20,37 @@ class QfsReport {
       month,
       day;
 
-  QfsReport({required this.area,
-    required this.shift_index, //unused for now
-    required this.line_index,
-    required this.pes_index,
-    required this.g6_index,
-    required this.supName,
-    required this.quality_incidents,
-    required this.food_safety_incidents,
-    required this.ccp_failure,
-    required this.year,
-    required this.month,
-    required this.day,
-    required this.consumer_complaints});
+  QfsReport(
+      {required this.area,
+      required this.shift_index, //unused for now
+      required this.line_index,
+      required this.pes_index,
+      required this.g6_index,
+      required this.supName,
+      required this.quality_incidents,
+      required this.food_safety_incidents,
+      required this.ccp_failure,
+      required this.year,
+      required this.month,
+      required this.day,
+      required this.consumer_complaints});
 
   QfsReport.fromJson(Map<String, Object?> json)
       : this(
-    year: json['year']! as int,
-    month: json['month']! as int,
-    day: json['day']! as int,
-    area: json['area']! as int,
-    shift_index: json['shift_index']! as int,
-    line_index: json['line_index']! as int,
-    pes_index: json['pes_index']! as int,
-    g6_index: json['g6_index']! as int,
-    supName: json['supName']! as String,
-    quality_incidents: json['quality_incidents']! as int,
-    food_safety_incidents: json['food_safety_incidents']! as int,
-    ccp_failure: json['ccp_failure']! as int,
-    consumer_complaints: json['consumer_complaints']! as int,
-  );
+          year: json['year']! as int,
+          month: json['month']! as int,
+          day: json['day']! as int,
+          area: json['area']! as int,
+          shift_index: json['shift_index']! as int,
+          line_index: json['line_index']! as int,
+          pes_index: json['pes_index']! as int,
+          g6_index: json['g6_index']! as int,
+          supName: json['supName']! as String,
+          quality_incidents: json['quality_incidents']! as int,
+          food_safety_incidents: json['food_safety_incidents']! as int,
+          ccp_failure: json['ccp_failure']! as int,
+          consumer_complaints: json['consumer_complaints']! as int,
+        );
 
   Map<String, Object?> toJson() {
     return {
@@ -69,7 +70,8 @@ class QfsReport {
     };
   }
 
-  static void addReport(String supName,
+  static void addReport(
+      String supName,
       int quality_incidents,
       int food_safety_incidents,
       int ccp_failure,
@@ -87,9 +89,9 @@ class QfsReport {
         .doc('quality_reports')
         .collection(year.toString())
         .withConverter<QfsReport>(
-      fromFirestore: (snapshot, _) => QfsReport.fromJson(snapshot.data()!),
-      toFirestore: (report, _) => report.toJson(),
-    );
+          fromFirestore: (snapshot, _) => QfsReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
     await qualityReportRef.add(
       QfsReport(
         supName: supName,
@@ -138,7 +140,8 @@ class QfsReport {
     return hashMap as HashMap<String, QfsReport>;
   }
 
-  static QfsReport getFilteredReportOfInterval(List<QueryDocumentSnapshot<QfsReport>> reportsList,
+  static QfsReport getFilteredReportOfInterval(
+      List<QueryDocumentSnapshot<QfsReport>> reportsList,
       int month_from,
       int month_to,
       int day_from,
