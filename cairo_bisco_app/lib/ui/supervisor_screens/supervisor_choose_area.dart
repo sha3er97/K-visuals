@@ -275,7 +275,7 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) =>
                                       SupervisorPeopleReportForm(
-                                        refNum: WAFER_AREA,
+                                    refNum: WAFER_AREA,
                                     reportDetails:
                                         PeopleReport.getEmptyReport(),
                                     reportID: '',
