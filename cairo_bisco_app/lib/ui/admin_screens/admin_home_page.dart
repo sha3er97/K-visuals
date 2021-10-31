@@ -1,11 +1,10 @@
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/components/buttons/gradient_general_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/log_out_btn.dart';
+import 'package:cairo_bisco_app/ui/admin_screens/admin_edit_targets.dart';
+import 'package:cairo_bisco_app/ui/admin_screens/admin_main_add_sku.dart';
+import 'package:cairo_bisco_app/ui/admin_screens/admin_show_all_skus.dart';
 import 'package:flutter/material.dart';
-
-import 'admin_edit_targets.dart';
-import 'admin_main_add_sku.dart';
-import 'admin_show_all_skus.dart';
 
 class AdminHomePage extends StatelessWidget {
   @override

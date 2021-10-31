@@ -1,23 +1,22 @@
+import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/login_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
+import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/ui/admin_screens/admin_home_page.dart';
 import 'package:cairo_bisco_app/ui/floor_screens/floor_choose_area.dart';
 import 'package:cairo_bisco_app/ui/homePage.dart';
+import 'package:cairo_bisco_app/ui/login_screens/create_account.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_home_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-
-// import 'package:cairo_bisco_app/ui/create_account/create_account.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_database/firebase_database.dart';
-// import 'package:firebase_core/firebase_core.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -27,11 +26,35 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   bool showSpinner = false;
 
-  // final _auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
   String email = "";
   String password = "";
   bool _email_validate = false;
   bool _password_validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Plans.getPlans();
+    SKU.getAllSku();
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      if (Credentials.isAdmin(user.email.toString())) {
+        Credentials.isUserAdmin = true;
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                // builder: (context) => SuccessScreen()
+                builder: (context) => HomePage()));
+      } else {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                // builder: (context) => SuccessScreen()
+                builder: (context) => SupervisorHomePage()));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +71,11 @@ class _LoginState extends State<Login> {
               children: [
                 Center(
                   child: SizedBox(
-                    width: 300,
-                    height: 175,
+                    width: TightBoxWidth,
+                    height: logoHeight,
                     child: new Image.asset(
                       'images/logo.png',
-                      width: 300.0,
-                      height: 175.0,
+                      height: logoHeight,
                       fit: BoxFit.scaleDown,
                     ),
                     // child: SvgPicture.asset('images/login.svg')
@@ -61,17 +83,11 @@ class _LoginState extends State<Login> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 15, 20, 8),
-                  child: Text(
-                    'Login',
-                    style: TextStyle(
-                        color: KelloggColors.darkRed,
-                        fontWeight: FontWeight.w600,
-                        fontSize: largeFontSize),
-                  ),
+                  child: subHeading('Login'),
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPadding),
+                  const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Text(
                     'Please sign in to continue.',
                     style: TextStyle(
@@ -82,7 +98,7 @@ class _LoginState extends State<Login> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPadding),
+                  const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
@@ -187,34 +203,30 @@ class _LoginState extends State<Login> {
                           _password_validate = emptyField(password);
                         });
                         try {
-                          // final user = await _auth.signInWithEmailAndPassword(
-                          //     email: email, password: password);
-                          if (noEmptyValues(email, password)) {
-                            Plans.getPlans();
-                            SKU.getAllSku();
-                            if (isPlt(email, password)) {
+                          if (isScreen(email, password)) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    // builder: (context) => SuccessScreen()
+                                    builder: (context) => FloorChooseArea()));
+                          } else if (isAdmin(email, password)) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    // builder: (context) => SuccessScreen()
+                                    builder: (context) => AdminHomePage()));
+                          } else {
+                            //normal user
+                            await _auth.signInWithEmailAndPassword(
+                                email: email.trim(), password: password.trim());
+                            if (Credentials.isAdmin(email)) {
+                              Credentials.isUserAdmin = true;
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       // builder: (context) => SuccessScreen()
                                       builder: (context) => HomePage()));
-                            } else if (isScreen(email, password)) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      // builder: (context) => SuccessScreen()
-                                      builder: (context) => FloorChooseArea()));
-                            } else if (isAdmin(email, password)) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      // builder: (context) => SuccessScreen()
-                                      builder: (context) => AdminHomePage()));
                             } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text("incorrect E-mail or Password"),
-                              ));
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -222,6 +234,53 @@ class _LoginState extends State<Login> {
                                       builder: (context) =>
                                           SupervisorHomePage()));
                             }
+                          }
+                          // if (isPlt(email, password)) {
+                          //   Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           // builder: (context) => SuccessScreen()
+                          //           builder: (context) => HomePage()));
+                          // } else if (isScreen(email, password)) {
+                          //   Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           // builder: (context) => SuccessScreen()
+                          //           builder: (context) => FloorChooseArea()));
+                          // } else if (isAdmin(email, password)) {
+                          //   Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           // builder: (context) => SuccessScreen()
+                          //           builder: (context) => AdminHomePage()));
+                          // } else {
+                          //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          //     content: Text("incorrect E-mail or Password"),
+                          //   ));
+                          //   Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           // builder: (context) => SuccessScreen()
+                          //           builder: (context) =>
+                          //               SupervisorHomePage()));
+                          // }
+                          setState(() {
+                            showSpinner = false;
+                          });
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'user-not-found') {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("No user found for that email"),
+                            ));
+                          } else if (e.code == 'wrong-password') {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content:
+                                  Text("Wrong password provided for that user"),
+                            ));
+                          } else if (e.code == 'invalid-email') {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("Invalid Email"),
+                            ));
                           }
                           setState(() {
                             showSpinner = false;
@@ -243,31 +302,31 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 SizedBox(
-                  height: defaultPadding,
+                  height: pushAwayPadding,
                 ),
-                ///////////////// for sign up
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Text(
-                //       'Dont have an account?',
-                //       style: TextStyle(
-                //           color: Colors.grey[600], fontWeight: FontWeight.w400),
-                //     ),
-                //     TextButton(
-                //       onPressed: () {
-                //         Navigator.push(
-                //             context,
-                //             MaterialPageRoute(
-                //                 builder: (context) => CreateAccount()));
-                //       },
-                //       child: Text('Sign up',
-                //           style: TextStyle(
-                //             color: KelloggColors.darkRed,
-                //           )),
-                //     )
-                //   ],
-                // )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Dont have an account?',
+                      style: TextStyle(
+                          color: KelloggColors.grey,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreateAccount()));
+                      },
+                      child: Text('Sign up',
+                          style: TextStyle(
+                            color: KelloggColors.darkRed,
+                          )),
+                    )
+                  ],
+                )
               ],
             ),
           ),

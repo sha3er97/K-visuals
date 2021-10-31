@@ -1,16 +1,46 @@
+import 'package:cairo_bisco_app/classes/Admin.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Credentials {
   static String plt_email = ""; //plt2021@kelloggs.com
   static String plt_password = ""; //Bisco2021
+
+  /** back doors**/
   static String screen_email = ""; //screen
   static String screen_password = ""; //screen
   static String admin_email = ""; //admin
   static String admin_password = ""; //admin
 
-  static void getCredentials() {
-    FirebaseFirestore.instance
+  /**contain list of emails to sign in as plt*/
+  static List<String> admin_emails = [];
+  static bool isUserAdmin = false;
+
+  static bool isAdmin(String email) {
+    return admin_emails.contains(email.trim());
+  }
+
+  static Future<void> getAdmins() {
+    final adminsRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('credentials')
+        .collection("admins")
+        .withConverter<Admin>(
+          fromFirestore: (snapshot, _) => Admin.fromJson(snapshot.data()!),
+          toFirestore: (admin, _) => admin.toJson(),
+        );
+    return adminsRef.get().then((QuerySnapshot snapshot) {
+      List<QueryDocumentSnapshot<Admin>> adminDocsList =
+          snapshot.docs as List<QueryDocumentSnapshot<Admin>>;
+      for (var admin in adminDocsList) {
+        if (!admin_emails.contains(admin.data().email))
+          admin_emails.add(admin.data().email);
+      }
+    });
+  }
+
+  static Future<void> getCredentials() {
+    return FirebaseFirestore.instance
         .collection(factory_name)
         .doc('credentials')
         .get()

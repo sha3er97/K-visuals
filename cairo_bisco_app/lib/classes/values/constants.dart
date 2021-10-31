@@ -1,5 +1,5 @@
 /** version number**/
-const versionNum = '1.9.3'; //edit also in pubspec.yaml
+const versionNum = '1.9.4'; //edit also in pubspec.yaml
 
 /** ui design constants **/
 const dummyChartExtra = 1.0;
@@ -7,7 +7,7 @@ const dummyChartExtra = 1.0;
 const defaultPadding = 16.0;
 const mediumPadding = 12.0;
 const minimumPadding = 8.0;
-
+const pushAwayPadding = 75.0;
 //font sizes
 const largeButtonFont = 25.0;
 const largeFontSize = 20.0;

@@ -15,8 +15,9 @@ class _SplashState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     Timer(
         Duration(seconds: splashScreenDuration),
-        () => {
+        () async => {
               Credentials.getCredentials(),
+              await Credentials.getAdmins(),
               Navigator.push(context,
                   MaterialPageRoute(builder: (BuildContext context) => Login()))
             });

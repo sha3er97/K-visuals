@@ -4,6 +4,7 @@ import 'package:cairo_bisco_app/ui/production_screens/home_production.dart';
 import 'package:cairo_bisco_app/ui/production_screens/home_production_interval.dart';
 import 'package:cairo_bisco_app/ui/qfs_ehs_screens/ehs_detailed_report.dart';
 import 'package:cairo_bisco_app/ui/qfs_ehs_screens/qfs_detailed_report.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SideMenu extends StatelessWidget {
@@ -58,7 +59,8 @@ class SideMenu extends StatelessWidget {
           DrawerListTile(
             title: "  Log Out",
             image: "exit",
-            press: () {
+            press: () async {
+              await FirebaseAuth.instance.signOut();
               Navigator.pop(context);
               Navigator.pop(context);
             },
