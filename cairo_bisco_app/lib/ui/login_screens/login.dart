@@ -87,7 +87,7 @@ class _LoginState extends State<Login> {
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: defaultPadding),
+                      const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Text(
                     'Please sign in to continue.',
                     style: TextStyle(
@@ -98,7 +98,7 @@ class _LoginState extends State<Login> {
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: defaultPadding),
+                      const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
