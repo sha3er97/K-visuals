@@ -17,7 +17,7 @@ class ReportTitle {
   });
 
   /**
-   * for QFS,EHS,OverWeight reports with no shifts
+   * for OverWeight reports with no shifts
    */
   static List<ReportTitle> missingShiftReportToTitleList(
       HashMap<String, dynamic> map) {

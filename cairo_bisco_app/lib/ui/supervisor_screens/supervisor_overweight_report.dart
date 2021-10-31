@@ -50,17 +50,14 @@ class _SupervisorOverWeightReportFormState
   final bool isEdit;
 
   bool showSpinner = false;
-  String supName = "", percentage = "";
+  late String supName, percent;
 
   bool _supName_validate = false,
-      _percentage_missing_validate = false,
-      _percentage_value_validate = false;
+      _percent_missing_validate = false,
+      _percent_value_validate = false;
 
   //drop down values
-  String selectedYear = years[(int.parse(getYear())) - 2020];
-  String selectedMonth = months[(int.parse(getMonth())) - 1];
-  String selectedDay = days[(int.parse(getDay())) - 1];
-  String selectedProdLine = prod_lines4[0];
+  late String selectedYear, selectedMonth, selectedDay, selectedProdLine;
 
   VoidCallback? onLineChange(val) {
     setState(() {
@@ -84,6 +81,21 @@ class _SupervisorOverWeightReportFormState
     setState(() {
       selectedDay = val;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    supName = isEdit ? reportDetails.supName : '';
+    percent = isEdit ? reportDetails.percent.toString() : '';
+    ///////////////////////////////////////////////////////////////////////////////
+    selectedYear =
+        years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
+    selectedMonth =
+        months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
+    selectedDay =
+        days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
+    selectedProdLine = prod_lines4[reportDetails.line_index - 1];
   }
 
   @override
@@ -120,9 +132,10 @@ class _SupervisorOverWeightReportFormState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        smallerHeading('اسم المشرف المسؤول\nSupervisor Name'),
+                        smallerHeading('اسم المسؤول\nSupervisor Name'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: supName,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -292,7 +305,8 @@ class _SupervisorOverWeightReportFormState
                         smallerHeading(
                             'نسبة زيادة الوزن \nOverWeight Percentage'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: percent,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -308,9 +322,9 @@ class _SupervisorOverWeightReportFormState
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _percentage_missing_validate
+                            errorText: _percent_missing_validate
                                 ? missingValueErrorText
-                                : _percentage_value_validate
+                                : _percent_value_validate
                                     ? notPercentErrorText
                                     : null,
                             focusedBorder: OutlineInputBorder(
@@ -322,62 +336,147 @@ class _SupervisorOverWeightReportFormState
                             ),
                           ),
                           onChanged: (value) {
-                            percentage = value;
+                            percent = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        Padding(
-                          padding: const EdgeInsets.all(minimumPadding),
-                          child: Center(
-                            child: RoundedButton(
-                              btnText: 'تسليم التقرير',
-                              color: KelloggColors.darkRed,
-                              onPressed: () async {
-                                setState(() {
-                                  showSpinner = true;
-                                  _percentage_missing_validate =
-                                      emptyField(percentage);
-                                  if (!_percentage_missing_validate)
-                                    _percentage_value_validate =
-                                        isNotPercent(percentage);
-                                  _supName_validate = emptyField(supName);
-                                });
-                                try {
-                                  if (!_percentage_missing_validate &&
-                                      !_percentage_value_validate &&
-                                      !_supName_validate) {
-                                    OverWeightReport.addReport(
-                                        supName,
-                                        double.parse(percentage),
-                                        prod_lines4.indexOf(selectedProdLine) +
-                                            1,
-                                        //line 1,2,3,4
-                                        refNum,
-                                        int.parse(selectedYear),
-                                        int.parse(selectedMonth),
-                                        int.parse(selectedDay));
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SuccessScreen()));
-                                  } else {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text(submissionErrorText),
-                                    ));
-                                  }
-                                  setState(() {
-                                    showSpinner = false;
-                                  });
-                                } catch (e) {
-                                  print(e);
-                                }
-                              },
-                            ),
-                          ),
-                        ),
+                        isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'تسليم التقرير',
+                                    color: KelloggColors.darkRed,
+                                    onPressed: () async {
+                                      setState(() {
+                                        showSpinner = true;
+                                        _percent_missing_validate =
+                                            emptyField(percent);
+                                        if (!_percent_missing_validate)
+                                          _percent_value_validate =
+                                              isNotPercent(percent);
+                                        _supName_validate = emptyField(supName);
+                                      });
+                                      try {
+                                        if (!_percent_missing_validate &&
+                                            !_percent_value_validate &&
+                                            !_supName_validate) {
+                                          OverWeightReport.addReport(
+                                              supName,
+                                              double.parse(percent),
+                                              prod_lines4.indexOf(
+                                                      selectedProdLine) +
+                                                  1,
+                                              //line 1,2,3,4
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SuccessScreen()));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Edit Report',
+                                    color: KelloggColors.darkBlue,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+
+                                        _percent_missing_validate =
+                                            emptyField(percent);
+                                        if (!_percent_missing_validate)
+                                          _percent_value_validate =
+                                              isNotPercent(percent);
+                                        _supName_validate = emptyField(supName);
+                                      });
+                                      try {
+                                        if (!_percent_missing_validate &&
+                                            !_percent_value_validate &&
+                                            !_supName_validate) {
+                                          OverWeightReport.editReport(
+                                              context,
+                                              reportID,
+                                              supName,
+                                              double.parse(percent),
+                                              prod_lines4.indexOf(
+                                                      selectedProdLine) +
+                                                  1,
+                                              //line 1,2,3,4
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Delete Report',
+                                    color: KelloggColors.cockRed,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+                                      });
+                                      try {
+                                        OverWeightReport.deleteReport(
+                                          context,
+                                          reportID,
+                                          int.parse(selectedYear),
+                                        );
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
                         //////////////////////////////////////////////////////////////////
                       ],
                     ),

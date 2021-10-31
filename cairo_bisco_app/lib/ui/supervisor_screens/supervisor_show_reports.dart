@@ -532,7 +532,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                     refNum,
                                   );
                                   reportsTitlesList =
-                                      ReportTitle.missingShiftReportToTitleList(
+                                      ReportTitle.fullReportToTitleList(
                                           QfsReportsList);
                                   break;
                                 case EHS_REPORT:
@@ -551,7 +551,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                     refNum,
                                   );
                                   reportsTitlesList =
-                                      ReportTitle.missingShiftReportToTitleList(
+                                      ReportTitle.fullReportToTitleList(
                                           ehsReportsList);
                                   break;
                                 case OVERWEIGHT_REPORT:

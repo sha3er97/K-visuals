@@ -3,7 +3,9 @@ import 'dart:math';
 
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class QfsReport {
   final String supName;
@@ -71,19 +73,20 @@ class QfsReport {
   }
 
   static void addReport(
-      String supName,
-      int quality_incidents,
-      int food_safety_incidents,
-      int ccp_failure,
-      int consumer_complaints,
-      int year,
-      int month,
-      int day,
-      int shift_index,
-      int line_index,
-      int pes_index,
-      int g6_index,
-      int area) async {
+    String supName,
+    int quality_incidents,
+    int food_safety_incidents,
+    int ccp_failure,
+    int consumer_complaints,
+    int year,
+    int month,
+    int day,
+    int shift_index,
+    int line_index,
+    int pes_index,
+    int g6_index,
+    int area,
+  ) async {
     final qualityReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('quality_reports')
@@ -109,6 +112,92 @@ class QfsReport {
         day: day,
       ),
     );
+  }
+
+  static void editReport(
+    context,
+    String id,
+    String supName,
+    int quality_incidents,
+    int food_safety_incidents,
+    int ccp_failure,
+    int consumer_complaints,
+    int year,
+    int month,
+    int day,
+    int shift_index,
+    int line_index,
+    int pes_index,
+    int g6_index,
+    int area,
+  ) async {
+    final qualityReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('quality_reports')
+        .collection(year.toString())
+        .withConverter<QfsReport>(
+          fromFirestore: (snapshot, _) => QfsReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    await qualityReportRef
+        .doc(id)
+        .update({
+          'year': year,
+          'month': month,
+          'day': day,
+          'area': area,
+          'shift_index': shift_index,
+          'line_index': line_index,
+          'pes_index': pes_index,
+          'g6_index': g6_index,
+          'supName': supName,
+          'quality_incidents': quality_incidents,
+          'food_safety_incidents': food_safety_incidents,
+          'ccp_failure': ccp_failure,
+          'consumer_complaints': consumer_complaints,
+        })
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Report Updated"),
+              )),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to update Report: $error"),
+              ))
+            });
+  }
+
+  static void deleteReport(
+    context,
+    String id,
+    int year,
+  ) async {
+    final qualityReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('quality_reports')
+        .collection(year.toString())
+        .withConverter<QfsReport>(
+          fromFirestore: (snapshot, _) => QfsReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    await qualityReportRef
+        .doc(id)
+        .delete()
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Report Deleted"),
+              )),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to delete Report: $error"),
+              ))
+            });
   }
 
   static HashMap<String, QfsReport> getAllReportsOfInterval(
@@ -231,8 +320,8 @@ class QfsReport {
       food_safety_incidents: 0,
       ccp_failure: 0,
       consumer_complaints: 0,
-      shift_index: -1,
-      line_index: -1,
+      shift_index: 0,
+      line_index: 1,
       pes_index: 0,
       g6_index: 0,
       area: -1,

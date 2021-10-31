@@ -448,7 +448,7 @@ class BiscuitsReport {
       supName: '',
       shift_index: 0,
       line_index: 1,
-      area: -1,
+      area: 0,
       year: -1,
       month: -1,
       day: -1,

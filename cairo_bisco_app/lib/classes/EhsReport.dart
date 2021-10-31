@@ -3,7 +3,9 @@ import 'dart:math';
 
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class EhsReport {
   final String supName;
@@ -71,19 +73,20 @@ class EhsReport {
   }
 
   static void addReport(
-      String supName,
-      int firstAid_incidents,
-      int lostTime_incidents,
-      int recordable_incidents,
-      int nearMiss,
-      int risk_assessment,
-      int s7_index,
-      int line_index,
-      int shift_index,
-      int area,
-      int year,
-      int month,
-      int day) async {
+    String supName,
+    int firstAid_incidents,
+    int lostTime_incidents,
+    int recordable_incidents,
+    int nearMiss,
+    int risk_assessment,
+    int s7_index,
+    int line_index,
+    int shift_index,
+    int area,
+    int year,
+    int month,
+    int day,
+  ) async {
     final ehsReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('ehs_reports')
@@ -109,6 +112,92 @@ class EhsReport {
         day: day,
       ),
     );
+  }
+
+  static void editReport(
+    context,
+    String id,
+    String supName,
+    int firstAid_incidents,
+    int lostTime_incidents,
+    int recordable_incidents,
+    int nearMiss,
+    int risk_assessment,
+    int s7_index,
+    int line_index,
+    int shift_index,
+    int area,
+    int year,
+    int month,
+    int day,
+  ) async {
+    final ehsReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('ehs_reports')
+        .collection(year.toString())
+        .withConverter<EhsReport>(
+          fromFirestore: (snapshot, _) => EhsReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    await ehsReportRef
+        .doc(id)
+        .update({
+          'year': year,
+          'month': month,
+          'day': day,
+          'area': area,
+          'shift_index': shift_index,
+          'line_index': line_index,
+          'recordable_incidents': recordable_incidents,
+          'lostTime_incidents': lostTime_incidents,
+          'supName': supName,
+          'firstAid_incidents': firstAid_incidents,
+          'risk_assessment': risk_assessment,
+          'nearMiss': nearMiss,
+          's7_index': s7_index,
+        })
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Report Updated"),
+              )),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to update Report: $error"),
+              ))
+            });
+  }
+
+  static void deleteReport(
+    context,
+    String id,
+    int year,
+  ) async {
+    final ehsReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('ehs_reports')
+        .collection(year.toString())
+        .withConverter<EhsReport>(
+          fromFirestore: (snapshot, _) => EhsReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    await ehsReportRef
+        .doc(id)
+        .delete()
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Report Deleted"),
+              )),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to delete Report: $error"),
+              ))
+            });
   }
 
   static HashMap<String, EhsReport> getAllReportsOfInterval(
@@ -231,8 +320,8 @@ class EhsReport {
       risk_assessment: 0,
       nearMiss: 0,
       recordable_incidents: 0,
-      shift_index: -1,
-      line_index: -1,
+      shift_index: 0,
+      line_index: 1,
       lostTime_incidents: 0,
       firstAid_incidents: 0,
       area: -1,

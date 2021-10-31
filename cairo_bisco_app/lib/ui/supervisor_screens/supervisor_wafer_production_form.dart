@@ -46,28 +46,28 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
   bool showSpinner = false;
   int refNum = 1; // 1 = wafer
 
-  String supName = "",
-      shiftProductionPlan = '',
-      actualSpeed = '',
-      productionInCartons = '',
-      ovenScrap = '',
-      ovenRework = '',
-      creamScrap = '',
-      creamRework = '',
-      coolerScrap = '',
-      coolerRework = '',
-      cutterScrap = '',
-      cutterRework = '',
-      mc1Speed = '',
-      mc2Speed = '',
-      packingScrap = '',
-      packingRework = '',
-      boxesWaste = '',
-      cartonWaste = '',
-      mc1FilmUsed = '',
-      mc2FilmUsed = '',
-      mc1WasteKg = '',
-      mc2WasteKg = '';
+  late String supName,
+      shiftProductionPlan,
+      actualSpeed,
+      productionInCartons,
+      ovenScrap,
+      ovenRework,
+      creamScrap,
+      creamRework,
+      coolerScrap,
+      coolerRework,
+      cutterScrap,
+      cutterRework,
+      mc1Speed,
+      mc2Speed,
+      packingScrap,
+      packingRework,
+      boxesWaste,
+      cartonWaste,
+      mc1FilmUsed,
+      mc2FilmUsed,
+      mc1WasteKg,
+      mc2WasteKg;
 
   bool _sup_name_validate = false,
       _shift_plan_validate = false,
@@ -93,12 +93,12 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
       _mc2WasteKg_validate = false;
 
   //drop down values
-  String selectedShift = shifts[0];
-  String selectedYear = years[(int.parse(getYear())) - 2020];
-  String selectedMonth = months[(int.parse(getMonth())) - 1];
-  String selectedDay = days[(int.parse(getDay())) - 1];
-  String selectedProdLine = prod_lines4[0];
-  String sku = SKU.waferSKU[0];
+  late String selectedShift,
+      selectedYear,
+      selectedMonth,
+      selectedDay,
+      selectedProdLine,
+      sku;
 
   VoidCallback? onSKUChange(val) {
     setState(() {
@@ -137,6 +137,47 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    supName = isEdit ? reportDetails.supName : '';
+    shiftProductionPlan =
+        isEdit ? reportDetails.shiftProductionPlan.toString() : '';
+    actualSpeed = isEdit ? reportDetails.actualSpeed.toString() : '';
+    productionInCartons =
+        isEdit ? reportDetails.productionInCartons.toString() : '';
+    coolerScrap = isEdit ? reportDetails.coolerScrap.toString() : '';
+    coolerRework = isEdit ? reportDetails.coolerRework.toString() : '';
+    ovenScrap = isEdit ? reportDetails.ovenScrap.toString() : '';
+    ovenRework = isEdit ? reportDetails.ovenRework.toString() : '';
+    cutterScrap = isEdit ? reportDetails.cutterScrap.toString() : '';
+    cutterRework = isEdit ? reportDetails.cutterRework.toString() : '';
+    creamScrap = isEdit ? reportDetails.creamScrap.toString() : '';
+    creamRework = isEdit ? reportDetails.creamRework.toString() : '';
+    mc1Speed = isEdit ? reportDetails.mc1Speed.toString() : '';
+    mc2Speed = isEdit ? reportDetails.mc2Speed.toString() : '';
+    packingScrap = isEdit ? reportDetails.packingScrap.toString() : '';
+    packingRework = isEdit ? reportDetails.packingRework.toString() : '';
+    boxesWaste = isEdit ? reportDetails.boxesWaste.toString() : '';
+    cartonWaste = isEdit ? reportDetails.cartonWaste.toString() : '';
+    mc1FilmUsed = isEdit ? reportDetails.mc1FilmUsed.toString() : '';
+    mc2FilmUsed = isEdit ? reportDetails.mc2FilmUsed.toString() : '';
+    mc1WasteKg = isEdit ? reportDetails.mc1WasteKg.toString() : '';
+    mc2WasteKg = isEdit ? reportDetails.mc2WasteKg.toString() : '';
+    ///////////////////////////////////////////////////////////////////////////////
+    selectedShift = shifts[reportDetails.shift_index];
+    selectedYear =
+        years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
+    selectedMonth =
+        months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
+    selectedDay =
+        days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
+    selectedProdLine = prod_lines4[reportDetails.line_index - 1];
+    print("initial line :" + selectedProdLine.toString());
+
+    sku = isEdit ? reportDetails.skuName : SKU.biscuitSKU[0];
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
@@ -170,9 +211,10 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        smallerHeading('اسم المشرف المسؤول\nSupervisor Name'),
+                        smallerHeading('اسم المسؤول\nSupervisor Name'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: supName,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -236,7 +278,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(vertical: 10),
                                   child: Column(
@@ -265,7 +307,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(
                                       vertical: minimumPadding),
@@ -296,7 +338,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               flex: 2,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(
                                       vertical: minimumPadding),
@@ -384,7 +426,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         smallerHeading(
                             'خطة انتاج الوردية\nShift Production Plan'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: shiftProductionPlan,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -421,7 +464,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ///////////////////////////////////////////////////////////////
                         smallerHeading('السرعة الفعلية\nActual Speed'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: actualSpeed,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -456,7 +500,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ///////////////////////////////////////////////////////////////
                         smallerHeading('الانتاج الفعلي بالكراتين\nProduction'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: productionInCartons,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -495,7 +540,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: ovenRework,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -530,7 +576,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك\nScrap'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: ovenScrap,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -567,7 +614,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: creamRework,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -602,7 +650,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك\nScrap'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: creamScrap,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -639,7 +688,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: coolerRework,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -674,7 +724,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك\nScrap'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: coolerScrap,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -711,7 +762,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: cutterRework,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -746,7 +798,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك\nScrap'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: cutterScrap,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -783,7 +836,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('السرعة الفعلية mc1'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc1Speed,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -818,7 +872,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('السرعة الفعلية mc2'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc2Speed,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -852,9 +907,10 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading(
-                            'اعادة تشغيل ويفر منطقة التغليف\nRework'),
+                            'اعادة تشغيل ويفر منطقة التغليف\nPacking Rework'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: packingRework,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -887,9 +943,11 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('هالك ويفر منطقة التغليف\nScrap'),
+                        smallerHeading(
+                            'هالك ويفر منطقة التغليف\nPacking Scrap'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: packingScrap,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -924,7 +982,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('هالك علب\nBoxes Waste'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: boxesWaste,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -959,7 +1018,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('هالك كرتون\nCarton Waste'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: cartonWaste,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -996,7 +1056,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك بالكجم mc1'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc1WasteKg,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -1031,7 +1092,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('اجمالي الفيلم المستخدم mc1'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc1FilmUsed,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -1066,7 +1128,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك بالكجم mc2'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc2WasteKg,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -1101,7 +1164,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('اجمالي الفيلم المستخدم mc2'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc2FilmUsed,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -1134,126 +1198,302 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////button//////////////////////////
-                        Padding(
-                          padding: const EdgeInsets.all(minimumPadding),
-                          child: Center(
-                            child: RoundedButton(
-                              btnText: 'تسليم التقرير',
-                              color: KelloggColors.darkRed,
-                              onPressed: () async {
-                                setState(() {
-                                  showSpinner = true;
-                                  _sup_name_validate = emptyField(supName);
-                                  _shift_plan_validate =
-                                      emptyField(shiftProductionPlan);
-                                  _actualSpeed_validate =
-                                      emptyField(actualSpeed);
-                                  _productionInCartons_validate =
-                                      emptyField(productionInCartons);
-                                  _creamScrap_validate = emptyField(creamScrap);
-                                  _creamRework_validate =
-                                      emptyField(creamRework);
-                                  _ovenScrap_validate = emptyField(ovenScrap);
-                                  _ovenRework_validate = emptyField(ovenRework);
-                                  _cutterScrap_validate =
-                                      emptyField(cutterScrap);
-                                  _cutterRework_validate =
-                                      emptyField(cutterRework);
-                                  _coolerScrap_validate =
-                                      emptyField(cutterScrap);
-                                  _coolerRework_validate =
-                                      emptyField(coolerRework);
-                                  _mc1Speed_validate = emptyField(mc1Speed);
-                                  _mc2Speed_validate = emptyField(mc2Speed);
-                                  _packingScrap_validate =
-                                      emptyField(packingScrap);
-                                  _packingRework_validate =
-                                      emptyField(packingRework);
-                                  _boxesWaste_validate = emptyField(boxesWaste);
-                                  _cartonWaste_validate =
-                                      emptyField(cartonWaste);
-                                  _mc1FilmUsed_validate =
-                                      emptyField(mc1FilmUsed);
-                                  _mc2FilmUsed_validate =
-                                      emptyField(mc2FilmUsed);
-                                  _mc1WasteKg_validate = emptyField(mc1WasteKg);
-                                  _mc2WasteKg_validate = emptyField(mc2WasteKg);
-                                });
-                                try {
-                                  if (!_sup_name_validate &&
-                                      !_shift_plan_validate &&
-                                      !_actualSpeed_validate &&
-                                      !_productionInCartons_validate &&
-                                      !_ovenScrap_validate &&
-                                      !_ovenRework_validate &&
-                                      !_creamScrap_validate &&
-                                      !_creamRework_validate &&
-                                      !_coolerScrap_validate &&
-                                      !_coolerRework_validate &&
-                                      !_cutterScrap_validate &&
-                                      !_cutterRework_validate &&
-                                      !_mc1Speed_validate &&
-                                      !_mc2Speed_validate &&
-                                      !_packingScrap_validate &&
-                                      !_packingRework_validate &&
-                                      !_boxesWaste_validate &&
-                                      !_cartonWaste_validate &&
-                                      !_mc1FilmUsed_validate &&
-                                      !_mc2FilmUsed_validate &&
-                                      !_mc1WasteKg_validate &&
-                                      !_mc2WasteKg_validate) {
-                                    WaferReport.addReport(
-                                        supName,
-                                        sku,
-                                        double.parse(actualSpeed),
-                                        double.parse(ovenScrap),
-                                        double.parse(ovenRework),
-                                        double.parse(cutterScrap),
-                                        double.parse(cutterRework),
-                                        double.parse(creamScrap),
-                                        double.parse(creamRework),
-                                        double.parse(coolerScrap),
-                                        double.parse(coolerRework),
-                                        double.parse(mc1Speed),
-                                        double.parse(mc2Speed),
-                                        double.parse(packingScrap),
-                                        double.parse(packingRework),
-                                        double.parse(boxesWaste),
-                                        double.parse(cartonWaste),
-                                        double.parse(mc1FilmUsed),
-                                        double.parse(mc2FilmUsed),
-                                        double.parse(mc1WasteKg),
-                                        double.parse(mc2WasteKg),
-                                        int.parse(shiftProductionPlan),
-                                        int.parse(productionInCartons),
-                                        prod_lines4.indexOf(selectedProdLine) +
-                                            1,
-                                        shifts.indexOf(selectedShift),
-                                        refNum,
-                                        int.parse(selectedYear),
-                                        int.parse(selectedMonth),
-                                        int.parse(selectedDay));
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SuccessScreen()));
-                                  } else {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text(submissionErrorText),
-                                    ));
-                                  }
-                                  setState(() {
-                                    showSpinner = false;
-                                  });
-                                } catch (e) {
-                                  print(e);
-                                }
-                              },
-                            ),
-                          ),
-                        ),
+                        isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'تسليم التقرير',
+                                    color: KelloggColors.darkRed,
+                                    onPressed: () async {
+                                      setState(() {
+                                        showSpinner = true;
+                                        _sup_name_validate =
+                                            emptyField(supName);
+                                        _shift_plan_validate =
+                                            emptyField(shiftProductionPlan);
+                                        _actualSpeed_validate =
+                                            emptyField(actualSpeed);
+                                        _productionInCartons_validate =
+                                            emptyField(productionInCartons);
+                                        _creamScrap_validate =
+                                            emptyField(creamScrap);
+                                        _creamRework_validate =
+                                            emptyField(creamRework);
+                                        _ovenScrap_validate =
+                                            emptyField(ovenScrap);
+                                        _ovenRework_validate =
+                                            emptyField(ovenRework);
+                                        _cutterScrap_validate =
+                                            emptyField(cutterScrap);
+                                        _cutterRework_validate =
+                                            emptyField(cutterRework);
+                                        _coolerScrap_validate =
+                                            emptyField(cutterScrap);
+                                        _coolerRework_validate =
+                                            emptyField(coolerRework);
+                                        _mc1Speed_validate =
+                                            emptyField(mc1Speed);
+                                        _mc2Speed_validate =
+                                            emptyField(mc2Speed);
+                                        _packingScrap_validate =
+                                            emptyField(packingScrap);
+                                        _packingRework_validate =
+                                            emptyField(packingRework);
+                                        _boxesWaste_validate =
+                                            emptyField(boxesWaste);
+                                        _cartonWaste_validate =
+                                            emptyField(cartonWaste);
+                                        _mc1FilmUsed_validate =
+                                            emptyField(mc1FilmUsed);
+                                        _mc2FilmUsed_validate =
+                                            emptyField(mc2FilmUsed);
+                                        _mc1WasteKg_validate =
+                                            emptyField(mc1WasteKg);
+                                        _mc2WasteKg_validate =
+                                            emptyField(mc2WasteKg);
+                                      });
+                                      try {
+                                        if (!_sup_name_validate &&
+                                            !_shift_plan_validate &&
+                                            !_actualSpeed_validate &&
+                                            !_productionInCartons_validate &&
+                                            !_ovenScrap_validate &&
+                                            !_ovenRework_validate &&
+                                            !_creamScrap_validate &&
+                                            !_creamRework_validate &&
+                                            !_coolerScrap_validate &&
+                                            !_coolerRework_validate &&
+                                            !_cutterScrap_validate &&
+                                            !_cutterRework_validate &&
+                                            !_mc1Speed_validate &&
+                                            !_mc2Speed_validate &&
+                                            !_packingScrap_validate &&
+                                            !_packingRework_validate &&
+                                            !_boxesWaste_validate &&
+                                            !_cartonWaste_validate &&
+                                            !_mc1FilmUsed_validate &&
+                                            !_mc2FilmUsed_validate &&
+                                            !_mc1WasteKg_validate &&
+                                            !_mc2WasteKg_validate) {
+                                          WaferReport.addReport(
+                                              supName,
+                                              sku,
+                                              double.parse(actualSpeed),
+                                              double.parse(ovenScrap),
+                                              double.parse(ovenRework),
+                                              double.parse(cutterScrap),
+                                              double.parse(cutterRework),
+                                              double.parse(creamScrap),
+                                              double.parse(creamRework),
+                                              double.parse(coolerScrap),
+                                              double.parse(coolerRework),
+                                              double.parse(mc1Speed),
+                                              double.parse(mc2Speed),
+                                              double.parse(packingScrap),
+                                              double.parse(packingRework),
+                                              double.parse(boxesWaste),
+                                              double.parse(cartonWaste),
+                                              double.parse(mc1FilmUsed),
+                                              double.parse(mc2FilmUsed),
+                                              double.parse(mc1WasteKg),
+                                              double.parse(mc2WasteKg),
+                                              int.parse(shiftProductionPlan),
+                                              int.parse(productionInCartons),
+                                              prod_lines4.indexOf(
+                                                      selectedProdLine) +
+                                                  1,
+                                              shifts.indexOf(selectedShift),
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SuccessScreen()));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        /////////////////////////////////////////////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Edit Report',
+                                    color: KelloggColors.darkBlue,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+
+                                        _sup_name_validate =
+                                            emptyField(supName);
+                                        _shift_plan_validate =
+                                            emptyField(shiftProductionPlan);
+                                        _actualSpeed_validate =
+                                            emptyField(actualSpeed);
+                                        _productionInCartons_validate =
+                                            emptyField(productionInCartons);
+                                        _creamScrap_validate =
+                                            emptyField(creamScrap);
+                                        _creamRework_validate =
+                                            emptyField(creamRework);
+                                        _ovenScrap_validate =
+                                            emptyField(ovenScrap);
+                                        _ovenRework_validate =
+                                            emptyField(ovenRework);
+                                        _cutterScrap_validate =
+                                            emptyField(cutterScrap);
+                                        _cutterRework_validate =
+                                            emptyField(cutterRework);
+                                        _coolerScrap_validate =
+                                            emptyField(cutterScrap);
+                                        _coolerRework_validate =
+                                            emptyField(coolerRework);
+                                        _mc1Speed_validate =
+                                            emptyField(mc1Speed);
+                                        _mc2Speed_validate =
+                                            emptyField(mc2Speed);
+                                        _packingScrap_validate =
+                                            emptyField(packingScrap);
+                                        _packingRework_validate =
+                                            emptyField(packingRework);
+                                        _boxesWaste_validate =
+                                            emptyField(boxesWaste);
+                                        _cartonWaste_validate =
+                                            emptyField(cartonWaste);
+                                        _mc1FilmUsed_validate =
+                                            emptyField(mc1FilmUsed);
+                                        _mc2FilmUsed_validate =
+                                            emptyField(mc2FilmUsed);
+                                        _mc1WasteKg_validate =
+                                            emptyField(mc1WasteKg);
+                                        _mc2WasteKg_validate =
+                                            emptyField(mc2WasteKg);
+                                      });
+                                      try {
+                                        if (!_sup_name_validate &&
+                                            !_shift_plan_validate &&
+                                            !_actualSpeed_validate &&
+                                            !_productionInCartons_validate &&
+                                            !_ovenScrap_validate &&
+                                            !_ovenRework_validate &&
+                                            !_creamScrap_validate &&
+                                            !_creamRework_validate &&
+                                            !_coolerScrap_validate &&
+                                            !_coolerRework_validate &&
+                                            !_cutterScrap_validate &&
+                                            !_cutterRework_validate &&
+                                            !_mc1Speed_validate &&
+                                            !_mc2Speed_validate &&
+                                            !_packingScrap_validate &&
+                                            !_packingRework_validate &&
+                                            !_boxesWaste_validate &&
+                                            !_cartonWaste_validate &&
+                                            !_mc1FilmUsed_validate &&
+                                            !_mc2FilmUsed_validate &&
+                                            !_mc1WasteKg_validate &&
+                                            !_mc2WasteKg_validate) {
+                                          WaferReport.editReport(
+                                              context,
+                                              reportID,
+                                              supName,
+                                              sku,
+                                              double.parse(actualSpeed),
+                                              double.parse(ovenScrap),
+                                              double.parse(ovenRework),
+                                              double.parse(cutterScrap),
+                                              double.parse(cutterRework),
+                                              double.parse(creamScrap),
+                                              double.parse(creamRework),
+                                              double.parse(coolerScrap),
+                                              double.parse(coolerRework),
+                                              double.parse(mc1Speed),
+                                              double.parse(mc2Speed),
+                                              double.parse(packingScrap),
+                                              double.parse(packingRework),
+                                              double.parse(boxesWaste),
+                                              double.parse(cartonWaste),
+                                              double.parse(mc1FilmUsed),
+                                              double.parse(mc2FilmUsed),
+                                              double.parse(mc1WasteKg),
+                                              double.parse(mc2WasteKg),
+                                              int.parse(shiftProductionPlan),
+                                              int.parse(productionInCartons),
+                                              prod_lines4.indexOf(
+                                                      selectedProdLine) +
+                                                  1,
+                                              shifts.indexOf(selectedShift),
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : SizedBox(height: minimumPadding),
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Delete Report',
+                                    color: KelloggColors.cockRed,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+                                      });
+                                      try {
+                                        WaferReport.deleteReport(
+                                          context,
+                                          reportID,
+                                          int.parse(selectedYear),
+                                        );
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
                       ],
                     ),
                   ),

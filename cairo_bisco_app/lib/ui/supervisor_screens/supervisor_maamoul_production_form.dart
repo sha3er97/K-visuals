@@ -46,26 +46,26 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
   bool showSpinner = false;
   int refNum = 2; // 2 = maamoul
 
-  String supName = "",
-      shiftProductionPlan = '',
-      actualSpeed = '',
-      productionInCartons = '',
-      mixerScrap = '',
-      mixerRework = '',
-      stampingScrap = '',
-      stampingRework = '',
-      ovenScrap = '',
-      ovenRework = '',
-      mc1Speed = '',
-      mc2Speed = '',
-      packingScrap = '',
-      packingRework = '',
-      boxesWaste = '',
-      cartonWaste = '',
-      mc1FilmUsed = '',
-      mc2FilmUsed = '',
-      mc1WasteKg = '',
-      mc2WasteKg = '';
+  late String supName,
+      shiftProductionPlan,
+      actualSpeed,
+      productionInCartons,
+      mixerScrap,
+      mixerRework,
+      stampingScrap,
+      stampingRework,
+      ovenScrap,
+      ovenRework,
+      mc1Speed,
+      mc2Speed,
+      packingScrap,
+      packingRework,
+      boxesWaste,
+      cartonWaste,
+      mc1FilmUsed,
+      mc2FilmUsed,
+      mc1WasteKg,
+      mc2WasteKg;
 
   bool _sup_name_validate = false,
       _shift_plan_validate = false,
@@ -89,12 +89,12 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
       _mc2WasteKg_validate = false;
 
   //drop down values
-  String selectedShift = shifts[0];
-  String selectedYear = years[(int.parse(getYear())) - 2020];
-  String selectedMonth = months[(int.parse(getMonth())) - 1];
-  String selectedDay = days[(int.parse(getDay())) - 1];
-  String selectedProdLine = prod_lines4[0];
-  String sku = SKU.maamoulSKU[0];
+  late String selectedShift,
+      selectedYear,
+      selectedMonth,
+      selectedDay,
+      selectedProdLine,
+      sku;
 
   VoidCallback? onSKUChange(val) {
     setState(() {
@@ -133,6 +133,45 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    supName = isEdit ? reportDetails.supName : '';
+    shiftProductionPlan =
+        isEdit ? reportDetails.shiftProductionPlan.toString() : '';
+    actualSpeed = isEdit ? reportDetails.actualSpeed.toString() : '';
+    productionInCartons =
+        isEdit ? reportDetails.productionInCartons.toString() : '';
+    mixerScrap = isEdit ? reportDetails.mixerScrap.toString() : '';
+    mixerRework = isEdit ? reportDetails.mixerRework.toString() : '';
+    ovenScrap = isEdit ? reportDetails.ovenScrap.toString() : '';
+    ovenRework = isEdit ? reportDetails.ovenRework.toString() : '';
+    stampingScrap = isEdit ? reportDetails.stampingScrap.toString() : '';
+    stampingRework = isEdit ? reportDetails.stampingRework.toString() : '';
+    mc1Speed = isEdit ? reportDetails.mc1Speed.toString() : '';
+    mc2Speed = isEdit ? reportDetails.mc2Speed.toString() : '';
+    packingScrap = isEdit ? reportDetails.packingScrap.toString() : '';
+    packingRework = isEdit ? reportDetails.packingRework.toString() : '';
+    boxesWaste = isEdit ? reportDetails.boxesWaste.toString() : '';
+    cartonWaste = isEdit ? reportDetails.cartonWaste.toString() : '';
+    mc1FilmUsed = isEdit ? reportDetails.mc1FilmUsed.toString() : '';
+    mc2FilmUsed = isEdit ? reportDetails.mc2FilmUsed.toString() : '';
+    mc1WasteKg = isEdit ? reportDetails.mc1WasteKg.toString() : '';
+    mc2WasteKg = isEdit ? reportDetails.mc2WasteKg.toString() : '';
+    ///////////////////////////////////////////////////////////////////////////////
+    selectedShift = shifts[reportDetails.shift_index];
+    selectedYear =
+        years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
+    selectedMonth =
+        months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
+    selectedDay =
+        days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
+    selectedProdLine = prod_lines4[reportDetails.line_index - 1];
+    print("initial line :" + selectedProdLine.toString());
+
+    sku = isEdit ? reportDetails.skuName : SKU.biscuitSKU[0];
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
@@ -166,9 +205,10 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        smallerHeading('اسم المشرف المسؤول\nSupervisor Name'),
+                        smallerHeading('اسم المسؤول\nSupervisor Name'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: supName,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -240,7 +280,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(vertical: 10),
                                   child: Column(
@@ -269,7 +309,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(
                                       vertical: minimumPadding),
@@ -300,7 +340,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                               flex: 2,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(
                                       vertical: minimumPadding),
@@ -388,7 +428,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         smallerHeading(
                             'خطة انتاج الوردية\nShift Production Plan'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: shiftProductionPlan,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -425,7 +466,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ///////////////////////////////////////////////////////////////
                         smallerHeading('السرعة الفعلية\nActual Speed'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: actualSpeed,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -460,7 +502,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ///////////////////////////////////////////////////////////////
                         smallerHeading('الانتاج الفعلي بالكراتين\nProduction'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: productionInCartons,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -499,7 +542,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mixerRework,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -534,7 +578,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك\nScrap'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mixerScrap,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -571,7 +616,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: stampingRework,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -606,7 +652,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك\nScrap'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: stampingScrap,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -643,7 +690,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: ovenRework,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -678,7 +726,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك\nScrap'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: ovenScrap,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -715,7 +764,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('السرعة الفعلية mc1'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc1Speed,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -750,7 +800,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('السرعة الفعلية mc2'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc2Speed,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -784,9 +835,10 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading(
-                            'اعادة تشغيل معمول منطقة التغليف\nRework'),
+                            'اعادة تشغيل معمول منطقة التغليف\nPacking Rework'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: packingRework,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -819,9 +871,11 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('هالك معمول منطقة التغليف\nScrap'),
+                        smallerHeading(
+                            'هالك معمول منطقة التغليف\nPacking Scrap'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: packingScrap,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -856,7 +910,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('هالك علب\nBoxes Waste'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: boxesWaste,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -891,7 +946,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('هالك كرتون\nCarton Waste'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: cartonWaste,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -928,7 +984,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك بالكجم mc1'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc1WasteKg,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -963,7 +1020,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('اجمالي الفيلم المستخدم mc1'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc1FilmUsed,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -998,7 +1056,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('الهالك بالكجم mc2'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc2WasteKg,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -1033,7 +1092,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ///////////////////////////////////////////////////////////////////////////
                         smallerHeading('اجمالي الفيلم المستخدم mc2'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: mc2FilmUsed,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -1066,118 +1126,286 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////button//////////////////////////
-                        Padding(
-                          padding: const EdgeInsets.all(minimumPadding),
-                          child: Center(
-                            child: RoundedButton(
-                              btnText: 'تسليم التقرير',
-                              color: KelloggColors.darkRed,
-                              onPressed: () async {
-                                setState(() {
-                                  showSpinner = true;
-                                  _sup_name_validate = emptyField(supName);
-                                  _shift_plan_validate =
-                                      emptyField(shiftProductionPlan);
-                                  _actualSpeed_validate =
-                                      emptyField(actualSpeed);
-                                  _productionInCartons_validate =
-                                      emptyField(productionInCartons);
-                                  _mixerScrap_validate = emptyField(mixerScrap);
-                                  _mixerRework_validate =
-                                      emptyField(mixerRework);
-                                  _ovenScrap_validate = emptyField(ovenScrap);
-                                  _ovenRework_validate = emptyField(ovenRework);
-                                  _stampingScrap_validate =
-                                      emptyField(stampingScrap);
-                                  _stampingRework_validate =
-                                      emptyField(stampingRework);
-                                  _mc1Speed_validate = emptyField(mc1Speed);
-                                  _mc2Speed_validate = emptyField(mc2Speed);
-                                  _packingScrap_validate =
-                                      emptyField(packingScrap);
-                                  _packingRework_validate =
-                                      emptyField(packingRework);
-                                  _boxesWaste_validate = emptyField(boxesWaste);
-                                  _cartonWaste_validate =
-                                      emptyField(cartonWaste);
-                                  _mc1FilmUsed_validate =
-                                      emptyField(mc1FilmUsed);
-                                  _mc2FilmUsed_validate =
-                                      emptyField(mc2FilmUsed);
-                                  _mc1WasteKg_validate = emptyField(mc1WasteKg);
-                                  _mc2WasteKg_validate = emptyField(mc2WasteKg);
-                                });
-                                try {
-                                  if (!_sup_name_validate &&
-                                      !_shift_plan_validate &&
-                                      !_actualSpeed_validate &&
-                                      !_productionInCartons_validate &&
-                                      !_mixerScrap_validate &&
-                                      !_mixerRework_validate &&
-                                      !_ovenScrap_validate &&
-                                      !_ovenRework_validate &&
-                                      !_stampingScrap_validate &&
-                                      !_stampingRework_validate &&
-                                      !_mc1Speed_validate &&
-                                      !_mc2Speed_validate &&
-                                      !_packingScrap_validate &&
-                                      !_packingRework_validate &&
-                                      !_boxesWaste_validate &&
-                                      !_cartonWaste_validate &&
-                                      !_mc1FilmUsed_validate &&
-                                      !_mc2FilmUsed_validate &&
-                                      !_mc1WasteKg_validate &&
-                                      !_mc2WasteKg_validate) {
-                                    MaamoulReport.addReport(
-                                        supName,
-                                        sku,
-                                        double.parse(actualSpeed),
-                                        double.parse(ovenScrap),
-                                        double.parse(ovenRework),
-                                        double.parse(mixerScrap),
-                                        double.parse(mixerRework),
-                                        double.parse(stampingScrap),
-                                        double.parse(stampingRework),
-                                        double.parse(mc1Speed),
-                                        double.parse(mc2Speed),
-                                        double.parse(packingScrap),
-                                        double.parse(packingRework),
-                                        double.parse(boxesWaste),
-                                        double.parse(cartonWaste),
-                                        double.parse(mc1FilmUsed),
-                                        double.parse(mc2FilmUsed),
-                                        double.parse(mc1WasteKg),
-                                        double.parse(mc2WasteKg),
-                                        int.parse(shiftProductionPlan),
-                                        int.parse(productionInCartons),
-                                        prod_lines4.indexOf(selectedProdLine) +
-                                            1,
-                                        shifts.indexOf(selectedShift),
-                                        refNum,
-                                        int.parse(selectedYear),
-                                        int.parse(selectedMonth),
-                                        int.parse(selectedDay));
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SuccessScreen()));
-                                  } else {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text(submissionErrorText),
-                                    ));
-                                  }
-                                  setState(() {
-                                    showSpinner = false;
-                                  });
-                                } catch (e) {
-                                  print(e);
-                                }
-                              },
-                            ),
-                          ),
-                        ),
+                        isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'تسليم التقرير',
+                                    color: KelloggColors.darkRed,
+                                    onPressed: () async {
+                                      setState(() {
+                                        showSpinner = true;
+                                        _sup_name_validate =
+                                            emptyField(supName);
+                                        _shift_plan_validate =
+                                            emptyField(shiftProductionPlan);
+                                        _actualSpeed_validate =
+                                            emptyField(actualSpeed);
+                                        _productionInCartons_validate =
+                                            emptyField(productionInCartons);
+                                        _mixerScrap_validate =
+                                            emptyField(mixerScrap);
+                                        _mixerRework_validate =
+                                            emptyField(mixerRework);
+                                        _ovenScrap_validate =
+                                            emptyField(ovenScrap);
+                                        _ovenRework_validate =
+                                            emptyField(ovenRework);
+                                        _stampingScrap_validate =
+                                            emptyField(stampingScrap);
+                                        _stampingRework_validate =
+                                            emptyField(stampingRework);
+                                        _mc1Speed_validate =
+                                            emptyField(mc1Speed);
+                                        _mc2Speed_validate =
+                                            emptyField(mc2Speed);
+                                        _packingScrap_validate =
+                                            emptyField(packingScrap);
+                                        _packingRework_validate =
+                                            emptyField(packingRework);
+                                        _boxesWaste_validate =
+                                            emptyField(boxesWaste);
+                                        _cartonWaste_validate =
+                                            emptyField(cartonWaste);
+                                        _mc1FilmUsed_validate =
+                                            emptyField(mc1FilmUsed);
+                                        _mc2FilmUsed_validate =
+                                            emptyField(mc2FilmUsed);
+                                        _mc1WasteKg_validate =
+                                            emptyField(mc1WasteKg);
+                                        _mc2WasteKg_validate =
+                                            emptyField(mc2WasteKg);
+                                      });
+                                      try {
+                                        if (!_sup_name_validate &&
+                                            !_shift_plan_validate &&
+                                            !_actualSpeed_validate &&
+                                            !_productionInCartons_validate &&
+                                            !_mixerScrap_validate &&
+                                            !_mixerRework_validate &&
+                                            !_ovenScrap_validate &&
+                                            !_ovenRework_validate &&
+                                            !_stampingScrap_validate &&
+                                            !_stampingRework_validate &&
+                                            !_mc1Speed_validate &&
+                                            !_mc2Speed_validate &&
+                                            !_packingScrap_validate &&
+                                            !_packingRework_validate &&
+                                            !_boxesWaste_validate &&
+                                            !_cartonWaste_validate &&
+                                            !_mc1FilmUsed_validate &&
+                                            !_mc2FilmUsed_validate &&
+                                            !_mc1WasteKg_validate &&
+                                            !_mc2WasteKg_validate) {
+                                          MaamoulReport.addReport(
+                                              supName,
+                                              sku,
+                                              double.parse(actualSpeed),
+                                              double.parse(ovenScrap),
+                                              double.parse(ovenRework),
+                                              double.parse(mixerScrap),
+                                              double.parse(mixerRework),
+                                              double.parse(stampingScrap),
+                                              double.parse(stampingRework),
+                                              double.parse(mc1Speed),
+                                              double.parse(mc2Speed),
+                                              double.parse(packingScrap),
+                                              double.parse(packingRework),
+                                              double.parse(boxesWaste),
+                                              double.parse(cartonWaste),
+                                              double.parse(mc1FilmUsed),
+                                              double.parse(mc2FilmUsed),
+                                              double.parse(mc1WasteKg),
+                                              double.parse(mc2WasteKg),
+                                              int.parse(shiftProductionPlan),
+                                              int.parse(productionInCartons),
+                                              prod_lines4.indexOf(
+                                                      selectedProdLine) +
+                                                  1,
+                                              shifts.indexOf(selectedShift),
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SuccessScreen()));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Edit Report',
+                                    color: KelloggColors.darkBlue,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+
+                                        _sup_name_validate =
+                                            emptyField(supName);
+                                        _shift_plan_validate =
+                                            emptyField(shiftProductionPlan);
+                                        _actualSpeed_validate =
+                                            emptyField(actualSpeed);
+                                        _productionInCartons_validate =
+                                            emptyField(productionInCartons);
+                                        _mixerScrap_validate =
+                                            emptyField(mixerScrap);
+                                        _mixerRework_validate =
+                                            emptyField(mixerRework);
+                                        _ovenScrap_validate =
+                                            emptyField(ovenScrap);
+                                        _ovenRework_validate =
+                                            emptyField(ovenRework);
+                                        _stampingScrap_validate =
+                                            emptyField(stampingScrap);
+                                        _stampingRework_validate =
+                                            emptyField(stampingRework);
+                                        _mc1Speed_validate =
+                                            emptyField(mc1Speed);
+                                        _mc2Speed_validate =
+                                            emptyField(mc2Speed);
+                                        _packingScrap_validate =
+                                            emptyField(packingScrap);
+                                        _packingRework_validate =
+                                            emptyField(packingRework);
+                                        _boxesWaste_validate =
+                                            emptyField(boxesWaste);
+                                        _cartonWaste_validate =
+                                            emptyField(cartonWaste);
+                                        _mc1FilmUsed_validate =
+                                            emptyField(mc1FilmUsed);
+                                        _mc2FilmUsed_validate =
+                                            emptyField(mc2FilmUsed);
+                                        _mc1WasteKg_validate =
+                                            emptyField(mc1WasteKg);
+                                        _mc2WasteKg_validate =
+                                            emptyField(mc2WasteKg);
+                                      });
+                                      try {
+                                        if (!_sup_name_validate &&
+                                            !_shift_plan_validate &&
+                                            !_actualSpeed_validate &&
+                                            !_productionInCartons_validate &&
+                                            !_mixerScrap_validate &&
+                                            !_mixerRework_validate &&
+                                            !_ovenScrap_validate &&
+                                            !_ovenRework_validate &&
+                                            !_stampingScrap_validate &&
+                                            !_stampingRework_validate &&
+                                            !_mc1Speed_validate &&
+                                            !_mc2Speed_validate &&
+                                            !_packingScrap_validate &&
+                                            !_packingRework_validate &&
+                                            !_boxesWaste_validate &&
+                                            !_cartonWaste_validate &&
+                                            !_mc1FilmUsed_validate &&
+                                            !_mc2FilmUsed_validate &&
+                                            !_mc1WasteKg_validate &&
+                                            !_mc2WasteKg_validate) {
+                                          MaamoulReport.editReport(
+                                              context,
+                                              reportID,
+                                              supName,
+                                              sku,
+                                              double.parse(actualSpeed),
+                                              double.parse(ovenScrap),
+                                              double.parse(ovenRework),
+                                              double.parse(mixerScrap),
+                                              double.parse(mixerRework),
+                                              double.parse(stampingScrap),
+                                              double.parse(stampingRework),
+                                              double.parse(mc1Speed),
+                                              double.parse(mc2Speed),
+                                              double.parse(packingScrap),
+                                              double.parse(packingRework),
+                                              double.parse(boxesWaste),
+                                              double.parse(cartonWaste),
+                                              double.parse(mc1FilmUsed),
+                                              double.parse(mc2FilmUsed),
+                                              double.parse(mc1WasteKg),
+                                              double.parse(mc2WasteKg),
+                                              int.parse(shiftProductionPlan),
+                                              int.parse(productionInCartons),
+                                              prod_lines4.indexOf(
+                                                      selectedProdLine) +
+                                                  1,
+                                              shifts.indexOf(selectedShift),
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : SizedBox(height: minimumPadding),
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Delete Report',
+                                    color: KelloggColors.cockRed,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+                                      });
+                                      try {
+                                        MaamoulReport.deleteReport(
+                                          context,
+                                          reportID,
+                                          int.parse(selectedYear),
+                                        );
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
                       ],
                     ),
                   ),

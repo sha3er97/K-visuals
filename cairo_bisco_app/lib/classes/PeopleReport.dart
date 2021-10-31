@@ -2,7 +2,9 @@ import 'dart:collection';
 
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class PeopleReport {
   final String supName;
@@ -81,6 +83,84 @@ class PeopleReport {
         day: day,
       ),
     );
+  }
+
+  static void editReport(
+    context,
+    String id,
+    String supName,
+    int original_people,
+    int attended_people,
+    int shift_index,
+    int area,
+    int year,
+    int month,
+    int day,
+  ) async {
+    final peopleReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('people_reports')
+        .collection(year.toString())
+        .withConverter<PeopleReport>(
+          fromFirestore: (snapshot, _) =>
+              PeopleReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    await peopleReportRef
+        .doc(id)
+        .update({
+          'year': year,
+          'month': month,
+          'day': day,
+          'area': area,
+          'shift_index': shift_index,
+          'supName': supName,
+          'original_people': original_people,
+          'attended_people': attended_people,
+        })
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Report Updated"),
+              )),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to update Report: $error"),
+              ))
+            });
+  }
+
+  static void deleteReport(
+    context,
+    String id,
+    int year,
+  ) async {
+    final peopleReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('people_reports')
+        .collection(year.toString())
+        .withConverter<PeopleReport>(
+          fromFirestore: (snapshot, _) =>
+              PeopleReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    await peopleReportRef
+        .doc(id)
+        .delete()
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Report Deleted"),
+              )),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to delete Report: $error"),
+              ))
+            });
   }
 
   static HashMap<String, PeopleReport> getAllReportsOfInterval(
@@ -170,7 +250,7 @@ class PeopleReport {
       supName: '',
       original_people: 0,
       attended_people: 0,
-      shift_index: -1,
+      shift_index: 0,
       area: -1,
       year: -1,
       month: -1,

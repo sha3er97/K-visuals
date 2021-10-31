@@ -50,17 +50,14 @@ class _SupervisorPeopleReportFormState
   final bool isEdit;
 
   bool showSpinner = false;
-  String supName = "", original_people = "", attended_people = "";
+  late String supName, original_people, attended_people;
 
   bool _supName_validate = false,
       _original_people_validate = false,
       _attended_people_validate = false;
 
   //drop down values
-  String selectedYear = years[(int.parse(getYear())) - 2020];
-  String selectedMonth = months[(int.parse(getMonth())) - 1];
-  String selectedDay = days[(int.parse(getDay())) - 1];
-  String selectedShift = shifts[0];
+  late String selectedShift, selectedYear, selectedMonth, selectedDay;
 
   VoidCallback? onShiftChange(val) {
     setState(() {
@@ -84,6 +81,22 @@ class _SupervisorPeopleReportFormState
     setState(() {
       selectedDay = val;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    supName = isEdit ? reportDetails.supName : '';
+    original_people = isEdit ? reportDetails.original_people.toString() : '';
+    attended_people = isEdit ? reportDetails.attended_people.toString() : '';
+    ///////////////////////////////////////////////////////////////////////////////
+    selectedShift = shifts[reportDetails.shift_index];
+    selectedYear =
+        years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
+    selectedMonth =
+        months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
+    selectedDay =
+        days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
   }
 
   @override
@@ -120,9 +133,10 @@ class _SupervisorPeopleReportFormState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        smallerHeading('اسم المشرف المسؤول\nSupervisor Name'),
+                        smallerHeading('اسم المسؤول\nSupervisor Name'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: supName,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -161,7 +175,7 @@ class _SupervisorPeopleReportFormState
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(vertical: 10),
                                   child: Column(
@@ -190,7 +204,7 @@ class _SupervisorPeopleReportFormState
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(
                                       vertical: minimumPadding),
@@ -221,7 +235,7 @@ class _SupervisorPeopleReportFormState
                               flex: 2,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(
                                       vertical: minimumPadding),
@@ -279,7 +293,8 @@ class _SupervisorPeopleReportFormState
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('عدد عمال المنطقة \nPeople in Area'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: original_people,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -317,7 +332,8 @@ class _SupervisorPeopleReportFormState
                         smallerHeading(
                             'اجمالي حضور المنطقة \nAttended People in Area'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: attended_people,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -352,55 +368,136 @@ class _SupervisorPeopleReportFormState
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        Padding(
-                          padding: const EdgeInsets.all(minimumPadding),
-                          child: Center(
-                            child: RoundedButton(
-                              btnText: 'تسليم التقرير',
-                              color: KelloggColors.darkRed,
-                              onPressed: () async {
-                                setState(() {
-                                  showSpinner = true;
-                                  _attended_people_validate =
-                                      emptyField(attended_people);
-                                  _original_people_validate =
-                                      emptyField(original_people);
-                                  _supName_validate = emptyField(supName);
-                                });
-                                try {
-                                  if (!_original_people_validate &&
-                                      !_attended_people_validate &&
-                                      !_supName_validate) {
-                                    PeopleReport.addReport(
-                                        supName,
-                                        int.parse(original_people),
-                                        int.parse(attended_people),
-                                        shifts.indexOf(selectedShift),
-                                        refNum,
-                                        int.parse(selectedYear),
-                                        int.parse(selectedMonth),
-                                        int.parse(selectedDay));
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SuccessScreen()));
-                                  } else {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text(submissionErrorText),
-                                    ));
-                                  }
-                                  setState(() {
-                                    showSpinner = false;
-                                  });
-                                } catch (e) {
-                                  print(e);
-                                }
-                              },
-                            ),
-                          ),
-                        ),
+                        isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'تسليم التقرير',
+                                    color: KelloggColors.darkRed,
+                                    onPressed: () async {
+                                      setState(() {
+                                        showSpinner = true;
+                                        _attended_people_validate =
+                                            emptyField(attended_people);
+                                        _original_people_validate =
+                                            emptyField(original_people);
+                                        _supName_validate = emptyField(supName);
+                                      });
+                                      try {
+                                        if (!_original_people_validate &&
+                                            !_attended_people_validate &&
+                                            !_supName_validate) {
+                                          PeopleReport.addReport(
+                                              supName,
+                                              int.parse(original_people),
+                                              int.parse(attended_people),
+                                              shifts.indexOf(selectedShift),
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SuccessScreen()));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Edit Report',
+                                    color: KelloggColors.darkBlue,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+
+                                        _attended_people_validate =
+                                            emptyField(attended_people);
+                                        _original_people_validate =
+                                            emptyField(original_people);
+                                        _supName_validate = emptyField(supName);
+                                      });
+                                      try {
+                                        if (!_original_people_validate &&
+                                            !_attended_people_validate &&
+                                            !_supName_validate) {
+                                          PeopleReport.editReport(
+                                              context,
+                                              reportID,
+                                              supName,
+                                              int.parse(original_people),
+                                              int.parse(attended_people),
+                                              shifts.indexOf(selectedShift),
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Delete Report',
+                                    color: KelloggColors.cockRed,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+                                      });
+                                      try {
+                                        PeopleReport.deleteReport(
+                                          context,
+                                          reportID,
+                                          int.parse(selectedYear),
+                                        );
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
                         //////////////////////////////////////////////////////////////////
                       ],
                     ),

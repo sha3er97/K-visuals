@@ -2,7 +2,9 @@ import 'dart:collection';
 
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class NRCReport {
   final String supName, notes_details;
@@ -74,6 +76,82 @@ class NRCReport {
         day: day,
       ),
     );
+  }
+
+  static void editReport(
+    context,
+    String id,
+    String supName,
+    int notes_count,
+    String notes_details,
+    int shift_index,
+    int area,
+    int year,
+    int month,
+    int day,
+  ) async {
+    final nrcReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('nrc_reports')
+        .collection(year.toString())
+        .withConverter<NRCReport>(
+          fromFirestore: (snapshot, _) => NRCReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    await nrcReportRef
+        .doc(id)
+        .update({
+          'year': year,
+          'month': month,
+          'day': day,
+          'area': area,
+          'shift_index': shift_index,
+          'supName': supName,
+          'notes_count': notes_count,
+          'notes_details': notes_details,
+        })
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Report Updated"),
+              )),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to update Report: $error"),
+              ))
+            });
+  }
+
+  static void deleteReport(
+    context,
+    String id,
+    int year,
+  ) async {
+    final nrcReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('nrc_reports')
+        .collection(year.toString())
+        .withConverter<NRCReport>(
+          fromFirestore: (snapshot, _) => NRCReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    await nrcReportRef
+        .doc(id)
+        .delete()
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Report Deleted"),
+              )),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to delete Report: $error"),
+              ))
+            });
   }
 
   static HashMap<String, NRCReport> getAllReportsOfInterval(
@@ -164,7 +242,7 @@ class NRCReport {
       supName: '',
       notes_count: 0,
       notes_details: '',
-      shift_index: -1,
+      shift_index: 0,
       area: -1,
       year: -1,
       month: -1,

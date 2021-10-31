@@ -2,7 +2,9 @@ import 'dart:collection';
 
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class OverWeightReport {
   final String supName;
@@ -71,6 +73,82 @@ class OverWeightReport {
         day: day,
       ),
     );
+  }
+
+  static void editReport(
+    context,
+    String id,
+    String supName,
+    double percent,
+    int line_index,
+    int area,
+    int year,
+    int month,
+    int day,
+  ) async {
+    final overWeightReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('overWeight_reports')
+        .collection(year.toString())
+        .withConverter<OverWeightReport>(
+          fromFirestore: (snapshot, _) =>
+              OverWeightReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    await overWeightReportRef
+        .doc(id)
+        .update({
+          'year': year,
+          'month': month,
+          'day': day,
+          'area': area,
+          'line_index': line_index,
+          'supName': supName,
+          'percent': percent,
+        })
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Report Updated"),
+              )),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to update Report: $error"),
+              ))
+            });
+  }
+
+  static void deleteReport(
+    context,
+    String id,
+    int year,
+  ) async {
+    final overWeightReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('overWeight_reports')
+        .collection(year.toString())
+        .withConverter<OverWeightReport>(
+          fromFirestore: (snapshot, _) =>
+              OverWeightReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    await overWeightReportRef
+        .doc(id)
+        .delete()
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Report Deleted"),
+              )),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to delete Report: $error"),
+              ))
+            });
   }
 
   static HashMap<String, OverWeightReport> getAllReportsOfInterval(
@@ -170,7 +248,7 @@ class OverWeightReport {
     return OverWeightReport(
       supName: '',
       percent: 0.0,
-      line_index: -1,
+      line_index: 1,
       area: -1,
       year: -1,
       month: -1,

@@ -1,7 +1,6 @@
 import 'package:cairo_bisco_app/classes/NRCReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
@@ -49,17 +48,14 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
   final bool isEdit;
 
   bool showSpinner = false;
-  String supName = "", notes_count = "", notes_details = "";
+  late String supName, notes_count, notes_details;
 
   bool _supName_validate = false,
       _notes_count_validate = false,
       _notes_details_validate = false;
 
   //drop down values
-  String selectedYear = years[(int.parse(getYear())) - 2020];
-  String selectedMonth = months[(int.parse(getMonth())) - 1];
-  String selectedDay = days[(int.parse(getDay())) - 1];
-  String selectedShift = shifts[0];
+  late String selectedShift, selectedYear, selectedMonth, selectedDay;
 
   VoidCallback? onShiftChange(val) {
     setState(() {
@@ -83,6 +79,22 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
     setState(() {
       selectedDay = val;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    supName = isEdit ? reportDetails.supName : '';
+    notes_count = isEdit ? reportDetails.notes_count.toString() : '';
+    notes_details = isEdit ? reportDetails.notes_details.toString() : '';
+    ///////////////////////////////////////////////////////////////////////////////
+    selectedShift = shifts[reportDetails.shift_index];
+    selectedYear =
+        years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
+    selectedMonth =
+        months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
+    selectedDay =
+        days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
   }
 
   @override
@@ -119,9 +131,10 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        smallerHeading('اسم المشرف المسؤول\nSupervisor Name'),
+                        smallerHeading('اسم المسؤول\nSupervisor Name'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: supName,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -160,7 +173,7 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(vertical: 10),
                                   child: Column(
@@ -189,7 +202,7 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(
                                       vertical: minimumPadding),
@@ -220,7 +233,7 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                               flex: 2,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(
                                       vertical: minimumPadding),
@@ -279,7 +292,8 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                         smallerHeading(
                             'عدد ملاحظات استهلاك سلبي \nNotes Count'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: notes_count,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -317,7 +331,8 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                         smallerHeading(
                             'ملاحظات الاستهلاك السلبي \nNotes Details'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: notes_details,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -349,58 +364,142 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        Padding(
-                          padding: const EdgeInsets.all(minimumPadding),
-                          child: Center(
-                            child: RoundedButton(
-                              btnText: 'تسليم التقرير',
-                              color: KelloggColors.darkRed,
-                              onPressed: () async {
-                                setState(() {
-                                  showSpinner = true;
-                                  _notes_count_validate =
-                                      emptyField(notes_count);
-                                  if (!_notes_count_validate)
-                                    _notes_details_validate =
-                                        conditionalEmptyField(
-                                            int.parse(notes_count),
-                                            notes_details);
-                                  _supName_validate = emptyField(supName);
-                                });
-                                try {
-                                  if (!_notes_count_validate &&
-                                      !_notes_details_validate &&
-                                      !_supName_validate) {
-                                    NRCReport.addReport(
-                                        supName,
-                                        int.parse(notes_count),
-                                        notes_details,
-                                        shifts.indexOf(selectedShift),
-                                        refNum,
-                                        int.parse(selectedYear),
-                                        int.parse(selectedMonth),
-                                        int.parse(selectedDay));
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SuccessScreen()));
-                                  } else {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text(submissionErrorText),
-                                    ));
-                                  }
-                                  setState(() {
-                                    showSpinner = false;
-                                  });
-                                } catch (e) {
-                                  print(e);
-                                }
-                              },
-                            ),
-                          ),
-                        ),
+                        isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'تسليم التقرير',
+                                    color: KelloggColors.darkRed,
+                                    onPressed: () async {
+                                      setState(() {
+                                        showSpinner = true;
+                                        _notes_count_validate =
+                                            emptyField(notes_count);
+                                        if (!_notes_count_validate)
+                                          _notes_details_validate =
+                                              conditionalEmptyField(
+                                                  int.parse(notes_count),
+                                                  notes_details);
+                                        _supName_validate = emptyField(supName);
+                                      });
+                                      try {
+                                        if (!_notes_count_validate &&
+                                            !_notes_details_validate &&
+                                            !_supName_validate) {
+                                          NRCReport.addReport(
+                                              supName,
+                                              int.parse(notes_count),
+                                              notes_details,
+                                              shifts.indexOf(selectedShift),
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SuccessScreen()));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Edit Report',
+                                    color: KelloggColors.darkBlue,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+
+                                        _notes_count_validate =
+                                            emptyField(notes_count);
+                                        if (!_notes_count_validate)
+                                          _notes_details_validate =
+                                              conditionalEmptyField(
+                                                  int.parse(notes_count),
+                                                  notes_details);
+                                        _supName_validate = emptyField(supName);
+                                      });
+                                      try {
+                                        if (!_notes_count_validate &&
+                                            !_notes_details_validate &&
+                                            !_supName_validate) {
+                                          NRCReport.editReport(
+                                              context,
+                                              reportID,
+                                              supName,
+                                              int.parse(notes_count),
+                                              notes_details,
+                                              shifts.indexOf(selectedShift),
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Delete Report',
+                                    color: KelloggColors.cockRed,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+                                      });
+                                      try {
+                                        NRCReport.deleteReport(
+                                          context,
+                                          reportID,
+                                          int.parse(selectedYear),
+                                        );
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
                         //////////////////////////////////////////////////////////////////
                       ],
                     ),

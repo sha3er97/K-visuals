@@ -48,11 +48,11 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
   final bool isEdit;
 
   bool showSpinner = false;
-  String supName = "",
-      quality_incidents = "",
-      food_safety_incidents = "",
-      ccp_failure = "",
-      consumer_complaints = "";
+  late String supName,
+      quality_incidents,
+      food_safety_incidents,
+      ccp_failure,
+      consumer_complaints;
 
   bool _supName_validate = false,
       _quality_incidents_validate = false,
@@ -61,13 +61,13 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
       _consumer_complaints_validate = false;
 
   //drop down values
-  String selectedShift = shifts[0];
-  String selectedYear = years[(int.parse(getYear())) - 2020];
-  String selectedMonth = months[(int.parse(getMonth())) - 1];
-  String selectedDay = days[(int.parse(getDay())) - 1];
-  String selectedProdLine = prod_lines4[0];
-  String selected_pes = Pes[0];
-  String selected_G6 = G6[0];
+  late String selectedShift,
+      selectedYear,
+      selectedMonth,
+      selectedDay,
+      selectedProdLine,
+      selected_pes,
+      selected_G6;
 
   VoidCallback? onPESChange(val) {
     setState(() {
@@ -112,6 +112,30 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    supName = isEdit ? reportDetails.supName : '';
+    quality_incidents =
+        isEdit ? reportDetails.quality_incidents.toString() : '';
+    food_safety_incidents =
+        isEdit ? reportDetails.food_safety_incidents.toString() : '';
+    ccp_failure = isEdit ? reportDetails.ccp_failure.toString() : '';
+    consumer_complaints =
+        isEdit ? reportDetails.consumer_complaints.toString() : '';
+    ///////////////////////////////////////////////////////////////////////////////
+    selectedShift = shifts[reportDetails.shift_index];
+    selectedYear =
+        years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
+    selectedMonth =
+        months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
+    selectedDay =
+        days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
+    selectedProdLine = prod_lines4[reportDetails.line_index - 1];
+    selected_pes = Pes[reportDetails.pes_index];
+    selected_G6 = G6[reportDetails.g6_index];
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
@@ -145,9 +169,10 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        smallerHeading('اسم المشرف المسؤول\nSupervisor Name'),
+                        smallerHeading('اسم المسؤول\nSupervisor Name'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: supName,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -211,7 +236,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(vertical: 10),
                                   child: Column(
@@ -240,7 +265,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(
                                       vertical: minimumPadding),
@@ -271,7 +296,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                               flex: 2,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(
                                       vertical: minimumPadding),
@@ -343,7 +368,8 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('حوادث جودة\nQuality Incidents'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: quality_incidents,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -381,7 +407,8 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                         smallerHeading(
                             'حوادث سلامة الغذاء\nFood Safety Incidents'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: food_safety_incidents,
                           style: TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400),
@@ -419,7 +446,8 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                         smallerHeading(
                             'فشل في نقطة التحكم الحرجة\nCCP Failures'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: ccp_failure,
                           style: TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400),
@@ -456,7 +484,8 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                         ///////////////////////////////////////////////////////////////
                         smallerHeading('شكاوي المستهلكين\nConsumer Complaints'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: consumer_complaints,
                           style: TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400),
@@ -542,68 +571,164 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        Padding(
-                          padding: const EdgeInsets.all(minimumPadding),
-                          child: Center(
-                            child: RoundedButton(
-                              btnText: 'تسليم التقرير',
-                              color: KelloggColors.darkRed,
-                              onPressed: () async {
-                                setState(() {
-                                  showSpinner = true;
-                                  _consumer_complaints_validate =
-                                      emptyField(consumer_complaints);
-                                  _ccp_failure_validate =
-                                      emptyField(ccp_failure);
-                                  _food_safety_incidents_validate =
-                                      emptyField(food_safety_incidents);
-                                  _quality_incidents_validate =
-                                      emptyField(quality_incidents);
-                                  _supName_validate = emptyField(supName);
-                                });
-                                try {
-                                  if (!_consumer_complaints_validate &&
-                                      !_ccp_failure_validate &&
-                                      !_food_safety_incidents_validate &&
-                                      !_quality_incidents_validate &&
-                                      !_supName_validate) {
-                                    QfsReport.addReport(
-                                        supName,
-                                        int.parse(quality_incidents),
-                                        int.parse(food_safety_incidents),
-                                        int.parse(ccp_failure),
-                                        int.parse(consumer_complaints),
-                                        int.parse(selectedYear),
-                                        int.parse(selectedMonth),
-                                        int.parse(selectedDay),
-                                        shifts.indexOf(selectedShift),
-                                        prod_lines4.indexOf(selectedProdLine) +
-                                            1,
-                                        //line 1,2,3,4
-                                        Pes.indexOf(selected_pes),
-                                        G6.indexOf(selected_G6),
-                                        refNum);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SuccessScreen()));
-                                  } else {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text(submissionErrorText),
-                                    ));
-                                  }
-                                  setState(() {
-                                    showSpinner = false;
-                                  });
-                                } catch (e) {
-                                  print(e);
-                                }
-                              },
-                            ),
-                          ),
-                        ),
+                        isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'تسليم التقرير',
+                                    color: KelloggColors.darkRed,
+                                    onPressed: () async {
+                                      setState(() {
+                                        showSpinner = true;
+                                        _consumer_complaints_validate =
+                                            emptyField(consumer_complaints);
+                                        _ccp_failure_validate =
+                                            emptyField(ccp_failure);
+                                        _food_safety_incidents_validate =
+                                            emptyField(food_safety_incidents);
+                                        _quality_incidents_validate =
+                                            emptyField(quality_incidents);
+                                        _supName_validate = emptyField(supName);
+                                      });
+                                      try {
+                                        if (!_consumer_complaints_validate &&
+                                            !_ccp_failure_validate &&
+                                            !_food_safety_incidents_validate &&
+                                            !_quality_incidents_validate &&
+                                            !_supName_validate) {
+                                          QfsReport.addReport(
+                                              supName,
+                                              int.parse(quality_incidents),
+                                              int.parse(food_safety_incidents),
+                                              int.parse(ccp_failure),
+                                              int.parse(consumer_complaints),
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay),
+                                              shifts.indexOf(selectedShift),
+                                              prod_lines4.indexOf(
+                                                      selectedProdLine) +
+                                                  1,
+                                              //line 1,2,3,4
+                                              Pes.indexOf(selected_pes),
+                                              G6.indexOf(selected_G6),
+                                              refNum);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SuccessScreen()));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Edit Report',
+                                    color: KelloggColors.darkBlue,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+
+                                        _consumer_complaints_validate =
+                                            emptyField(consumer_complaints);
+                                        _ccp_failure_validate =
+                                            emptyField(ccp_failure);
+                                        _food_safety_incidents_validate =
+                                            emptyField(food_safety_incidents);
+                                        _quality_incidents_validate =
+                                            emptyField(quality_incidents);
+                                        _supName_validate = emptyField(supName);
+                                      });
+                                      try {
+                                        if (!_consumer_complaints_validate &&
+                                            !_ccp_failure_validate &&
+                                            !_food_safety_incidents_validate &&
+                                            !_quality_incidents_validate &&
+                                            !_supName_validate) {
+                                          QfsReport.editReport(
+                                              context,
+                                              reportID,
+                                              supName,
+                                              int.parse(quality_incidents),
+                                              int.parse(food_safety_incidents),
+                                              int.parse(ccp_failure),
+                                              int.parse(consumer_complaints),
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay),
+                                              shifts.indexOf(selectedShift),
+                                              prod_lines4.indexOf(
+                                                      selectedProdLine) +
+                                                  1,
+                                              //line 1,2,3,4
+                                              Pes.indexOf(selected_pes),
+                                              G6.indexOf(selected_G6),
+                                              refNum);
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Delete Report',
+                                    color: KelloggColors.cockRed,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+                                      });
+                                      try {
+                                        QfsReport.deleteReport(
+                                          context,
+                                          reportID,
+                                          int.parse(selectedYear),
+                                        );
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
                         //////////////////////////////////////////////////////////////////
                       ],
                     ),

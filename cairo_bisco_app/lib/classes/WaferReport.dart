@@ -5,7 +5,9 @@ import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class WaferReport {
   final String supName, skuName;
@@ -210,6 +212,126 @@ class WaferReport {
     );
   }
 
+  static void editReport(
+    context,
+    String id,
+    String supName,
+    String skuName,
+    double actualSpeed,
+    double ovenScrap,
+    double ovenRework,
+    double cutterScrap,
+    double cutterRework,
+    double creamScrap,
+    double creamRework,
+    double coolerScrap,
+    double coolerRework,
+    double mc1Speed,
+    double mc2Speed,
+    double packingScrap,
+    double packingRework,
+    double boxesWaste,
+    double cartonWaste,
+    double mc1FilmUsed,
+    double mc2FilmUsed,
+    double mc1WasteKg,
+    double mc2WasteKg,
+    int shiftProductionPlan,
+    int productionInCartons,
+    int line_index,
+    int shift_index,
+    int area,
+    int year,
+    int month,
+    int day,
+  ) async {
+    final waferReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('wafer_reports')
+        .collection(year.toString())
+        .withConverter<WaferReport>(
+          fromFirestore: (snapshot, _) =>
+              WaferReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    await waferReportRef
+        .doc(id)
+        .update({
+          'year': year,
+          'month': month,
+          'day': day,
+          'area': area,
+          'shift_index': shift_index,
+          'line_index': line_index,
+          'supName': supName,
+          'skuName': skuName,
+          'shiftProductionPlan': shiftProductionPlan,
+          'productionInCartons': productionInCartons,
+          'actualSpeed': actualSpeed,
+          'ovenScrap': ovenScrap,
+          'ovenRework': ovenRework,
+          'cutterScrap': cutterScrap,
+          'cutterRework': cutterRework,
+          'creamScrap': creamScrap,
+          'creamRework': creamRework,
+          'coolerScrap': coolerScrap,
+          'coolerRework': coolerRework,
+          'mc1Speed': mc1Speed,
+          'mc2Speed': mc2Speed,
+          'packingScrap': packingScrap,
+          'packingRework': packingRework,
+          'boxesWaste': boxesWaste,
+          'cartonWaste': cartonWaste,
+          'mc1FilmUsed': mc1FilmUsed,
+          'mc2FilmUsed': mc2FilmUsed,
+          'mc1WasteKg': mc1WasteKg,
+          'mc2WasteKg': mc2WasteKg,
+        })
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Report Updated"),
+              )),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to update Report: $error"),
+              ))
+            });
+  }
+
+  static void deleteReport(
+    context,
+    String id,
+    int year,
+  ) async {
+    final waferReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('wafer_reports')
+        .collection(year.toString())
+        .withConverter<WaferReport>(
+          fromFirestore: (snapshot, _) =>
+              WaferReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    await waferReportRef
+        .doc(id)
+        .delete()
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Report Deleted"),
+              )),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to delete Report: $error"),
+              ))
+            });
+  }
+
   static HashMap<String, WaferReport> getAllReportsOfInterval(
     List<QueryDocumentSnapshot<WaferReport>> reportsList,
     int month_from,
@@ -324,9 +446,9 @@ class WaferReport {
   static WaferReport getEmptyReport() {
     return WaferReport(
       supName: '',
-      shift_index: -1,
-      line_index: -1,
-      area: -1,
+      shift_index: 0,
+      line_index: 1,
+      area: 1,
       year: -1,
       month: -1,
       day: -1,

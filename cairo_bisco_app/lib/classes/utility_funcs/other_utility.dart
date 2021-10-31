@@ -5,7 +5,7 @@ int getRefIdx(int type, int refNum) {
     return 0;
   else if (type == PRODUCTION_REPORT && refNum == WAFER_AREA)
     return 1;
-  else if (type == PRODUCTION_REPORT && refNum == WAFER_AREA)
+  else if (type == PRODUCTION_REPORT && refNum == MAAMOUL_AREA)
     return 2;
   else
     return type;

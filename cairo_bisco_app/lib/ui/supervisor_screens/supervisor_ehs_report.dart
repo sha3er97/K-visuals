@@ -48,12 +48,12 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
   final dynamic reportDetails;
 
   bool showSpinner = false;
-  String supName = "",
-      firstAid_incidents = "",
-      lostTime_incidents = "",
-      recordable_incidents = "",
-      risk_assessment = "",
-      nearMiss = "";
+  late String supName,
+      firstAid_incidents,
+      lostTime_incidents,
+      recordable_incidents,
+      risk_assessment,
+      nearMiss;
 
   bool _supName_validate = false,
       _firstAid_incidents_validate = false,
@@ -63,12 +63,12 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
       _risk_assessment_validate = false;
 
   //drop down values
-  String selectedShift = shifts[0];
-  String selectedYear = years[(int.parse(getYear())) - 2020];
-  String selectedMonth = months[(int.parse(getMonth())) - 1];
-  String selectedDay = days[(int.parse(getDay())) - 1];
-  String selectedProdLine = prod_lines4[0];
-  String selected_S7 = S7[0];
+  late String selectedShift,
+      selectedYear,
+      selectedMonth,
+      selectedDay,
+      selectedProdLine,
+      selected_S7;
 
   VoidCallback? onS7Change(val) {
     setState(() {
@@ -107,6 +107,30 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    supName = isEdit ? reportDetails.supName : '';
+    firstAid_incidents =
+        isEdit ? reportDetails.firstAid_incidents.toString() : '';
+    lostTime_incidents =
+        isEdit ? reportDetails.lostTime_incidents.toString() : '';
+    recordable_incidents =
+        isEdit ? reportDetails.recordable_incidents.toString() : '';
+    risk_assessment = isEdit ? reportDetails.risk_assessment.toString() : '';
+    nearMiss = isEdit ? reportDetails.nearMiss.toString() : '';
+    ///////////////////////////////////////////////////////////////////////////////
+    selectedShift = shifts[reportDetails.shift_index];
+    selectedYear =
+        years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
+    selectedMonth =
+        months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
+    selectedDay =
+        days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
+    selectedProdLine = prod_lines4[reportDetails.line_index - 1];
+    selected_S7 = S7[reportDetails.s7_index];
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
@@ -140,9 +164,10 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        smallerHeading('اسم المشرف المسؤول\nSupervisor Name'),
+                        smallerHeading('اسم المسؤول\nSupervisor Name'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: supName,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -206,7 +231,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(vertical: 10),
                                   child: Column(
@@ -235,7 +260,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(
                                       vertical: minimumPadding),
@@ -266,7 +291,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                               flex: 2,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
+                                    horizontal: mediumPadding),
                                 child: Container(
                                   margin: EdgeInsets.symmetric(
                                       vertical: minimumPadding),
@@ -339,7 +364,8 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                         smallerHeading(
                             'حوادث اسعافات اولية \nFirst Aid Incidents'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: firstAid_incidents,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -377,7 +403,8 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                         smallerHeading(
                             'حوادث فقد في الوقت \nLost Time Incidents'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: lostTime_incidents,
                           style: TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400),
@@ -414,7 +441,8 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                         ///////////////////////////////////////////////////////////////
                         smallerHeading('حوادث مسجلة \nRecordable Incidents'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: recordable_incidents,
                           style: TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400),
@@ -451,7 +479,8 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                         ///////////////////////////////////////////////////////////////
                         smallerHeading('حوادث وشيكة \nNear miss'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: nearMiss,
                           style: TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400),
@@ -489,7 +518,8 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                         smallerHeading(
                             'تقييم المخاطر قبل الوردية \nPre-Shift Risk Assessment'),
                         SizedBox(height: minimumPadding),
-                        TextField(
+                        TextFormField(
+                          initialValue: risk_assessment,
                           style: TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400),
@@ -549,70 +579,170 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        Padding(
-                          padding: const EdgeInsets.all(minimumPadding),
-                          child: Center(
-                            child: RoundedButton(
-                              btnText: 'تسليم التقرير',
-                              color: KelloggColors.darkRed,
-                              onPressed: () async {
-                                setState(() {
-                                  showSpinner = true;
-                                  _risk_assessment_validate =
-                                      emptyField(risk_assessment);
-                                  _nearMiss_validate = emptyField(nearMiss);
-                                  _recordable_incidents_validate =
-                                      emptyField(recordable_incidents);
-                                  _lostTime_incidents_validate =
-                                      emptyField(lostTime_incidents);
-                                  _firstAid_incidents_validate =
-                                      emptyField(firstAid_incidents);
-                                  _supName_validate = emptyField(supName);
-                                });
-                                try {
-                                  if (!_risk_assessment_validate &&
-                                      !_nearMiss_validate &&
-                                      !_recordable_incidents_validate &&
-                                      !_lostTime_incidents_validate &&
-                                      !_firstAid_incidents_validate &&
-                                      !_supName_validate) {
-                                    EhsReport.addReport(
-                                        supName,
-                                        int.parse(firstAid_incidents),
-                                        int.parse(lostTime_incidents),
-                                        int.parse(recordable_incidents),
-                                        int.parse(nearMiss),
-                                        int.parse(risk_assessment),
-                                        S7.indexOf(selected_S7),
-                                        prod_lines4.indexOf(selectedProdLine) +
-                                            1,
-                                        //line 1,2,3,4
-                                        shifts.indexOf(selectedShift),
-                                        refNum,
-                                        int.parse(selectedYear),
-                                        int.parse(selectedMonth),
-                                        int.parse(selectedDay));
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SuccessScreen()));
-                                  } else {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text(submissionErrorText),
-                                    ));
-                                  }
-                                  setState(() {
-                                    showSpinner = false;
-                                  });
-                                } catch (e) {
-                                  print(e);
-                                }
-                              },
-                            ),
-                          ),
-                        ),
+                        isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'تسليم التقرير',
+                                    color: KelloggColors.darkRed,
+                                    onPressed: () async {
+                                      setState(() {
+                                        showSpinner = true;
+                                        _risk_assessment_validate =
+                                            emptyField(risk_assessment);
+                                        _nearMiss_validate =
+                                            emptyField(nearMiss);
+                                        _recordable_incidents_validate =
+                                            emptyField(recordable_incidents);
+                                        _lostTime_incidents_validate =
+                                            emptyField(lostTime_incidents);
+                                        _firstAid_incidents_validate =
+                                            emptyField(firstAid_incidents);
+                                        _supName_validate = emptyField(supName);
+                                      });
+                                      try {
+                                        if (!_risk_assessment_validate &&
+                                            !_nearMiss_validate &&
+                                            !_recordable_incidents_validate &&
+                                            !_lostTime_incidents_validate &&
+                                            !_firstAid_incidents_validate &&
+                                            !_supName_validate) {
+                                          EhsReport.addReport(
+                                              supName,
+                                              int.parse(firstAid_incidents),
+                                              int.parse(lostTime_incidents),
+                                              int.parse(recordable_incidents),
+                                              int.parse(nearMiss),
+                                              int.parse(risk_assessment),
+                                              S7.indexOf(selected_S7),
+                                              prod_lines4.indexOf(
+                                                      selectedProdLine) +
+                                                  1,
+                                              //line 1,2,3,4
+                                              shifts.indexOf(selectedShift),
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SuccessScreen()));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Edit Report',
+                                    color: KelloggColors.darkBlue,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+
+                                        _risk_assessment_validate =
+                                            emptyField(risk_assessment);
+                                        _nearMiss_validate =
+                                            emptyField(nearMiss);
+                                        _recordable_incidents_validate =
+                                            emptyField(recordable_incidents);
+                                        _lostTime_incidents_validate =
+                                            emptyField(lostTime_incidents);
+                                        _firstAid_incidents_validate =
+                                            emptyField(firstAid_incidents);
+                                        _supName_validate = emptyField(supName);
+                                      });
+                                      try {
+                                        if (!_risk_assessment_validate &&
+                                            !_nearMiss_validate &&
+                                            !_recordable_incidents_validate &&
+                                            !_lostTime_incidents_validate &&
+                                            !_firstAid_incidents_validate &&
+                                            !_supName_validate) {
+                                          EhsReport.editReport(
+                                              context,
+                                              reportID,
+                                              supName,
+                                              int.parse(firstAid_incidents),
+                                              int.parse(lostTime_incidents),
+                                              int.parse(recordable_incidents),
+                                              int.parse(nearMiss),
+                                              int.parse(risk_assessment),
+                                              S7.indexOf(selected_S7),
+                                              prod_lines4.indexOf(
+                                                      selectedProdLine) +
+                                                  1,
+                                              //line 1,2,3,4
+                                              shifts.indexOf(selectedShift),
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                        //////////////////////////////////////////////////////////////////
+                        !isEdit
+                            ? SizedBox(height: 0)
+                            : Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Delete Report',
+                                    color: KelloggColors.cockRed,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+                                      });
+                                      try {
+                                        EhsReport.deleteReport(
+                                          context,
+                                          reportID,
+                                          int.parse(selectedYear),
+                                        );
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
                         //////////////////////////////////////////////////////////////////
                       ],
                     ),
