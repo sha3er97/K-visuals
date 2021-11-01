@@ -5,8 +5,6 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
-import 'package:cairo_bisco_app/ui/login_screens/login.dart';
-import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -179,18 +177,20 @@ class _CreateAccountState extends State<CreateAccount> {
                             email: email.trim(), password: password.trim());
                         if (Credentials.isAdmin(email)) {
                           Credentials.isUserAdmin = true;
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  // builder: (context) => SuccessScreen()
-                                  builder: (context) => HomePage()));
-                        } else {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  // builder: (context) => SuccessScreen()
-                                  builder: (context) => SupervisorHomePage()));
                         }
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                // builder: (context) => SuccessScreen()
+                                builder: (context) => HomePage()));
+
+                        // else {
+                        //   Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //           // builder: (context) => SuccessScreen()
+                        //           builder: (context) => SupervisorHomePage()));
+                        // }
                         setState(() {
                           showSpinner = false;
                         });

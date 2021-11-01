@@ -3,6 +3,7 @@
     Visuals
     Reports
  *********************************/
+import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/gradient_general_btn.dart';
@@ -59,15 +60,22 @@ class ChooseAddOrEditReport extends StatelessWidget {
               title: "Edit/Delete Report\nتعديل و حذف التقارير",
               btn_icon: Icons.edit,
               param_onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SupervisorChooseAreaPage(
-                      type: type,
-                      isEdit: true,
+                if (Credentials.isUserAdmin) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SupervisorChooseAreaPage(
+                        type: type,
+                        isEdit: true,
+                      ),
                     ),
-                  ),
-                );
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                        "Unauthorized Access please contact your administrator"),
+                  ));
+                }
               },
             ),
           ],

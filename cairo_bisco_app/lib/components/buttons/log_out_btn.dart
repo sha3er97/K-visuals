@@ -13,10 +13,7 @@ class LogOutBtn extends StatelessWidget {
       tag: 'logOutButton',
       child: GestureDetector(
         onTap: () async {
-          !admin ? await FirebaseAuth.instance.signOut() : null;
-          Future.delayed(Duration.zero, () {
-            Navigator.pop(context);
-          });
+          Navigator.pop(context);
         },
         child: Icon(
           Icons.close,

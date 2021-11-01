@@ -9,7 +9,7 @@
  *********************************/
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
-import 'package:cairo_bisco_app/components/buttons/log_out_btn.dart';
+import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:flutter/material.dart';
 
 import 'choose_add_or_edit_report.dart';
@@ -23,7 +23,7 @@ class SupervisorHomePage extends StatelessWidget {
       appBar: new AppBar(
         backgroundColor: KelloggColors.white.withOpacity(0),
         shadowColor: KelloggColors.white.withOpacity(0),
-        leading: LogOutBtn(
+        leading: MyBackButton(
           admin: false,
         ),
       ),

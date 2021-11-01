@@ -11,7 +11,6 @@ import 'package:cairo_bisco_app/ui/admin_screens/admin_home_page.dart';
 import 'package:cairo_bisco_app/ui/floor_screens/floor_choose_area.dart';
 import 'package:cairo_bisco_app/ui/homePage.dart';
 import 'package:cairo_bisco_app/ui/login_screens/create_account.dart';
-import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,18 +40,13 @@ class _LoginState extends State<Login> {
     if (user != null) {
       if (Credentials.isAdmin(user.email.toString())) {
         Credentials.isUserAdmin = true;
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                // builder: (context) => SuccessScreen()
-                builder: (context) => HomePage()));
-      } else {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                // builder: (context) => SuccessScreen()
-                builder: (context) => SupervisorHomePage()));
       }
+      //in all cases
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              // builder: (context) => SuccessScreen()
+              builder: (context) => HomePage()));
     }
   }
 
@@ -221,19 +215,21 @@ class _LoginState extends State<Login> {
                                 email: email.trim(), password: password.trim());
                             if (Credentials.isAdmin(email)) {
                               Credentials.isUserAdmin = true;
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      // builder: (context) => SuccessScreen()
-                                      builder: (context) => HomePage()));
-                            } else {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      // builder: (context) => SuccessScreen()
-                                      builder: (context) =>
-                                          SupervisorHomePage()));
                             }
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    // builder: (context) => SuccessScreen()
+                                    builder: (context) => HomePage()));
+
+                            // else {
+                            //   Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //           // builder: (context) => SuccessScreen()
+                            //           builder: (context) =>
+                            //               SupervisorHomePage()));
+                            // }
                           }
                           // if (isPlt(email, password)) {
                           //   Navigator.push(
