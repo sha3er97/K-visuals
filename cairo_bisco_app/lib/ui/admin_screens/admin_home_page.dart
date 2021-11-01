@@ -6,6 +6,8 @@ import 'package:cairo_bisco_app/ui/admin_screens/admin_main_add_sku.dart';
 import 'package:cairo_bisco_app/ui/admin_screens/admin_show_all_skus.dart';
 import 'package:flutter/material.dart';
 
+import 'admin_review_admin_emails.dart';
+
 class AdminHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -57,6 +59,19 @@ class AdminHomePage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => AdminEditTargets()));
+                },
+              ),
+              GradientGeneralButton(
+                gradientColor1: KelloggColors.green,
+                gradientColor2: KelloggColors.grey,
+                mainColor: KelloggColors.darkBlue.withOpacity(0.5),
+                btn_icon: Icons.verified_user,
+                title: "Edit Admins",
+                param_onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ReviewAdminEmails()));
                 },
               ),
             ]),

@@ -1,5 +1,5 @@
 /** version number**/
-const versionNum = '1.9.5'; //edit also in pubspec.yaml
+const versionNum = '1.9.6'; //edit also in pubspec.yaml
 
 /** ui design constants **/
 const dummyChartExtra = 1.0;
@@ -44,7 +44,7 @@ const TightBoxWidth = 300.0;
 const logoHeight = 175.0;
 
 /** time constants in seconds **/
-const splashScreenDuration = 3;
+const splashScreenDuration = 3; //3 seconds
 const floorScreenWheelDuration = 30; //30 seconds
 const floorScreenDashBoardDuration = 90; //1.5 minutes
 

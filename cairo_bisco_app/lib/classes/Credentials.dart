@@ -1,11 +1,18 @@
 import 'package:cairo_bisco_app/classes/Admin.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
+final adminsRef = FirebaseFirestore.instance
+    .collection(factory_name)
+    .doc('credentials')
+    .collection("admins")
+    .withConverter<Admin>(
+      fromFirestore: (snapshot, _) => Admin.fromJson(snapshot.data()!),
+      toFirestore: (admin, _) => admin.toJson(),
+    );
 
 class Credentials {
-  static String plt_email = ""; //plt2021@kelloggs.com
-  static String plt_password = ""; //Bisco2021
-
   /** back doors**/
   static String screen_email = ""; //screen
   static String screen_password = ""; //screen
@@ -21,14 +28,6 @@ class Credentials {
   }
 
   static Future<void> getAdmins() {
-    final adminsRef = FirebaseFirestore.instance
-        .collection(factory_name)
-        .doc('credentials')
-        .collection("admins")
-        .withConverter<Admin>(
-          fromFirestore: (snapshot, _) => Admin.fromJson(snapshot.data()!),
-          toFirestore: (admin, _) => admin.toJson(),
-        );
     return adminsRef.get().then((QuerySnapshot snapshot) {
       List<QueryDocumentSnapshot<Admin>> adminDocsList =
           snapshot.docs as List<QueryDocumentSnapshot<Admin>>;
@@ -39,6 +38,27 @@ class Credentials {
     });
   }
 
+  static void addAdmin(
+    context,
+    String email,
+  ) async {
+    await adminsRef
+        .add(Admin(email: email))
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Email Added"),
+              )),
+              getAdmins(),
+              // Navigator.pop(context),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to add Email: $error"),
+              ))
+            });
+    ;
+  }
+
   static Future<void> getCredentials() {
     return FirebaseFirestore.instance
         .collection(factory_name)
@@ -46,9 +66,6 @@ class Credentials {
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        print('getCredentials data: ${documentSnapshot.data()}');
-        Credentials.plt_email = documentSnapshot["plt_email"];
-        Credentials.plt_password = documentSnapshot["plt_password"];
         Credentials.screen_email = documentSnapshot["screen_email"];
         Credentials.screen_password = documentSnapshot["screen_password"];
         Credentials.admin_email = documentSnapshot["admin_email"];
