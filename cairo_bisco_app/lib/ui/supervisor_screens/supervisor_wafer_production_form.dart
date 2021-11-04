@@ -174,7 +174,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
     print("initial line :" + selectedProdLine.toString());
 
-    sku = isEdit ? reportDetails.skuName : SKU.biscuitSKU[0];
+    sku = isEdit ? reportDetails.skuName : SKU.waferSKU[0];
   }
 
   @override

@@ -1,5 +1,5 @@
 /** version number**/
-const versionNum = '1.9.7'; //edit also in pubspec.yaml
+const versionNum = '1.9.8'; //edit also in pubspec.yaml
 
 /** ui design constants **/
 const dummyChartExtra = 1.0;
@@ -69,6 +69,7 @@ const excelFailureMsg = "Something went wrong in Exporting Report";
 const BISCUIT_AREA = 0;
 const WAFER_AREA = 1;
 const MAAMOUL_AREA = 2;
+const TOTAL_PLANT = -1;
 
 const PRODUCTION_REPORT = 0; //0,1,2 are left for 3 production areas
 const QFS_REPORT = 3;
@@ -171,14 +172,14 @@ List<String> biscuitsHeaders = [
   "Conv Scrap الهالك",
   "MC1 Speed",
   "MC2 Speed",
-  "Pa Rework اعادة تشغيل",
+  "Packing Rework اعادة تشغيل",
   "Repack اعادة تعبئة",
   "هالك علب",
   "هالك كرتون",
-  "MC1",
-  "Eff 1%",
-  "MC2",
-  "Eff 2%",
+  "MC1 Waste in Kg",
+  "Film Waste% MC1",
+  "MC2 Waste in Kg",
+  "Film Waste% MC2",
   "Overweight%",
   "Scrap kg",
   "Rework%",
@@ -188,7 +189,8 @@ List<String> biscuitsHeaders = [
   "Quality%",
   "OEE%",
   "Overweight (Kg)",
-  "Cartons" "Month",
+  "Cartons",
+  "Month",
   "Week",
   "Year"
 ];
@@ -214,14 +216,14 @@ List<String> waferHeaders = [
   "Cutter Scrap الهالك",
   "MC1 Speed",
   "MC2 Speed",
-  "Pa Rework اعادة تشغيل",
+  "Packing Rework اعادة تشغيل",
   "Repack اعادة تعبئة",
   "هالك علب",
   "هالك كرتون",
-  "MC1",
-  "Eff 1%",
-  "MC2",
-  "Eff 2%",
+  "MC1 Waste in Kg",
+  "Film Waste% MC1",
+  "MC2 Waste in Kg",
+  "Film Waste% MC2",
   "Overweight%",
   "Scrap kg",
   "Rework%",
@@ -231,7 +233,8 @@ List<String> waferHeaders = [
   "Quality%",
   "OEE%",
   "Overweight (Kg)",
-  "Cartons" "Month",
+  "Cartons",
+  "Month",
   "Week",
   "Year"
 ];
@@ -255,14 +258,14 @@ List<String> maamoulHeaders = [
   "Oven Scrap هالك الفرن",
   "MC1 Speed",
   "MC2 Speed",
-  "Pa Rework اعادة تشغيل",
+  "Packing Rework اعادة تشغيل",
   "Repack اعادة تعبئة",
   "هالك علب",
   "هالك كرتون",
-  "MC1",
-  "Eff 1%",
-  "MC2",
-  "Eff 2%",
+  "MC1 Waste in Kg",
+  "Film Waste% MC1",
+  "MC2 Waste in Kg",
+  "Film Waste% MC2",
   "Overweight%",
   "Scrap kg",
   "Rework%",
@@ -272,7 +275,8 @@ List<String> maamoulHeaders = [
   "Quality%",
   "OEE%",
   "Overweight (Kg)",
-  "Cartons" "Month",
+  "Cartons",
+  "Month",
   "Week",
   "Year"
 ];

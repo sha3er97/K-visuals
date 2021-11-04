@@ -218,12 +218,12 @@ class PeopleReport {
         continue;
       }
 
-      if (areaRequired != -1 && report.data().area == areaRequired) {
+      if (areaRequired != TOTAL_PLANT && report.data().area == areaRequired) {
         // all shifts all lines in one area
         temp_total_people += report.data().original_people;
         temp_attended_people += report.data().attended_people;
         // print('debug :: PeopleReport chosen in second if');
-      } else if (areaRequired == -1) {
+      } else if (areaRequired == TOTAL_PLANT) {
         // all shifts all lines all areas
         temp_total_people += report.data().original_people;
         temp_attended_people += report.data().attended_people;

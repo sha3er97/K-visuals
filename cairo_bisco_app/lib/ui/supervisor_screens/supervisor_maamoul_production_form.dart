@@ -168,7 +168,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
     print("initial line :" + selectedProdLine.toString());
 
-    sku = isEdit ? reportDetails.skuName : SKU.biscuitSKU[0];
+    sku = isEdit ? reportDetails.skuName : SKU.maamoulSKU[0];
   }
 
   @override

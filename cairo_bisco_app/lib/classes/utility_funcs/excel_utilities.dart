@@ -203,6 +203,7 @@ class ExcelUtilities {
                 .toString()
             : "-",
         report.productionInCartons.toString(),
+        report.month.toString(),
         getWeekNumber(report.day, report.month, report.year).toString(),
         report.year.toString(),
       ];
@@ -277,6 +278,7 @@ class ExcelUtilities {
                 .toString()
             : "-",
         report.productionInCartons.toString(),
+        report.month.toString(),
         getWeekNumber(report.day, report.month, report.year).toString(),
         report.year.toString(),
       ];
@@ -349,6 +351,7 @@ class ExcelUtilities {
                 .toString()
             : "-",
         report.productionInCartons.toString(),
+        report.month.toString(),
         getWeekNumber(report.day, report.month, report.year).toString(),
         report.year.toString(),
       ];

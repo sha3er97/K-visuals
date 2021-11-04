@@ -210,12 +210,12 @@ class NRCReport {
         continue;
       }
 
-      if (areaRequired != -1 && report.data().area == areaRequired) {
+      if (areaRequired != TOTAL_PLANT && report.data().area == areaRequired) {
         // all shifts all lines in one area
         temp_total_notes += report.data().notes_count;
         temp_all_notes_details += report.data().notes_details;
         // print('debug :: NRCReport chosen in second if');
-      } else if (areaRequired == -1) {
+      } else if (areaRequired == TOTAL_PLANT) {
         // all shifts all lines all areas
         temp_total_notes += report.data().notes_count;
         temp_all_notes_details += report.data().notes_details;

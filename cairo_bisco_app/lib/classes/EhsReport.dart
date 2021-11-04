@@ -260,7 +260,7 @@ class EhsReport {
       }
 
       if (lineNumRequired != -1 &&
-          areaRequired != -1 &&
+          areaRequired != TOTAL_PLANT &&
           report.data().line_index == lineNumRequired &&
           report.data().area == areaRequired) {
         //all shifts in one line in one area
@@ -272,7 +272,7 @@ class EhsReport {
         temp_s7_index = max(temp_s7_index, report.data().s7_index);
         // print('debug :: EhsReport chosen in first if');
       } else if (lineNumRequired == -1 &&
-          areaRequired != -1 &&
+          areaRequired != TOTAL_PLANT &&
           report.data().area == areaRequired) {
         // all shifts all lines in one area
         temp_firstAid_incidents += report.data().firstAid_incidents;
@@ -282,7 +282,7 @@ class EhsReport {
         temp_risk_assessment += report.data().risk_assessment;
         temp_s7_index = max(temp_s7_index, report.data().s7_index);
         // print('debug :: EhsReport chosen in second if');
-      } else if (areaRequired == -1) {
+      } else if (areaRequired == TOTAL_PLANT) {
         // all shifts all lines all areas
         temp_firstAid_incidents += report.data().firstAid_incidents;
         temp_lostTime_incidents += report.data().lostTime_incidents;

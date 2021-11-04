@@ -260,7 +260,7 @@ class QfsReport {
       }
 
       if (lineNumRequired != -1 &&
-          areaRequired != -1 &&
+          areaRequired != TOTAL_PLANT &&
           report.data().line_index == lineNumRequired &&
           report.data().area == areaRequired) {
         //all shifts in one line in one area
@@ -272,7 +272,7 @@ class QfsReport {
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
         // print('debug :: QfsReport chosen in first if');
       } else if (lineNumRequired == -1 &&
-          areaRequired != -1 &&
+          areaRequired != TOTAL_PLANT &&
           report.data().area == areaRequired) {
         // all shifts all lines in one area
         temp_quality_incidents += report.data().quality_incidents;
@@ -282,7 +282,7 @@ class QfsReport {
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
         // print('debug :: QfsReport chosen in second if');
-      } else if (areaRequired == -1) {
+      } else if (areaRequired == TOTAL_PLANT) {
         // all shifts all lines all areas
         temp_quality_incidents += report.data().quality_incidents;
         temp_food_safety_incidents += report.data().food_safety_incidents;
