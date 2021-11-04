@@ -155,134 +155,157 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
             // Center(
             //   child:
             FutureBuilder<QuerySnapshot>(
-                future: productionRefs[refNum].get(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> productionSnapshot) {
-                  if (productionSnapshot.hasError) {
-                    return ErrorMessageHeading('Something went wrong');
-                  } else if (productionSnapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return ErrorMessageHeading("Production Loading");
-                  } else {
-                    MiniProductionReport temp_report;
-                    switch (refNum) {
-                      case BISCUIT_AREA:
-                        List<QueryDocumentSnapshot<BiscuitsReport>>
-                            biscuitsReportsList = productionSnapshot.data!.docs
-                                as List<QueryDocumentSnapshot<BiscuitsReport>>;
-                        temp_report =
-                            BiscuitsReport.getFilteredReportOfInterval(
-                          biscuitsReportsList,
-                          int.parse(getMonth()),
-                          int.parse(getMonth()),
-                          int.parse(getDay()),
-                          int.parse(getDay()),
-                          int.parse(getYear()),
-                          lineNum,
-                        );
-                        break;
-                      case WAFER_AREA:
-                        List<QueryDocumentSnapshot<WaferReport>>
-                            waferReportsList = productionSnapshot.data!.docs
-                                as List<QueryDocumentSnapshot<WaferReport>>;
-                        temp_report = WaferReport.getFilteredReportOfInterval(
-                          waferReportsList,
-                          int.parse(getMonth()),
-                          int.parse(getMonth()),
-                          int.parse(getDay()),
-                          int.parse(getDay()),
-                          int.parse(getYear()),
-                          lineNum,
-                        );
-                        break;
-                      default: //case MAAMOUL_AREA :
-                        List<QueryDocumentSnapshot<MaamoulReport>>
-                            maamoulReportsList = productionSnapshot.data!.docs
-                                as List<QueryDocumentSnapshot<MaamoulReport>>;
-                        temp_report = MaamoulReport.getFilteredReportOfInterval(
-                          maamoulReportsList,
-                          int.parse(getMonth()),
-                          int.parse(getMonth()),
-                          int.parse(getDay()),
-                          int.parse(getDay()),
-                          int.parse(getYear()),
-                          lineNum,
-                        );
-                        break;
-                    }
-                    return FutureBuilder<QuerySnapshot>(
-                        future: qualityReportRef.get(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> qualitySnapshot) {
-                          if (qualitySnapshot.hasError) {
-                            return ErrorMessageHeading('Something went wrong');
-                          } else if (qualitySnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return ErrorMessageHeading("QFS Loading");
-                          } else {
-                            List<QueryDocumentSnapshot<QfsReport>> reportsList =
-                                qualitySnapshot.data!.docs
-                                    as List<QueryDocumentSnapshot<QfsReport>>;
-                            QfsReport temp_qfs =
-                                QfsReport.getFilteredReportOfInterval(
-                                    reportsList,
-                                    int.parse(getMonth()),
-                                    int.parse(getMonth()),
-                                    int.parse(getDay()),
-                                    int.parse(getDay()),
-                                    int.parse(getYear()),
-                                    prodType.indexOf(type),
-                                    lineNum);
-                            return FutureBuilder<QuerySnapshot>(
-                                future: ehsReportRef.get(),
+              future: productionRefs[refNum].get(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> productionSnapshot) {
+                if (productionSnapshot.hasError) {
+                  return ErrorMessageHeading('Something went wrong');
+                } else if (productionSnapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return ErrorMessageHeading("Production Loading");
+                } else {
+                  MiniProductionReport temp_report;
+                  switch (refNum) {
+                    case BISCUIT_AREA:
+                      List<QueryDocumentSnapshot<BiscuitsReport>>
+                          biscuitsReportsList = productionSnapshot.data!.docs
+                              as List<QueryDocumentSnapshot<BiscuitsReport>>;
+                      temp_report = BiscuitsReport.getFilteredReportOfInterval(
+                        biscuitsReportsList,
+                        int.parse(getMonth()),
+                        int.parse(getMonth()),
+                        int.parse(getDay()),
+                        int.parse(getDay()),
+                        int.parse(getYear()),
+                        lineNum,
+                      );
+                      break;
+                    case WAFER_AREA:
+                      List<QueryDocumentSnapshot<WaferReport>>
+                          waferReportsList = productionSnapshot.data!.docs
+                              as List<QueryDocumentSnapshot<WaferReport>>;
+                      temp_report = WaferReport.getFilteredReportOfInterval(
+                        waferReportsList,
+                        int.parse(getMonth()),
+                        int.parse(getMonth()),
+                        int.parse(getDay()),
+                        int.parse(getDay()),
+                        int.parse(getYear()),
+                        lineNum,
+                      );
+                      break;
+                    default: //case MAAMOUL_AREA :
+                      List<QueryDocumentSnapshot<MaamoulReport>>
+                          maamoulReportsList = productionSnapshot.data!.docs
+                              as List<QueryDocumentSnapshot<MaamoulReport>>;
+                      temp_report = MaamoulReport.getFilteredReportOfInterval(
+                        maamoulReportsList,
+                        int.parse(getMonth()),
+                        int.parse(getMonth()),
+                        int.parse(getDay()),
+                        int.parse(getDay()),
+                        int.parse(getYear()),
+                        lineNum,
+                      );
+                      break;
+                  }
+                  return FutureBuilder<QuerySnapshot>(
+                    future: qualityReportRef.get(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> qualitySnapshot) {
+                      if (qualitySnapshot.hasError) {
+                        return ErrorMessageHeading('Something went wrong');
+                      } else if (qualitySnapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return ErrorMessageHeading("QFS Loading");
+                      } else {
+                        List<QueryDocumentSnapshot<QfsReport>> reportsList =
+                            qualitySnapshot.data!.docs
+                                as List<QueryDocumentSnapshot<QfsReport>>;
+                        QfsReport temp_qfs =
+                            QfsReport.getFilteredReportOfInterval(
+                                reportsList,
+                                int.parse(getMonth()),
+                                int.parse(getMonth()),
+                                int.parse(getDay()),
+                                int.parse(getDay()),
+                                int.parse(getYear()),
+                                prodType.indexOf(type),
+                                lineNum);
+                        return FutureBuilder<QuerySnapshot>(
+                          future: ehsReportRef.get(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> ehsSnapshot) {
+                            if (ehsSnapshot.hasError) {
+                              return ErrorMessageHeading(
+                                  'Something went wrong');
+                            } else if (ehsSnapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return ErrorMessageHeading("EHS Loading");
+                            } else {
+                              List<QueryDocumentSnapshot<EhsReport>>
+                                  reportsList = ehsSnapshot.data!.docs
+                                      as List<QueryDocumentSnapshot<EhsReport>>;
+                              EhsReport temp_ehs =
+                                  EhsReport.getFilteredReportOfInterval(
+                                      reportsList,
+                                      int.parse(getMonth()),
+                                      int.parse(getMonth()),
+                                      int.parse(getDay()),
+                                      int.parse(getDay()),
+                                      int.parse(getYear()),
+                                      prodType.indexOf(type),
+                                      lineNum);
+                              return FutureBuilder<QuerySnapshot>(
+                                future: peopleReportRef.get(),
                                 builder: (BuildContext context,
-                                    AsyncSnapshot<QuerySnapshot> ehsSnapshot) {
-                                  if (ehsSnapshot.hasError) {
+                                    AsyncSnapshot<QuerySnapshot>
+                                        peopleSnapshot) {
+                                  if (peopleSnapshot.hasError) {
                                     return ErrorMessageHeading(
                                         'Something went wrong');
-                                  } else if (ehsSnapshot.connectionState ==
+                                  } else if (peopleSnapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    return ErrorMessageHeading("EHS Loading");
+                                    return ErrorMessageHeading(
+                                        "people Loading");
                                   } else {
-                                    List<QueryDocumentSnapshot<EhsReport>>
-                                        reportsList =
-                                        ehsSnapshot.data!.docs as List<
-                                            QueryDocumentSnapshot<EhsReport>>;
-                                    EhsReport temp_ehs =
-                                        EhsReport.getFilteredReportOfInterval(
-                                            reportsList,
-                                            int.parse(getMonth()),
-                                            int.parse(getMonth()),
-                                            int.parse(getDay()),
-                                            int.parse(getDay()),
-                                            int.parse(getYear()),
-                                            prodType.indexOf(type),
-                                            lineNum);
+                                    List<QueryDocumentSnapshot<PeopleReport>>
+                                        reportsList = peopleSnapshot.data!.docs
+                                            as List<
+                                                QueryDocumentSnapshot<
+                                                    PeopleReport>>;
+                                    PeopleReport temp_people = PeopleReport
+                                        .getFilteredReportOfInterval(
+                                      reportsList,
+                                      int.parse(getMonth()),
+                                      int.parse(getMonth()),
+                                      int.parse(getDay()),
+                                      int.parse(getDay()),
+                                      int.parse(getYear()),
+                                      prodType.indexOf(type),
+                                    );
                                     return FutureBuilder<QuerySnapshot>(
-                                      future: peopleReportRef.get(),
+                                      future: nrcReportRef.get(),
                                       builder: (BuildContext context,
                                           AsyncSnapshot<QuerySnapshot>
-                                              peopleSnapshot) {
-                                        if (peopleSnapshot.hasError) {
+                                              nrcSnapshot) {
+                                        if (nrcSnapshot.hasError) {
                                           return ErrorMessageHeading(
                                               'Something went wrong');
-                                        } else if (peopleSnapshot
+                                        } else if (nrcSnapshot
                                                 .connectionState ==
                                             ConnectionState.waiting) {
                                           return ErrorMessageHeading(
-                                              "people Loading");
+                                              "NRC Loading");
                                         } else {
-                                          List<
+                                          List<QueryDocumentSnapshot<NRCReport>>
+                                              nrcReportsList =
+                                              nrcSnapshot.data!.docs as List<
                                                   QueryDocumentSnapshot<
-                                                      PeopleReport>>
-                                              reportsList =
-                                              peopleSnapshot.data!.docs as List<
-                                                  QueryDocumentSnapshot<
-                                                      PeopleReport>>;
-                                          PeopleReport temp_people =
-                                              PeopleReport
-                                                  .getFilteredReportOfInterval(
-                                            reportsList,
+                                                      NRCReport>>;
+                                          NRCReport temp_nrc = NRCReport
+                                              .getFilteredReportOfInterval(
+                                            nrcReportsList,
                                             int.parse(getMonth()),
                                             int.parse(getMonth()),
                                             int.parse(getDay()),
@@ -290,83 +313,51 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
                                             int.parse(getYear()),
                                             prodType.indexOf(type),
                                           );
-                                          return FutureBuilder<QuerySnapshot>(
-                                            future: nrcReportRef.get(),
-                                            builder: (BuildContext context,
-                                                AsyncSnapshot<QuerySnapshot>
-                                                    nrcSnapshot) {
-                                              if (nrcSnapshot.hasError) {
-                                                return ErrorMessageHeading(
-                                                    'Something went wrong');
-                                              } else if (nrcSnapshot
-                                                      .connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return ErrorMessageHeading(
-                                                    "NRC Loading");
-                                              } else {
-                                                List<
-                                                        QueryDocumentSnapshot<
-                                                            NRCReport>>
-                                                    nrcReportsList =
-                                                    nrcSnapshot.data!.docs
-                                                        as List<
-                                                            QueryDocumentSnapshot<
-                                                                NRCReport>>;
-                                                NRCReport temp_nrc = NRCReport
-                                                    .getFilteredReportOfInterval(
-                                                  nrcReportsList,
-                                                  int.parse(getMonth()),
-                                                  int.parse(getMonth()),
-                                                  int.parse(getDay()),
-                                                  int.parse(getDay()),
-                                                  int.parse(getYear()),
-                                                  prodType.indexOf(type),
-                                                );
-                                                //plant wheel body
-                                                return KPI6GoodBadIndicator(
-                                                  color1: BadQFSDriver(temp_qfs)
-                                                      ? KelloggColors.cockRed
-                                                      : KelloggColors.green,
-                                                  title1:
-                                                      'الجودة و\nسلامة الغذاء',
-                                                  color2: BadEHSDriver(temp_ehs)
-                                                      ? KelloggColors.cockRed
-                                                      : KelloggColors.green,
-                                                  title2: 'سلامة العاملين',
-                                                  color3: BadProductionDriver(
-                                                          temp_report)
-                                                      ? KelloggColors.cockRed
-                                                      : KelloggColors.green,
-                                                  title3: 'الانتاج',
-                                                  color4: BadPeopleDriver(
-                                                          temp_people)
-                                                      ? KelloggColors.cockRed
-                                                      : KelloggColors.green,
-                                                  title4: 'العمالة',
-                                                  color5: BadNRCDriver(temp_nrc)
-                                                      ? KelloggColors.cockRed
-                                                      : KelloggColors.green,
-                                                  title5: 'الموارد الطبيعية',
-                                                  color6: BadFinanceDriver(
-                                                          temp_report)
-                                                      ? KelloggColors.cockRed
-                                                      : KelloggColors.green,
-                                                  title6: 'الاداء المالي',
-                                                  isScreenOnly: true,
-                                                );
-                                              }
-                                            },
+                                          //plant wheel body
+                                          return KPI6GoodBadIndicator(
+                                            color1: BadQFSDriver(temp_qfs)
+                                                ? KelloggColors.cockRed
+                                                : KelloggColors.green,
+                                            title1: 'الجودة و\nسلامة الغذاء',
+                                            color2: BadEHSDriver(temp_ehs)
+                                                ? KelloggColors.cockRed
+                                                : KelloggColors.green,
+                                            title2: 'سلامة العاملين',
+                                            color3:
+                                                BadProductionDriver(temp_report)
+                                                    ? KelloggColors.cockRed
+                                                    : KelloggColors.green,
+                                            title3: 'الانتاج',
+                                            color4: BadPeopleDriver(temp_people)
+                                                ? KelloggColors.cockRed
+                                                : KelloggColors.green,
+                                            title4: 'العمالة',
+                                            color5: BadNRCDriver(temp_nrc)
+                                                ? KelloggColors.cockRed
+                                                : KelloggColors.green,
+                                            title5: 'الموارد الطبيعية',
+                                            color6:
+                                                BadFinanceDriver(temp_report)
+                                                    ? KelloggColors.cockRed
+                                                    : KelloggColors.green,
+                                            title6: 'الاداء المالي',
+                                            isScreenOnly: true,
                                           );
                                         }
                                       },
                                     );
                                   }
-                                });
-                          }
-                        });
-                  }
-                }),
-            // ),
+                                },
+                              );
+                            }
+                          },
+                        );
+                      }
+                    },
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),

@@ -1,8 +1,8 @@
+import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {
-  RoundedButton(
-      {required this.color, required this.btnText, required this.onPressed});
+  RoundedButton({required this.color, required this.btnText, required this.onPressed});
 
   final Color color;
   final String btnText;
@@ -11,15 +11,15 @@ class RoundedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
+      padding: EdgeInsets.symmetric(vertical: defaultPadding),
       child: Material(
-        elevation: 5.0,
+        elevation: buttonElevation,
         color: color,
-        borderRadius: BorderRadius.circular(50.0),
+        borderRadius: BorderRadius.circular(roundedButtonCurvature),
         child: MaterialButton(
           onPressed: onPressed,
-          minWidth: 200.0,
-          height: 60.0,
+          minWidth: buttonWidth,
+          height: buttonHeight,
           child: Text(
             btnText,
             style: TextStyle(

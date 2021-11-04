@@ -8,6 +8,7 @@ import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/classes/values/form_values.dart';
+import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -1201,7 +1202,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////button//////////////////////////
                         isEdit
-                            ? SizedBox(height: 0)
+                            ? EmptyPlaceHolder()
                             : Padding(
                                 padding: const EdgeInsets.all(minimumPadding),
                                 child: Center(
@@ -1334,7 +1335,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               ),
                         //////////////////////////////////////////////////////////////////
                         !isEdit
-                            ? SizedBox(height: 0)
+                            ? EmptyPlaceHolder()
                             : Padding(
                                 padding: const EdgeInsets.all(minimumPadding),
                                 child: Center(
@@ -1465,10 +1466,10 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               ),
                         //////////////////////////////////////////////////////////////////
                         !isEdit
-                            ? SizedBox(height: 0)
+                            ? EmptyPlaceHolder()
                             : SizedBox(height: minimumPadding),
                         !isEdit
-                            ? SizedBox(height: 0)
+                            ? EmptyPlaceHolder()
                             : Padding(
                                 padding: const EdgeInsets.all(minimumPadding),
                                 child: Center(

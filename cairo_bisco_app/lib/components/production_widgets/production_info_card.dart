@@ -1,5 +1,6 @@
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:flutter/material.dart';
 
 class ProductionInfoCard extends StatelessWidget {
@@ -64,7 +65,7 @@ class ProductionInfoCard extends StatelessWidget {
                               .caption!
                               .copyWith(color: KelloggColors.darkRed),
                         )
-                      : SizedBox(height: 0),
+                      : EmptyPlaceHolder(),
                 ],
               ),
             ),

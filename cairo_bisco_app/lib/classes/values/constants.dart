@@ -8,6 +8,7 @@ const defaultPadding = 16.0;
 const mediumPadding = 12.0;
 const minimumPadding = 8.0;
 const pushAwayPadding = 75.0;
+
 //font sizes
 const largeButtonFont = 25.0;
 const largeFontSize = 20.0;
@@ -30,6 +31,8 @@ const chartRadiusCircle11111 = chartRadiusCircle1111 + radiusDifference;
 const chartInnerRadius = 70.0;
 const sectionedCircleRadiusMobile = 150.0;
 const sectionedCircleRadiusScreen = 250.0;
+const roundedButtonCurvature = 50.0;
+const kpiCircleRadius = 50.0;
 
 //line widths
 const borderWidth = 2.0;
@@ -42,6 +45,11 @@ const regularBoxHeight = 150.0;
 const LargeBoxHeight = 200.0;
 const TightBoxWidth = 300.0;
 const logoHeight = 175.0;
+
+//button
+const buttonWidth = 200.0;
+const buttonHeight = 60.0;
+const buttonElevation = 5.0;
 
 /** time constants in seconds **/
 const splashScreenDuration = 3; //3 seconds

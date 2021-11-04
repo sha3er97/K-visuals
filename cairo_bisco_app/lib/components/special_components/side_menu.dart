@@ -1,6 +1,7 @@
 import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:cairo_bisco_app/ui/production_screens/home_production.dart';
 import 'package:cairo_bisco_app/ui/production_screens/home_production_interval.dart';
 import 'package:cairo_bisco_app/ui/qfs_ehs_screens/ehs_detailed_report.dart';
@@ -34,7 +35,7 @@ class SideMenu extends StatelessWidget {
                             builder: (context) => HomeProductionPage()));
                   },
                 )
-              : SizedBox(height: 0),
+              : EmptyPlaceHolder(),
           isAdmin
               ? DrawerListTile(
                   title: "  Production in interval",
@@ -47,7 +48,7 @@ class SideMenu extends StatelessWidget {
                                 HomeProductionIntervalPage()));
                   },
                 )
-              : SizedBox(height: 0),
+              : EmptyPlaceHolder(),
           isAdmin
               ? DrawerListTile(
                   title: "  QFS",
@@ -59,7 +60,7 @@ class SideMenu extends StatelessWidget {
                             builder: (context) => QfsDetailedReport()));
                   },
                 )
-              : SizedBox(height: 0),
+              : EmptyPlaceHolder(),
           isAdmin
               ? DrawerListTile(
                   title: "  EHS",
@@ -71,7 +72,7 @@ class SideMenu extends StatelessWidget {
                             builder: (context) => EhsDetailedReport()));
                   },
                 )
-              : SizedBox(height: 0),
+              : EmptyPlaceHolder(),
           DrawerListTile(
             title: isAdmin ? "  Add/Edit Report" : "  Add Report",
             image: "report",

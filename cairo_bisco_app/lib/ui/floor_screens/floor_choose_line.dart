@@ -2,6 +2,7 @@ import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/line_num_btn.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:flutter/material.dart';
 
 class FloorChooseLine extends StatelessWidget {
@@ -67,9 +68,7 @@ class FloorChooseLine extends StatelessWidget {
                       type: type,
                       lineNum: 3,
                     )
-                  : SizedBox(
-                      height: 0,
-                    ),
+                  : EmptyPlaceHolder(),
               !isMaamoul
                   ? LineNumButton(
                       gradientColor1: gradientColor1,
@@ -78,9 +77,7 @@ class FloorChooseLine extends StatelessWidget {
                       type: type,
                       lineNum: 4,
                     )
-                  : SizedBox(
-                      height: 0,
-                    ),
+                  : EmptyPlaceHolder(),
               LineNumButton(
                 gradientColor1: gradientColor1,
                 gradientColor2: gradientColor2,

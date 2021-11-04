@@ -7,6 +7,7 @@ import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
+import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -580,7 +581,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
                         isEdit
-                            ? SizedBox(height: 0)
+                            ? EmptyPlaceHolder()
                             : Padding(
                                 padding: const EdgeInsets.all(minimumPadding),
                                 child: Center(
@@ -649,7 +650,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                               ),
                         //////////////////////////////////////////////////////////////////
                         !isEdit
-                            ? SizedBox(height: 0)
+                            ? EmptyPlaceHolder()
                             : Padding(
                                 padding: const EdgeInsets.all(minimumPadding),
                                 child: Center(
@@ -716,7 +717,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                               ),
                         //////////////////////////////////////////////////////////////////
                         !isEdit
-                            ? SizedBox(height: 0)
+                            ? EmptyPlaceHolder()
                             : Padding(
                                 padding: const EdgeInsets.all(minimumPadding),
                                 child: Center(
