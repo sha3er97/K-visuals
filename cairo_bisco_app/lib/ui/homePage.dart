@@ -1,12 +1,14 @@
 /*
 this screen will contain
-1- navigation drawer (today production details/production in interval/QFS/EHS)
+1- navigation drawer (today production details/production in interval/
+                      QFS/EHS/add & edit reports/logout)
 2 - Big title and today date
 3 - today's numbers of the whole plant : production
 4- qfs brief
 5- ehs brief
  *********************************/
 import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
+import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
 import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
 import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
@@ -23,6 +25,7 @@ import 'package:cairo_bisco_app/components/production_widgets/production_info_ca
 import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/6kpis_good_bad_indicator.dart';
 import 'package:cairo_bisco_app/components/special_components/side_menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -77,6 +80,18 @@ class _HomeState extends State<HomePage> {
       );
 
   int days_in_interval = 1; //screen shows 1 day only
+  @override
+  void initState() {
+    super.initState();
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      if (Credentials.isAdmin(user.email.toString())) {
+        Credentials.isUserAdmin = true;
+      } else {
+        Credentials.isUserAdmin = false;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

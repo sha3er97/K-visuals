@@ -5,12 +5,10 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
+import 'package:cairo_bisco_app/ui/homePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-
-import '../homePage.dart';
 
 class CreateAccount extends StatefulWidget {
   @override
@@ -177,6 +175,8 @@ class _CreateAccountState extends State<CreateAccount> {
                             email: email.trim(), password: password.trim());
                         if (Credentials.isAdmin(email)) {
                           Credentials.isUserAdmin = true;
+                        } else {
+                          Credentials.isUserAdmin = false;
                         }
                         Navigator.push(
                             context,
@@ -184,13 +184,6 @@ class _CreateAccountState extends State<CreateAccount> {
                                 // builder: (context) => SuccessScreen()
                                 builder: (context) => HomePage()));
 
-                        // else {
-                        //   Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //           // builder: (context) => SuccessScreen()
-                        //           builder: (context) => SupervisorHomePage()));
-                        // }
                         setState(() {
                           showSpinner = false;
                         });

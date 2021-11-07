@@ -1,7 +1,9 @@
 import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/components/buttons/log_out_btn.dart';
 import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
+import 'package:cairo_bisco_app/ui/login_screens/login.dart';
 import 'package:cairo_bisco_app/ui/production_screens/home_production.dart';
 import 'package:cairo_bisco_app/ui/production_screens/home_production_interval.dart';
 import 'package:cairo_bisco_app/ui/qfs_ehs_screens/ehs_detailed_report.dart';
@@ -26,70 +28,97 @@ class SideMenu extends StatelessWidget {
           ),
           isAdmin
               ? DrawerListTile(
-                  title: "  Today's production details",
+            title: "Today's production details",
                   image: "factory",
                   press: () {
+                    // WidgetsBinding.instance!.addPostFrameCallback((_) {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomeProductionPage()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeProductionPage(),
+                      ),
+                    );
+                    // });
                   },
                 )
               : EmptyPlaceHolder(),
           isAdmin
               ? DrawerListTile(
-                  title: "  Production in interval",
+            title: "Production in interval",
                   image: "calendar",
                   press: () {
+                    // WidgetsBinding.instance!.addPostFrameCallback((_) {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                HomeProductionIntervalPage()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeProductionIntervalPage(),
+                      ),
+                    );
+                    // });
                   },
                 )
               : EmptyPlaceHolder(),
           isAdmin
               ? DrawerListTile(
-                  title: "  QFS",
+            title: "QFS",
                   image: "quality",
                   press: () {
+                    // WidgetsBinding.instance!.addPostFrameCallback((_) {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => QfsDetailedReport()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QfsDetailedReport(),
+                      ),
+                    );
+                    // });
                   },
                 )
               : EmptyPlaceHolder(),
           isAdmin
               ? DrawerListTile(
-                  title: "  EHS",
+            title: "EHS",
                   image: "safety",
                   press: () {
+                    // WidgetsBinding.instance!.addPostFrameCallback((_) {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => EhsDetailedReport()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EhsDetailedReport(),
+                      ),
+                    );
+                    // });
                   },
                 )
               : EmptyPlaceHolder(),
           DrawerListTile(
-            title: isAdmin ? "  Add/Edit Report" : "  Add Report",
+            title: isAdmin ? "Add/Edit Report" : "Add Report",
             image: "report",
             press: () {
-              Navigator.push(
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
+                Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => SupervisorHomePage()));
+                    builder: (context) => SupervisorHomePage(),
+                  ),
+                );
+              });
             },
           ),
           DrawerListTile(
-            title: "  Log Out",
+            title: "Log Out",
             image: "exit",
             press: () async {
               await FirebaseAuth.instance.signOut();
-              Navigator.pop(context);
-              Navigator.pop(context);
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
+                Navigator.pop(context);
+                // Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Login(),
+                  ),
+                );
+              });
             },
           ),
         ],
@@ -114,9 +143,9 @@ class DrawerListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: press,
-      horizontalTitleGap: 0.0,
+      horizontalTitleGap: minimumPadding,
       leading: ClipRRect(
-        borderRadius: BorderRadius.circular(iconImageBorder), //or 15.0
+        borderRadius: BorderRadius.circular(iconImageBorder),
         child: Container(
           height: regularIconSize,
           width: regularIconSize,

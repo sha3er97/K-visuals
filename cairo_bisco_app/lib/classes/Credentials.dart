@@ -35,6 +35,7 @@ class Credentials {
         if (!admin_emails.contains(admin.data().email))
           admin_emails.add(admin.data().email);
       }
+      print("admins fetched");
     });
   }
 
@@ -65,6 +66,7 @@ class Credentials {
         .doc('credentials')
         .get()
         .then((DocumentSnapshot documentSnapshot) {
+      print("credentials fetched");
       if (documentSnapshot.exists) {
         Credentials.screen_email = documentSnapshot["screen_email"];
         Credentials.screen_password = documentSnapshot["screen_password"];

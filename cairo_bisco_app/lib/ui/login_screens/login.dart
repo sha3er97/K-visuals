@@ -1,6 +1,4 @@
 import 'package:cairo_bisco_app/classes/Credentials.dart';
-import 'package:cairo_bisco_app/classes/Plans.dart';
-import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/login_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
@@ -12,9 +10,7 @@ import 'package:cairo_bisco_app/ui/floor_screens/floor_choose_area.dart';
 import 'package:cairo_bisco_app/ui/homePage.dart';
 import 'package:cairo_bisco_app/ui/login_screens/create_account.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class Login extends StatefulWidget {
@@ -30,25 +26,6 @@ class _LoginState extends State<Login> {
   String password = "";
   bool _email_validate = false;
   bool _password_validate = false;
-
-  @override
-  void initState() {
-    super.initState();
-    Plans.getPlans();
-    SKU.getAllSku();
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      if (Credentials.isAdmin(user.email.toString())) {
-        Credentials.isUserAdmin = true;
-      }
-      //in all cases
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              // builder: (context) => SuccessScreen()
-              builder: (context) => HomePage()));
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +167,6 @@ class _LoginState extends State<Login> {
                       btnText: 'LOGIN',
                       color: KelloggColors.darkRed,
                       onPressed: () async {
-                        // Add login code
                         setState(() {
                           showSpinner = true;
                           _email_validate = emptyField(email);
@@ -215,51 +191,15 @@ class _LoginState extends State<Login> {
                                 email: email.trim(), password: password.trim());
                             if (Credentials.isAdmin(email)) {
                               Credentials.isUserAdmin = true;
+                            } else {
+                              Credentials.isUserAdmin = false;
                             }
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     // builder: (context) => SuccessScreen()
                                     builder: (context) => HomePage()));
-
-                            // else {
-                            //   Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //           // builder: (context) => SuccessScreen()
-                            //           builder: (context) =>
-                            //               SupervisorHomePage()));
-                            // }
                           }
-                          // if (isPlt(email, password)) {
-                          //   Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           // builder: (context) => SuccessScreen()
-                          //           builder: (context) => HomePage()));
-                          // } else if (isScreen(email, password)) {
-                          //   Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           // builder: (context) => SuccessScreen()
-                          //           builder: (context) => FloorChooseArea()));
-                          // } else if (isAdmin(email, password)) {
-                          //   Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           // builder: (context) => SuccessScreen()
-                          //           builder: (context) => AdminHomePage()));
-                          // } else {
-                          //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          //     content: Text("incorrect E-mail or Password"),
-                          //   ));
-                          //   Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           // builder: (context) => SuccessScreen()
-                          //           builder: (context) =>
-                          //               SupervisorHomePage()));
-                          // }
                           setState(() {
                             showSpinner = false;
                           });
