@@ -25,6 +25,18 @@ class SideMenu extends StatelessWidget {
           DrawerHeader(
             child: Image.asset("images/logo.png"),
           ),
+          SizedBox(
+            height: minimumPadding,
+          ),
+          Center(
+            child: Text(
+              'Version : ' + versionNum,
+              style: TextStyle(color: KelloggColors.grey),
+            ),
+          ),
+          SizedBox(
+            height: minimumPadding,
+          ),
           isAdmin
               ? DrawerListTile(
                   title: "Today's production details",
