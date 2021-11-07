@@ -23,7 +23,9 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
       mediumRisksBoundary = Plans.mediumRisksBoundary.toString(),
       highRisksBoundary = Plans.highRisksBoundary.toString(),
       target_absence = Plans.target_absence.toString(),
-      mpsaTarget = Plans.mpsaTarget.toString();
+      mpsaTarget = Plans.mpsaTarget.toString(),
+      universalTargetScrap = Plans.universalTargetScrap.toString(),
+      universalTargetFilmWaste = Plans.universalTargetFilmWaste.toString();
 
   bool _targetOverWeightAbove_validate = false,
       _targetOEE_validate = false,
@@ -32,7 +34,9 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
       _mediumRisksBoundary_validate = false,
       _highRisksBoundary_validate = false,
       _target_absence_validate = false,
-      _mpsaTarget_validate = false;
+      _mpsaTarget_validate = false,
+      _universalTargetScrap_validate = false,
+      _universalTargetFilmWaste_validate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -382,7 +386,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            adminHeading('Maximum Absence Target :'),
+                            adminHeading('Maximum Absence% Target :'),
                             SizedBox(width: minimumPadding),
                             Expanded(
                               child: TextFormField(
@@ -390,10 +394,8 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                 style: (TextStyle(
                                     color: KelloggColors.darkBlue,
                                     fontWeight: FontWeight.w400)),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true),
                                 cursorColor: Colors.white,
                                 obscureText: false,
                                 decoration: InputDecoration(
@@ -424,6 +426,94 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                         ),
                         SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            adminHeading('Plant Scrap Target :'),
+                            SizedBox(width: minimumPadding),
+                            Expanded(
+                              child: TextFormField(
+                                initialValue:
+                                    Plans.universalTargetScrap.toString(),
+                                style: (TextStyle(
+                                    color: KelloggColors.darkBlue,
+                                    fontWeight: FontWeight.w400)),
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true),
+                                cursorColor: Colors.white,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: KelloggColors.darkBlue,
+                                        width: textFieldBorderRadius),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(textFieldRadius)),
+                                  ),
+                                  errorText: _universalTargetScrap_validate
+                                      ? missingValueErrorText
+                                      : null,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: KelloggColors.yellow,
+                                        width: textFieldFocusedBorderRadius),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(textFieldRadius)),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  universalTargetScrap = value;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            adminHeading('Plant Film Waste Target :'),
+                            SizedBox(width: minimumPadding),
+                            Expanded(
+                              child: TextFormField(
+                                initialValue:
+                                    Plans.universalTargetFilmWaste.toString(),
+                                style: (TextStyle(
+                                    color: KelloggColors.darkBlue,
+                                    fontWeight: FontWeight.w400)),
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true),
+                                cursorColor: Colors.white,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: KelloggColors.darkBlue,
+                                        width: textFieldBorderRadius),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(textFieldRadius)),
+                                  ),
+                                  errorText: _universalTargetFilmWaste_validate
+                                      ? missingValueErrorText
+                                      : null,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: KelloggColors.yellow,
+                                        width: textFieldFocusedBorderRadius),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(textFieldRadius)),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  universalTargetFilmWaste = value;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////
                         Padding(
                           padding: const EdgeInsets.all(minimumPadding),
                           child: Center(
@@ -447,6 +537,10 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                       emptyField(targetOverWeightAbove);
                                   _target_absence_validate =
                                       emptyField(target_absence);
+                                  _universalTargetFilmWaste_validate =
+                                      emptyField(universalTargetFilmWaste);
+                                  _universalTargetScrap_validate =
+                                      emptyField(universalTargetScrap);
                                 });
                                 try {
                                   if (!_highRisksBoundary_validate &&
@@ -455,7 +549,9 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                       !_scrapKgCost_validate &&
                                       !_mpsaTarget_validate &&
                                       !_targetOEE_validate &&
-                                      !_targetOverWeightAbove_validate) {
+                                      !_targetOverWeightAbove_validate &&
+                                      !_universalTargetScrap_validate &&
+                                      !_universalTargetFilmWaste_validate) {
                                     Plans.updateRules(
                                       context,
                                       double.parse(targetOverWeightAbove),
@@ -466,6 +562,8 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                       int.parse(mediumRisksBoundary),
                                       int.parse(highRisksBoundary),
                                       double.parse(target_absence),
+                                      double.parse(universalTargetScrap),
+                                      double.parse(universalTargetFilmWaste),
                                     );
                                   } else {
                                     ScaffoldMessenger.of(context)

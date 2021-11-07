@@ -2,6 +2,11 @@ import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+/**the variables of all targets
+ * N.B.
+ * values are initialized with unreasonable low values to help notice
+ * if something went wrong in fetching actual values without debugging
+ */
 class Plans {
   static double targetOverWeightAbove = 0.1;
   static double targetOEE = 20.0;
@@ -11,6 +16,8 @@ class Plans {
   static int monthlyNearMissTarget = 5;
   static int mediumRisksBoundary = 5;
   static int highRisksBoundary = 12;
+  static double universalTargetScrap = 3.0;
+  static double universalTargetFilmWaste = 3.0;
 
   static Future<void> updateRules(
     context,
@@ -22,6 +29,8 @@ class Plans {
     int mediumRisksBoundary,
     int highRisksBoundary,
     double target_absence,
+    double universalTargetScrap,
+    double universalTargetFilmWaste,
   ) {
     return FirebaseFirestore.instance
         .collection(factory_name)
@@ -35,6 +44,8 @@ class Plans {
           'mediumRisksBoundary': mediumRisksBoundary,
           'highRisksBoundary': highRisksBoundary,
           'target_absence': target_absence,
+          'universalTargetScrap': universalTargetScrap,
+          'universalTargetFilmWaste': universalTargetFilmWaste,
         })
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -56,6 +67,7 @@ class Plans {
         .doc('plans')
         .get()
         .then((DocumentSnapshot documentSnapshot) {
+      print("plans fetched");
       if (documentSnapshot.exists) {
         print('getPlans data: ${documentSnapshot.data()}');
         Plans.targetOverWeightAbove =
@@ -69,6 +81,10 @@ class Plans {
         Plans.highRisksBoundary = documentSnapshot["highRisksBoundary"].toInt();
         Plans.mpsaTarget = documentSnapshot["mpsaTarget"].toDouble();
         Plans.target_absence = documentSnapshot["target_absence"].toDouble();
+        Plans.universalTargetFilmWaste =
+            documentSnapshot["universalTargetFilmWaste"].toDouble();
+        Plans.universalTargetScrap =
+            documentSnapshot["universalTargetScrap"].toDouble();
       } else {
         print('Document does not exist on the database');
       }

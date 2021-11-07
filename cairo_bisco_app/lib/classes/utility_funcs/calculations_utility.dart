@@ -149,8 +149,10 @@ bool BadNRCDriver(NRCReport report) {
 }
 
 bool BadFinanceDriver(MiniProductionReport report) {
+  bool isTotal = report.skuName.compareTo('total') == 0;
+
   bool noWork = report.productionInCartons == 0;
-  if (noWork)
+  if (noWork || isTotal)
     return false;
   else
     return report.scrap < SKU.skuDetails[report.skuName]!.targetScrap;
