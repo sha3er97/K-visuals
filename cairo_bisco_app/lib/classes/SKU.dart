@@ -219,6 +219,7 @@ class SKU {
     getSKU(WAFER_AREA, waferSKU);
     maamoulSKU.clear();
     getSKU(MAAMOUL_AREA, maamoulSKU);
+    print("skus fetched");
   }
 
   static void getSKU(refNum, skuNamesList) async {

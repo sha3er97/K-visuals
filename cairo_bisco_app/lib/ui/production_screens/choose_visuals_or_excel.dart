@@ -14,6 +14,9 @@ import 'package:cairo_bisco_app/components/alert_dialog.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/gradient_general_btn.dart';
 import 'package:cairo_bisco_app/ui/production_screens/biscuits_lines.dart';
+import 'package:cairo_bisco_app/ui/production_screens/maamoul_lines.dart';
+import 'package:cairo_bisco_app/ui/production_screens/total_plant_line.dart';
+import 'package:cairo_bisco_app/ui/production_screens/wafer_lines.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -98,36 +101,55 @@ class ChooseVisualsOrExcel extends StatelessWidget {
                 switch (refNum) {
                   case BISCUIT_AREA:
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => BiscuitLines(
-                                from_day: from_day,
-                                to_day: to_day,
-                                from_month: from_month,
-                                to_month: to_month,
-                                chosenYear: chosenYear)));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BiscuitLines(
+                            from_day: from_day,
+                            to_day: to_day,
+                            from_month: from_month,
+                            to_month: to_month,
+                            chosenYear: chosenYear),
+                      ),
+                    );
                     break;
                   case WAFER_AREA:
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => BiscuitLines(
-                                from_day: from_day,
-                                to_day: to_day,
-                                from_month: from_month,
-                                to_month: to_month,
-                                chosenYear: chosenYear)));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WaferLines(
+                            from_day: from_day,
+                            to_day: to_day,
+                            from_month: from_month,
+                            to_month: to_month,
+                            chosenYear: chosenYear),
+                      ),
+                    );
                     break;
                   case MAAMOUL_AREA:
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => BiscuitLines(
-                                from_day: from_day,
-                                to_day: to_day,
-                                from_month: from_month,
-                                to_month: to_month,
-                                chosenYear: chosenYear)));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MaamoulLines(
+                            from_day: from_day,
+                            to_day: to_day,
+                            from_month: from_month,
+                            to_month: to_month,
+                            chosenYear: chosenYear),
+                      ),
+                    );
+                    break;
+                  case TOTAL_PLANT:
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TotalPlantLine(
+                            from_day: from_day,
+                            to_day: to_day,
+                            from_month: from_month,
+                            to_month: to_month,
+                            chosenYear: chosenYear),
+                      ),
+                    );
                     break;
                 }
               },

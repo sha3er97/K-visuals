@@ -2,6 +2,7 @@ import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
+import 'package:cairo_bisco_app/components/buttons/gradient_general_btn.dart';
 import 'package:cairo_bisco_app/ui/production_screens/choose_visuals_or_excel.dart';
 import 'package:flutter/material.dart';
 
@@ -516,6 +517,49 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
                   ),
                 ),
               ),
+            ),
+            /////////////////////////////////////////////////////////////////////// new button
+            GradientGeneralButton(
+              gradientColor1: KelloggColors.cockRed,
+              gradientColor2: KelloggColors.grey,
+              mainColor: KelloggColors.darkBlue.withOpacity(0.5),
+              title: "Total Plant",
+              btn_icon: Icons.bar_chart,
+              param_onPressed: () {
+                DateTime dateFrom = DateTime(
+                  int.parse(_selectedYearTo),
+                  int.parse(_selectedMonthFrom),
+                  int.parse(_selectedDayFrom),
+                );
+                DateTime dateAfter = DateTime(
+                  int.parse(_selectedYearTo),
+                  int.parse(_selectedMonthTo),
+                  int.parse(_selectedDayTo),
+                );
+                if (dateFrom.isBefore(dateAfter) ||
+                    dateFrom.isAtSameMomentAs(dateAfter)) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChooseVisualsOrExcel(
+                        from_month: _selectedMonthFrom,
+                        to_month: _selectedMonthTo,
+                        chosenYear: _selectedYearFrom,
+                        from_day: _selectedDayFrom,
+                        to_day: _selectedDayTo,
+                        refNum: TOTAL_PLANT,
+                      ),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          "Error : invalid interval (from date must be <= to date)"),
+                    ),
+                  );
+                }
+              },
             ),
           ],
         ),

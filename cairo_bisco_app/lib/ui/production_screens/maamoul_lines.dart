@@ -61,274 +61,265 @@ class _MaamoulLinesState extends State<MaamoulLines> {
               OverWeightReport.fromJson(snapshot.data()!),
           toFirestore: (report, _) => report.toJson(),
         );
-    return ModalProgressHUD(
-      inAsyncCall: false,
-      child: DefaultTabController(
-        // The number of tabs / content sections to display.
-        length: 3,
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: KelloggColors.darkRed,
-            bottom: TabBar(
-              tabs: [
-                Tab(
-                  // icon: Icon(Icons.directions_car),
-                  text: "Line 1",
-                ),
-                Tab(
-                  // icon: Icon(Icons.directions_car),
-                  text: "Line 2",
-                ),
-                Tab(
-                  // icon: Icon(Icons.directions_car),
-                  text: "Total",
-                ),
-              ],
-            ),
-          ),
-          resizeToAvoidBottomInset: true,
-          backgroundColor: KelloggColors.white,
-          body: TabBarView(
-            children: [
-              SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FutureBuilder<QuerySnapshot>(
-                        future: overWeightReportRef.get(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
-                          if (overweightSnapshot.hasError) {
-                            return ErrorMessageHeading('Something went wrong');
-                          } else if (overweightSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return ErrorMessageHeading("Loading");
-                          } else {
-                            List<QueryDocumentSnapshot<OverWeightReport>>
-                                reportsList =
-                                overweightSnapshot.data!.docs as List<
-                                    QueryDocumentSnapshot<OverWeightReport>>;
-                            OverWeightReport temp_overweight_report =
-                                OverWeightReport.getFilteredReportOfInterval(
-                              reportsList,
-                              int.parse(from_month),
-                              int.parse(to_month),
-                              int.parse(from_day),
-                              int.parse(to_day),
-                              int.parse(chosenYear),
-                              MAAMOUL_AREA,
-                              1,
-                            );
-                            return FutureBuilder<QuerySnapshot>(
-                              future: maamoulReportRef.get(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot>
-                                      productionSnapshot) {
-                                if (productionSnapshot.hasError) {
-                                  return ErrorMessageHeading(
-                                      'Something went wrong');
-                                } else if (productionSnapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return ErrorMessageHeading("Loading");
-                                } else {
-                                  try {
-                                    List<QueryDocumentSnapshot<MaamoulReport>>
-                                        reportsList =
-                                        productionSnapshot.data!.docs as List<
-                                            QueryDocumentSnapshot<
-                                                MaamoulReport>>;
-                                    MiniProductionReport temp_report =
-                                        MaamoulReport
-                                            .getFilteredReportOfInterval(
-                                      reportsList,
-                                      int.parse(from_month),
-                                      int.parse(to_month),
-                                      int.parse(from_day),
-                                      int.parse(to_day),
-                                      int.parse(chosenYear),
-                                      1,
-                                    );
-                                    return Center(
-                                      child: ProductionLine(
-                                        report: temp_report,
-                                        overweight:
-                                            temp_overweight_report.percent,
-                                      ),
-                                    );
-                                  } catch (e) {
-                                    print(e);
-                                    return ErrorMessageHeading(
-                                        'Something went wrong');
-                                  }
-                                }
-                              },
-                            );
-                          }
-                        }),
-                  ],
-                ),
+    return DefaultTabController(
+      // The number of tabs / content sections to display.
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: KelloggColors.darkRed,
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                // icon: Icon(Icons.directions_car),
+                text: "Line 1",
               ),
-              SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FutureBuilder<QuerySnapshot>(
-                        future: overWeightReportRef.get(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
-                          if (overweightSnapshot.hasError) {
-                            return ErrorMessageHeading('Something went wrong');
-                          } else if (overweightSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return ErrorMessageHeading("Loading");
-                          } else {
-                            List<QueryDocumentSnapshot<OverWeightReport>>
-                                reportsList =
-                                overweightSnapshot.data!.docs as List<
-                                    QueryDocumentSnapshot<OverWeightReport>>;
-                            OverWeightReport temp_overweight_report =
-                                OverWeightReport.getFilteredReportOfInterval(
-                              reportsList,
-                              int.parse(from_month),
-                              int.parse(to_month),
-                              int.parse(from_day),
-                              int.parse(to_day),
-                              int.parse(chosenYear),
-                              MAAMOUL_AREA,
-                              2,
-                            );
-                            return FutureBuilder<QuerySnapshot>(
-                              future: maamoulReportRef.get(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot>
-                                      productionSnapshot) {
-                                if (productionSnapshot.hasError) {
-                                  return ErrorMessageHeading(
-                                      'Something went wrong');
-                                } else if (productionSnapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return ErrorMessageHeading("Loading");
-                                } else {
-                                  try {
-                                    List<QueryDocumentSnapshot<MaamoulReport>>
-                                        reportsList =
-                                        productionSnapshot.data!.docs as List<
-                                            QueryDocumentSnapshot<
-                                                MaamoulReport>>;
-                                    MiniProductionReport temp_report =
-                                        MaamoulReport
-                                            .getFilteredReportOfInterval(
-                                      reportsList,
-                                      int.parse(from_month),
-                                      int.parse(to_month),
-                                      int.parse(from_day),
-                                      int.parse(to_day),
-                                      int.parse(chosenYear),
-                                      2,
-                                    );
-                                    return Center(
-                                      child: ProductionLine(
-                                        report: temp_report,
-                                        overweight:
-                                            temp_overweight_report.percent,
-                                      ),
-                                    );
-                                  } catch (e) {
-                                    print(e);
-                                    return ErrorMessageHeading(
-                                        'Something went wrong');
-                                  }
-                                }
-                              },
-                            );
-                          }
-                        }),
-                  ],
-                ),
+              Tab(
+                // icon: Icon(Icons.directions_car),
+                text: "Line 2",
               ),
-              SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FutureBuilder<QuerySnapshot>(
-                        future: overWeightReportRef.get(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
-                          if (overweightSnapshot.hasError) {
-                            return ErrorMessageHeading('Something went wrong');
-                          } else if (overweightSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return ErrorMessageHeading("Loading");
-                          } else {
-                            List<QueryDocumentSnapshot<OverWeightReport>>
-                                reportsList =
-                                overweightSnapshot.data!.docs as List<
-                                    QueryDocumentSnapshot<OverWeightReport>>;
-                            OverWeightReport temp_overweight_report =
-                                OverWeightReport.getFilteredReportOfInterval(
-                              reportsList,
-                              int.parse(from_month),
-                              int.parse(to_month),
-                              int.parse(from_day),
-                              int.parse(to_day),
-                              int.parse(chosenYear),
-                              MAAMOUL_AREA,
-                              -1,
-                            );
-                            return FutureBuilder<QuerySnapshot>(
-                              future: maamoulReportRef.get(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot>
-                                      productionSnapshot) {
-                                if (productionSnapshot.hasError) {
-                                  return ErrorMessageHeading(
-                                      'Something went wrong');
-                                } else if (productionSnapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return ErrorMessageHeading("Loading");
-                                } else {
-                                  try {
-                                    List<QueryDocumentSnapshot<MaamoulReport>>
-                                        reportsList =
-                                        productionSnapshot.data!.docs as List<
-                                            QueryDocumentSnapshot<
-                                                MaamoulReport>>;
-                                    MiniProductionReport temp_report =
-                                        MaamoulReport
-                                            .getFilteredReportOfInterval(
-                                      reportsList,
-                                      int.parse(from_month),
-                                      int.parse(to_month),
-                                      int.parse(from_day),
-                                      int.parse(to_day),
-                                      int.parse(chosenYear),
-                                      -1,
-                                    );
-                                    return Center(
-                                      child: ProductionLine(
-                                        report: temp_report,
-                                        overweight:
-                                            temp_overweight_report.percent,
-                                      ),
-                                    );
-                                  } catch (e) {
-                                    print(e);
-                                    return ErrorMessageHeading(
-                                        'Something went wrong');
-                                  }
-                                }
-                              },
-                            );
-                          }
-                        }),
-                  ],
-                ),
+              Tab(
+                // icon: Icon(Icons.directions_car),
+                text: "Total",
               ),
             ],
           ),
+        ),
+        resizeToAvoidBottomInset: true,
+        backgroundColor: KelloggColors.white,
+        body: TabBarView(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FutureBuilder<QuerySnapshot>(
+                      future: overWeightReportRef.get(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
+                        if (overweightSnapshot.hasError) {
+                          return ErrorMessageHeading('Something went wrong');
+                        } else if (overweightSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return ErrorMessageHeading("Loading");
+                        } else {
+                          List<QueryDocumentSnapshot<OverWeightReport>>
+                              reportsList = overweightSnapshot.data!.docs
+                                  as List<
+                                      QueryDocumentSnapshot<OverWeightReport>>;
+                          OverWeightReport temp_overweight_report =
+                              OverWeightReport.getFilteredReportOfInterval(
+                            reportsList,
+                            int.parse(from_month),
+                            int.parse(to_month),
+                            int.parse(from_day),
+                            int.parse(to_day),
+                            int.parse(chosenYear),
+                            MAAMOUL_AREA,
+                            1,
+                          );
+                          return FutureBuilder<QuerySnapshot>(
+                            future: maamoulReportRef.get(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot>
+                                    productionSnapshot) {
+                              if (productionSnapshot.hasError) {
+                                return ErrorMessageHeading(
+                                    'Something went wrong');
+                              } else if (productionSnapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return ErrorMessageHeading("Loading");
+                              } else {
+                                try {
+                                  List<QueryDocumentSnapshot<MaamoulReport>>
+                                      reportsList =
+                                      productionSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<MaamoulReport>>;
+                                  MiniProductionReport temp_report =
+                                      MaamoulReport.getFilteredReportOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    1,
+                                  );
+                                  return Center(
+                                    child: ProductionLine(
+                                      report: temp_report,
+                                      overweight:
+                                          temp_overweight_report.percent,
+                                    ),
+                                  );
+                                } catch (e) {
+                                  print(e);
+                                  return ErrorMessageHeading(
+                                      'Something went wrong');
+                                }
+                              }
+                            },
+                          );
+                        }
+                      }),
+                ],
+              ),
+            ),
+            SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FutureBuilder<QuerySnapshot>(
+                      future: overWeightReportRef.get(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
+                        if (overweightSnapshot.hasError) {
+                          return ErrorMessageHeading('Something went wrong');
+                        } else if (overweightSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return ErrorMessageHeading("Loading");
+                        } else {
+                          List<QueryDocumentSnapshot<OverWeightReport>>
+                              reportsList = overweightSnapshot.data!.docs
+                                  as List<
+                                      QueryDocumentSnapshot<OverWeightReport>>;
+                          OverWeightReport temp_overweight_report =
+                              OverWeightReport.getFilteredReportOfInterval(
+                            reportsList,
+                            int.parse(from_month),
+                            int.parse(to_month),
+                            int.parse(from_day),
+                            int.parse(to_day),
+                            int.parse(chosenYear),
+                            MAAMOUL_AREA,
+                            2,
+                          );
+                          return FutureBuilder<QuerySnapshot>(
+                            future: maamoulReportRef.get(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot>
+                                    productionSnapshot) {
+                              if (productionSnapshot.hasError) {
+                                return ErrorMessageHeading(
+                                    'Something went wrong');
+                              } else if (productionSnapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return ErrorMessageHeading("Loading");
+                              } else {
+                                try {
+                                  List<QueryDocumentSnapshot<MaamoulReport>>
+                                      reportsList =
+                                      productionSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<MaamoulReport>>;
+                                  MiniProductionReport temp_report =
+                                      MaamoulReport.getFilteredReportOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    2,
+                                  );
+                                  return Center(
+                                    child: ProductionLine(
+                                      report: temp_report,
+                                      overweight:
+                                          temp_overweight_report.percent,
+                                    ),
+                                  );
+                                } catch (e) {
+                                  print(e);
+                                  return ErrorMessageHeading(
+                                      'Something went wrong');
+                                }
+                              }
+                            },
+                          );
+                        }
+                      }),
+                ],
+              ),
+            ),
+            SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FutureBuilder<QuerySnapshot>(
+                      future: overWeightReportRef.get(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
+                        if (overweightSnapshot.hasError) {
+                          return ErrorMessageHeading('Something went wrong');
+                        } else if (overweightSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return ErrorMessageHeading("Loading");
+                        } else {
+                          List<QueryDocumentSnapshot<OverWeightReport>>
+                              reportsList = overweightSnapshot.data!.docs
+                                  as List<
+                                      QueryDocumentSnapshot<OverWeightReport>>;
+                          OverWeightReport temp_overweight_report =
+                              OverWeightReport.getFilteredReportOfInterval(
+                            reportsList,
+                            int.parse(from_month),
+                            int.parse(to_month),
+                            int.parse(from_day),
+                            int.parse(to_day),
+                            int.parse(chosenYear),
+                            MAAMOUL_AREA,
+                            -1,
+                          );
+                          return FutureBuilder<QuerySnapshot>(
+                            future: maamoulReportRef.get(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot>
+                                    productionSnapshot) {
+                              if (productionSnapshot.hasError) {
+                                return ErrorMessageHeading(
+                                    'Something went wrong');
+                              } else if (productionSnapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return ErrorMessageHeading("Loading");
+                              } else {
+                                try {
+                                  List<QueryDocumentSnapshot<MaamoulReport>>
+                                      reportsList =
+                                      productionSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<MaamoulReport>>;
+                                  MiniProductionReport temp_report =
+                                      MaamoulReport.getFilteredReportOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    -1,
+                                  );
+                                  return Center(
+                                    child: ProductionLine(
+                                      report: temp_report,
+                                      overweight:
+                                          temp_overweight_report.percent,
+                                    ),
+                                  );
+                                } catch (e) {
+                                  print(e);
+                                  return ErrorMessageHeading(
+                                      'Something went wrong');
+                                }
+                              }
+                            },
+                          );
+                        }
+                      }),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

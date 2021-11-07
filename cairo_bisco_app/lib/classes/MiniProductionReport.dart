@@ -1,3 +1,5 @@
+import 'package:cairo_bisco_app/classes/values/constants.dart';
+
 class MiniProductionReport {
   final String skuName;
   final int shiftProductionPlan,
@@ -15,22 +17,21 @@ class MiniProductionReport {
       productionInKg,
       theoreticalAverage;
 
-  MiniProductionReport(
-      {required this.area,
-      required this.shift_index, //unused for now
-      required this.line_index,
-      required this.skuName,
-      required this.theoreticalAverage,
-      required this.shiftProductionPlan,
-      required this.productionInCartons,
-      required this.productionInKg,
-      required this.scrap,
-      required this.rework,
-      required this.totalFilmUsed,
-      required this.totalFilmWasted,
-      required this.year,
-      required this.month,
-      required this.day});
+  MiniProductionReport({required this.area,
+    required this.shift_index, //unused for now
+    required this.line_index,
+    required this.skuName,
+    required this.theoreticalAverage,
+    required this.shiftProductionPlan,
+    required this.productionInCartons,
+    required this.productionInKg,
+    required this.scrap,
+    required this.rework,
+    required this.totalFilmUsed,
+    required this.totalFilmWasted,
+    required this.year,
+    required this.month,
+    required this.day});
 
   static MiniProductionReport getEmptyReport() {
     return MiniProductionReport(
@@ -49,6 +50,46 @@ class MiniProductionReport {
       rework: 0.0,
       shiftProductionPlan: 0,
       theoreticalAverage: 0.0,
+    );
+  }
+
+  static MiniProductionReport mergeReports(
+    List<MiniProductionReport> reportsList,
+  ) {
+    double temp_scrap = 0.0,
+        temp_used_film = 0.0,
+        temp_wasted_film = 0.0,
+        temp_productionInKg = 0.0,
+        temp_rework = 0.0,
+        temp_theoreticalPlan = 0.0;
+    int temp_productionInCartons = 0, temp_productionPlan = 0;
+    for (var report in reportsList) {
+      temp_productionInCartons += report.productionInCartons;
+      temp_productionInKg += report.productionInKg;
+      temp_theoreticalPlan += report.theoreticalAverage;
+      temp_productionPlan += report.shiftProductionPlan;
+      temp_scrap += report.scrap;
+      temp_rework += report.rework;
+      temp_wasted_film += report.totalFilmWasted;
+      temp_used_film += report.totalFilmUsed;
+    }
+    //return the total in capsulized form
+    return MiniProductionReport(
+      skuName: 'total',
+      shift_index: -1,
+      line_index: -1,
+      area: TOTAL_PLANT,
+      year: -1,
+      month: -1,
+      day: -1,
+      scrap: temp_scrap,
+      productionInCartons: temp_productionInCartons,
+      productionInKg: temp_productionInKg,
+      totalFilmWasted: temp_wasted_film,
+      totalFilmUsed: temp_used_film == 0 ? 1 : temp_used_film,
+      rework: temp_rework,
+      shiftProductionPlan: temp_productionPlan == 0 ? 1 : temp_productionPlan,
+      theoreticalAverage: temp_theoreticalPlan == 0 ? 1 : temp_theoreticalPlan,
     );
   }
 }
