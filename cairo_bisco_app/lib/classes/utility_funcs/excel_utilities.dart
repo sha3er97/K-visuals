@@ -235,22 +235,22 @@ class ExcelUtilities {
             : "-",
         calculateAllScrap(refNum, report).toString(),
         (calculateAllRework(refNum, report) *
-            100 /
-            calculateAllWeight(refNum, report))
+                100 /
+                calculateAllWeight(refNum, report))
             .toStringAsFixed(1),
         (calculateAllScrap(refNum, report) *
-            100 /
-            calculateAllWeight(refNum, report))
+                100 /
+                calculateAllWeight(refNum, report))
             .toStringAsFixed(1),
         "Speed Loss",
         "Availability%",
         "Quality%",
         calculateOeeFromOriginalReport(
-            report, theoreticals[report.line_index - 1])
+                report, theoreticals[report.line_index - 1])
             .toStringAsFixed(1),
         doesHaveCorrespondingOverweight(report)
             ? (calculateProductionKg(report) *
-            getCorrespondingOverweight(report))
+                    getCorrespondingOverweight(report))
                 .toString()
             : "-",
         report.productionInCartons.toString(),
@@ -407,22 +407,22 @@ class ExcelUtilities {
             : "-",
         calculateAllScrap(refNum, report).toString(),
         (calculateAllRework(refNum, report) *
-            100 /
-            calculateAllWeight(refNum, report))
+                100 /
+                calculateAllWeight(refNum, report))
             .toStringAsFixed(1),
         (calculateAllScrap(refNum, report) *
-            100 /
-            calculateAllWeight(refNum, report))
+                100 /
+                calculateAllWeight(refNum, report))
             .toStringAsFixed(1),
         "Speed Loss",
         "Availability%",
         "Quality%",
         calculateOeeFromOriginalReport(
-            report, theoreticals[report.line_index - 1])
+                report, theoreticals[report.line_index - 1])
             .toStringAsFixed(1),
         doesHaveCorrespondingOverweight(report)
             ? (calculateProductionKg(report) *
-            getCorrespondingOverweight(report))
+                    getCorrespondingOverweight(report))
                 .toString()
             : "-",
         report.productionInCartons.toString(),
@@ -572,22 +572,22 @@ class ExcelUtilities {
             : "-",
         calculateAllScrap(refNum, report).toString(),
         (calculateAllRework(refNum, report) *
-            100 /
-            calculateAllWeight(refNum, report))
+                100 /
+                calculateAllWeight(refNum, report))
             .toStringAsFixed(1),
         (calculateAllScrap(refNum, report) *
-            100 /
-            calculateAllWeight(refNum, report))
+                100 /
+                calculateAllWeight(refNum, report))
             .toStringAsFixed(1),
         "Speed Loss",
         "Availability%",
         "Quality%",
         calculateOeeFromOriginalReport(
-            report, theoreticals[report.line_index - 1])
+                report, theoreticals[report.line_index - 1])
             .toStringAsFixed(1),
         doesHaveCorrespondingOverweight(report)
             ? (calculateProductionKg(report) *
-            getCorrespondingOverweight(report))
+                    getCorrespondingOverweight(report))
                 .toString()
             : "-",
         report.productionInCartons.toString(),
