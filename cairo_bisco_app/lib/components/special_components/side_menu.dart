@@ -44,7 +44,7 @@ class SideMenu extends StatelessWidget {
               : EmptyPlaceHolder(),
           isAdmin
               ? DrawerListTile(
-            title: "Production in interval",
+                  title: "Production in interval",
                   image: "calendar",
                   press: () {
                     // WidgetsBinding.instance!.addPostFrameCallback((_) {
