@@ -37,14 +37,14 @@ class ProductionLine extends StatelessWidget {
                     ? Plans.universalTargetScrap
                     : SKU.skuDetails[report.skuName]!.targetScrap)
             ? "up"
-        : "down";
+            : "down";
     String arrowImg4 = noWork
         ? "up"
         : calculateMPSA(
-        report.shiftProductionPlan, report.productionInCartons) >
-        Plans.mpsaTarget
-        ? "up"
-        : "down";
+                    report.shiftProductionPlan, report.productionInCartons) >
+                Plans.mpsaTarget
+            ? "up"
+            : "down";
 
     return Container(
       margin: EdgeInsets.all(defaultPadding),
@@ -62,7 +62,7 @@ class ProductionLine extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: minimumPadding),
+                      const EdgeInsets.symmetric(horizontal: minimumPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -75,7 +75,7 @@ class ProductionLine extends StatelessWidget {
                         ),
                       ),
                       subHeading((report.productionInCartons / 1000)
-                          .toStringAsFixed(1) +
+                              .toStringAsFixed(1) +
                           " K"),
                     ],
                   ),
@@ -84,7 +84,7 @@ class ProductionLine extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: minimumPadding),
+                      const EdgeInsets.symmetric(horizontal: minimumPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -154,10 +154,10 @@ class ProductionLine extends StatelessWidget {
                                   Text(
                                     (prodTargetDone ? "" : "-") +
                                         ((report.productionInCartons -
-                                            report
-                                                .shiftProductionPlan)
-                                            .abs() /
-                                            1000)
+                                                        report
+                                                            .shiftProductionPlan)
+                                                    .abs() /
+                                                1000)
                                             .toStringAsFixed(2) +
                                         " K",
                                     style: TextStyle(
@@ -192,11 +192,11 @@ class ProductionLine extends StatelessWidget {
                                   Text(
                                     (prodTargetDone ? "" : "-") +
                                         ((report.productionInCartons -
-                                            report
-                                                .shiftProductionPlan)
-                                            .abs() *
-                                            100 /
-                                            report.shiftProductionPlan)
+                                                        report
+                                                            .shiftProductionPlan)
+                                                    .abs() *
+                                                100 /
+                                                report.shiftProductionPlan)
                                             .toStringAsFixed(1) +
                                         " %",
                                     style: TextStyle(
@@ -448,8 +448,8 @@ class ProductionLine extends StatelessWidget {
                 constraints: BoxConstraints.tightFor(height: regularBoxHeight),
                 child: ElevatedButton.icon(
                   label: Text(calculateMPSA(report.shiftProductionPlan,
-                      report.productionInCartons)
-                      .toStringAsFixed(1) +
+                              report.productionInCartons)
+                          .toStringAsFixed(1) +
                       " %"),
                   style: ElevatedButton.styleFrom(
                     textStyle: TextStyle(
@@ -457,10 +457,10 @@ class ProductionLine extends StatelessWidget {
                     primary: noWork
                         ? KelloggColors.green
                         : calculateMPSA(report.shiftProductionPlan,
-                        report.productionInCartons) >
-                        Plans.mpsaTarget
-                        ? KelloggColors.green
-                        : KelloggColors.cockRed,
+                                    report.productionInCartons) >
+                                Plans.mpsaTarget
+                            ? KelloggColors.green
+                            : KelloggColors.cockRed,
                   ),
                   icon: ClipRRect(
                     borderRadius: BorderRadius.circular(iconImageBorder),
