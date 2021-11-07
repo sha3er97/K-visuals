@@ -28,7 +28,7 @@ class SideMenu extends StatelessWidget {
           ),
           isAdmin
               ? DrawerListTile(
-            title: "Today's production details",
+                  title: "Today's production details",
                   image: "factory",
                   press: () {
                     // WidgetsBinding.instance!.addPostFrameCallback((_) {
