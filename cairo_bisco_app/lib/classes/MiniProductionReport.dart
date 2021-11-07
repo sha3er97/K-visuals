@@ -17,21 +17,22 @@ class MiniProductionReport {
       productionInKg,
       theoreticalAverage;
 
-  MiniProductionReport({required this.area,
-    required this.shift_index, //unused for now
-    required this.line_index,
-    required this.skuName,
-    required this.theoreticalAverage,
-    required this.shiftProductionPlan,
-    required this.productionInCartons,
-    required this.productionInKg,
-    required this.scrap,
-    required this.rework,
-    required this.totalFilmUsed,
-    required this.totalFilmWasted,
-    required this.year,
-    required this.month,
-    required this.day});
+  MiniProductionReport(
+      {required this.area,
+      required this.shift_index, //unused for now
+      required this.line_index,
+      required this.skuName,
+      required this.theoreticalAverage,
+      required this.shiftProductionPlan,
+      required this.productionInCartons,
+      required this.productionInKg,
+      required this.scrap,
+      required this.rework,
+      required this.totalFilmUsed,
+      required this.totalFilmWasted,
+      required this.year,
+      required this.month,
+      required this.day});
 
   static MiniProductionReport getEmptyReport() {
     return MiniProductionReport(
