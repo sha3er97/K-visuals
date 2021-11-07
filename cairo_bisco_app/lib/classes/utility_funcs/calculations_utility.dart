@@ -111,6 +111,10 @@ double calculateOeeFromOriginalReport(report, theoreticalKg) {
   return (calculateProductionKg(report) / theoreticalKg) * 100;
 }
 
+double calculateOeeFromRawNumbers(prodKg, theoreticalKg) {
+  return (prodKg / theoreticalKg) * 100;
+}
+
 double calculateProductionKg(report) {
   return (report.productionInCartons *
       SKU.skuDetails[report.skuName]!.cartonWeight);
