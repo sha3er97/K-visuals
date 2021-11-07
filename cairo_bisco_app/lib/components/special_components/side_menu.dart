@@ -1,7 +1,6 @@
 import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
-import 'package:cairo_bisco_app/components/buttons/log_out_btn.dart';
 import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:cairo_bisco_app/ui/login_screens/login.dart';
 import 'package:cairo_bisco_app/ui/production_screens/home_production.dart';
@@ -60,7 +59,7 @@ class SideMenu extends StatelessWidget {
               : EmptyPlaceHolder(),
           isAdmin
               ? DrawerListTile(
-            title: "QFS",
+                  title: "QFS",
                   image: "quality",
                   press: () {
                     // WidgetsBinding.instance!.addPostFrameCallback((_) {
