@@ -16,7 +16,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashState extends State<SplashScreen> {
-  User? user;
+  // User? user;
 
   @override
   void initState() {
@@ -25,7 +25,8 @@ class _SplashState extends State<SplashScreen> {
     SKU.getAllSku();
     Credentials.getCredentials();
     Credentials.getAdmins();
-    user = FirebaseAuth.instance.currentUser;
+    // user = FirebaseAuth.instance.currentUser;
+
     // if (user != null) {
     //   if (Credentials.isAdmin(user!.email.toString())) {
     //     Credentials.isUserAdmin = true;
@@ -37,12 +38,33 @@ class _SplashState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     Timer(
         Duration(seconds: splashScreenDuration),
-        () => {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          user == null ? Login() : HomePage()))
+        () =>
+        {
+              FirebaseAuth.instance.userChanges().listen((User? user) {
+                if (user == null) {
+                  print('User is currently signed out!');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Login()));
+                } else {
+                  print('User is signed in!');
+                  if (Credentials.isAdmin(user.email.toString())) {
+                    Credentials.isUserAdmin = true;
+                  } else {
+                    Credentials.isUserAdmin = false;
+                  }
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => HomePage()));
+                }
+              }),
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (BuildContext context) =>
+              //             user == null ? Login() : HomePage()))
             });
     return Scaffold(
       resizeToAvoidBottomInset: true,

@@ -3,6 +3,7 @@
 Project for Kellogg's Bisco Misr Cairo Plant
 
 ## deployment instructions :
+
 1. delete all contents of build/web
 
 2. Build for web :
