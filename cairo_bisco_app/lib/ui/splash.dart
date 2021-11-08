@@ -38,8 +38,7 @@ class _SplashState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     Timer(
         Duration(seconds: splashScreenDuration),
-        () =>
-        {
+        () => {
               FirebaseAuth.instance.userChanges().listen((User? user) {
                 if (user == null) {
                   print('User is currently signed out!');
