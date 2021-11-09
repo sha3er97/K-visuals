@@ -151,8 +151,7 @@ class SKU {
           'rm_cost': rm_cost,
           'pm_cost': pm_cost,
         })
-        .then((value) =>
-    {
+        .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text("SKU Updated"),
               )),
