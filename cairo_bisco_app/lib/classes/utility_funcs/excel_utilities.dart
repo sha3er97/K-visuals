@@ -77,7 +77,7 @@ class ExcelUtilities {
     } else {
       // NOT running on the web! You can check for additional platforms here.
       if (await Permission.storage.request().isGranted) {
-        fileName = "/storage/emulated/0/Download" + '/K viuals' + fileName;
+        fileName = "/storage/emulated/0/Download/" + 'K visuals/' + fileName;
         excel.encode().then((onValue) {
           File(fileName)
             ..createSync(recursive: true)
@@ -195,7 +195,7 @@ class ExcelUtilities {
               : (avgOverweight + getCorrespondingOverweight(report)) / 2)
           : avgOverweight;
       totScrap += calculateAllScrap(refNum, report);
-      totWeight += calculateAllWeight(refNum, report);
+      totWeight += calculateAllWeightFromOriginalReport(refNum, report);
       totCartons += report.productionInCartons;
       /////////////////////////////////////////////////////////////
       List<String> row = [
@@ -236,11 +236,11 @@ class ExcelUtilities {
         calculateAllScrap(refNum, report).toString(),
         (calculateAllRework(refNum, report) *
                 100 /
-                calculateAllWeight(refNum, report))
+                calculateAllWeightFromOriginalReport(refNum, report))
             .toStringAsFixed(1),
         (calculateAllScrap(refNum, report) *
                 100 /
-                calculateAllWeight(refNum, report))
+                calculateAllWeightFromOriginalReport(refNum, report))
             .toStringAsFixed(1),
         "Speed Loss",
         "Availability%",
@@ -367,7 +367,7 @@ class ExcelUtilities {
               : (avgOverweight + getCorrespondingOverweight(report)) / 2)
           : avgOverweight;
       totScrap += calculateAllScrap(refNum, report);
-      totWeight += calculateAllWeight(refNum, report);
+      totWeight += calculateAllWeightFromOriginalReport(refNum, report);
       totCartons += report.productionInCartons;
       /////////////////////////////////////////////////////////////
       List<String> row = [
@@ -408,11 +408,11 @@ class ExcelUtilities {
         calculateAllScrap(refNum, report).toString(),
         (calculateAllRework(refNum, report) *
                 100 /
-                calculateAllWeight(refNum, report))
+                calculateAllWeightFromOriginalReport(refNum, report))
             .toStringAsFixed(1),
         (calculateAllScrap(refNum, report) *
                 100 /
-                calculateAllWeight(refNum, report))
+                calculateAllWeightFromOriginalReport(refNum, report))
             .toStringAsFixed(1),
         "Speed Loss",
         "Availability%",
@@ -534,7 +534,7 @@ class ExcelUtilities {
               : (avgOverweight + getCorrespondingOverweight(report)) / 2)
           : avgOverweight;
       totScrap += calculateAllScrap(refNum, report);
-      totWeight += calculateAllWeight(refNum, report);
+      totWeight += calculateAllWeightFromOriginalReport(refNum, report);
       totCartons += report.productionInCartons;
       /////////////////////////////////////////////////////////////
       List<String> row = [
@@ -573,11 +573,11 @@ class ExcelUtilities {
         calculateAllScrap(refNum, report).toString(),
         (calculateAllRework(refNum, report) *
                 100 /
-                calculateAllWeight(refNum, report))
+                calculateAllWeightFromOriginalReport(refNum, report))
             .toStringAsFixed(1),
         (calculateAllScrap(refNum, report) *
                 100 /
-                calculateAllWeight(refNum, report))
+                calculateAllWeightFromOriginalReport(refNum, report))
             .toStringAsFixed(1),
         "Speed Loss",
         "Availability%",

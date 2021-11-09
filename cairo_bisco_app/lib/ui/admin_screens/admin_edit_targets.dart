@@ -18,7 +18,6 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
   bool showSpinner = false;
   String targetOverWeightAbove = Plans.targetOverWeightAbove.toString(),
       targetOEE = Plans.targetOEE.toString(),
-      scrapKgCost = Plans.scrapKgCost.toString(),
       monthlyNearMissTarget = Plans.monthlyNearMissTarget.toString(),
       mediumRisksBoundary = Plans.mediumRisksBoundary.toString(),
       highRisksBoundary = Plans.highRisksBoundary.toString(),
@@ -29,7 +28,6 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
 
   bool _targetOverWeightAbove_validate = false,
       _targetOEE_validate = false,
-      _scrapKgCost_validate = false,
       _monthlyNearMissTarget_validate = false,
       _mediumRisksBoundary_validate = false,
       _highRisksBoundary_validate = false,
@@ -195,49 +193,6 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                 ),
                                 onChanged: (value) {
                                   mpsaTarget = value;
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: defaultPadding),
-                        /////////////////////////////////////////////////////////////////////////
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            adminHeading('Scrap Kg Cost :'),
-                            SizedBox(width: minimumPadding),
-                            Expanded(
-                              child: TextFormField(
-                                initialValue: Plans.scrapKgCost.toString(),
-                                style: (TextStyle(
-                                    color: KelloggColors.darkBlue,
-                                    fontWeight: FontWeight.w400)),
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
-                                cursorColor: Colors.white,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: KelloggColors.darkBlue,
-                                        width: textFieldBorderRadius),
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(textFieldRadius)),
-                                  ),
-                                  errorText: _scrapKgCost_validate
-                                      ? missingValueErrorText
-                                      : null,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: KelloggColors.yellow,
-                                        width: textFieldFocusedBorderRadius),
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(textFieldRadius)),
-                                  ),
-                                ),
-                                onChanged: (value) {
-                                  scrapKgCost = value;
                                 },
                               ),
                             ),
@@ -529,8 +484,6 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                       emptyField(mediumRisksBoundary);
                                   _monthlyNearMissTarget_validate =
                                       emptyField(monthlyNearMissTarget);
-                                  _scrapKgCost_validate =
-                                      emptyField(scrapKgCost);
                                   _mpsaTarget_validate = emptyField(mpsaTarget);
                                   _targetOEE_validate = emptyField(targetOEE);
                                   _targetOverWeightAbove_validate =
@@ -546,7 +499,6 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                   if (!_highRisksBoundary_validate &&
                                       !_mediumRisksBoundary_validate &&
                                       !_monthlyNearMissTarget_validate &&
-                                      !_scrapKgCost_validate &&
                                       !_mpsaTarget_validate &&
                                       !_targetOEE_validate &&
                                       !_targetOverWeightAbove_validate &&
@@ -557,7 +509,6 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                       double.parse(targetOverWeightAbove),
                                       double.parse(targetOEE),
                                       double.parse(mpsaTarget),
-                                      double.parse(scrapKgCost),
                                       int.parse(monthlyNearMissTarget),
                                       int.parse(mediumRisksBoundary),
                                       int.parse(highRisksBoundary),

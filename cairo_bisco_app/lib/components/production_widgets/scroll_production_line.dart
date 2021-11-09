@@ -316,8 +316,8 @@ class ProductionLine extends StatelessWidget {
                     textStyle: TextStyle(
                         fontSize: largeButtonFont, fontFamily: 'MyFont'),
                     primary: BadOverweightDriver(overweight)
-                        ? KelloggColors.green
-                        : KelloggColors.cockRed,
+                        ? KelloggColors.cockRed
+                        : KelloggColors.green,
                   ),
                   icon: ClipRRect(
                     borderRadius: BorderRadius.circular(iconImageBorder),
@@ -385,7 +385,7 @@ class ProductionLine extends StatelessWidget {
             ],
           ),
           Center(
-            child: Text('Loss due to scrap (EGP)',
+            child: Text('RM MUV (EGP)',
                 style: TextStyle(
                     fontSize: largeFontSize,
                     fontWeight: FontWeight.bold,
@@ -399,12 +399,11 @@ class ProductionLine extends StatelessWidget {
                 constraints: BoxConstraints.tightFor(height: regularBoxHeight),
                 child: ElevatedButton.icon(
                   label: Text(
-                      calculateScrapMoney(report.scrap).toStringAsFixed(1) +
-                          " K EGP "),
+                      (report.rmMUV / 1000).toStringAsFixed(2) + " K EGP "),
                   style: ElevatedButton.styleFrom(
                     textStyle: TextStyle(
                         fontSize: largeButtonFont, fontFamily: 'MyFont'),
-                    primary: BadFinanceDriver(report)
+                    primary: report.rmMUV > 0
                         ? KelloggColors.cockRed
                         : KelloggColors.green,
                   ),

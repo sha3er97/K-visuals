@@ -374,7 +374,9 @@ class BiscuitsReport {
         temp_wasted_film = 0.0,
         temp_productionInKg = 0.0,
         temp_rework = 0.0,
-        temp_theoreticalPlan = 0.0;
+        temp_theoreticalPlan = 0.0,
+        temp_rm_muv = 0.0,
+        temp_pm_muv = 0.0;
     int temp_productionInCartons = 0, temp_productionPlan = 0;
     String lastSkuName = '-';
     // String lastSkuName = SKU.biscuitSKU[0];
@@ -405,8 +407,8 @@ class BiscuitsReport {
         print(theoreticals);
         //all shifts in one line in one area
         temp_productionInCartons += report.data().productionInCartons;
-        temp_productionInKg += report.data().productionInCartons *
-            SKU.skuDetails[report.data().skuName]!.cartonWeight;
+        temp_productionInKg += calculateProductionKg(
+            report.data(), report.data().productionInCartons);
 
         temp_theoreticalPlan += theoreticals[report.data().line_index - 1];
 
@@ -416,6 +418,9 @@ class BiscuitsReport {
         temp_wasted_film += report.data().mc2WasteKg + report.data().mc1WasteKg;
         temp_used_film += report.data().mc2FilmUsed + report.data().mc1FilmUsed;
         lastSkuName = report.data().skuName;
+        temp_rm_muv += calculateRmMUV(WAFER_AREA, report.data());
+        temp_pm_muv += calculatePmMUV(WAFER_AREA, report.data());
+
         print('debug :: BiscuitsReport chosen in first if');
       } else {
         print(
@@ -443,6 +448,8 @@ class BiscuitsReport {
       // theoreticalAverage: temp_theoreticalPlan == 0 ? 1 : temp_theoreticalPlan,
       shiftProductionPlan: temp_productionPlan,
       theoreticalAverage: temp_theoreticalPlan,
+      pmMUV: temp_pm_muv,
+      rmMUV: temp_rm_muv,
     );
   }
 

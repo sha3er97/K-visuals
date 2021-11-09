@@ -11,7 +11,6 @@ class Plans {
   static double targetOverWeightAbove = 0.1;
   static double targetOEE = 20.0;
   static double mpsaTarget = 20.0;
-  static double scrapKgCost = 10.5;
   static double target_absence = 0.1;
   static int monthlyNearMissTarget = 5;
   static int mediumRisksBoundary = 5;
@@ -24,7 +23,6 @@ class Plans {
     double targetOverWeightAbove,
     double targetOEE,
     double mpsaTarget,
-    double scrapKgCost,
     int monthlyNearMissTarget,
     int mediumRisksBoundary,
     int highRisksBoundary,
@@ -39,7 +37,6 @@ class Plans {
           'targetOverWeightAbove': targetOverWeightAbove,
           'targetOEE': targetOEE,
           'mpsaTarget': mpsaTarget,
-          'scrapKgCost': scrapKgCost,
           'monthlyNearMissTarget': monthlyNearMissTarget,
           'mediumRisksBoundary': mediumRisksBoundary,
           'highRisksBoundary': highRisksBoundary,
@@ -73,7 +70,6 @@ class Plans {
         Plans.targetOverWeightAbove =
             documentSnapshot["targetOverWeightAbove"].toDouble();
         Plans.targetOEE = documentSnapshot["targetOEE"].toDouble();
-        Plans.scrapKgCost = documentSnapshot["scrapKgCost"].toDouble();
         Plans.monthlyNearMissTarget =
             documentSnapshot["monthlyNearMissTarget"].toInt();
         Plans.mediumRisksBoundary =

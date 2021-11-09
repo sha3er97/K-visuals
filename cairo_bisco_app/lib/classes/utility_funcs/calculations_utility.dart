@@ -32,8 +32,6 @@ double parseJsonToDouble(dynamic dAmount) {
 
 /***************************KPIS Calculator***********************************************/
 double calculateMPSA(num plan, num done) {
-  // if (done == 0) return 0.0;
-  // return ((plan - cartons).abs().toDouble() * 100) / max(plan, cartons);
   return (min(plan, done).toDouble() * 100) / max(plan, done);
 }
 
@@ -41,8 +39,31 @@ double calculateOeeFromMiniReport(MiniProductionReport report) {
   return (report.productionInKg.toDouble() / report.theoreticalAverage) * 100;
 }
 
-double calculateScrapMoney(double scrap) {
-  return scrap * Plans.scrapKgCost;
+double calculateRmMUV(int refNum, report) {
+  if (report.productionInCartons == 0) return 0.0;
+  //todo :: check the equation
+  double target = calculateAllWeightFromOriginalReport(refNum, report) *
+      (SKU.skuDetails[report.skuName]!.targetScrap / 100);
+  return ((calculateAllScrap(refNum, report) - target) /
+          SKU.skuDetails[report.skuName]!.cartonWeight) *
+      SKU.skuDetails[report.skuName]!.rm_cost;
+}
+
+double calculatePmMUV(int refNum, report) {
+  if (report.productionInCartons == 0) return 0.0;
+  //todo :: check the equation
+  double target = calculateAllUsedFilmWaste(report) *
+      (SKU.skuDetails[report.skuName]!.targetFilmWaste / 100);
+  return (calculateAllWastedFilmWaste(report) - target) *
+      SKU.skuDetails[report.skuName]!.pm_cost;
+}
+
+double calculateAllUsedFilmWaste(report) {
+  return report.mc1FilmUsed + report.mc2FilmUsed;
+}
+
+double calculateAllWastedFilmWaste(report) {
+  return report.mc1WasteKg + report.mc2WasteKg;
 }
 
 double calculateWastePercent(double used, double wasted) {
@@ -50,9 +71,7 @@ double calculateWastePercent(double used, double wasted) {
 }
 
 double calculateScrapPercent(MiniProductionReport report) {
-  return report.scrap *
-      100 /
-      (report.scrap + report.rework + report.productionInKg);
+  return report.scrap * 100 / calculateAllWeightFromMiniReport(report);
 }
 
 double calculateAllScrap(refNum, report) {
@@ -101,10 +120,14 @@ double calculateAllRework(refNum, report) {
   return 0;
 }
 
-double calculateAllWeight(refNum, report) {
+double calculateAllWeightFromOriginalReport(refNum, report) {
   return calculateAllRework(refNum, report) +
       calculateAllScrap(refNum, report) +
       report.productionInCartons * SKU.skuDetails[report.skuName]!.cartonWeight;
+}
+
+double calculateAllWeightFromMiniReport(MiniProductionReport report) {
+  return report.scrap + report.rework + report.productionInKg;
 }
 
 double calculateOeeFromOriginalReport(report, theoreticalKg) {

@@ -273,12 +273,11 @@ class ProductionColScreen extends StatelessWidget {
                           BoxConstraints.tightFor(height: regularBoxHeight),
                       child: ElevatedButton.icon(
                         label: Text(" الف جنيه " +
-                            calculateScrapMoney(report.scrap)
-                                .toStringAsFixed(1)),
+                            (report.rmMUV / 1000).toStringAsFixed(2)),
                         style: ElevatedButton.styleFrom(
                           textStyle: TextStyle(
                               fontSize: largeButtonFont, fontFamily: 'MyFont'),
-                          primary: BadFinanceDriver(report)
+                          primary: report.rmMUV > 0
                               ? KelloggColors.cockRed
                               : KelloggColors.green,
                         ),

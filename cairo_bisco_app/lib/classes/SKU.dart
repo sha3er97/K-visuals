@@ -36,19 +36,24 @@ class SKU {
   final double theoreticalShiftProd1,
       theoreticalShiftProd2,
       theoreticalShiftProd3,
-      theoreticalShiftProd4;
+      theoreticalShiftProd4,
+      rm_cost, //cost for one carton of scrap
+      pm_cost; // cost of film waste (pack Muv
   final int boxesPerCarton;
 
-  SKU(
-      {required this.name,
-      required this.cartonWeight,
-      required this.theoreticalShiftProd1,
-      required this.theoreticalShiftProd2,
-      required this.theoreticalShiftProd3,
-      required this.theoreticalShiftProd4,
-      required this.targetScrap,
-      required this.boxesPerCarton,
-      required this.targetFilmWaste});
+  SKU({
+    required this.name,
+    required this.cartonWeight,
+    required this.theoreticalShiftProd1,
+    required this.theoreticalShiftProd2,
+    required this.theoreticalShiftProd3,
+    required this.theoreticalShiftProd4,
+    required this.targetScrap,
+    required this.boxesPerCarton,
+    required this.targetFilmWaste,
+    required this.rm_cost,
+    required this.pm_cost,
+  });
 
   SKU.fromJson(Map<String, Object?> json)
       : this(
@@ -65,6 +70,8 @@ class SKU {
               parseJsonToDouble(json['theoreticalShiftProd4']!),
           targetScrap: parseJsonToDouble(json['targetScrap']!),
           targetFilmWaste: parseJsonToDouble(json['targetFilmWaste']!),
+          rm_cost: parseJsonToDouble(json['rm_cost']!),
+          pm_cost: parseJsonToDouble(json['pm_cost']!),
         );
 
   Map<String, Object?> toJson() {
@@ -78,46 +85,57 @@ class SKU {
       'targetScrap': targetScrap,
       'boxesPerCarton': boxesPerCarton,
       'targetFilmWaste': targetFilmWaste,
+      'rm_cost': rm_cost,
+      'pm_cost': pm_cost,
     };
   }
 
   static void addSKU(
-      int refNum,
-      String name,
-      double cartonWeight,
-      double theoreticalShiftProd1,
-      double theoreticalShiftProd2,
-      double theoreticalShiftProd3,
-      double theoreticalShiftProd4,
-      double targetScrap,
-      double targetFilmWaste,
-      int boxesPerCarton) async {
+    int refNum,
+    String name,
+    double cartonWeight,
+    double theoreticalShiftProd1,
+    double theoreticalShiftProd2,
+    double theoreticalShiftProd3,
+    double theoreticalShiftProd4,
+    double targetScrap,
+    double targetFilmWaste,
+    int boxesPerCarton,
+    double rm_cost,
+    double pm_cost,
+  ) async {
     await RefSkuArr[refNum].add(
       SKU(
-          name: name,
-          cartonWeight: cartonWeight,
-          theoreticalShiftProd1: theoreticalShiftProd1,
-          theoreticalShiftProd2: theoreticalShiftProd2,
-          theoreticalShiftProd3: theoreticalShiftProd3,
-          theoreticalShiftProd4: theoreticalShiftProd4,
-          targetScrap: targetScrap,
-          boxesPerCarton: boxesPerCarton,
-          targetFilmWaste: targetFilmWaste),
+        name: name,
+        cartonWeight: cartonWeight,
+        theoreticalShiftProd1: theoreticalShiftProd1,
+        theoreticalShiftProd2: theoreticalShiftProd2,
+        theoreticalShiftProd3: theoreticalShiftProd3,
+        theoreticalShiftProd4: theoreticalShiftProd4,
+        targetScrap: targetScrap,
+        boxesPerCarton: boxesPerCarton,
+        targetFilmWaste: targetFilmWaste,
+        rm_cost: rm_cost,
+        pm_cost: pm_cost,
+      ),
     );
   }
 
   static Future<void> editSKU(
-      context,
-      int refNum,
-      String name,
-      double cartonWeight,
-      double theoreticalShiftProd1,
-      double theoreticalShiftProd2,
-      double theoreticalShiftProd3,
-      double theoreticalShiftProd4,
-      double targetScrap,
-      double targetFilmWaste,
-      int boxesPerCarton) {
+    context,
+    int refNum,
+    String name,
+    double cartonWeight,
+    double theoreticalShiftProd1,
+    double theoreticalShiftProd2,
+    double theoreticalShiftProd3,
+    double theoreticalShiftProd4,
+    double targetScrap,
+    double targetFilmWaste,
+    int boxesPerCarton,
+    double rm_cost,
+    double pm_cost,
+  ) {
     return RefSkuArr[refNum]
         .doc(skuDocumentNames[name])
         .update({
@@ -130,14 +148,16 @@ class SKU {
           'targetScrap': targetScrap,
           'boxesPerCarton': boxesPerCarton,
           'targetFilmWaste': targetFilmWaste,
+          'rm_cost': rm_cost,
+          'pm_cost': pm_cost,
         })
-        .then((value) => {
+        .then((value) =>
+    {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text("SKU Updated"),
               )),
               getAllSku(),
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+              Navigator.pop(context),
             })
         .catchError((error) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -219,7 +239,6 @@ class SKU {
     getSKU(WAFER_AREA, waferSKU);
     maamoulSKU.clear();
     getSKU(MAAMOUL_AREA, maamoulSKU);
-    print("skus fetched");
   }
 
   static void getSKU(refNum, skuNamesList) async {
