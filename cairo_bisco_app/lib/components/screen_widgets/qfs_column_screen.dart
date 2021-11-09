@@ -1,4 +1,5 @@
 import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
+import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
@@ -89,12 +90,12 @@ class QFSColScreen extends StatelessWidget {
               GaugeRange(
                   startValue: 0,
                   endValue: noWork
-                      ? maxScrap / 2
+                      ? Plans.universalTargetScrap
                       : SKU.skuDetails[report.skuName]!.targetScrap,
                   color: KelloggColors.successGreen),
               GaugeRange(
                   startValue: noWork
-                      ? maxScrap / 2
+                      ? Plans.universalTargetScrap
                       : SKU.skuDetails[report.skuName]!.targetScrap,
                   endValue: maxScrap,
                   color: KelloggColors.clearRed)

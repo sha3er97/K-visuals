@@ -41,7 +41,8 @@ class ProductionLine extends StatelessWidget {
     String arrowImg4 = noWork
         ? "up"
         : calculateMPSA(
-                    report.shiftProductionPlan, report.productionInCartons) >
+                    calculateProductionKg(report, report.shiftProductionPlan),
+                    calculateProductionKg(report, report.productionInCartons)) >
                 Plans.mpsaTarget
             ? "up"
             : "down";
@@ -268,14 +269,14 @@ class ProductionLine extends StatelessWidget {
                     GaugeRange(
                         startValue: 0,
                         endValue: noWork
-                            ? maxScrap / 2
+                            ? Plans.universalTargetScrap
                             : (isTotal
                                 ? Plans.universalTargetScrap
                                 : SKU.skuDetails[report.skuName]!.targetScrap),
                         color: KelloggColors.successGreen),
                     GaugeRange(
                         startValue: noWork
-                            ? maxScrap / 2
+                            ? Plans.universalTargetScrap
                             : (isTotal
                                 ? Plans.universalTargetScrap
                                 : SKU.skuDetails[report.skuName]!.targetScrap),
@@ -345,7 +346,7 @@ class ProductionLine extends StatelessWidget {
             enableLoadingAnimation: true,
             animationDuration: 2000,
             axes: <RadialAxis>[
-              RadialAxis(minimum: 0, maximum: maxScrap, pointers: <
+              RadialAxis(minimum: 0, maximum: maxFilmWaste, pointers: <
                   GaugePointer>[
                 NeedlePointer(
                     value: calculateWastePercent(
@@ -355,14 +356,14 @@ class ProductionLine extends StatelessWidget {
                 GaugeRange(
                     startValue: 0,
                     endValue: noWork
-                        ? maxFilmWaste / 2
+                        ? Plans.universalTargetFilmWaste
                         : (isTotal
                             ? Plans.universalTargetFilmWaste
                             : SKU.skuDetails[report.skuName]!.targetFilmWaste),
                     color: KelloggColors.successGreen),
                 GaugeRange(
                     startValue: noWork
-                        ? maxFilmWaste / 2
+                        ? Plans.universalTargetFilmWaste
                         : (isTotal
                             ? Plans.universalTargetFilmWaste
                             : SKU.skuDetails[report.skuName]!.targetFilmWaste),
@@ -438,8 +439,11 @@ class ProductionLine extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: BoxConstraints.tightFor(height: regularBoxHeight),
                 child: ElevatedButton.icon(
-                  label: Text(calculateMPSA(report.shiftProductionPlan,
-                              report.productionInCartons)
+                  label: Text(calculateMPSA(
+                              calculateProductionKg(
+                                  report, report.shiftProductionPlan),
+                              calculateProductionKg(
+                                  report, report.productionInCartons))
                           .toStringAsFixed(1) +
                       " %"),
                   style: ElevatedButton.styleFrom(
@@ -447,8 +451,11 @@ class ProductionLine extends StatelessWidget {
                         fontSize: largeButtonFont, fontFamily: 'MyFont'),
                     primary: noWork
                         ? KelloggColors.green
-                        : calculateMPSA(report.shiftProductionPlan,
-                                    report.productionInCartons) >
+                        : calculateMPSA(
+                                    calculateProductionKg(
+                                        report, report.shiftProductionPlan),
+                                    calculateProductionKg(
+                                        report, report.productionInCartons)) >
                                 Plans.mpsaTarget
                             ? KelloggColors.green
                             : KelloggColors.cockRed,

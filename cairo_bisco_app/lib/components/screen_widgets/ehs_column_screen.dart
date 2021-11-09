@@ -1,4 +1,5 @@
 import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
+import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
@@ -98,37 +99,43 @@ class EHSColScreen extends StatelessWidget {
           enableLoadingAnimation: true,
           animationDuration: 2000,
           axes: <RadialAxis>[
-            RadialAxis(minimum: 0, maximum: maxScrap, pointers: <GaugePointer>[
-              NeedlePointer(
-                  value: calculateWastePercent(
-                      report.totalFilmUsed, report.totalFilmWasted),
-                  enableAnimation: true)
-            ], ranges: <GaugeRange>[
-              GaugeRange(
-                  startValue: 0,
-                  endValue: noWork
-                      ? maxFilmWaste / 2
-                      : SKU.skuDetails[report.skuName]!.targetFilmWaste,
-                  color: KelloggColors.successGreen),
-              GaugeRange(
-                  startValue: noWork
-                      ? maxFilmWaste / 2
-                      : SKU.skuDetails[report.skuName]!.targetFilmWaste,
-                  endValue: maxFilmWaste,
-                  color: KelloggColors.clearRed)
-            ], annotations: <GaugeAnnotation>[
-              GaugeAnnotation(
-                  widget: Text(
-                    calculateWastePercent(
-                                report.totalFilmUsed, report.totalFilmWasted)
-                            .toStringAsFixed(1) +
-                        ' %',
-                    style: TextStyle(
-                        fontSize: largeFontSize, fontWeight: FontWeight.bold),
-                  ),
-                  positionFactor: 0.5,
-                  angle: 90)
-            ])
+            RadialAxis(
+                minimum: 0,
+                maximum: maxFilmWaste,
+                pointers: <GaugePointer>[
+                  NeedlePointer(
+                      value: calculateWastePercent(
+                          report.totalFilmUsed, report.totalFilmWasted),
+                      enableAnimation: true)
+                ],
+                ranges: <GaugeRange>[
+                  GaugeRange(
+                      startValue: 0,
+                      endValue: noWork
+                          ? Plans.universalTargetFilmWaste
+                          : SKU.skuDetails[report.skuName]!.targetFilmWaste,
+                      color: KelloggColors.successGreen),
+                  GaugeRange(
+                      startValue: noWork
+                          ? Plans.universalTargetFilmWaste
+                          : SKU.skuDetails[report.skuName]!.targetFilmWaste,
+                      endValue: maxFilmWaste,
+                      color: KelloggColors.clearRed)
+                ],
+                annotations: <GaugeAnnotation>[
+                  GaugeAnnotation(
+                      widget: Text(
+                        calculateWastePercent(report.totalFilmUsed,
+                                    report.totalFilmWasted)
+                                .toStringAsFixed(1) +
+                            ' %',
+                        style: TextStyle(
+                            fontSize: largeFontSize,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      positionFactor: 0.5,
+                      angle: 90)
+                ])
           ],
         ),
       ],

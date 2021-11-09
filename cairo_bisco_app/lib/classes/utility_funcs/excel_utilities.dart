@@ -171,7 +171,7 @@ class ExcelUtilities {
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd4
       ];
       totTheoreticals += theoreticals[report.line_index - 1];
-      totKg += calculateProductionKg(report);
+      totKg += calculateProductionKg(report, report.productionInCartons);
       totRework += calculateAllRework(refNum, report);
       totExtrusionRework += report.extrusionRework;
       totExtrusionScrap += report.extrusionScrap;
@@ -208,7 +208,7 @@ class ExcelUtilities {
         theoreticals[report.line_index - 1].toString(),
         "Kg",
         report.actualSpeed.toString(),
-        calculateProductionKg(report).toString(),
+        calculateProductionKg(report, report.productionInCartons).toString(),
         calculateAllRework(refNum, report).toString(),
         report.extrusionRework.toString(),
         report.extrusionScrap.toString(),
@@ -249,7 +249,7 @@ class ExcelUtilities {
                 report, theoreticals[report.line_index - 1])
             .toStringAsFixed(1),
         doesHaveCorrespondingOverweight(report)
-            ? (calculateProductionKg(report) *
+            ? (calculateProductionKg(report, report.productionInCartons) *
                     getCorrespondingOverweight(report))
                 .toStringAsFixed(1)
             : "-",
@@ -343,7 +343,7 @@ class ExcelUtilities {
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd4
       ];
       totTheoreticals += theoreticals[report.line_index - 1];
-      totKg += calculateProductionKg(report);
+      totKg += calculateProductionKg(report, report.productionInCartons);
       totRework += calculateAllRework(refNum, report);
       totCreamRework += report.creamRework;
       totCreamScrap += report.creamScrap;
@@ -380,7 +380,7 @@ class ExcelUtilities {
         theoreticals[report.line_index - 1].toString(),
         "Kg",
         report.actualSpeed.toString(),
-        calculateProductionKg(report).toString(),
+        calculateProductionKg(report, report.productionInCartons).toString(),
         calculateAllRework(refNum, report).toString(),
         report.ovenRework.toString(),
         report.ovenScrap.toString(),
@@ -421,7 +421,7 @@ class ExcelUtilities {
                 report, theoreticals[report.line_index - 1])
             .toStringAsFixed(1),
         doesHaveCorrespondingOverweight(report)
-            ? (calculateProductionKg(report) *
+            ? (calculateProductionKg(report, report.productionInCartons) *
                     getCorrespondingOverweight(report))
                 .toStringAsFixed(1)
             : "-",
@@ -512,7 +512,7 @@ class ExcelUtilities {
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd4
       ];
       totTheoreticals += theoreticals[report.line_index - 1];
-      totKg += calculateProductionKg(report);
+      totKg += calculateProductionKg(report, report.productionInCartons);
       totRework += calculateAllRework(refNum, report);
       totMixerRework += report.mixerRework;
       totMixerScrap += report.mixerScrap;
@@ -547,7 +547,7 @@ class ExcelUtilities {
         theoreticals[report.line_index - 1].toString(),
         "Kg",
         report.actualSpeed.toString(),
-        calculateProductionKg(report).toString(),
+        calculateProductionKg(report, report.productionInCartons).toString(),
         calculateAllRework(refNum, report).toString(),
         report.mixerRework.toString(),
         report.mixerScrap.toString(),
@@ -586,7 +586,7 @@ class ExcelUtilities {
                 report, theoreticals[report.line_index - 1])
             .toStringAsFixed(1),
         doesHaveCorrespondingOverweight(report)
-            ? (calculateProductionKg(report) *
+            ? (calculateProductionKg(report, report.productionInCartons) *
                     getCorrespondingOverweight(report))
                 .toStringAsFixed(1)
             : "-",

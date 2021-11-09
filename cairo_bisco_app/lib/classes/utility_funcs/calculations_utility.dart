@@ -31,10 +31,10 @@ double parseJsonToDouble(dynamic dAmount) {
 }
 
 /***************************KPIS Calculator***********************************************/
-double calculateMPSA(int plan, int cartons) {
-  if (cartons == 0) return 0.0;
+double calculateMPSA(num plan, num done) {
+  // if (done == 0) return 0.0;
   // return ((plan - cartons).abs().toDouble() * 100) / max(plan, cartons);
-  return (min(plan, cartons).toDouble() * 100) / max(plan, cartons);
+  return (min(plan, done).toDouble() * 100) / max(plan, done);
 }
 
 double calculateOeeFromMiniReport(MiniProductionReport report) {
@@ -108,16 +108,18 @@ double calculateAllWeight(refNum, report) {
 }
 
 double calculateOeeFromOriginalReport(report, theoreticalKg) {
-  return (calculateProductionKg(report) / theoreticalKg) * 100;
+  return (calculateProductionKg(report, report.productionInCartons) /
+          theoreticalKg) *
+      100;
 }
 
 double calculateOeeFromRawNumbers(prodKg, theoreticalKg) {
   return (prodKg / theoreticalKg) * 100;
 }
 
-double calculateProductionKg(report) {
-  return (report.productionInCartons *
-      SKU.skuDetails[report.skuName]!.cartonWeight);
+double calculateProductionKg(report, int cartons) {
+  if (cartons == 0) return 0.0;
+  return (cartons * SKU.skuDetails[report.skuName]!.cartonWeight);
 }
 
 String calculateDifferenceInCartonsTarget(MiniProductionReport report) {
@@ -148,7 +150,8 @@ bool BadProductionDriver(MiniProductionReport report) {
     return false;
   else
     return calculateMPSA(
-                report.shiftProductionPlan, report.productionInCartons) <
+                calculateProductionKg(report, report.shiftProductionPlan),
+                calculateProductionKg(report, report.productionInCartons)) <
             Plans.mpsaTarget ||
         calculateOeeFromMiniReport(report) < Plans.targetOEE;
 }
