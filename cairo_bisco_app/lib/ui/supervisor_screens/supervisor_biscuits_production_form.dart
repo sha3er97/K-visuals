@@ -426,7 +426,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         sectionWithDivider('الانتاج Production'),
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading(
-                            'خطة انتاج الوردية\nShift Production Plan'),
+                            'خطة انتاج الوردية بالكراتين\nShift Production Plan'),
                         SizedBox(height: minimumPadding),
                         TextFormField(
                           initialValue: shiftProductionPlan,

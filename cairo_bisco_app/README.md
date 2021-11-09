@@ -17,3 +17,7 @@ Project for Kellogg's Bisco Misr Cairo Plant
    > firebase deploy --only hosting:bisco-k-visuals
 7. Use [deployment URL](https://bisco-k-visuals.web.app)
    > https://bisco-k-visuals.web.app
+
+## export apk
+
+> flutter build apk --no-sound-null-safety

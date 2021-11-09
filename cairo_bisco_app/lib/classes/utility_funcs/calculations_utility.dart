@@ -120,6 +120,17 @@ double calculateProductionKg(report) {
       SKU.skuDetails[report.skuName]!.cartonWeight);
 }
 
+String calculateDifferenceInCartonsTarget(MiniProductionReport report) {
+  bool noWork = report.productionInCartons == 0;
+  bool prodTargetDone =
+      noWork || report.productionInCartons - report.shiftProductionPlan >= 0;
+  return (prodTargetDone ? "" : "-") +
+      (report.productionInCartons - report.shiftProductionPlan)
+          .abs()
+          .toString() +
+      " C";
+}
+
 /************************************DRIVERS*************************************************/
 bool BadQFSDriver(QfsReport report) {
   return report.quality_incidents > 0 || report.food_safety_incidents > 0;

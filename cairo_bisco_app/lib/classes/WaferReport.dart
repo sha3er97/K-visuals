@@ -436,10 +436,13 @@ class WaferReport {
       productionInCartons: temp_productionInCartons,
       productionInKg: temp_productionInKg,
       totalFilmWasted: temp_wasted_film,
-      totalFilmUsed: temp_used_film == 0 ? 1 : temp_used_film,
+      // totalFilmUsed: temp_used_film == 0 ? 1 : temp_used_film,
+      totalFilmUsed: temp_used_film,
       rework: temp_rework,
-      shiftProductionPlan: temp_productionPlan == 0 ? 1 : temp_productionPlan,
-      theoreticalAverage: temp_theoreticalPlan == 0 ? 1 : temp_theoreticalPlan,
+      // shiftProductionPlan: temp_productionPlan == 0 ? 1 : temp_productionPlan,
+      // theoreticalAverage: temp_theoreticalPlan == 0 ? 1 : temp_theoreticalPlan,
+      shiftProductionPlan: temp_productionPlan,
+      theoreticalAverage: temp_theoreticalPlan,
     );
   }
 

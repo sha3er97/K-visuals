@@ -74,9 +74,7 @@ class ProductionLine extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subHeading((report.productionInCartons / 1000)
-                              .toStringAsFixed(1) +
-                          " K"),
+                      subHeading(report.productionInCartons.toString()),
                     ],
                   ),
                 ),
@@ -97,7 +95,7 @@ class ProductionLine extends StatelessWidget {
                         ),
                       ),
                       subHeading(
-                          (report.productionInKg / 1000).toStringAsFixed(1) +
+                          (report.productionInKg / 1000).toStringAsFixed(2) +
                               " K"),
                     ],
                   ),
@@ -152,14 +150,7 @@ class ProductionLine extends StatelessWidget {
                                 // crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    (prodTargetDone ? "" : "-") +
-                                        ((report.productionInCartons -
-                                                        report
-                                                            .shiftProductionPlan)
-                                                    .abs() /
-                                                1000)
-                                            .toStringAsFixed(2) +
-                                        " K",
+                                    calculateDifferenceInCartonsTarget(report),
                                     style: TextStyle(
                                       color: prodTargetDone
                                           ? KelloggColors.green
@@ -393,7 +384,7 @@ class ProductionLine extends StatelessWidget {
             ],
           ),
           Center(
-            child: Text('Scrap Cost (EGP)',
+            child: Text('Loss due to scrap (EGP)',
                 style: TextStyle(
                     fontSize: largeFontSize,
                     fontWeight: FontWeight.bold,
