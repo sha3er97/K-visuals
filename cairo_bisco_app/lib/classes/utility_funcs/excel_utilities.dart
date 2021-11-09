@@ -251,7 +251,7 @@ class ExcelUtilities {
         doesHaveCorrespondingOverweight(report)
             ? (calculateProductionKg(report) *
                     getCorrespondingOverweight(report))
-                .toString()
+                .toStringAsFixed(1)
             : "-",
         report.productionInCartons.toString(),
         report.month.toString(),
@@ -423,7 +423,7 @@ class ExcelUtilities {
         doesHaveCorrespondingOverweight(report)
             ? (calculateProductionKg(report) *
                     getCorrespondingOverweight(report))
-                .toString()
+                .toStringAsFixed(1)
             : "-",
         report.productionInCartons.toString(),
         report.month.toString(),
@@ -588,7 +588,7 @@ class ExcelUtilities {
         doesHaveCorrespondingOverweight(report)
             ? (calculateProductionKg(report) *
                     getCorrespondingOverweight(report))
-                .toString()
+                .toStringAsFixed(1)
             : "-",
         report.productionInCartons.toString(),
         report.month.toString(),
