@@ -23,6 +23,8 @@ class Credentials {
   static List<String> admin_emails = [];
   static bool isUserAdmin = false;
 
+  static Map<String, String> adminDocumentNames = new Map<String, String>();
+
   static bool isAdmin(String email) {
     return admin_emails.contains(email.trim());
   }
@@ -32,18 +34,20 @@ class Credentials {
       List<QueryDocumentSnapshot<Admin>> adminDocsList =
           snapshot.docs as List<QueryDocumentSnapshot<Admin>>;
       for (var admin in adminDocsList) {
-        if (!admin_emails.contains(admin.data().email))
+        if (!admin_emails.contains(admin.data().email)) {
           admin_emails.add(admin.data().email);
+          adminDocumentNames[admin.data().email.toString()] = admin.id;
+        }
       }
       print("admins fetched");
     });
   }
 
-  static void addAdmin(
+  static Future<void> addAdmin(
     context,
     String email,
-  ) async {
-    await adminsRef
+  ) {
+    return adminsRef
         .add(Admin(email: email))
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -55,6 +59,29 @@ class Credentials {
         .catchError((error) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text("Failed to add Email: $error"),
+              ))
+            });
+    ;
+  }
+
+  static Future<void> deleteAdmin(
+    context,
+    String email,
+  ) {
+    return adminsRef
+        .doc(adminDocumentNames[email])
+        .delete()
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Email Deleted"),
+              )),
+              admin_emails.clear(),
+              getAdmins(),
+              // Navigator.pop(context),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to delete Email: $error"),
               ))
             });
     ;

@@ -3,6 +3,7 @@ import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/components/alert_dialog.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:flutter/material.dart';
@@ -143,6 +144,16 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
                               return ListTile(
                                 title: adminHeading(
                                     Credentials.admin_emails[index]),
+                                leading: IconButton(
+                                  icon: const Icon(Icons.close),
+                                  color: KelloggColors.cockRed,
+                                  onPressed: () {
+                                    confirmDeleteAlertDialog(context, email);
+                                  },
+                                ),
+                                // leading: deleteBtn(
+                                //   email: Credentials.admin_emails[index],
+                                // ),
                               );
                             }),
                       ],
