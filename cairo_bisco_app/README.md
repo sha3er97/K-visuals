@@ -20,4 +20,8 @@ Project for Kellogg's Bisco Misr Cairo Plant
 
 ## export apk
 
-> flutter build apk --no-sound-null-safety
+> flutter build apk --release --no-sound-null-safety
+
+## export app bundle
+
+> flutter build appbundle --no-sound-null-safety
