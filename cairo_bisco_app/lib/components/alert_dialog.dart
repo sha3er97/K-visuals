@@ -22,7 +22,7 @@ showExcelAlertDialog(BuildContext context, bool success, String fileName) {
   AlertDialog alert = AlertDialog(
     title: Text("Excel Reports"),
     content:
-    Text(success ? excelSuccessMsg + " in  $fileName" : excelFailureMsg),
+        Text(success ? excelSuccessMsg + " in  $fileName" : excelFailureMsg),
     actions: [
       okButton,
     ],
