@@ -148,7 +148,8 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
                                   icon: const Icon(Icons.close),
                                   color: KelloggColors.cockRed,
                                   onPressed: () {
-                                    confirmDeleteAlertDialog(context, email);
+                                    confirmDeleteAlertDialog(context,
+                                        Credentials.admin_emails[index]);
                                   },
                                 ),
                                 // leading: deleteBtn(
