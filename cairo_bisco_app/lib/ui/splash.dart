@@ -5,6 +5,7 @@ import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/components/alert_dialog.dart';
 import 'package:cairo_bisco_app/ui/homePage.dart';
 import 'package:cairo_bisco_app/ui/login_screens/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,23 +41,28 @@ class _SplashState extends State<SplashScreen> {
         Duration(seconds: splashScreenDuration),
         () => {
               FirebaseAuth.instance.userChanges().listen((User? user) {
-                if (user == null) {
-                  print('User is currently signed out!');
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Login()));
+                if (Credentials.lastVersionCode > versionCode) {
+                  //play store has a newer update
+                  showForceUpdateAlertDialog(context);
                 } else {
-                  print('User is signed in!');
-                  if (Credentials.isAdmin(user.email.toString())) {
-                    Credentials.isUserAdmin = true;
+                  if (user == null) {
+                    print('User is currently signed out!');
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => Login()));
                   } else {
-                    Credentials.isUserAdmin = false;
+                    print('User is signed in!');
+                    if (Credentials.isAdmin(user.email.toString())) {
+                      Credentials.isUserAdmin = true;
+                    } else {
+                      Credentials.isUserAdmin = false;
+                    }
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => HomePage()));
                   }
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => HomePage()));
                 }
               }),
               // Navigator.push(

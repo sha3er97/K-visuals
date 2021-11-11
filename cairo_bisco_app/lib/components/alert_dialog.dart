@@ -1,30 +1,18 @@
-import 'package:cairo_bisco_app/classes/Credentials.dart';
-import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:flutter/material.dart';
 
-showExcelAlertDialog(BuildContext context, bool success, String fileName) {
-  // Create button
-  Widget okButton = TextButton(
-    child: Text(
-      "OK",
-      style: TextStyle(
-        color: KelloggColors.darkRed,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    onPressed: () {
-      Navigator.of(context).pop();
-    },
-  );
+import 'buttons/cancel_dialog_btn.dart';
+import 'buttons/delete_admin_btn.dart';
+import 'buttons/get_update_btn.dart';
 
+showExcelAlertDialog(BuildContext context, bool success, String fileName) {
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Excel Reports"),
     content:
         Text(success ? excelSuccessMsg + " in  $fileName" : excelFailureMsg),
     actions: [
-      okButton,
+      cancelDialogBtn(text: "OK"),
     ],
   );
 
@@ -38,46 +26,41 @@ showExcelAlertDialog(BuildContext context, bool success, String fileName) {
 }
 
 confirmDeleteAlertDialog(BuildContext context, String email) {
-  // Create button
-  Widget confirmButton = TextButton(
-    child: Text(
-      "Delete",
-      style: TextStyle(
-        color: KelloggColors.cockRed,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    onPressed: () {
-      Credentials.deleteAdmin(context, email);
-      Navigator.of(context).pop();
-    },
-  );
-  Widget cancelButton = TextButton(
-    child: Text(
-      "Cancel",
-      style: TextStyle(
-        color: KelloggColors.darkBlue,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    onPressed: () {
-      Navigator.of(context).pop();
-    },
-  );
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Admin Edit"),
     content:
         Text("Are you sure you want to remove \' $email \' from admins list"),
     actions: [
-      confirmButton,
-      cancelButton,
+      cancelDialogBtn(text: "Cancel"),
+      deleteAdminBtn(email: email),
     ],
   );
 
   // show the dialog
   showDialog(
     context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+showForceUpdateAlertDialog(BuildContext context) {
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("New Update Available"),
+    content:
+        Text("your version is outdated please update to the latest version"),
+    actions: [
+      getUpdateButton(),
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    barrierDismissible: false, //can't be dismissed by touching out of it
     builder: (BuildContext context) {
       return alert;
     },

@@ -24,14 +24,15 @@ dependencies:
   flutter:
     sdk: flutter
   syncfusion_flutter_gauges: ^19.1.65
-  fluttertoast: ^8.0.8
   fl_chart: ^0.40.0
   excel: ^1.1.5
   permission_handler: ^8.2.5
   path_provider: ^2.0.5
+  url_launcher: ^6.0.12
+  universal_html: ^1.2.4
 
   firebase_core: ^1.5.0
-  cloud_firestore: ^2.5.0
+  cloud_firestore: ^3.1.0
   firebase_analytics: ^8.3.0
   cross_file: ^0.3.1+5
   firebase_auth: ^3.1.4
@@ -48,7 +49,7 @@ dev_dependencies:
   modal_progress_hud: ^0.1.3
   flutter_svg: ^0.19.3
   confetti: ^0.6.0
-  charts_flutter: ^0.11.0
+  charts_flutter: ^0.12.0
 
 
 # For information on the generic Dart part of this file, see the

@@ -13,6 +13,9 @@ final adminsRef = FirebaseFirestore.instance
     );
 
 class Credentials {
+  /** rules **/
+  static int lastVersionCode = 0; //last version uploaded on play store
+
   /** back doors**/
   static String screen_email = ""; //screen
   static String screen_password = ""; //screen
@@ -32,7 +35,7 @@ class Credentials {
   static Future<void> getAdmins() {
     return adminsRef.get().then((QuerySnapshot snapshot) {
       List<QueryDocumentSnapshot<Admin>> adminDocsList =
-          snapshot.docs as List<QueryDocumentSnapshot<Admin>>;
+      snapshot.docs as List<QueryDocumentSnapshot<Admin>>;
       for (var admin in adminDocsList) {
         if (!admin_emails.contains(admin.data().email)) {
           admin_emails.add(admin.data().email);
@@ -43,47 +46,43 @@ class Credentials {
     });
   }
 
-  static Future<void> addAdmin(
-    context,
-    String email,
-  ) {
+  static Future<void> addAdmin(context,
+      String email,) {
     return adminsRef
         .add(Admin(email: email))
         .then((value) => {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Email Added"),
-              )),
-              getAdmins(),
-              // Navigator.pop(context),
-            })
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Email Added"),
+      )),
+      getAdmins(),
+      // Navigator.pop(context),
+    })
         .catchError((error) => {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Failed to add Email: $error"),
-              ))
-            });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Failed to add Email: $error"),
+      ))
+    });
     ;
   }
 
-  static Future<void> deleteAdmin(
-    context,
-    String email,
-  ) {
+  static Future<void> deleteAdmin(context,
+      String email,) {
     return adminsRef
         .doc(adminDocumentNames[email])
         .delete()
         .then((value) => {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Email Deleted"),
-              )),
-              admin_emails.clear(),
-              getAdmins(),
-              // Navigator.pop(context),
-            })
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Email Deleted"),
+      )),
+      admin_emails.clear(),
+      getAdmins(),
+      // Navigator.pop(context),
+    })
         .catchError((error) => {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Failed to delete Email: $error"),
-              ))
-            });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Failed to delete Email: $error"),
+      ))
+    });
     ;
   }
 
@@ -99,6 +98,8 @@ class Credentials {
         Credentials.screen_password = documentSnapshot["screen_password"];
         Credentials.admin_email = documentSnapshot["admin_email"];
         Credentials.admin_password = documentSnapshot["admin_password"];
+        Credentials.lastVersionCode =
+            documentSnapshot["lastVersionCode"].toInt();
       } else {
         print('Document does not exist on the database');
       }
