@@ -6,11 +6,13 @@ Widget ErrorMessageHeading(String title) {
   return Center(
     child: Text(
       '* ' + title + ' *',
+      textAlign: TextAlign.center,
       style: TextStyle(
-          color: KelloggColors.green,
-          fontSize: largeButtonFont,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 1.2),
+        color: KelloggColors.cockRed,
+        fontSize: largeButtonFont,
+        fontWeight: FontWeight.w700,
+        wordSpacing: 1.5,
+      ),
     ),
   );
 }

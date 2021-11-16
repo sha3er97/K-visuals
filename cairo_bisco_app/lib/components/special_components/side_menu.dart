@@ -2,6 +2,7 @@ import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
+import 'package:cairo_bisco_app/ui/admin_screens/admin_home_page.dart';
 import 'package:cairo_bisco_app/ui/login_screens/login.dart';
 import 'package:cairo_bisco_app/ui/production_screens/home_production.dart';
 import 'package:cairo_bisco_app/ui/production_screens/home_production_interval.dart';
@@ -19,6 +20,7 @@ class SideMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isAdmin = Credentials.isUserAdmin;
+    bool isOwner = Credentials.isUserOwner;
     return Drawer(
       child: ListView(
         children: [
@@ -31,6 +33,15 @@ class SideMenu extends StatelessWidget {
           Center(
             child: Text(
               'Version : ' + versionNum,
+              style: TextStyle(color: KelloggColors.grey),
+            ),
+          ),
+          SizedBox(
+            height: minimumPadding,
+          ),
+          Center(
+            child: Text(
+              Credentials.userEmail,
               style: TextStyle(color: KelloggColors.grey),
             ),
           ),
@@ -101,20 +112,37 @@ class SideMenu extends StatelessWidget {
                   },
                 )
               : EmptyPlaceHolder(),
-          DrawerListTile(
-            title: isAdmin ? "Add/Edit Report" : "Add Report",
-            image: "report",
-            press: () {
-              WidgetsBinding.instance!.addPostFrameCallback((_) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SupervisorHomePage(),
-                  ),
-                );
-              });
-            },
-          ),
+          isAdmin
+              ? DrawerListTile(
+                  title: isOwner ? "Add/Edit Report" : "Add Report",
+                  image: "report",
+                  press: () {
+                    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SupervisorHomePage(),
+                      ),
+                    );
+                    // });
+                  },
+                )
+              : EmptyPlaceHolder(),
+          isOwner
+              ? DrawerListTile(
+                  title: "Owner View",
+                  image: "vip",
+                  press: () {
+                    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            // builder: (context) => SuccessScreen()
+                            builder: (context) => AdminHomePage()));
+                    // });
+                  },
+                )
+              : EmptyPlaceHolder(),
           DrawerListTile(
             title: "Log Out",
             image: "exit",

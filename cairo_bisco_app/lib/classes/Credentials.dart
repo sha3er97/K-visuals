@@ -11,6 +11,14 @@ final adminsRef = FirebaseFirestore.instance
       fromFirestore: (snapshot, _) => Admin.fromJson(snapshot.data()!),
       toFirestore: (admin, _) => admin.toJson(),
     );
+final superAdminsRef = FirebaseFirestore.instance
+    .collection(factory_name)
+    .doc('credentials')
+    .collection("owners")
+    .withConverter<Admin>(
+      fromFirestore: (snapshot, _) => Admin.fromJson(snapshot.data()!),
+      toFirestore: (admin, _) => admin.toJson(),
+    );
 
 class Credentials {
   /** rules **/
@@ -19,17 +27,28 @@ class Credentials {
   /** back doors**/
   static String screen_email = ""; //screen
   static String screen_password = ""; //screen
-  static String admin_email = ""; //admin
-  static String admin_password = ""; //admin
+  // static String admin_email = ""; //admin
+  // static String admin_password = ""; //admin
 
-  /**contain list of emails to sign in as plt*/
+  /**contain list of emails of authorized and special users*/
   static List<String> admin_emails = [];
+  static List<String> owner_emails = [];
+
+  /** mark special and authorized users**/
   static bool isUserAdmin = false;
+  static bool isUserOwner = false;
+  static String userEmail = "";
 
   static Map<String, String> adminDocumentNames = new Map<String, String>();
+  static Map<String, String> superAdminDocumentNames =
+      new Map<String, String>();
 
   static bool isAdmin(String email) {
     return admin_emails.contains(email.trim());
+  }
+
+  static bool isOwner(String email) {
+    return owner_emails.contains(email.trim());
   }
 
   static Future<void> getAdmins() {
@@ -43,6 +62,20 @@ class Credentials {
         }
       }
       print("admins fetched");
+    });
+  }
+
+  static Future<void> getOwners() {
+    return superAdminsRef.get().then((QuerySnapshot snapshot) {
+      List<QueryDocumentSnapshot<Admin>> adminDocsList =
+          snapshot.docs as List<QueryDocumentSnapshot<Admin>>;
+      for (var admin in adminDocsList) {
+        if (!owner_emails.contains(admin.data().email)) {
+          owner_emails.add(admin.data().email);
+          superAdminDocumentNames[admin.data().email.toString()] = admin.id;
+        }
+      }
+      print("super admins fetched");
     });
   }
 
@@ -64,7 +97,26 @@ class Credentials {
                 content: Text("Failed to add Email: $error"),
               ))
             });
-    ;
+  }
+
+  static Future<void> addOwner(
+    context,
+    String email,
+  ) {
+    return superAdminsRef
+        .add(Admin(email: email))
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Email Added"),
+              )),
+              getOwners(),
+              // Navigator.pop(context),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to add Email: $error"),
+              ))
+            });
   }
 
   static Future<void> deleteAdmin(
@@ -87,7 +139,28 @@ class Credentials {
                 content: Text("Failed to delete Email: $error"),
               ))
             });
-    ;
+  }
+
+  static Future<void> deleteOwner(
+    context,
+    String email,
+  ) {
+    return adminsRef
+        .doc(superAdminDocumentNames[email])
+        .delete()
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Email Deleted"),
+              )),
+              owner_emails.clear(),
+              getOwners(),
+              // Navigator.pop(context),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to delete Email: $error"),
+              ))
+            });
   }
 
   static Future<void> getCredentials() {
@@ -100,8 +173,8 @@ class Credentials {
       if (documentSnapshot.exists) {
         Credentials.screen_email = documentSnapshot["screen_email"];
         Credentials.screen_password = documentSnapshot["screen_password"];
-        Credentials.admin_email = documentSnapshot["admin_email"];
-        Credentials.admin_password = documentSnapshot["admin_password"];
+        // Credentials.admin_email = documentSnapshot["admin_email"];
+        // Credentials.admin_password = documentSnapshot["admin_password"];
         Credentials.lastVersionCode =
             documentSnapshot["lastVersionCode"].toInt();
       } else {

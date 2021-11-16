@@ -17,8 +17,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashState extends State<SplashScreen> {
-  // User? user;
-
   @override
   void initState() {
     super.initState();
@@ -26,13 +24,7 @@ class _SplashState extends State<SplashScreen> {
     SKU.getAllSku();
     Credentials.getCredentials();
     Credentials.getAdmins();
-    // user = FirebaseAuth.instance.currentUser;
-
-    // if (user != null) {
-    //   if (Credentials.isAdmin(user!.email.toString())) {
-    //     Credentials.isUserAdmin = true;
-    //   }
-    // }
+    Credentials.getOwners();
   }
 
   @override
@@ -58,6 +50,12 @@ class _SplashState extends State<SplashScreen> {
                     } else {
                       Credentials.isUserAdmin = false;
                     }
+                    if (Credentials.isOwner(user.email.toString())) {
+                      Credentials.isUserOwner = true;
+                    } else {
+                      Credentials.isUserOwner = false;
+                    }
+                    Credentials.userEmail = user.email.toString();
                     Navigator.push(
                         context,
                         MaterialPageRoute(

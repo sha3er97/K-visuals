@@ -9,12 +9,12 @@ import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-class ReviewAdminEmails extends StatefulWidget {
+class ReviewOwnerEmails extends StatefulWidget {
   @override
-  _ReviewAdminEmailsState createState() => _ReviewAdminEmailsState();
+  _ReviewOwnerEmailsState createState() => _ReviewOwnerEmailsState();
 }
 
-class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
+class _ReviewOwnerEmailsState extends State<ReviewOwnerEmails> {
   bool _valid_email_validate = false;
   bool showSpinner = false;
 
@@ -35,7 +35,7 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
               admin: true,
             ),
             title: Text(
-              "Edit Authorized People",
+              "Edit Owners",
               style: TextStyle(
                   color: KelloggColors.darkBlue,
                   fontWeight: FontWeight.w300,
@@ -111,7 +111,7 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
                                 });
                                 try {
                                   if (!_valid_email_validate) {
-                                    Credentials.addAdmin(
+                                    Credentials.addOwner(
                                       context,
                                       email.trim().toLowerCase(),
                                     );
@@ -139,17 +139,17 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
                             shrinkWrap: true,
                             physics: ClampingScrollPhysics(),
                             padding: const EdgeInsets.all(minimumPadding),
-                            itemCount: Credentials.admin_emails.length,
+                            itemCount: Credentials.owner_emails.length,
                             itemBuilder: (BuildContext context, int index) {
                               return ListTile(
                                 title: adminHeading(
-                                    Credentials.admin_emails[index]),
+                                    Credentials.owner_emails[index]),
                                 leading: IconButton(
                                   icon: const Icon(Icons.close),
                                   color: KelloggColors.cockRed,
                                   onPressed: () {
-                                    confirmDeleteAdminAlertDialog(context,
-                                        Credentials.admin_emails[index]);
+                                    confirmDeleteOwnerAlertDialog(context,
+                                        Credentials.owner_emails[index]);
                                   },
                                 ),
                                 // leading: deleteBtn(

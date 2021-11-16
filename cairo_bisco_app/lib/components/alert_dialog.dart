@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'buttons/cancel_dialog_btn.dart';
 import 'buttons/delete_admin_btn.dart';
+import 'buttons/delete_owner_btn.dart';
 import 'buttons/get_update_btn.dart';
 
 showExcelAlertDialog(BuildContext context, bool success, String fileName) {
@@ -25,7 +26,7 @@ showExcelAlertDialog(BuildContext context, bool success, String fileName) {
   );
 }
 
-confirmDeleteAlertDialog(BuildContext context, String email) {
+confirmDeleteAdminAlertDialog(BuildContext context, String email) {
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Admin Edit"),
@@ -34,6 +35,27 @@ confirmDeleteAlertDialog(BuildContext context, String email) {
     actions: [
       cancelDialogBtn(text: "Cancel"),
       deleteAdminBtn(email: email),
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+confirmDeleteOwnerAlertDialog(BuildContext context, String email) {
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Owner Edit"),
+    content:
+        Text("Are you sure you want to remove \' $email \' from owners list"),
+    actions: [
+      cancelDialogBtn(text: "Cancel"),
+      deleteOwnerBtn(email: email),
     ],
   );
 

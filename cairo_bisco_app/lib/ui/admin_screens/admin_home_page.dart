@@ -7,6 +7,7 @@ import 'package:cairo_bisco_app/ui/admin_screens/admin_show_all_skus.dart';
 import 'package:flutter/material.dart';
 
 import 'admin_review_admin_emails.dart';
+import 'admin_review_owner_emails.dart';
 
 class AdminHomePage extends StatelessWidget {
   @override
@@ -33,8 +34,12 @@ class AdminHomePage extends StatelessWidget {
                 title: "Add New SKU",
                 btn_icon: Icons.add_comment,
                 param_onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AdminAddSku()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AdminAddSku(),
+                    ),
+                  );
                 },
               ),
               GradientGeneralButton(
@@ -44,8 +49,12 @@ class AdminHomePage extends StatelessWidget {
                 title: "Edit Existing SKU",
                 btn_icon: Icons.edit,
                 param_onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ShowSkus()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ShowSkus(),
+                    ),
+                  );
                 },
               ),
               GradientGeneralButton(
@@ -56,9 +65,11 @@ class AdminHomePage extends StatelessWidget {
                 title: "Edit Targets",
                 param_onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AdminEditTargets()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AdminEditTargets(),
+                    ),
+                  );
                 },
               ),
               GradientGeneralButton(
@@ -66,12 +77,29 @@ class AdminHomePage extends StatelessWidget {
                 gradientColor2: KelloggColors.grey,
                 mainColor: KelloggColors.darkBlue.withOpacity(0.5),
                 btn_icon: Icons.verified_user,
-                title: "Edit Admins",
+                title: "Edit Authorized People",
                 param_onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ReviewAdminEmails()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ReviewAdminEmails(),
+                    ),
+                  );
+                },
+              ),
+              GradientGeneralButton(
+                gradientColor1: KelloggColors.successGreen,
+                gradientColor2: KelloggColors.grey,
+                mainColor: KelloggColors.darkBlue.withOpacity(0.5),
+                btn_icon: Icons.verified,
+                title: "Edit Owners",
+                param_onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ReviewOwnerEmails(),
+                    ),
+                  );
                 },
               ),
             ]),

@@ -178,6 +178,13 @@ class _CreateAccountState extends State<CreateAccount> {
                         } else {
                           Credentials.isUserAdmin = false;
                         }
+                        if (Credentials.isOwner(email)) {
+                          Credentials.isUserOwner = true;
+                        } else {
+                          Credentials.isUserOwner = false;
+                        }
+                        Credentials.userEmail = email.toString();
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(

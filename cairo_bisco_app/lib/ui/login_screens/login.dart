@@ -179,13 +179,15 @@ class _LoginState extends State<Login> {
                                 MaterialPageRoute(
                                     // builder: (context) => SuccessScreen()
                                     builder: (context) => FloorChooseArea()));
-                          } else if (isAdmin(email, password)) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    // builder: (context) => SuccessScreen()
-                                    builder: (context) => AdminHomePage()));
-                          } else {
+                          }
+                          // else if (isAdmin(email, password)) {
+                          //   Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           // builder: (context) => SuccessScreen()
+                          //           builder: (context) => AdminHomePage()));
+                          // }
+                          else {
                             //normal user
                             await _auth.signInWithEmailAndPassword(
                                 email: email.trim(), password: password.trim());
@@ -194,6 +196,13 @@ class _LoginState extends State<Login> {
                             } else {
                               Credentials.isUserAdmin = false;
                             }
+                            if (Credentials.isOwner(email)) {
+                              Credentials.isUserOwner = true;
+                            } else {
+                              Credentials.isUserOwner = false;
+                            }
+                            Credentials.userEmail = email.toString();
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
