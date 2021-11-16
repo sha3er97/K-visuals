@@ -11,7 +11,7 @@ final adminsRef = FirebaseFirestore.instance
       fromFirestore: (snapshot, _) => Admin.fromJson(snapshot.data()!),
       toFirestore: (admin, _) => admin.toJson(),
     );
-final superAdminsRef = FirebaseFirestore.instance
+final ownersRef = FirebaseFirestore.instance
     .collection(factory_name)
     .doc('credentials')
     .collection("owners")
@@ -40,8 +40,7 @@ class Credentials {
   static String userEmail = "";
 
   static Map<String, String> adminDocumentNames = new Map<String, String>();
-  static Map<String, String> superAdminDocumentNames =
-      new Map<String, String>();
+  static Map<String, String> ownerDocumentNames = new Map<String, String>();
 
   static bool isAdmin(String email) {
     return admin_emails.contains(email.trim());
@@ -66,13 +65,13 @@ class Credentials {
   }
 
   static Future<void> getOwners() {
-    return superAdminsRef.get().then((QuerySnapshot snapshot) {
+    return ownersRef.get().then((QuerySnapshot snapshot) {
       List<QueryDocumentSnapshot<Admin>> adminDocsList =
           snapshot.docs as List<QueryDocumentSnapshot<Admin>>;
       for (var admin in adminDocsList) {
         if (!owner_emails.contains(admin.data().email)) {
           owner_emails.add(admin.data().email);
-          superAdminDocumentNames[admin.data().email.toString()] = admin.id;
+          ownerDocumentNames[admin.data().email.toString()] = admin.id;
         }
       }
       print("super admins fetched");
@@ -103,7 +102,7 @@ class Credentials {
     context,
     String email,
   ) {
-    return superAdminsRef
+    return ownersRef
         .add(Admin(email: email))
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -146,7 +145,7 @@ class Credentials {
     String email,
   ) {
     return adminsRef
-        .doc(superAdminDocumentNames[email])
+        .doc(ownerDocumentNames[email])
         .delete()
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
