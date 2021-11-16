@@ -472,9 +472,9 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                     margin: EdgeInsets.symmetric(
                                         vertical: minimumPadding),
                                     child: KPI1GoodBadIndicator(
-                                      circleColor: temp_qfs.pes_index == 2
+                                      circleColor: temp_qfs.pes_index == 3
                                           ? KelloggColors.cockRed
-                                          : temp_qfs.pes_index == 1
+                                          : temp_qfs.pes_index == 2
                                               ? KelloggColors.yellow
                                               : KelloggColors.green,
                                       title: 'PES\n(B&C Defects)',
