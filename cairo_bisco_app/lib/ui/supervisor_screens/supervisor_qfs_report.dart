@@ -1,3 +1,4 @@
+import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
@@ -28,11 +29,11 @@ class SupervisorQfsReport extends StatefulWidget {
 
   @override
   _SupervisorQfsReportState createState() => _SupervisorQfsReportState(
-        refNum: refNum,
-        reportDetails: reportDetails,
-        isEdit: isEdit,
-        reportID: reportID,
-      );
+    refNum: refNum,
+    reportDetails: reportDetails,
+    isEdit: isEdit,
+    reportID: reportID,
+  );
 }
 
 class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
@@ -55,7 +56,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
       ccp_failure,
       consumer_complaints;
 
-  bool _supName_validate = false,
+  bool _sup_name_validate = false,
       _quality_incidents_validate = false,
       _food_safety_incidents_validate = false,
       _ccp_failure_validate = false,
@@ -115,7 +116,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
   @override
   void initState() {
     super.initState();
-    supName = isEdit ? reportDetails.supName : '';
+    supName = isEdit ? reportDetails.supName : Credentials.getUserName();
     quality_incidents =
         isEdit ? reportDetails.quality_incidents.toString() : '';
     food_safety_incidents =
@@ -128,9 +129,9 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
     selectedYear =
         years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
     selectedMonth =
-        months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
+    months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
     selectedDay =
-        days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
+    days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
     selected_pes = Pes[reportDetails.pes_index];
     selected_G6 = G6[reportDetails.g6_index];
@@ -164,7 +165,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPadding),
+                  const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
@@ -174,6 +175,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                         SizedBox(height: minimumPadding),
                         TextFormField(
                           initialValue: supName,
+                          readOnly: true,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -181,6 +183,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
+                            labelText: uneditableLabelText,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.darkRed,
@@ -188,7 +191,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _supName_validate
+                            errorText: _sup_name_validate
                                 ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
@@ -209,7 +212,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -221,7 +224,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -332,7 +335,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -341,25 +344,25 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                             isExpanded: true,
                             items: refNum != MAAMOUL_AREA
                                 ? prod_lines4.map((String value) {
-                                    return new DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: TextStyle(
-                                            color: KelloggColors.darkRed),
-                                      ),
-                                    );
-                                  }).toList()
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                      color: KelloggColors.darkRed),
+                                ),
+                              );
+                            }).toList()
                                 : prod_lines2.map((String value) {
-                                    return new DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: TextStyle(
-                                            color: KelloggColors.darkRed),
-                                      ),
-                                    );
-                                  }).toList(),
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                      color: KelloggColors.darkRed),
+                                ),
+                              );
+                            }).toList(),
                             onChanged: onLineChange,
                           ),
                         ),
@@ -525,7 +528,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -537,7 +540,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -551,7 +554,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -563,7 +566,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -575,14 +578,14 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                         isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
-                                padding: const EdgeInsets.all(minimumPadding),
-                                child: Center(
-                                  child: RoundedButton(
-                                    btnText: 'تسليم التقرير',
-                                    color: KelloggColors.darkRed,
-                                    onPressed: () async {
-                                      setState(() {
-                                        showSpinner = true;
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                              btnText: 'تسليم التقرير',
+                              color: KelloggColors.darkRed,
+                              onPressed: () async {
+                                setState(() {
+                                  showSpinner = true;
                                         _consumer_complaints_validate =
                                             emptyField(consumer_complaints);
                                         _ccp_failure_validate =
@@ -591,14 +594,15 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                             emptyField(food_safety_incidents);
                                         _quality_incidents_validate =
                                             emptyField(quality_incidents);
-                                        _supName_validate = emptyField(supName);
+                                        _sup_name_validate =
+                                            emptyField(supName);
                                       });
-                                      try {
-                                        if (!_consumer_complaints_validate &&
+                                try {
+                                  if (!_consumer_complaints_validate &&
                                             !_ccp_failure_validate &&
                                             !_food_safety_incidents_validate &&
                                             !_quality_incidents_validate &&
-                                            !_supName_validate) {
+                                            !_sup_name_validate) {
                                           QfsReport.addReport(
                                               supName,
                                               int.parse(quality_incidents),
@@ -610,45 +614,45 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                               int.parse(selectedDay),
                                               shifts.indexOf(selectedShift),
                                               prod_lines4.indexOf(
-                                                      selectedProdLine) +
-                                                  1,
-                                              //line 1,2,3,4
-                                              Pes.indexOf(selected_pes),
-                                              G6.indexOf(selected_G6),
-                                              refNum);
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      SuccessScreen()));
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text(submissionErrorText),
-                                          ));
-                                        }
-                                        setState(() {
-                                          showSpinner = false;
-                                        });
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
+                                            selectedProdLine) +
+                                            1,
+                                        //line 1,2,3,4
+                                        Pes.indexOf(selected_pes),
+                                        G6.indexOf(selected_G6),
+                                        refNum);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SuccessScreen()));
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(submissionErrorText),
+                                    ));
+                                  }
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                         //////////////////////////////////////////////////////////////////
                         !isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
-                                padding: const EdgeInsets.all(minimumPadding),
-                                child: Center(
-                                  child: RoundedButton(
-                                    btnText: 'Edit Report',
-                                    color: KelloggColors.darkBlue,
-                                    onPressed: () {
-                                      setState(() {
-                                        showSpinner = true;
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                              btnText: 'Edit Report',
+                              color: KelloggColors.darkBlue,
+                              onPressed: () {
+                                setState(() {
+                                  showSpinner = true;
 
                                         _consumer_complaints_validate =
                                             emptyField(consumer_complaints);
@@ -658,14 +662,15 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                             emptyField(food_safety_incidents);
                                         _quality_incidents_validate =
                                             emptyField(quality_incidents);
-                                        _supName_validate = emptyField(supName);
+                                        _sup_name_validate =
+                                            emptyField(supName);
                                       });
-                                      try {
-                                        if (!_consumer_complaints_validate &&
+                                try {
+                                  if (!_consumer_complaints_validate &&
                                             !_ccp_failure_validate &&
                                             !_food_safety_incidents_validate &&
                                             !_quality_incidents_validate &&
-                                            !_supName_validate) {
+                                            !_sup_name_validate) {
                                           QfsReport.editReport(
                                               context,
                                               reportID,
@@ -677,59 +682,59 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                               int.parse(selectedYear),
                                               int.parse(selectedMonth),
                                               int.parse(selectedDay),
-                                              shifts.indexOf(selectedShift),
-                                              prod_lines4.indexOf(
-                                                      selectedProdLine) +
-                                                  1,
-                                              //line 1,2,3,4
-                                              Pes.indexOf(selected_pes),
-                                              G6.indexOf(selected_G6),
-                                              refNum);
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text(submissionErrorText),
-                                          ));
-                                        }
-                                        setState(() {
-                                          showSpinner = false;
-                                        });
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
+                                        shifts.indexOf(selectedShift),
+                                        prod_lines4.indexOf(
+                                            selectedProdLine) +
+                                            1,
+                                        //line 1,2,3,4
+                                        Pes.indexOf(selected_pes),
+                                        G6.indexOf(selected_G6),
+                                        refNum);
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(submissionErrorText),
+                                    ));
+                                  }
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                         //////////////////////////////////////////////////////////////////
                         !isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
-                                padding: const EdgeInsets.all(minimumPadding),
-                                child: Center(
-                                  child: RoundedButton(
-                                    btnText: 'Delete Report',
-                                    color: KelloggColors.cockRed,
-                                    onPressed: () {
-                                      setState(() {
-                                        showSpinner = true;
-                                      });
-                                      try {
-                                        QfsReport.deleteReport(
-                                          context,
-                                          reportID,
-                                          int.parse(selectedYear),
-                                        );
-                                        setState(() {
-                                          showSpinner = false;
-                                        });
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                              btnText: 'Delete Report',
+                              color: KelloggColors.cockRed,
+                              onPressed: () {
+                                setState(() {
+                                  showSpinner = true;
+                                });
+                                try {
+                                  QfsReport.deleteReport(
+                                    context,
+                                    reportID,
+                                    int.parse(selectedYear),
+                                  );
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                         //////////////////////////////////////////////////////////////////
                       ],
                     ),

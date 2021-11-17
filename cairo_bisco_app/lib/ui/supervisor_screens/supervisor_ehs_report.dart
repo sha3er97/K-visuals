@@ -1,3 +1,4 @@
+import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
@@ -28,11 +29,11 @@ class SupervisorEhsReport extends StatefulWidget {
 
   @override
   _SupervisorEhsReportState createState() => _SupervisorEhsReportState(
-        refNum: refNum,
-        reportDetails: reportDetails,
-        isEdit: isEdit,
-        reportID: reportID,
-      );
+    refNum: refNum,
+    reportDetails: reportDetails,
+    isEdit: isEdit,
+    reportID: reportID,
+  );
 }
 
 class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
@@ -56,7 +57,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
       risk_assessment,
       nearMiss;
 
-  bool _supName_validate = false,
+  bool _sup_name_validate = false,
       _firstAid_incidents_validate = false,
       _lostTime_incidents_validate = false,
       _recordable_incidents_validate = false,
@@ -110,7 +111,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
   @override
   void initState() {
     super.initState();
-    supName = isEdit ? reportDetails.supName : '';
+    supName = isEdit ? reportDetails.supName : Credentials.getUserName();
     firstAid_incidents =
         isEdit ? reportDetails.firstAid_incidents.toString() : '';
     lostTime_incidents =
@@ -122,11 +123,11 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
     ///////////////////////////////////////////////////////////////////////////////
     selectedShift = shifts[reportDetails.shift_index];
     selectedYear =
-        years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
+    years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
     selectedMonth =
-        months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
+    months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
     selectedDay =
-        days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
+    days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
     selected_S7 = S7[reportDetails.s7_index];
   }
@@ -159,7 +160,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPadding),
+                  const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
@@ -169,6 +170,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                         SizedBox(height: minimumPadding),
                         TextFormField(
                           initialValue: supName,
+                          readOnly: true,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -176,6 +178,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
+                            labelText: uneditableLabelText,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.darkRed,
@@ -183,7 +186,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _supName_validate
+                            errorText: _sup_name_validate
                                 ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
@@ -204,7 +207,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -216,7 +219,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -327,7 +330,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -336,25 +339,25 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                             isExpanded: true,
                             items: refNum != MAAMOUL_AREA
                                 ? prod_lines4.map((String value) {
-                                    return new DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: TextStyle(
-                                            color: KelloggColors.darkRed),
-                                      ),
-                                    );
-                                  }).toList()
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                      color: KelloggColors.darkRed),
+                                ),
+                              );
+                            }).toList()
                                 : prod_lines2.map((String value) {
-                                    return new DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: TextStyle(
-                                            color: KelloggColors.darkRed),
-                                      ),
-                                    );
-                                  }).toList(),
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                      color: KelloggColors.darkRed),
+                                ),
+                              );
+                            }).toList(),
                             onChanged: onLineChange,
                           ),
                         ),
@@ -559,7 +562,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -571,7 +574,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -583,14 +586,14 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                         isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
-                                padding: const EdgeInsets.all(minimumPadding),
-                                child: Center(
-                                  child: RoundedButton(
-                                    btnText: 'تسليم التقرير',
-                                    color: KelloggColors.darkRed,
-                                    onPressed: () async {
-                                      setState(() {
-                                        showSpinner = true;
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                              btnText: 'تسليم التقرير',
+                              color: KelloggColors.darkRed,
+                              onPressed: () async {
+                                setState(() {
+                                  showSpinner = true;
                                         _risk_assessment_validate =
                                             emptyField(risk_assessment);
                                         _nearMiss_validate =
@@ -601,15 +604,16 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                                             emptyField(lostTime_incidents);
                                         _firstAid_incidents_validate =
                                             emptyField(firstAid_incidents);
-                                        _supName_validate = emptyField(supName);
+                                        _sup_name_validate =
+                                            emptyField(supName);
                                       });
-                                      try {
-                                        if (!_risk_assessment_validate &&
+                                try {
+                                  if (!_risk_assessment_validate &&
                                             !_nearMiss_validate &&
                                             !_recordable_incidents_validate &&
                                             !_lostTime_incidents_validate &&
                                             !_firstAid_incidents_validate &&
-                                            !_supName_validate) {
+                                            !_sup_name_validate) {
                                           EhsReport.addReport(
                                               supName,
                                               int.parse(firstAid_incidents),
@@ -621,45 +625,45 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                                               prod_lines4.indexOf(
                                                       selectedProdLine) +
                                                   1,
-                                              //line 1,2,3,4
-                                              shifts.indexOf(selectedShift),
-                                              refNum,
-                                              int.parse(selectedYear),
-                                              int.parse(selectedMonth),
-                                              int.parse(selectedDay));
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      SuccessScreen()));
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text(submissionErrorText),
-                                          ));
-                                        }
-                                        setState(() {
-                                          showSpinner = false;
-                                        });
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
+                                        //line 1,2,3,4
+                                        shifts.indexOf(selectedShift),
+                                        refNum,
+                                        int.parse(selectedYear),
+                                        int.parse(selectedMonth),
+                                        int.parse(selectedDay));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SuccessScreen()));
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(submissionErrorText),
+                                    ));
+                                  }
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                         //////////////////////////////////////////////////////////////////
                         !isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
-                                padding: const EdgeInsets.all(minimumPadding),
-                                child: Center(
-                                  child: RoundedButton(
-                                    btnText: 'Edit Report',
-                                    color: KelloggColors.darkBlue,
-                                    onPressed: () {
-                                      setState(() {
-                                        showSpinner = true;
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                              btnText: 'Edit Report',
+                              color: KelloggColors.darkBlue,
+                              onPressed: () {
+                                setState(() {
+                                  showSpinner = true;
 
                                         _risk_assessment_validate =
                                             emptyField(risk_assessment);
@@ -671,15 +675,16 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                                             emptyField(lostTime_incidents);
                                         _firstAid_incidents_validate =
                                             emptyField(firstAid_incidents);
-                                        _supName_validate = emptyField(supName);
+                                        _sup_name_validate =
+                                            emptyField(supName);
                                       });
-                                      try {
-                                        if (!_risk_assessment_validate &&
+                                try {
+                                  if (!_risk_assessment_validate &&
                                             !_nearMiss_validate &&
                                             !_recordable_incidents_validate &&
                                             !_lostTime_incidents_validate &&
                                             !_firstAid_incidents_validate &&
-                                            !_supName_validate) {
+                                            !_sup_name_validate) {
                                           EhsReport.editReport(
                                               context,
                                               reportID,
@@ -691,59 +696,59 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                                               int.parse(risk_assessment),
                                               S7.indexOf(selected_S7),
                                               prod_lines4.indexOf(
-                                                      selectedProdLine) +
-                                                  1,
-                                              //line 1,2,3,4
-                                              shifts.indexOf(selectedShift),
-                                              refNum,
-                                              int.parse(selectedYear),
-                                              int.parse(selectedMonth),
-                                              int.parse(selectedDay));
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text(submissionErrorText),
-                                          ));
-                                        }
-                                        setState(() {
-                                          showSpinner = false;
-                                        });
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
+                                            selectedProdLine) +
+                                            1,
+                                        //line 1,2,3,4
+                                        shifts.indexOf(selectedShift),
+                                        refNum,
+                                        int.parse(selectedYear),
+                                        int.parse(selectedMonth),
+                                        int.parse(selectedDay));
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(submissionErrorText),
+                                    ));
+                                  }
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                         //////////////////////////////////////////////////////////////////
                         !isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
-                                padding: const EdgeInsets.all(minimumPadding),
-                                child: Center(
-                                  child: RoundedButton(
-                                    btnText: 'Delete Report',
-                                    color: KelloggColors.cockRed,
-                                    onPressed: () {
-                                      setState(() {
-                                        showSpinner = true;
-                                      });
-                                      try {
-                                        EhsReport.deleteReport(
-                                          context,
-                                          reportID,
-                                          int.parse(selectedYear),
-                                        );
-                                        setState(() {
-                                          showSpinner = false;
-                                        });
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                              btnText: 'Delete Report',
+                              color: KelloggColors.cockRed,
+                              onPressed: () {
+                                setState(() {
+                                  showSpinner = true;
+                                });
+                                try {
+                                  EhsReport.deleteReport(
+                                    context,
+                                    reportID,
+                                    int.parse(selectedYear),
+                                  );
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                         //////////////////////////////////////////////////////////////////
                       ],
                     ),

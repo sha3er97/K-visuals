@@ -1,3 +1,4 @@
+import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/NRCReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
@@ -28,11 +29,11 @@ class SupervisorNRCReportForm extends StatefulWidget {
 
   @override
   _SupervisorNRCReportFormState createState() => _SupervisorNRCReportFormState(
-        refNum: refNum,
-        reportDetails: reportDetails,
-        isEdit: isEdit,
-        reportID: reportID,
-      );
+    refNum: refNum,
+    reportDetails: reportDetails,
+    isEdit: isEdit,
+    reportID: reportID,
+  );
 }
 
 class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
@@ -51,7 +52,7 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
   bool showSpinner = false;
   late String supName, notes_count, notes_details;
 
-  bool _supName_validate = false,
+  bool _sup_name_validate = false,
       _notes_count_validate = false,
       _notes_details_validate = false;
 
@@ -85,7 +86,7 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
   @override
   void initState() {
     super.initState();
-    supName = isEdit ? reportDetails.supName : '';
+    supName = isEdit ? reportDetails.supName : Credentials.getUserName();
     notes_count = isEdit ? reportDetails.notes_count.toString() : '';
     notes_details = isEdit ? reportDetails.notes_details.toString() : '';
     ///////////////////////////////////////////////////////////////////////////////
@@ -126,7 +127,7 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPadding),
+                  const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
@@ -136,6 +137,7 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                         SizedBox(height: minimumPadding),
                         TextFormField(
                           initialValue: supName,
+                          readOnly: true,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -143,6 +145,7 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
+                            labelText: uneditableLabelText,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.darkRed,
@@ -150,7 +153,7 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _supName_validate
+                            errorText: _sup_name_validate
                                 ? missingValueErrorText
                                 : null,
                             focusedBorder: OutlineInputBorder(
@@ -269,7 +272,7 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -281,7 +284,7 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -368,14 +371,14 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                         isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
-                                padding: const EdgeInsets.all(minimumPadding),
-                                child: Center(
-                                  child: RoundedButton(
-                                    btnText: 'تسليم التقرير',
-                                    color: KelloggColors.darkRed,
-                                    onPressed: () async {
-                                      setState(() {
-                                        showSpinner = true;
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                              btnText: 'تسليم التقرير',
+                              color: KelloggColors.darkRed,
+                              onPressed: () async {
+                                setState(() {
+                                  showSpinner = true;
                                         _notes_count_validate =
                                             emptyField(notes_count);
                                         if (!_notes_count_validate)
@@ -383,12 +386,13 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                                               conditionalEmptyField(
                                                   int.parse(notes_count),
                                                   notes_details);
-                                        _supName_validate = emptyField(supName);
+                                        _sup_name_validate =
+                                            emptyField(supName);
                                       });
-                                      try {
-                                        if (!_notes_count_validate &&
+                                try {
+                                  if (!_notes_count_validate &&
                                             !_notes_details_validate &&
-                                            !_supName_validate) {
+                                            !_sup_name_validate) {
                                           NRCReport.addReport(
                                               supName,
                                               int.parse(notes_count),
@@ -400,37 +404,37 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                                               int.parse(selectedDay));
                                           Navigator.push(
                                               context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      SuccessScreen()));
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text(submissionErrorText),
-                                          ));
-                                        }
-                                        setState(() {
-                                          showSpinner = false;
-                                        });
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SuccessScreen()));
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(submissionErrorText),
+                                    ));
+                                  }
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                         //////////////////////////////////////////////////////////////////
                         !isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
-                                padding: const EdgeInsets.all(minimumPadding),
-                                child: Center(
-                                  child: RoundedButton(
-                                    btnText: 'Edit Report',
-                                    color: KelloggColors.darkBlue,
-                                    onPressed: () {
-                                      setState(() {
-                                        showSpinner = true;
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                              btnText: 'Edit Report',
+                              color: KelloggColors.darkBlue,
+                              onPressed: () {
+                                setState(() {
+                                  showSpinner = true;
 
                                         _notes_count_validate =
                                             emptyField(notes_count);
@@ -439,12 +443,13 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                                               conditionalEmptyField(
                                                   int.parse(notes_count),
                                                   notes_details);
-                                        _supName_validate = emptyField(supName);
+                                        _sup_name_validate =
+                                            emptyField(supName);
                                       });
-                                      try {
-                                        if (!_notes_count_validate &&
+                                try {
+                                  if (!_notes_count_validate &&
                                             !_notes_details_validate &&
-                                            !_supName_validate) {
+                                            !_sup_name_validate) {
                                           NRCReport.editReport(
                                               context,
                                               reportID,
@@ -456,51 +461,51 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                                               int.parse(selectedYear),
                                               int.parse(selectedMonth),
                                               int.parse(selectedDay));
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text(submissionErrorText),
-                                          ));
-                                        }
-                                        setState(() {
-                                          showSpinner = false;
-                                        });
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(submissionErrorText),
+                                    ));
+                                  }
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                         //////////////////////////////////////////////////////////////////
                         !isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
-                                padding: const EdgeInsets.all(minimumPadding),
-                                child: Center(
-                                  child: RoundedButton(
-                                    btnText: 'Delete Report',
-                                    color: KelloggColors.cockRed,
-                                    onPressed: () {
-                                      setState(() {
-                                        showSpinner = true;
-                                      });
-                                      try {
-                                        NRCReport.deleteReport(
-                                          context,
-                                          reportID,
-                                          int.parse(selectedYear),
-                                        );
-                                        setState(() {
-                                          showSpinner = false;
-                                        });
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                              btnText: 'Delete Report',
+                              color: KelloggColors.cockRed,
+                              onPressed: () {
+                                setState(() {
+                                  showSpinner = true;
+                                });
+                                try {
+                                  NRCReport.deleteReport(
+                                    context,
+                                    reportID,
+                                    int.parse(selectedYear),
+                                  );
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                         //////////////////////////////////////////////////////////////////
                       ],
                     ),
