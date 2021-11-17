@@ -37,7 +37,8 @@ class SupervisorPeopleReportForm extends StatefulWidget {
       );
 }
 
-class _SupervisorPeopleReportFormState extends State<SupervisorPeopleReportForm> {
+class _SupervisorPeopleReportFormState
+    extends State<SupervisorPeopleReportForm> {
   _SupervisorPeopleReportFormState({
     required this.refNum,
     required this.reportDetails,
@@ -128,7 +129,7 @@ class _SupervisorPeopleReportFormState extends State<SupervisorPeopleReportForm>
               children: [
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: defaultPadding),
+                      const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
@@ -273,7 +274,7 @@ class _SupervisorPeopleReportFormState extends State<SupervisorPeopleReportForm>
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                          EdgeInsets.symmetric(vertical: minimumPadding),
+                              EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -285,7 +286,7 @@ class _SupervisorPeopleReportFormState extends State<SupervisorPeopleReportForm>
                                 child: Text(
                                   value,
                                   style:
-                                  TextStyle(color: KelloggColors.darkRed),
+                                      TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -374,14 +375,14 @@ class _SupervisorPeopleReportFormState extends State<SupervisorPeopleReportForm>
                         isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
-                          padding: const EdgeInsets.all(minimumPadding),
-                          child: Center(
-                            child: RoundedButton(
-                              btnText: 'تسليم التقرير',
-                              color: KelloggColors.darkRed,
-                              onPressed: () async {
-                                setState(() {
-                                  showSpinner = true;
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'تسليم التقرير',
+                                    color: KelloggColors.darkRed,
+                                    onPressed: () async {
+                                      setState(() {
+                                        showSpinner = true;
                                         _attended_people_validate =
                                             emptyField(attended_people);
                                         _original_people_validate =
@@ -389,8 +390,8 @@ class _SupervisorPeopleReportFormState extends State<SupervisorPeopleReportForm>
                                         _sup_name_validate =
                                             emptyField(supName);
                                       });
-                                try {
-                                  if (!_original_people_validate &&
+                                      try {
+                                        if (!_original_people_validate &&
                                             !_attended_people_validate &&
                                             !_sup_name_validate) {
                                           PeopleReport.addReport(
@@ -404,37 +405,37 @@ class _SupervisorPeopleReportFormState extends State<SupervisorPeopleReportForm>
                                               int.parse(selectedDay));
                                           Navigator.push(
                                               context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SuccessScreen()));
-                                  } else {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text(submissionErrorText),
-                                    ));
-                                  }
-                                  setState(() {
-                                    showSpinner = false;
-                                  });
-                                } catch (e) {
-                                  print(e);
-                                }
-                              },
-                            ),
-                          ),
-                        ),
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SuccessScreen()));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
                         //////////////////////////////////////////////////////////////////
                         !isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
-                          padding: const EdgeInsets.all(minimumPadding),
-                          child: Center(
-                            child: RoundedButton(
-                              btnText: 'Edit Report',
-                              color: KelloggColors.darkBlue,
-                              onPressed: () {
-                                setState(() {
-                                  showSpinner = true;
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Edit Report',
+                                    color: KelloggColors.darkBlue,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
 
                                         _attended_people_validate =
                                             emptyField(attended_people);
@@ -443,8 +444,8 @@ class _SupervisorPeopleReportFormState extends State<SupervisorPeopleReportForm>
                                         _sup_name_validate =
                                             emptyField(supName);
                                       });
-                                try {
-                                  if (!_original_people_validate &&
+                                      try {
+                                        if (!_original_people_validate &&
                                             !_attended_people_validate &&
                                             !_sup_name_validate) {
                                           PeopleReport.editReport(
@@ -458,51 +459,51 @@ class _SupervisorPeopleReportFormState extends State<SupervisorPeopleReportForm>
                                               int.parse(selectedYear),
                                               int.parse(selectedMonth),
                                               int.parse(selectedDay));
-                                  } else {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text(submissionErrorText),
-                                    ));
-                                  }
-                                  setState(() {
-                                    showSpinner = false;
-                                  });
-                                } catch (e) {
-                                  print(e);
-                                }
-                              },
-                            ),
-                          ),
-                        ),
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(submissionErrorText),
+                                          ));
+                                        }
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
                         //////////////////////////////////////////////////////////////////
                         !isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
-                          padding: const EdgeInsets.all(minimumPadding),
-                          child: Center(
-                            child: RoundedButton(
-                              btnText: 'Delete Report',
-                              color: KelloggColors.cockRed,
-                              onPressed: () {
-                                setState(() {
-                                  showSpinner = true;
-                                });
-                                try {
-                                  PeopleReport.deleteReport(
-                                    context,
-                                    reportID,
-                                    int.parse(selectedYear),
-                                  );
-                                  setState(() {
-                                    showSpinner = false;
-                                  });
-                                } catch (e) {
-                                  print(e);
-                                }
-                              },
-                            ),
-                          ),
-                        ),
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                    btnText: 'Delete Report',
+                                    color: KelloggColors.cockRed,
+                                    onPressed: () {
+                                      setState(() {
+                                        showSpinner = true;
+                                      });
+                                      try {
+                                        PeopleReport.deleteReport(
+                                          context,
+                                          reportID,
+                                          int.parse(selectedYear),
+                                        );
+                                        setState(() {
+                                          showSpinner = false;
+                                        });
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
                         //////////////////////////////////////////////////////////////////
                       ],
                     ),
