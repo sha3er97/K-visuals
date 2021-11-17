@@ -68,7 +68,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
       mc1FilmUsed,
       mc2FilmUsed,
       mc1WasteKg,
-      mc2WasteKg;
+      mc2WasteKg,
+      shiftHours;
 
   bool _sup_name_validate = false,
       _shift_plan_validate = false,
@@ -89,7 +90,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
       _mc1FilmUsed_validate = false,
       _mc2FilmUsed_validate = false,
       _mc1WasteKg_validate = false,
-      _mc2WasteKg_validate = false;
+      _mc2WasteKg_validate = false,
+      _shiftHours_validate = false;
 
   //drop down values
   late String selectedShift,
@@ -160,6 +162,10 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
     mc2FilmUsed = isEdit ? reportDetails.mc2FilmUsed.toString() : '';
     mc1WasteKg = isEdit ? reportDetails.mc1WasteKg.toString() : '';
     mc2WasteKg = isEdit ? reportDetails.mc2WasteKg.toString() : '';
+    shiftHours = isEdit
+        ? reportDetails.shiftHours.toString()
+        : standardShiftHours.toString();
+
     ///////////////////////////////////////////////////////////////////////////////
     selectedShift = shifts[reportDetails.shift_index];
     selectedYear =
@@ -169,8 +175,6 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
     selectedDay =
         days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
-    print("initial line :" + selectedProdLine.toString());
-
     sku = isEdit ? reportDetails.skuName : SKU.maamoulSKU[0];
   }
 
@@ -278,6 +282,44 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////
+                        smallerHeading('عدد ساعات الوردية\nShift Hours'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: shiftHours,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _shiftHours_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            shiftHours = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        ///////////////////////////////////////////////////////////////
                         smallerHeading('تاريخ اليوم\nToday Date'),
                         SizedBox(height: minimumPadding),
                         Row(
@@ -1183,6 +1225,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                             emptyField(mc1WasteKg);
                                         _mc2WasteKg_validate =
                                             emptyField(mc2WasteKg);
+                                        _shiftHours_validate =
+                                            emptyField(shiftHours);
                                       });
                                       try {
                                         if (!_sup_name_validate &&
@@ -1204,37 +1248,40 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                             !_mc1FilmUsed_validate &&
                                             !_mc2FilmUsed_validate &&
                                             !_mc1WasteKg_validate &&
-                                            !_mc2WasteKg_validate) {
+                                            !_mc2WasteKg_validate &&
+                                            !_shiftHours_validate) {
                                           MaamoulReport.addReport(
-                                              supName,
-                                              sku,
-                                              double.parse(actualSpeed),
-                                              double.parse(ovenScrap),
-                                              double.parse(ovenRework),
-                                              double.parse(mixerScrap),
-                                              double.parse(mixerRework),
-                                              double.parse(stampingScrap),
-                                              double.parse(stampingRework),
-                                              double.parse(mc1Speed),
-                                              double.parse(mc2Speed),
-                                              double.parse(packingScrap),
-                                              double.parse(packingRework),
-                                              double.parse(boxesWaste),
-                                              double.parse(cartonWaste),
-                                              double.parse(mc1FilmUsed),
-                                              double.parse(mc2FilmUsed),
-                                              double.parse(mc1WasteKg),
-                                              double.parse(mc2WasteKg),
-                                              int.parse(shiftProductionPlan),
-                                              int.parse(productionInCartons),
-                                              prod_lines4.indexOf(
-                                                      selectedProdLine) +
-                                                  1,
-                                              shifts.indexOf(selectedShift),
-                                              refNum,
-                                              int.parse(selectedYear),
-                                              int.parse(selectedMonth),
-                                              int.parse(selectedDay));
+                                            supName,
+                                            sku,
+                                            double.parse(actualSpeed),
+                                            double.parse(ovenScrap),
+                                            double.parse(ovenRework),
+                                            double.parse(mixerScrap),
+                                            double.parse(mixerRework),
+                                            double.parse(stampingScrap),
+                                            double.parse(stampingRework),
+                                            double.parse(mc1Speed),
+                                            double.parse(mc2Speed),
+                                            double.parse(packingScrap),
+                                            double.parse(packingRework),
+                                            double.parse(boxesWaste),
+                                            double.parse(cartonWaste),
+                                            double.parse(mc1FilmUsed),
+                                            double.parse(mc2FilmUsed),
+                                            double.parse(mc1WasteKg),
+                                            double.parse(mc2WasteKg),
+                                            int.parse(shiftProductionPlan),
+                                            int.parse(productionInCartons),
+                                            prod_lines4
+                                                    .indexOf(selectedProdLine) +
+                                                1,
+                                            shifts.indexOf(selectedShift),
+                                            refNum,
+                                            int.parse(selectedYear),
+                                            int.parse(selectedMonth),
+                                            int.parse(selectedDay),
+                                            double.parse(shiftHours),
+                                          );
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -1309,6 +1356,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                             emptyField(mc1WasteKg);
                                         _mc2WasteKg_validate =
                                             emptyField(mc2WasteKg);
+                                        _shiftHours_validate =
+                                            emptyField(shiftHours);
                                       });
                                       try {
                                         if (!_sup_name_validate &&
@@ -1332,42 +1381,45 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                             !_mc1WasteKg_validate &&
                                             !_mc2WasteKg_validate) {
                                           if (canEditThisReport(
-                                              supName,
-                                              int.parse(selectedDay),
-                                              int.parse(selectedMonth),
-                                              int.parse(selectedYear))) {
+                                            supName,
+                                            int.parse(selectedDay),
+                                            int.parse(selectedMonth),
+                                            int.parse(selectedYear),
+                                          )) {
                                             MaamoulReport.editReport(
-                                                context,
-                                                reportID,
-                                                supName,
-                                                sku,
-                                                double.parse(actualSpeed),
-                                                double.parse(ovenScrap),
-                                                double.parse(ovenRework),
-                                                double.parse(mixerScrap),
-                                                double.parse(mixerRework),
-                                                double.parse(stampingScrap),
-                                                double.parse(stampingRework),
-                                                double.parse(mc1Speed),
-                                                double.parse(mc2Speed),
-                                                double.parse(packingScrap),
-                                                double.parse(packingRework),
-                                                double.parse(boxesWaste),
-                                                double.parse(cartonWaste),
-                                                double.parse(mc1FilmUsed),
-                                                double.parse(mc2FilmUsed),
-                                                double.parse(mc1WasteKg),
-                                                double.parse(mc2WasteKg),
-                                                int.parse(shiftProductionPlan),
-                                                int.parse(productionInCartons),
-                                                prod_lines4.indexOf(
-                                                        selectedProdLine) +
-                                                    1,
-                                                shifts.indexOf(selectedShift),
-                                                refNum,
-                                                int.parse(selectedYear),
-                                                int.parse(selectedMonth),
-                                                int.parse(selectedDay));
+                                              context,
+                                              reportID,
+                                              supName,
+                                              sku,
+                                              double.parse(actualSpeed),
+                                              double.parse(ovenScrap),
+                                              double.parse(ovenRework),
+                                              double.parse(mixerScrap),
+                                              double.parse(mixerRework),
+                                              double.parse(stampingScrap),
+                                              double.parse(stampingRework),
+                                              double.parse(mc1Speed),
+                                              double.parse(mc2Speed),
+                                              double.parse(packingScrap),
+                                              double.parse(packingRework),
+                                              double.parse(boxesWaste),
+                                              double.parse(cartonWaste),
+                                              double.parse(mc1FilmUsed),
+                                              double.parse(mc2FilmUsed),
+                                              double.parse(mc1WasteKg),
+                                              double.parse(mc2WasteKg),
+                                              int.parse(shiftProductionPlan),
+                                              int.parse(productionInCartons),
+                                              prod_lines4.indexOf(
+                                                      selectedProdLine) +
+                                                  1,
+                                              shifts.indexOf(selectedShift),
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay),
+                                              double.parse(shiftHours),
+                                            );
                                           } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(SnackBar(

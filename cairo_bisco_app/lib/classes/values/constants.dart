@@ -63,6 +63,7 @@ const floorScreenDashBoardDuration = 90; //1.5 minutes
 const maxScrap = 25.0;
 const maxFilmWaste = 25.0;
 const monthDays = 28.0; // month is 28 days
+const standardShiftHours = 8.0;
 const factory_name = "bisco_cairo";
 const appName = 'K Visuals';
 

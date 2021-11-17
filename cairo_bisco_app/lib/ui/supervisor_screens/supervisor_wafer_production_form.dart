@@ -70,7 +70,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
       mc1FilmUsed,
       mc2FilmUsed,
       mc1WasteKg,
-      mc2WasteKg;
+      mc2WasteKg,
+      shiftHours;
 
   bool _sup_name_validate = false,
       _shift_plan_validate = false,
@@ -93,7 +94,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
       _mc1FilmUsed_validate = false,
       _mc2FilmUsed_validate = false,
       _mc1WasteKg_validate = false,
-      _mc2WasteKg_validate = false;
+      _mc2WasteKg_validate = false,
+      _shiftHours_validate = false;
 
   //drop down values
   late String selectedShift,
@@ -166,6 +168,10 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
     mc2FilmUsed = isEdit ? reportDetails.mc2FilmUsed.toString() : '';
     mc1WasteKg = isEdit ? reportDetails.mc1WasteKg.toString() : '';
     mc2WasteKg = isEdit ? reportDetails.mc2WasteKg.toString() : '';
+    shiftHours = isEdit
+        ? reportDetails.shiftHours.toString()
+        : standardShiftHours.toString();
+
     ///////////////////////////////////////////////////////////////////////////////
     selectedShift = shifts[reportDetails.shift_index];
     selectedYear =
@@ -276,6 +282,44 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////
+                        smallerHeading('عدد ساعات الوردية\nShift Hours'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: shiftHours,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _shiftHours_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            shiftHours = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        ///////////////////////////////////////////////////////////////
                         smallerHeading('تاريخ اليوم\nToday Date'),
                         SizedBox(height: minimumPadding),
                         Row(
@@ -1259,6 +1303,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             emptyField(mc1WasteKg);
                                         _mc2WasteKg_validate =
                                             emptyField(mc2WasteKg);
+                                        _shiftHours_validate =
+                                            emptyField(shiftHours);
                                       });
                                       try {
                                         if (!_sup_name_validate &&
@@ -1282,39 +1328,42 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             !_mc1FilmUsed_validate &&
                                             !_mc2FilmUsed_validate &&
                                             !_mc1WasteKg_validate &&
-                                            !_mc2WasteKg_validate) {
+                                            !_mc2WasteKg_validate &&
+                                            !_shiftHours_validate) {
                                           WaferReport.addReport(
-                                              supName,
-                                              sku,
-                                              double.parse(actualSpeed),
-                                              double.parse(ovenScrap),
-                                              double.parse(ovenRework),
-                                              double.parse(cutterScrap),
-                                              double.parse(cutterRework),
-                                              double.parse(creamScrap),
-                                              double.parse(creamRework),
-                                              double.parse(coolerScrap),
-                                              double.parse(coolerRework),
-                                              double.parse(mc1Speed),
-                                              double.parse(mc2Speed),
-                                              double.parse(packingScrap),
-                                              double.parse(packingRework),
-                                              double.parse(boxesWaste),
-                                              double.parse(cartonWaste),
-                                              double.parse(mc1FilmUsed),
-                                              double.parse(mc2FilmUsed),
-                                              double.parse(mc1WasteKg),
-                                              double.parse(mc2WasteKg),
-                                              int.parse(shiftProductionPlan),
-                                              int.parse(productionInCartons),
-                                              prod_lines4.indexOf(
-                                                      selectedProdLine) +
-                                                  1,
-                                              shifts.indexOf(selectedShift),
-                                              refNum,
-                                              int.parse(selectedYear),
-                                              int.parse(selectedMonth),
-                                              int.parse(selectedDay));
+                                            supName,
+                                            sku,
+                                            double.parse(actualSpeed),
+                                            double.parse(ovenScrap),
+                                            double.parse(ovenRework),
+                                            double.parse(cutterScrap),
+                                            double.parse(cutterRework),
+                                            double.parse(creamScrap),
+                                            double.parse(creamRework),
+                                            double.parse(coolerScrap),
+                                            double.parse(coolerRework),
+                                            double.parse(mc1Speed),
+                                            double.parse(mc2Speed),
+                                            double.parse(packingScrap),
+                                            double.parse(packingRework),
+                                            double.parse(boxesWaste),
+                                            double.parse(cartonWaste),
+                                            double.parse(mc1FilmUsed),
+                                            double.parse(mc2FilmUsed),
+                                            double.parse(mc1WasteKg),
+                                            double.parse(mc2WasteKg),
+                                            int.parse(shiftProductionPlan),
+                                            int.parse(productionInCartons),
+                                            prod_lines4
+                                                    .indexOf(selectedProdLine) +
+                                                1,
+                                            shifts.indexOf(selectedShift),
+                                            refNum,
+                                            int.parse(selectedYear),
+                                            int.parse(selectedMonth),
+                                            int.parse(selectedDay),
+                                            double.parse(shiftHours),
+                                          );
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -1393,6 +1442,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             emptyField(mc1WasteKg);
                                         _mc2WasteKg_validate =
                                             emptyField(mc2WasteKg);
+                                        _shiftHours_validate =
+                                            emptyField(shiftHours);
                                       });
                                       try {
                                         if (!_sup_name_validate &&
@@ -1416,46 +1467,49 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             !_mc1FilmUsed_validate &&
                                             !_mc2FilmUsed_validate &&
                                             !_mc1WasteKg_validate &&
-                                            !_mc2WasteKg_validate) {
+                                            !_mc2WasteKg_validate &&
+                                            !_shiftHours_validate) {
                                           if (canEditThisReport(
                                               supName,
                                               int.parse(selectedDay),
                                               int.parse(selectedMonth),
                                               int.parse(selectedYear))) {
                                             WaferReport.editReport(
-                                                context,
-                                                reportID,
-                                                supName,
-                                                sku,
-                                                double.parse(actualSpeed),
-                                                double.parse(ovenScrap),
-                                                double.parse(ovenRework),
-                                                double.parse(cutterScrap),
-                                                double.parse(cutterRework),
-                                                double.parse(creamScrap),
-                                                double.parse(creamRework),
-                                                double.parse(coolerScrap),
-                                                double.parse(coolerRework),
-                                                double.parse(mc1Speed),
-                                                double.parse(mc2Speed),
-                                                double.parse(packingScrap),
-                                                double.parse(packingRework),
-                                                double.parse(boxesWaste),
-                                                double.parse(cartonWaste),
-                                                double.parse(mc1FilmUsed),
-                                                double.parse(mc2FilmUsed),
-                                                double.parse(mc1WasteKg),
-                                                double.parse(mc2WasteKg),
-                                                int.parse(shiftProductionPlan),
-                                                int.parse(productionInCartons),
-                                                prod_lines4.indexOf(
-                                                        selectedProdLine) +
-                                                    1,
-                                                shifts.indexOf(selectedShift),
-                                                refNum,
-                                                int.parse(selectedYear),
-                                                int.parse(selectedMonth),
-                                                int.parse(selectedDay));
+                                              context,
+                                              reportID,
+                                              supName,
+                                              sku,
+                                              double.parse(actualSpeed),
+                                              double.parse(ovenScrap),
+                                              double.parse(ovenRework),
+                                              double.parse(cutterScrap),
+                                              double.parse(cutterRework),
+                                              double.parse(creamScrap),
+                                              double.parse(creamRework),
+                                              double.parse(coolerScrap),
+                                              double.parse(coolerRework),
+                                              double.parse(mc1Speed),
+                                              double.parse(mc2Speed),
+                                              double.parse(packingScrap),
+                                              double.parse(packingRework),
+                                              double.parse(boxesWaste),
+                                              double.parse(cartonWaste),
+                                              double.parse(mc1FilmUsed),
+                                              double.parse(mc2FilmUsed),
+                                              double.parse(mc1WasteKg),
+                                              double.parse(mc2WasteKg),
+                                              int.parse(shiftProductionPlan),
+                                              int.parse(productionInCartons),
+                                              prod_lines4.indexOf(
+                                                      selectedProdLine) +
+                                                  1,
+                                              shifts.indexOf(selectedShift),
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay),
+                                              double.parse(shiftHours),
+                                            );
                                           } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(SnackBar(

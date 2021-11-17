@@ -37,38 +37,41 @@ class WaferReport {
       mc1FilmUsed,
       mc2FilmUsed,
       mc1WasteKg,
-      mc2WasteKg;
+      mc2WasteKg,
+      shiftHours;
 
-  WaferReport(
-      {required this.area,
-      required this.shift_index,
-      required this.line_index,
-      required this.supName,
-      required this.skuName,
-      required this.shiftProductionPlan,
-      required this.productionInCartons,
-      required this.actualSpeed,
-      required this.ovenScrap,
-      required this.ovenRework,
-      required this.cutterScrap,
-      required this.cutterRework,
-      required this.creamScrap,
-      required this.creamRework,
-      required this.coolerScrap,
-      required this.coolerRework,
-      required this.mc1Speed,
-      required this.mc2Speed,
-      required this.packingScrap,
-      required this.packingRework,
-      required this.boxesWaste,
-      required this.cartonWaste,
-      required this.mc1FilmUsed,
-      required this.mc2FilmUsed,
-      required this.mc1WasteKg,
-      required this.mc2WasteKg,
-      required this.year,
-      required this.month,
-      required this.day});
+  WaferReport({
+    required this.area,
+    required this.shift_index,
+    required this.line_index,
+    required this.supName,
+    required this.skuName,
+    required this.shiftProductionPlan,
+    required this.productionInCartons,
+    required this.actualSpeed,
+    required this.ovenScrap,
+    required this.ovenRework,
+    required this.cutterScrap,
+    required this.cutterRework,
+    required this.creamScrap,
+    required this.creamRework,
+    required this.coolerScrap,
+    required this.coolerRework,
+    required this.mc1Speed,
+    required this.mc2Speed,
+    required this.packingScrap,
+    required this.packingRework,
+    required this.boxesWaste,
+    required this.cartonWaste,
+    required this.mc1FilmUsed,
+    required this.mc2FilmUsed,
+    required this.mc1WasteKg,
+    required this.mc2WasteKg,
+    required this.year,
+    required this.month,
+    required this.day,
+    required this.shiftHours,
+  });
 
   WaferReport.fromJson(Map<String, Object?> json)
       : this(
@@ -101,6 +104,7 @@ class WaferReport {
           mc2FilmUsed: parseJsonToDouble(json['mc2FilmUsed']!),
           mc1WasteKg: parseJsonToDouble(json['mc1WasteKg']!),
           mc2WasteKg: parseJsonToDouble(json['mc2WasteKg']!),
+          shiftHours: parseJsonToDouble(json['shiftHours']!),
         );
 
   Map<String, Object?> toJson() {
@@ -134,6 +138,7 @@ class WaferReport {
       'mc2FilmUsed': mc2FilmUsed,
       'mc1WasteKg': mc1WasteKg,
       'mc2WasteKg': mc2WasteKg,
+      'shiftHours': shiftHours,
     };
   }
 
@@ -167,6 +172,7 @@ class WaferReport {
     int year,
     int month,
     int day,
+    double shiftHours,
   ) async {
     final waferReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -208,6 +214,7 @@ class WaferReport {
         mc2FilmUsed: mc2FilmUsed,
         mc1WasteKg: mc1WasteKg,
         mc2WasteKg: mc2WasteKg,
+        shiftHours: shiftHours,
       ),
     );
   }
@@ -244,6 +251,7 @@ class WaferReport {
     int year,
     int month,
     int day,
+    double shiftHours,
   ) async {
     final waferReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -286,6 +294,7 @@ class WaferReport {
           'mc2FilmUsed': mc2FilmUsed,
           'mc1WasteKg': mc1WasteKg,
           'mc2WasteKg': mc2WasteKg,
+          'shiftHours': shiftHours,
         })
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -412,7 +421,9 @@ class WaferReport {
             report.data(), report.data().productionInCartons);
         temp_planInKg += calculateProductionKg(
             report.data(), report.data().shiftProductionPlan);
-        temp_theoreticalPlan += theoreticals[report.data().line_index - 1];
+
+        temp_theoreticalPlan += theoreticals[report.data().line_index - 1] *
+            (report.data().shiftHours / standardShiftHours);
 
         temp_productionPlan += report.data().shiftProductionPlan;
         temp_scrap += calculateAllScrap(WAFER_AREA, report.data());
@@ -486,6 +497,7 @@ class WaferReport {
       creamRework: 0.0,
       coolerRework: 0.0,
       creamScrap: 0.0,
+      shiftHours: standardShiftHours,
     );
   }
 }

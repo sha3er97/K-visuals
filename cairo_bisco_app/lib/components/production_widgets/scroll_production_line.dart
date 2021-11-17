@@ -63,7 +63,27 @@ class ProductionLine extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subHeading(report.productionInCartons.toString()),
+                      subHeading(report.productionInCartons.toString() + " C"),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: minimumPadding),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Plan",
+                        style: TextStyle(
+                          color: KelloggColors.grey,
+                          fontSize: minimumFontSize,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      subHeading(report.shiftProductionPlan.toString() + " C"),
                     ],
                   ),
                 ),
