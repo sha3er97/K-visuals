@@ -75,3 +75,13 @@ int getWeekNumber(int day, int month, int year) {
 //   }
   return (diff.inDays / 7).ceil();
 }
+
+bool isSameDay(int day, int month, int year) {
+  DateTime now = new DateTime.now();
+
+  if (now.hour < 16) //before 4 pm we are still yesterday
+  {
+    now = now.subtract(Duration(days: 1));
+  }
+  return (day == now.day && year == now.year && month == now.month);
+}

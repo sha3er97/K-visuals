@@ -1,6 +1,7 @@
 import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/other_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
@@ -671,25 +672,38 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                             !_food_safety_incidents_validate &&
                                             !_quality_incidents_validate &&
                                             !_sup_name_validate) {
-                                          QfsReport.editReport(
-                                              context,
-                                              reportID,
+                                          if (canEditThisReport(
                                               supName,
-                                              int.parse(quality_incidents),
-                                              int.parse(food_safety_incidents),
-                                              int.parse(ccp_failure),
-                                              int.parse(consumer_complaints),
-                                              int.parse(selectedYear),
-                                              int.parse(selectedMonth),
                                               int.parse(selectedDay),
-                                              shifts.indexOf(selectedShift),
-                                              prod_lines4.indexOf(
-                                                      selectedProdLine) +
-                                                  1,
-                                              //line 1,2,3,4
-                                              Pes.indexOf(selected_pes),
-                                              G6.indexOf(selected_G6),
-                                              refNum);
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedYear))) {
+                                            QfsReport.editReport(
+                                                context,
+                                                reportID,
+                                                supName,
+                                                int.parse(quality_incidents),
+                                                int.parse(
+                                                    food_safety_incidents),
+                                                int.parse(ccp_failure),
+                                                int.parse(consumer_complaints),
+                                                int.parse(selectedYear),
+                                                int.parse(selectedMonth),
+                                                int.parse(selectedDay),
+                                                shifts.indexOf(selectedShift),
+                                                prod_lines4.indexOf(
+                                                        selectedProdLine) +
+                                                    1,
+                                                //line 1,2,3,4
+                                                Pes.indexOf(selected_pes),
+                                                G6.indexOf(selected_G6),
+                                                refNum);
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content:
+                                                  Text(unauthorizedEditMsg),
+                                            ));
+                                          }
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
@@ -720,11 +734,22 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                         showSpinner = true;
                                       });
                                       try {
-                                        QfsReport.deleteReport(
-                                          context,
-                                          reportID,
-                                          int.parse(selectedYear),
-                                        );
+                                        if (canEditThisReport(
+                                            supName,
+                                            int.parse(selectedDay),
+                                            int.parse(selectedMonth),
+                                            int.parse(selectedYear))) {
+                                          QfsReport.deleteReport(
+                                            context,
+                                            reportID,
+                                            int.parse(selectedYear),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(unauthorizedEditMsg),
+                                          ));
+                                        }
                                         setState(() {
                                           showSpinner = false;
                                         });

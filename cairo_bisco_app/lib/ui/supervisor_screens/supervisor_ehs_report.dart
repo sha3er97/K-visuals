@@ -1,5 +1,6 @@
 import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/other_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
@@ -685,25 +686,37 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                                             !_lostTime_incidents_validate &&
                                             !_firstAid_incidents_validate &&
                                             !_sup_name_validate) {
-                                          EhsReport.editReport(
-                                              context,
-                                              reportID,
+                                          if (canEditThisReport(
                                               supName,
-                                              int.parse(firstAid_incidents),
-                                              int.parse(lostTime_incidents),
-                                              int.parse(recordable_incidents),
-                                              int.parse(nearMiss),
-                                              int.parse(risk_assessment),
-                                              S7.indexOf(selected_S7),
-                                              prod_lines4.indexOf(
-                                                      selectedProdLine) +
-                                                  1,
-                                              //line 1,2,3,4
-                                              shifts.indexOf(selectedShift),
-                                              refNum,
-                                              int.parse(selectedYear),
+                                              int.parse(selectedDay),
                                               int.parse(selectedMonth),
-                                              int.parse(selectedDay));
+                                              int.parse(selectedYear))) {
+                                            EhsReport.editReport(
+                                                context,
+                                                reportID,
+                                                supName,
+                                                int.parse(firstAid_incidents),
+                                                int.parse(lostTime_incidents),
+                                                int.parse(recordable_incidents),
+                                                int.parse(nearMiss),
+                                                int.parse(risk_assessment),
+                                                S7.indexOf(selected_S7),
+                                                prod_lines4.indexOf(
+                                                        selectedProdLine) +
+                                                    1,
+                                                //line 1,2,3,4
+                                                shifts.indexOf(selectedShift),
+                                                refNum,
+                                                int.parse(selectedYear),
+                                                int.parse(selectedMonth),
+                                                int.parse(selectedDay));
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content:
+                                                  Text(unauthorizedEditMsg),
+                                            ));
+                                          }
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
@@ -734,11 +747,22 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
                                         showSpinner = true;
                                       });
                                       try {
-                                        EhsReport.deleteReport(
-                                          context,
-                                          reportID,
-                                          int.parse(selectedYear),
-                                        );
+                                        if (canEditThisReport(
+                                            supName,
+                                            int.parse(selectedDay),
+                                            int.parse(selectedMonth),
+                                            int.parse(selectedYear))) {
+                                          EhsReport.deleteReport(
+                                            context,
+                                            reportID,
+                                            int.parse(selectedYear),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(unauthorizedEditMsg),
+                                          ));
+                                        }
                                         setState(() {
                                           showSpinner = false;
                                         });

@@ -1,6 +1,7 @@
 import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/PeopleReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/other_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
@@ -448,17 +449,29 @@ class _SupervisorPeopleReportFormState
                                         if (!_original_people_validate &&
                                             !_attended_people_validate &&
                                             !_sup_name_validate) {
-                                          PeopleReport.editReport(
-                                              context,
-                                              reportID,
+                                          if (canEditThisReport(
                                               supName,
-                                              int.parse(original_people),
-                                              int.parse(attended_people),
-                                              shifts.indexOf(selectedShift),
-                                              refNum,
-                                              int.parse(selectedYear),
+                                              int.parse(selectedDay),
                                               int.parse(selectedMonth),
-                                              int.parse(selectedDay));
+                                              int.parse(selectedYear))) {
+                                            PeopleReport.editReport(
+                                                context,
+                                                reportID,
+                                                supName,
+                                                int.parse(original_people),
+                                                int.parse(attended_people),
+                                                shifts.indexOf(selectedShift),
+                                                refNum,
+                                                int.parse(selectedYear),
+                                                int.parse(selectedMonth),
+                                                int.parse(selectedDay));
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content:
+                                                  Text(unauthorizedEditMsg),
+                                            ));
+                                          }
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
@@ -489,11 +502,22 @@ class _SupervisorPeopleReportFormState
                                         showSpinner = true;
                                       });
                                       try {
-                                        PeopleReport.deleteReport(
-                                          context,
-                                          reportID,
-                                          int.parse(selectedYear),
-                                        );
+                                        if (canEditThisReport(
+                                            supName,
+                                            int.parse(selectedDay),
+                                            int.parse(selectedMonth),
+                                            int.parse(selectedYear))) {
+                                          PeopleReport.deleteReport(
+                                            context,
+                                            reportID,
+                                            int.parse(selectedYear),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(unauthorizedEditMsg),
+                                          ));
+                                        }
                                         setState(() {
                                           showSpinner = false;
                                         });

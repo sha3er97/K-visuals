@@ -2,6 +2,7 @@ import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
 import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/other_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
@@ -1418,46 +1419,59 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                             !_mc2FilmUsed_validate &&
                                             !_mc1WasteKg_validate &&
                                             !_mc2WasteKg_validate) {
-                                          BiscuitsReport.editReport(
-                                              context,
-                                              reportID,
+                                          if (canEditThisReport(
                                               supName,
-                                              sku,
-                                              double.parse(actualSpeed),
-                                              double.parse(extrusionScrap),
-                                              double.parse(extrusionRework),
-                                              double.parse(ovenScrap),
-                                              double.parse(ovenRework),
-                                              double.parse(cutterScrap),
-                                              double.parse(cutterRework),
-                                              double.parse(conveyorScrap),
-                                              double.parse(conveyorRework),
-                                              double.parse(mc1Speed),
-                                              double.parse(mc2Speed),
-                                              double.parse(packingScrap),
-                                              double.parse(packingRework),
-                                              double.parse(boxesWaste),
-                                              double.parse(cartonWaste),
-                                              double.parse(mc1FilmUsed),
-                                              double.parse(mc2FilmUsed),
-                                              double.parse(mc1WasteKg),
-                                              double.parse(mc2WasteKg),
-                                              int.parse(shiftProductionPlan),
-                                              int.parse(productionInCartons),
-                                              prod_lines4.indexOf(
-                                                      selectedProdLine) +
-                                                  1,
-                                              shifts.indexOf(selectedShift),
-                                              refNum,
-                                              int.parse(selectedYear),
+                                              int.parse(selectedDay),
                                               int.parse(selectedMonth),
-                                              int.parse(selectedDay));
+                                              int.parse(selectedYear))) {
+                                            BiscuitsReport.editReport(
+                                                context,
+                                                reportID,
+                                                supName,
+                                                sku,
+                                                double.parse(actualSpeed),
+                                                double.parse(extrusionScrap),
+                                                double.parse(extrusionRework),
+                                                double.parse(ovenScrap),
+                                                double.parse(ovenRework),
+                                                double.parse(cutterScrap),
+                                                double.parse(cutterRework),
+                                                double.parse(conveyorScrap),
+                                                double.parse(conveyorRework),
+                                                double.parse(mc1Speed),
+                                                double.parse(mc2Speed),
+                                                double.parse(packingScrap),
+                                                double.parse(packingRework),
+                                                double.parse(boxesWaste),
+                                                double.parse(cartonWaste),
+                                                double.parse(mc1FilmUsed),
+                                                double.parse(mc2FilmUsed),
+                                                double.parse(mc1WasteKg),
+                                                double.parse(mc2WasteKg),
+                                                int.parse(shiftProductionPlan),
+                                                int.parse(productionInCartons),
+                                                prod_lines4.indexOf(
+                                                        selectedProdLine) +
+                                                    1,
+                                                shifts.indexOf(selectedShift),
+                                                refNum,
+                                                int.parse(selectedYear),
+                                                int.parse(selectedMonth),
+                                                int.parse(selectedDay));
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content:
+                                                  Text(unauthorizedEditMsg),
+                                            ));
+                                          }
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
                                             content: Text(submissionErrorText),
                                           ));
                                         }
+
                                         setState(() {
                                           showSpinner = false;
                                         });
@@ -1485,11 +1499,22 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                         showSpinner = true;
                                       });
                                       try {
-                                        BiscuitsReport.deleteReport(
-                                          context,
-                                          reportID,
-                                          int.parse(selectedYear),
-                                        );
+                                        if (canEditThisReport(
+                                            supName,
+                                            int.parse(selectedDay),
+                                            int.parse(selectedMonth),
+                                            int.parse(selectedYear))) {
+                                          BiscuitsReport.deleteReport(
+                                            context,
+                                            reportID,
+                                            int.parse(selectedYear),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(unauthorizedEditMsg),
+                                          ));
+                                        }
                                         setState(() {
                                           showSpinner = false;
                                         });

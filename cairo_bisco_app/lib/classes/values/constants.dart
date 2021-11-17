@@ -75,7 +75,8 @@ const conditionalMissingValueErrorText =
 const uneditableLabelText = 'Uneditable';
 const excelSuccessMsg = "File Downloaded Successfully";
 const excelFailureMsg = "Something went wrong in Exporting Report";
-
+const unauthorizedEditMsg =
+    "Unauthorized Access please contact your administrator";
 /** MACROS **/
 const BISCUIT_AREA = 0;
 const WAFER_AREA = 1;

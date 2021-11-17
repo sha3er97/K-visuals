@@ -1,6 +1,7 @@
 import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/other_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
@@ -425,19 +426,31 @@ class _SupervisorOverWeightReportFormState
                                         if (!_percent_missing_validate &&
                                             !_percent_value_validate &&
                                             !_sup_name_validate) {
-                                          OverWeightReport.editReport(
-                                              context,
-                                              reportID,
+                                          if (canEditThisReport(
                                               supName,
-                                              double.parse(percent),
-                                              prod_lines4.indexOf(
-                                                      selectedProdLine) +
-                                                  1,
-                                              //line 1,2,3,4
-                                              refNum,
-                                              int.parse(selectedYear),
+                                              int.parse(selectedDay),
                                               int.parse(selectedMonth),
-                                              int.parse(selectedDay));
+                                              int.parse(selectedYear))) {
+                                            OverWeightReport.editReport(
+                                                context,
+                                                reportID,
+                                                supName,
+                                                double.parse(percent),
+                                                prod_lines4.indexOf(
+                                                        selectedProdLine) +
+                                                    1,
+                                                //line 1,2,3,4
+                                                refNum,
+                                                int.parse(selectedYear),
+                                                int.parse(selectedMonth),
+                                                int.parse(selectedDay));
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content:
+                                                  Text(unauthorizedEditMsg),
+                                            ));
+                                          }
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
@@ -468,11 +481,22 @@ class _SupervisorOverWeightReportFormState
                                         showSpinner = true;
                                       });
                                       try {
-                                        OverWeightReport.deleteReport(
-                                          context,
-                                          reportID,
-                                          int.parse(selectedYear),
-                                        );
+                                        if (canEditThisReport(
+                                            supName,
+                                            int.parse(selectedDay),
+                                            int.parse(selectedMonth),
+                                            int.parse(selectedYear))) {
+                                          OverWeightReport.deleteReport(
+                                            context,
+                                            reportID,
+                                            int.parse(selectedYear),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(unauthorizedEditMsg),
+                                          ));
+                                        }
                                         setState(() {
                                           showSpinner = false;
                                         });

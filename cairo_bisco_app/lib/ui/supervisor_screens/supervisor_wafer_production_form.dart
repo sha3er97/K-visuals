@@ -2,6 +2,7 @@ import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/WaferReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/other_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
@@ -1416,40 +1417,52 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             !_mc2FilmUsed_validate &&
                                             !_mc1WasteKg_validate &&
                                             !_mc2WasteKg_validate) {
-                                          WaferReport.editReport(
-                                              context,
-                                              reportID,
+                                          if (canEditThisReport(
                                               supName,
-                                              sku,
-                                              double.parse(actualSpeed),
-                                              double.parse(ovenScrap),
-                                              double.parse(ovenRework),
-                                              double.parse(cutterScrap),
-                                              double.parse(cutterRework),
-                                              double.parse(creamScrap),
-                                              double.parse(creamRework),
-                                              double.parse(coolerScrap),
-                                              double.parse(coolerRework),
-                                              double.parse(mc1Speed),
-                                              double.parse(mc2Speed),
-                                              double.parse(packingScrap),
-                                              double.parse(packingRework),
-                                              double.parse(boxesWaste),
-                                              double.parse(cartonWaste),
-                                              double.parse(mc1FilmUsed),
-                                              double.parse(mc2FilmUsed),
-                                              double.parse(mc1WasteKg),
-                                              double.parse(mc2WasteKg),
-                                              int.parse(shiftProductionPlan),
-                                              int.parse(productionInCartons),
-                                              prod_lines4.indexOf(
-                                                      selectedProdLine) +
-                                                  1,
-                                              shifts.indexOf(selectedShift),
-                                              refNum,
-                                              int.parse(selectedYear),
+                                              int.parse(selectedDay),
                                               int.parse(selectedMonth),
-                                              int.parse(selectedDay));
+                                              int.parse(selectedYear))) {
+                                            WaferReport.editReport(
+                                                context,
+                                                reportID,
+                                                supName,
+                                                sku,
+                                                double.parse(actualSpeed),
+                                                double.parse(ovenScrap),
+                                                double.parse(ovenRework),
+                                                double.parse(cutterScrap),
+                                                double.parse(cutterRework),
+                                                double.parse(creamScrap),
+                                                double.parse(creamRework),
+                                                double.parse(coolerScrap),
+                                                double.parse(coolerRework),
+                                                double.parse(mc1Speed),
+                                                double.parse(mc2Speed),
+                                                double.parse(packingScrap),
+                                                double.parse(packingRework),
+                                                double.parse(boxesWaste),
+                                                double.parse(cartonWaste),
+                                                double.parse(mc1FilmUsed),
+                                                double.parse(mc2FilmUsed),
+                                                double.parse(mc1WasteKg),
+                                                double.parse(mc2WasteKg),
+                                                int.parse(shiftProductionPlan),
+                                                int.parse(productionInCartons),
+                                                prod_lines4.indexOf(
+                                                        selectedProdLine) +
+                                                    1,
+                                                shifts.indexOf(selectedShift),
+                                                refNum,
+                                                int.parse(selectedYear),
+                                                int.parse(selectedMonth),
+                                                int.parse(selectedDay));
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content:
+                                                  Text(unauthorizedEditMsg),
+                                            ));
+                                          }
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
@@ -1483,11 +1496,22 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                         showSpinner = true;
                                       });
                                       try {
-                                        WaferReport.deleteReport(
-                                          context,
-                                          reportID,
-                                          int.parse(selectedYear),
-                                        );
+                                        if (canEditThisReport(
+                                            supName,
+                                            int.parse(selectedDay),
+                                            int.parse(selectedMonth),
+                                            int.parse(selectedYear))) {
+                                          WaferReport.deleteReport(
+                                            context,
+                                            reportID,
+                                            int.parse(selectedYear),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(unauthorizedEditMsg),
+                                          ));
+                                        }
                                         setState(() {
                                           showSpinner = false;
                                         });
