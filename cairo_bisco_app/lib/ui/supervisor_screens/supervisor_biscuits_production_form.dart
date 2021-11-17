@@ -1,13 +1,14 @@
 import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
+import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
-import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
-import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/classes/values/form_values.dart';
+import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
+import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:flutter/material.dart';
@@ -141,7 +142,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
   @override
   void initState() {
     super.initState();
-    supName = isEdit ? reportDetails.supName : '';
+    supName = isEdit ? reportDetails.supName : Credentials.getUserName();
     shiftProductionPlan =
         isEdit ? reportDetails.shiftProductionPlan.toString() : '';
     actualSpeed = isEdit ? reportDetails.actualSpeed.toString() : '';
@@ -216,6 +217,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         SizedBox(height: minimumPadding),
                         TextFormField(
                           initialValue: supName,
+                          readOnly: true,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -223,6 +225,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
+                            labelText: uneditableLabelText,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.darkRed,

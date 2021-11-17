@@ -1,3 +1,4 @@
+import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/WaferReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
@@ -27,10 +28,10 @@ class WaferProductionForm extends StatefulWidget {
 
   @override
   _WaferProductionFormState createState() => _WaferProductionFormState(
-        reportDetails: reportDetails,
-        isEdit: isEdit,
-        reportID: reportID,
-      );
+    reportDetails: reportDetails,
+    isEdit: isEdit,
+    reportID: reportID,
+  );
 }
 
 class _WaferProductionFormState extends State<WaferProductionForm> {
@@ -140,7 +141,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
   @override
   void initState() {
     super.initState();
-    supName = isEdit ? reportDetails.supName : '';
+    supName = isEdit ? reportDetails.supName : Credentials.getUserName();
     shiftProductionPlan =
         isEdit ? reportDetails.shiftProductionPlan.toString() : '';
     actualSpeed = isEdit ? reportDetails.actualSpeed.toString() : '';
@@ -167,11 +168,11 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
     ///////////////////////////////////////////////////////////////////////////////
     selectedShift = shifts[reportDetails.shift_index];
     selectedYear =
-        years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
+    years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
     selectedMonth =
-        months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
+    months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
     selectedDay =
-        days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
+    days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
     print("initial line :" + selectedProdLine.toString());
 
@@ -206,7 +207,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPadding),
+                  const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
@@ -216,6 +217,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         SizedBox(height: minimumPadding),
                         TextFormField(
                           initialValue: supName,
+                          readOnly: true,
                           style: (TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
@@ -223,6 +225,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
+                            labelText: uneditableLabelText,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.darkRed,
@@ -251,7 +254,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -263,7 +266,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -374,7 +377,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -387,7 +390,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -400,7 +403,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -413,7 +416,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -472,7 +475,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -548,7 +551,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -584,7 +587,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -622,7 +625,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -658,7 +661,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -696,7 +699,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -732,7 +735,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -770,7 +773,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -806,7 +809,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -844,7 +847,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -880,7 +883,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -917,7 +920,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -954,7 +957,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -990,7 +993,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1026,7 +1029,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1064,7 +1067,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1100,7 +1103,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1136,7 +1139,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1172,7 +1175,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
+                          TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -1203,266 +1206,266 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
-                                padding: const EdgeInsets.all(minimumPadding),
-                                child: Center(
-                                  child: RoundedButton(
-                                    btnText: 'تسليم التقرير',
-                                    color: KelloggColors.darkRed,
-                                    onPressed: () async {
-                                      setState(() {
-                                        showSpinner = true;
-                                        _sup_name_validate =
-                                            emptyField(supName);
-                                        _shift_plan_validate =
-                                            emptyField(shiftProductionPlan);
-                                        _actualSpeed_validate =
-                                            emptyField(actualSpeed);
-                                        _productionInCartons_validate =
-                                            emptyField(productionInCartons);
-                                        _creamScrap_validate =
-                                            emptyField(creamScrap);
-                                        _creamRework_validate =
-                                            emptyField(creamRework);
-                                        _ovenScrap_validate =
-                                            emptyField(ovenScrap);
-                                        _ovenRework_validate =
-                                            emptyField(ovenRework);
-                                        _cutterScrap_validate =
-                                            emptyField(cutterScrap);
-                                        _cutterRework_validate =
-                                            emptyField(cutterRework);
-                                        _coolerScrap_validate =
-                                            emptyField(cutterScrap);
-                                        _coolerRework_validate =
-                                            emptyField(coolerRework);
-                                        _mc1Speed_validate =
-                                            emptyField(mc1Speed);
-                                        _mc2Speed_validate =
-                                            emptyField(mc2Speed);
-                                        _packingScrap_validate =
-                                            emptyField(packingScrap);
-                                        _packingRework_validate =
-                                            emptyField(packingRework);
-                                        _boxesWaste_validate =
-                                            emptyField(boxesWaste);
-                                        _cartonWaste_validate =
-                                            emptyField(cartonWaste);
-                                        _mc1FilmUsed_validate =
-                                            emptyField(mc1FilmUsed);
-                                        _mc2FilmUsed_validate =
-                                            emptyField(mc2FilmUsed);
-                                        _mc1WasteKg_validate =
-                                            emptyField(mc1WasteKg);
-                                        _mc2WasteKg_validate =
-                                            emptyField(mc2WasteKg);
-                                      });
-                                      try {
-                                        if (!_sup_name_validate &&
-                                            !_shift_plan_validate &&
-                                            !_actualSpeed_validate &&
-                                            !_productionInCartons_validate &&
-                                            !_ovenScrap_validate &&
-                                            !_ovenRework_validate &&
-                                            !_creamScrap_validate &&
-                                            !_creamRework_validate &&
-                                            !_coolerScrap_validate &&
-                                            !_coolerRework_validate &&
-                                            !_cutterScrap_validate &&
-                                            !_cutterRework_validate &&
-                                            !_mc1Speed_validate &&
-                                            !_mc2Speed_validate &&
-                                            !_packingScrap_validate &&
-                                            !_packingRework_validate &&
-                                            !_boxesWaste_validate &&
-                                            !_cartonWaste_validate &&
-                                            !_mc1FilmUsed_validate &&
-                                            !_mc2FilmUsed_validate &&
-                                            !_mc1WasteKg_validate &&
-                                            !_mc2WasteKg_validate) {
-                                          WaferReport.addReport(
-                                              supName,
-                                              sku,
-                                              double.parse(actualSpeed),
-                                              double.parse(ovenScrap),
-                                              double.parse(ovenRework),
-                                              double.parse(cutterScrap),
-                                              double.parse(cutterRework),
-                                              double.parse(creamScrap),
-                                              double.parse(creamRework),
-                                              double.parse(coolerScrap),
-                                              double.parse(coolerRework),
-                                              double.parse(mc1Speed),
-                                              double.parse(mc2Speed),
-                                              double.parse(packingScrap),
-                                              double.parse(packingRework),
-                                              double.parse(boxesWaste),
-                                              double.parse(cartonWaste),
-                                              double.parse(mc1FilmUsed),
-                                              double.parse(mc2FilmUsed),
-                                              double.parse(mc1WasteKg),
-                                              double.parse(mc2WasteKg),
-                                              int.parse(shiftProductionPlan),
-                                              int.parse(productionInCartons),
-                                              prod_lines4.indexOf(
-                                                      selectedProdLine) +
-                                                  1,
-                                              shifts.indexOf(selectedShift),
-                                              refNum,
-                                              int.parse(selectedYear),
-                                              int.parse(selectedMonth),
-                                              int.parse(selectedDay));
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      SuccessScreen()));
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text(submissionErrorText),
-                                          ));
-                                        }
-                                        setState(() {
-                                          showSpinner = false;
-                                        });
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                              btnText: 'تسليم التقرير',
+                              color: KelloggColors.darkRed,
+                              onPressed: () async {
+                                setState(() {
+                                  showSpinner = true;
+                                  _sup_name_validate =
+                                      emptyField(supName);
+                                  _shift_plan_validate =
+                                      emptyField(shiftProductionPlan);
+                                  _actualSpeed_validate =
+                                      emptyField(actualSpeed);
+                                  _productionInCartons_validate =
+                                      emptyField(productionInCartons);
+                                  _creamScrap_validate =
+                                      emptyField(creamScrap);
+                                  _creamRework_validate =
+                                      emptyField(creamRework);
+                                  _ovenScrap_validate =
+                                      emptyField(ovenScrap);
+                                  _ovenRework_validate =
+                                      emptyField(ovenRework);
+                                  _cutterScrap_validate =
+                                      emptyField(cutterScrap);
+                                  _cutterRework_validate =
+                                      emptyField(cutterRework);
+                                  _coolerScrap_validate =
+                                      emptyField(cutterScrap);
+                                  _coolerRework_validate =
+                                      emptyField(coolerRework);
+                                  _mc1Speed_validate =
+                                      emptyField(mc1Speed);
+                                  _mc2Speed_validate =
+                                      emptyField(mc2Speed);
+                                  _packingScrap_validate =
+                                      emptyField(packingScrap);
+                                  _packingRework_validate =
+                                      emptyField(packingRework);
+                                  _boxesWaste_validate =
+                                      emptyField(boxesWaste);
+                                  _cartonWaste_validate =
+                                      emptyField(cartonWaste);
+                                  _mc1FilmUsed_validate =
+                                      emptyField(mc1FilmUsed);
+                                  _mc2FilmUsed_validate =
+                                      emptyField(mc2FilmUsed);
+                                  _mc1WasteKg_validate =
+                                      emptyField(mc1WasteKg);
+                                  _mc2WasteKg_validate =
+                                      emptyField(mc2WasteKg);
+                                });
+                                try {
+                                  if (!_sup_name_validate &&
+                                      !_shift_plan_validate &&
+                                      !_actualSpeed_validate &&
+                                      !_productionInCartons_validate &&
+                                      !_ovenScrap_validate &&
+                                      !_ovenRework_validate &&
+                                      !_creamScrap_validate &&
+                                      !_creamRework_validate &&
+                                      !_coolerScrap_validate &&
+                                      !_coolerRework_validate &&
+                                      !_cutterScrap_validate &&
+                                      !_cutterRework_validate &&
+                                      !_mc1Speed_validate &&
+                                      !_mc2Speed_validate &&
+                                      !_packingScrap_validate &&
+                                      !_packingRework_validate &&
+                                      !_boxesWaste_validate &&
+                                      !_cartonWaste_validate &&
+                                      !_mc1FilmUsed_validate &&
+                                      !_mc2FilmUsed_validate &&
+                                      !_mc1WasteKg_validate &&
+                                      !_mc2WasteKg_validate) {
+                                    WaferReport.addReport(
+                                        supName,
+                                        sku,
+                                        double.parse(actualSpeed),
+                                        double.parse(ovenScrap),
+                                        double.parse(ovenRework),
+                                        double.parse(cutterScrap),
+                                        double.parse(cutterRework),
+                                        double.parse(creamScrap),
+                                        double.parse(creamRework),
+                                        double.parse(coolerScrap),
+                                        double.parse(coolerRework),
+                                        double.parse(mc1Speed),
+                                        double.parse(mc2Speed),
+                                        double.parse(packingScrap),
+                                        double.parse(packingRework),
+                                        double.parse(boxesWaste),
+                                        double.parse(cartonWaste),
+                                        double.parse(mc1FilmUsed),
+                                        double.parse(mc2FilmUsed),
+                                        double.parse(mc1WasteKg),
+                                        double.parse(mc2WasteKg),
+                                        int.parse(shiftProductionPlan),
+                                        int.parse(productionInCartons),
+                                        prod_lines4.indexOf(
+                                            selectedProdLine) +
+                                            1,
+                                        shifts.indexOf(selectedShift),
+                                        refNum,
+                                        int.parse(selectedYear),
+                                        int.parse(selectedMonth),
+                                        int.parse(selectedDay));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SuccessScreen()));
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(submissionErrorText),
+                                    ));
+                                  }
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                         /////////////////////////////////////////////////////////////////////////////////////
                         !isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
-                                padding: const EdgeInsets.all(minimumPadding),
-                                child: Center(
-                                  child: RoundedButton(
-                                    btnText: 'Edit Report',
-                                    color: KelloggColors.darkBlue,
-                                    onPressed: () {
-                                      setState(() {
-                                        showSpinner = true;
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                              btnText: 'Edit Report',
+                              color: KelloggColors.darkBlue,
+                              onPressed: () {
+                                setState(() {
+                                  showSpinner = true;
 
-                                        _sup_name_validate =
-                                            emptyField(supName);
-                                        _shift_plan_validate =
-                                            emptyField(shiftProductionPlan);
-                                        _actualSpeed_validate =
-                                            emptyField(actualSpeed);
-                                        _productionInCartons_validate =
-                                            emptyField(productionInCartons);
-                                        _creamScrap_validate =
-                                            emptyField(creamScrap);
-                                        _creamRework_validate =
-                                            emptyField(creamRework);
-                                        _ovenScrap_validate =
-                                            emptyField(ovenScrap);
-                                        _ovenRework_validate =
-                                            emptyField(ovenRework);
-                                        _cutterScrap_validate =
-                                            emptyField(cutterScrap);
-                                        _cutterRework_validate =
-                                            emptyField(cutterRework);
-                                        _coolerScrap_validate =
-                                            emptyField(cutterScrap);
-                                        _coolerRework_validate =
-                                            emptyField(coolerRework);
-                                        _mc1Speed_validate =
-                                            emptyField(mc1Speed);
-                                        _mc2Speed_validate =
-                                            emptyField(mc2Speed);
-                                        _packingScrap_validate =
-                                            emptyField(packingScrap);
-                                        _packingRework_validate =
-                                            emptyField(packingRework);
-                                        _boxesWaste_validate =
-                                            emptyField(boxesWaste);
-                                        _cartonWaste_validate =
-                                            emptyField(cartonWaste);
-                                        _mc1FilmUsed_validate =
-                                            emptyField(mc1FilmUsed);
-                                        _mc2FilmUsed_validate =
-                                            emptyField(mc2FilmUsed);
-                                        _mc1WasteKg_validate =
-                                            emptyField(mc1WasteKg);
-                                        _mc2WasteKg_validate =
-                                            emptyField(mc2WasteKg);
-                                      });
-                                      try {
-                                        if (!_sup_name_validate &&
-                                            !_shift_plan_validate &&
-                                            !_actualSpeed_validate &&
-                                            !_productionInCartons_validate &&
-                                            !_ovenScrap_validate &&
-                                            !_ovenRework_validate &&
-                                            !_creamScrap_validate &&
-                                            !_creamRework_validate &&
-                                            !_coolerScrap_validate &&
-                                            !_coolerRework_validate &&
-                                            !_cutterScrap_validate &&
-                                            !_cutterRework_validate &&
-                                            !_mc1Speed_validate &&
-                                            !_mc2Speed_validate &&
-                                            !_packingScrap_validate &&
-                                            !_packingRework_validate &&
-                                            !_boxesWaste_validate &&
-                                            !_cartonWaste_validate &&
-                                            !_mc1FilmUsed_validate &&
-                                            !_mc2FilmUsed_validate &&
-                                            !_mc1WasteKg_validate &&
-                                            !_mc2WasteKg_validate) {
-                                          WaferReport.editReport(
-                                              context,
-                                              reportID,
-                                              supName,
-                                              sku,
-                                              double.parse(actualSpeed),
-                                              double.parse(ovenScrap),
-                                              double.parse(ovenRework),
-                                              double.parse(cutterScrap),
-                                              double.parse(cutterRework),
-                                              double.parse(creamScrap),
-                                              double.parse(creamRework),
-                                              double.parse(coolerScrap),
-                                              double.parse(coolerRework),
-                                              double.parse(mc1Speed),
-                                              double.parse(mc2Speed),
-                                              double.parse(packingScrap),
-                                              double.parse(packingRework),
-                                              double.parse(boxesWaste),
-                                              double.parse(cartonWaste),
-                                              double.parse(mc1FilmUsed),
-                                              double.parse(mc2FilmUsed),
-                                              double.parse(mc1WasteKg),
-                                              double.parse(mc2WasteKg),
-                                              int.parse(shiftProductionPlan),
-                                              int.parse(productionInCartons),
-                                              prod_lines4.indexOf(
-                                                      selectedProdLine) +
-                                                  1,
-                                              shifts.indexOf(selectedShift),
-                                              refNum,
-                                              int.parse(selectedYear),
-                                              int.parse(selectedMonth),
-                                              int.parse(selectedDay));
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text(submissionErrorText),
-                                          ));
-                                        }
-                                        setState(() {
-                                          showSpinner = false;
-                                        });
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
+                                  _sup_name_validate =
+                                      emptyField(supName);
+                                  _shift_plan_validate =
+                                      emptyField(shiftProductionPlan);
+                                  _actualSpeed_validate =
+                                      emptyField(actualSpeed);
+                                  _productionInCartons_validate =
+                                      emptyField(productionInCartons);
+                                  _creamScrap_validate =
+                                      emptyField(creamScrap);
+                                  _creamRework_validate =
+                                      emptyField(creamRework);
+                                  _ovenScrap_validate =
+                                      emptyField(ovenScrap);
+                                  _ovenRework_validate =
+                                      emptyField(ovenRework);
+                                  _cutterScrap_validate =
+                                      emptyField(cutterScrap);
+                                  _cutterRework_validate =
+                                      emptyField(cutterRework);
+                                  _coolerScrap_validate =
+                                      emptyField(cutterScrap);
+                                  _coolerRework_validate =
+                                      emptyField(coolerRework);
+                                  _mc1Speed_validate =
+                                      emptyField(mc1Speed);
+                                  _mc2Speed_validate =
+                                      emptyField(mc2Speed);
+                                  _packingScrap_validate =
+                                      emptyField(packingScrap);
+                                  _packingRework_validate =
+                                      emptyField(packingRework);
+                                  _boxesWaste_validate =
+                                      emptyField(boxesWaste);
+                                  _cartonWaste_validate =
+                                      emptyField(cartonWaste);
+                                  _mc1FilmUsed_validate =
+                                      emptyField(mc1FilmUsed);
+                                  _mc2FilmUsed_validate =
+                                      emptyField(mc2FilmUsed);
+                                  _mc1WasteKg_validate =
+                                      emptyField(mc1WasteKg);
+                                  _mc2WasteKg_validate =
+                                      emptyField(mc2WasteKg);
+                                });
+                                try {
+                                  if (!_sup_name_validate &&
+                                      !_shift_plan_validate &&
+                                      !_actualSpeed_validate &&
+                                      !_productionInCartons_validate &&
+                                      !_ovenScrap_validate &&
+                                      !_ovenRework_validate &&
+                                      !_creamScrap_validate &&
+                                      !_creamRework_validate &&
+                                      !_coolerScrap_validate &&
+                                      !_coolerRework_validate &&
+                                      !_cutterScrap_validate &&
+                                      !_cutterRework_validate &&
+                                      !_mc1Speed_validate &&
+                                      !_mc2Speed_validate &&
+                                      !_packingScrap_validate &&
+                                      !_packingRework_validate &&
+                                      !_boxesWaste_validate &&
+                                      !_cartonWaste_validate &&
+                                      !_mc1FilmUsed_validate &&
+                                      !_mc2FilmUsed_validate &&
+                                      !_mc1WasteKg_validate &&
+                                      !_mc2WasteKg_validate) {
+                                    WaferReport.editReport(
+                                        context,
+                                        reportID,
+                                        supName,
+                                        sku,
+                                        double.parse(actualSpeed),
+                                        double.parse(ovenScrap),
+                                        double.parse(ovenRework),
+                                        double.parse(cutterScrap),
+                                        double.parse(cutterRework),
+                                        double.parse(creamScrap),
+                                        double.parse(creamRework),
+                                        double.parse(coolerScrap),
+                                        double.parse(coolerRework),
+                                        double.parse(mc1Speed),
+                                        double.parse(mc2Speed),
+                                        double.parse(packingScrap),
+                                        double.parse(packingRework),
+                                        double.parse(boxesWaste),
+                                        double.parse(cartonWaste),
+                                        double.parse(mc1FilmUsed),
+                                        double.parse(mc2FilmUsed),
+                                        double.parse(mc1WasteKg),
+                                        double.parse(mc2WasteKg),
+                                        int.parse(shiftProductionPlan),
+                                        int.parse(productionInCartons),
+                                        prod_lines4.indexOf(
+                                            selectedProdLine) +
+                                            1,
+                                        shifts.indexOf(selectedShift),
+                                        refNum,
+                                        int.parse(selectedYear),
+                                        int.parse(selectedMonth),
+                                        int.parse(selectedDay));
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(submissionErrorText),
+                                    ));
+                                  }
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                         //////////////////////////////////////////////////////////////////
                         !isEdit
                             ? EmptyPlaceHolder()
@@ -1470,31 +1473,31 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         !isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
-                                padding: const EdgeInsets.all(minimumPadding),
-                                child: Center(
-                                  child: RoundedButton(
-                                    btnText: 'Delete Report',
-                                    color: KelloggColors.cockRed,
-                                    onPressed: () {
-                                      setState(() {
-                                        showSpinner = true;
-                                      });
-                                      try {
-                                        WaferReport.deleteReport(
-                                          context,
-                                          reportID,
-                                          int.parse(selectedYear),
-                                        );
-                                        setState(() {
-                                          showSpinner = false;
-                                        });
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                              btnText: 'Delete Report',
+                              color: KelloggColors.cockRed,
+                              onPressed: () {
+                                setState(() {
+                                  showSpinner = true;
+                                });
+                                try {
+                                  WaferReport.deleteReport(
+                                    context,
+                                    reportID,
+                                    int.parse(selectedYear),
+                                  );
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                         //////////////////////////////////////////////////////////////////
                       ],
                     ),
