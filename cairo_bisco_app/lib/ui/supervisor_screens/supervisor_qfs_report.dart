@@ -171,7 +171,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        smallerHeading('اسم المسؤول\nSupervisor Name'),
+                        smallerHeading('اسم المسؤول\nResponsible Name'),
                         SizedBox(height: minimumPadding),
                         TextFormField(
                           initialValue: supName,

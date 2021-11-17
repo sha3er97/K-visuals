@@ -207,7 +207,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        smallerHeading('اسم المسؤول\nSupervisor Name'),
+                        smallerHeading('اسم المسؤول\nResponsible Name'),
                         SizedBox(height: minimumPadding),
                         TextFormField(
                           initialValue: supName,
