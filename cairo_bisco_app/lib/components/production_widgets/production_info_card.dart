@@ -51,15 +51,10 @@ class ProductionInfoCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  Text(title),
                   numOfCartons > -1
                       ? Text(
-                          (numOfCartons / 1000).toStringAsFixed(1) +
-                              " K Cartons",
+                          numOfCartons.toString() + " Cartons",
                           style: Theme.of(context)
                               .textTheme
                               .caption!
@@ -70,7 +65,7 @@ class ProductionInfoCard extends StatelessWidget {
               ),
             ),
           ),
-          Text("Tonnage : " + (amountInKgs / 1000).toStringAsFixed(1) + " K")
+          Text("Tonnage : " + (amountInKgs / 1000).toStringAsFixed(1) + " T")
         ],
       ),
     );

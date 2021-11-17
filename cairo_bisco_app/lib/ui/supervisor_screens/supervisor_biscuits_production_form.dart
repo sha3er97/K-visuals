@@ -464,7 +464,8 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        smallerHeading('السرعة الفعلية\nActual Speed'),
+                        smallerHeading(
+                            'السرعة الفعلية لابطا ماكينة (السكينة)\nActual Speed of bottle neck'),
                         SizedBox(height: minimumPadding),
                         TextFormField(
                           initialValue: actualSpeed,

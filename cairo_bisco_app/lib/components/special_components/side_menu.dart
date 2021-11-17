@@ -41,8 +41,8 @@ class SideMenu extends StatelessWidget {
           ),
           Center(
             child: Text(
-              Credentials.userEmail,
-              style: TextStyle(color: KelloggColors.grey),
+              "Name : " + Credentials.getUserName(),
+              style: TextStyle(color: KelloggColors.darkBlue),
             ),
           ),
           SizedBox(

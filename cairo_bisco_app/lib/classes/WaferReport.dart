@@ -373,6 +373,7 @@ class WaferReport {
         temp_used_film = 0.0,
         temp_wasted_film = 0.0,
         temp_productionInKg = 0.0,
+        temp_planInKg = 0.0,
         temp_rework = 0.0,
         temp_theoreticalPlan = 0.0,
         temp_rm_muv = 0.0,
@@ -409,7 +410,8 @@ class WaferReport {
         temp_productionInCartons += report.data().productionInCartons;
         temp_productionInKg += calculateProductionKg(
             report.data(), report.data().productionInCartons);
-
+        temp_planInKg += calculateProductionKg(
+            report.data(), report.data().shiftProductionPlan);
         temp_theoreticalPlan += theoreticals[report.data().line_index - 1];
 
         temp_productionPlan += report.data().shiftProductionPlan;
@@ -439,6 +441,7 @@ class WaferReport {
       scrap: temp_scrap,
       productionInCartons: temp_productionInCartons,
       productionInKg: temp_productionInKg,
+      planInKg: temp_planInKg,
       totalFilmWasted: temp_wasted_film,
       // totalFilmUsed: temp_used_film == 0 ? 1 : temp_used_film,
       totalFilmUsed: temp_used_film,

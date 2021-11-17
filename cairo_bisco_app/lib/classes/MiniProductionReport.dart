@@ -15,6 +15,7 @@ class MiniProductionReport {
       totalFilmUsed,
       totalFilmWasted,
       productionInKg,
+      planInKg,
       theoreticalAverage,
       rmMUV,
       pmMUV;
@@ -28,6 +29,7 @@ class MiniProductionReport {
     required this.shiftProductionPlan,
     required this.productionInCartons,
     required this.productionInKg,
+    required this.planInKg,
     required this.scrap,
     required this.rework,
     required this.totalFilmUsed,
@@ -51,6 +53,7 @@ class MiniProductionReport {
       scrap: 0.0,
       productionInCartons: 0,
       productionInKg: 0.0,
+      planInKg: 0.0,
       totalFilmWasted: 0.0,
       totalFilmUsed: 0.0,
       rework: 0.0,
@@ -68,6 +71,7 @@ class MiniProductionReport {
         temp_used_film = 0.0,
         temp_wasted_film = 0.0,
         temp_productionInKg = 0.0,
+        temp_planInKg = 0.0,
         temp_rework = 0.0,
         temp_theoreticalPlan = 0.0,
         temp_rm_muv = 0.0,
@@ -76,6 +80,7 @@ class MiniProductionReport {
     for (var report in reportsList) {
       temp_productionInCartons += report.productionInCartons;
       temp_productionInKg += report.productionInKg;
+      temp_planInKg += report.planInKg;
       temp_theoreticalPlan += report.theoreticalAverage;
       temp_productionPlan += report.shiftProductionPlan;
       temp_scrap += report.scrap;
@@ -97,6 +102,7 @@ class MiniProductionReport {
       scrap: temp_scrap,
       productionInCartons: temp_productionInCartons,
       productionInKg: temp_productionInKg,
+      planInKg: temp_planInKg,
       totalFilmWasted: temp_wasted_film,
       // totalFilmUsed: temp_used_film == 0 ? 1 : temp_used_film,
       totalFilmUsed: temp_used_film,

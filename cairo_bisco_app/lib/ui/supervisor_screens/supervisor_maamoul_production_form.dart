@@ -465,7 +465,8 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        smallerHeading('السرعة الفعلية\nActual Speed'),
+                        smallerHeading(
+                            'السرعة الفعلية لابطا ماكينة (التشكيل)\nActual Speed for bottle neck'),
                         SizedBox(height: minimumPadding),
                         TextFormField(
                           initialValue: actualSpeed,

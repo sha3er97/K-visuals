@@ -356,6 +356,7 @@ class MaamoulReport {
         temp_used_film = 0.0,
         temp_wasted_film = 0.0,
         temp_productionInKg = 0.0,
+        temp_planInKg = 0.0,
         temp_rework = 0.0,
         temp_theoreticalPlan = 0.0,
         temp_rm_muv = 0.0,
@@ -392,7 +393,8 @@ class MaamoulReport {
         temp_productionInCartons += report.data().productionInCartons;
         temp_productionInKg += calculateProductionKg(
             report.data(), report.data().productionInCartons);
-
+        temp_planInKg += calculateProductionKg(
+            report.data(), report.data().shiftProductionPlan);
         temp_theoreticalPlan += theoreticals[report.data().line_index - 1];
 
         temp_productionPlan += report.data().shiftProductionPlan;
@@ -401,8 +403,8 @@ class MaamoulReport {
         temp_wasted_film += report.data().mc2WasteKg + report.data().mc1WasteKg;
         temp_used_film += report.data().mc2FilmUsed + report.data().mc1FilmUsed;
         lastSkuName = report.data().skuName;
-        temp_rm_muv += calculateRmMUV(WAFER_AREA, report.data());
-        temp_pm_muv += calculatePmMUV(WAFER_AREA, report.data());
+        temp_rm_muv += calculateRmMUV(MAAMOUL_AREA, report.data());
+        temp_pm_muv += calculatePmMUV(MAAMOUL_AREA, report.data());
         print('debug :: MaamoulReport chosen in first if');
       } else {
         print(
@@ -422,6 +424,7 @@ class MaamoulReport {
       scrap: temp_scrap,
       productionInCartons: temp_productionInCartons,
       productionInKg: temp_productionInKg,
+      planInKg: temp_planInKg,
       totalFilmWasted: temp_wasted_film,
       // totalFilmUsed: temp_used_film == 0 ? 1 : temp_used_film,
       totalFilmUsed: temp_used_film,

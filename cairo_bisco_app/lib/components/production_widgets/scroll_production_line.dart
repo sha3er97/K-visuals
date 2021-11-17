@@ -22,30 +22,18 @@ class ProductionLine extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isTotal = report.skuName.compareTo('total') == 0;
     bool noWork = report.productionInCartons == 0;
-    // double actual = noWork
-    //     ? 0
-    //     : report.productionInCartons *
-    //         SKU.skuDetails[report.skuName]!.cartonWeight;
     bool prodTargetDone =
         noWork || report.productionInCartons - report.shiftProductionPlan >= 0;
     String arrowImg = prodTargetDone ? "up" : "down";
     String arrowImg2 = BadOverweightDriver(overweight) ? "down" : "up";
     String arrowImg3 = noWork
         ? "up"
-        : calculateScrapPercent(report) <
-                (isTotal
-                    ? Plans.universalTargetScrap
-                    : SKU.skuDetails[report.skuName]!.targetScrap)
-            ? "up"
-            : "down";
-    String arrowImg4 = noWork
-        ? "up"
-        : calculateMPSA(
-                    calculateProductionKg(report, report.shiftProductionPlan),
-                    calculateProductionKg(report, report.productionInCartons)) >
+        : calculateMPSA(report.planInKg, report.productionInKg) >
                 Plans.mpsaTarget
             ? "up"
             : "down";
+    String arrowImg4 = report.rmMUV <= 0 ? "up" : "down";
+    String arrowImg5 = report.pmMUV <= 0 ? "up" : "down";
 
     return Container(
       margin: EdgeInsets.all(defaultPadding),
@@ -182,11 +170,7 @@ class ProductionLine extends StatelessWidget {
                                 // mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    (prodTargetDone ? "" : "-") +
-                                        ((report.productionInCartons -
-                                                        report
-                                                            .shiftProductionPlan)
-                                                    .abs() *
+                                    (report.productionInCartons *
                                                 100 /
                                                 report.shiftProductionPlan)
                                             .toStringAsFixed(1) +
@@ -384,6 +368,7 @@ class ProductionLine extends StatelessWidget {
               ])
             ],
           ),
+          //////////////////////////////////////////////////////////////////////////////////
           Center(
             child: Text('RM MUV (EGP)',
                 style: TextStyle(
@@ -414,7 +399,7 @@ class ProductionLine extends StatelessWidget {
                       width: mediumIconSize,
                       padding: EdgeInsets.all(minimumPadding / 2),
                       child: new Image.asset(
-                        'images/$arrowImg3.png',
+                        'images/$arrowImg4.png',
                       ),
                     ),
                   ),
@@ -424,6 +409,48 @@ class ProductionLine extends StatelessWidget {
             ),
           ),
           SizedBox(height: defaultPadding),
+          //////////////////////////////////////////////////////////////////////////////////
+          Center(
+            child: Text('PM MUV (EGP)',
+                style: TextStyle(
+                    fontSize: largeFontSize,
+                    fontWeight: FontWeight.bold,
+                    color: KelloggColors.darkRed)),
+          ),
+          SizedBox(height: defaultPadding),
+          Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(BoxImageBorder),
+              child: ConstrainedBox(
+                constraints: BoxConstraints.tightFor(height: regularBoxHeight),
+                child: ElevatedButton.icon(
+                  label: Text(
+                      (report.pmMUV / 1000).toStringAsFixed(2) + " K EGP "),
+                  style: ElevatedButton.styleFrom(
+                    textStyle: TextStyle(
+                        fontSize: largeButtonFont, fontFamily: 'MyFont'),
+                    primary: report.pmMUV > 0
+                        ? KelloggColors.cockRed
+                        : KelloggColors.green,
+                  ),
+                  icon: ClipRRect(
+                    borderRadius: BorderRadius.circular(iconImageBorder),
+                    child: Container(
+                      height: mediumIconSize,
+                      width: mediumIconSize,
+                      padding: EdgeInsets.all(minimumPadding / 2),
+                      child: new Image.asset(
+                        'images/$arrowImg5.png',
+                      ),
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: defaultPadding),
+          //////////////////////////////////////////////////////////////////////////////////
           Center(
             child: Text('MPSA %',
                 style: TextStyle(
@@ -438,23 +465,17 @@ class ProductionLine extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: BoxConstraints.tightFor(height: regularBoxHeight),
                 child: ElevatedButton.icon(
-                  label: Text(calculateMPSA(
-                              calculateProductionKg(
-                                  report, report.shiftProductionPlan),
-                              calculateProductionKg(
-                                  report, report.productionInCartons))
-                          .toStringAsFixed(1) +
-                      " %"),
+                  label: Text(
+                      calculateMPSA(report.planInKg, report.productionInKg)
+                              .toStringAsFixed(1) +
+                          " %"),
                   style: ElevatedButton.styleFrom(
                     textStyle: TextStyle(
                         fontSize: largeButtonFont, fontFamily: 'MyFont'),
                     primary: noWork
                         ? KelloggColors.green
                         : calculateMPSA(
-                                    calculateProductionKg(
-                                        report, report.shiftProductionPlan),
-                                    calculateProductionKg(
-                                        report, report.productionInCartons)) >
+                                    report.planInKg, report.productionInKg) >
                                 Plans.mpsaTarget
                             ? KelloggColors.green
                             : KelloggColors.cockRed,
@@ -466,7 +487,7 @@ class ProductionLine extends StatelessWidget {
                       width: mediumIconSize,
                       padding: EdgeInsets.all(minimumPadding / 2),
                       child: new Image.asset(
-                        'images/$arrowImg4.png',
+                        'images/$arrowImg3.png',
                       ),
                     ),
                   ),

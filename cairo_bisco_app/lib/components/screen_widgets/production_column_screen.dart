@@ -24,19 +24,11 @@ class ProductionColScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     bool noWork = report.productionInCartons == 0;
 
-    double actual = noWork
-        ? 0
-        : report.productionInCartons *
-            SKU.skuDetails[report.skuName]!.cartonWeight;
     bool prodTargetDone =
         noWork || report.productionInCartons - report.shiftProductionPlan >= 0;
     String arrowImg = prodTargetDone ? "up" : "down";
-    String arrowImg2 = noWork
-        ? "up"
-        : calculateScrapPercent(report) <
-                SKU.skuDetails[report.skuName]!.targetScrap
-            ? "up"
-            : "down";
+
+    String arrowImg2 = report.rmMUV + report.pmMUV <= 0 ? "up" : "down";
 
     return Container(
       margin: EdgeInsets.all(defaultPadding),
@@ -108,7 +100,9 @@ class ProductionColScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subHeading((actual / 1000).toStringAsFixed(2) + " K "),
+                      subHeading(
+                          (report.productionInKg / 1000).toStringAsFixed(2) +
+                              " K "),
                     ],
                   ),
                 ),
@@ -193,11 +187,7 @@ class ProductionColScreen extends StatelessWidget {
                                 // mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    (prodTargetDone ? "" : "-") +
-                                        ((report.productionInCartons -
-                                                        report
-                                                            .shiftProductionPlan)
-                                                    .abs() *
+                                    (report.productionInCartons *
                                                 100 /
                                                 report.shiftProductionPlan)
                                             .toStringAsFixed(1) +
@@ -258,7 +248,7 @@ class ProductionColScreen extends StatelessWidget {
             ],
           ),
           Center(
-            child: Text('تكلفة الهالك',
+            child: Text('فرق تكلفة الهالك عن المستهدف',
                 style: TextStyle(
                     fontSize: largeFontSize,
                     fontWeight: FontWeight.bold,
@@ -266,34 +256,37 @@ class ProductionColScreen extends StatelessWidget {
           ),
           SizedBox(height: defaultPadding),
           Center(
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(BoxImageBorder),
-                  child: ConstrainedBox(
-                      constraints:
-                          BoxConstraints.tightFor(height: regularBoxHeight),
-                      child: ElevatedButton.icon(
-                        label: Text(" الف جنيه " +
-                            (report.rmMUV / 1000).toStringAsFixed(2)),
-                        style: ElevatedButton.styleFrom(
-                          textStyle: TextStyle(
-                              fontSize: largeButtonFont, fontFamily: 'MyFont'),
-                          primary: report.rmMUV > 0
-                              ? KelloggColors.cockRed
-                              : KelloggColors.green,
-                        ),
-                        icon: ClipRRect(
-                          borderRadius: BorderRadius.circular(iconImageBorder),
-                          child: Container(
-                            height: mediumIconSize,
-                            width: mediumIconSize,
-                            padding: EdgeInsets.all(minimumPadding / 2),
-                            child: new Image.asset(
-                              'images/$arrowImg2.png',
-                            ),
-                          ),
-                        ),
-                        onPressed: () {},
-                      )))),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(BoxImageBorder),
+              child: ConstrainedBox(
+                constraints: BoxConstraints.tightFor(height: regularBoxHeight),
+                child: ElevatedButton.icon(
+                  label: Text(((report.rmMUV + report.pmMUV) / 1000)
+                          .toStringAsFixed(2) +
+                      " الف جنيه "),
+                  style: ElevatedButton.styleFrom(
+                    textStyle: TextStyle(
+                        fontSize: largeButtonFont, fontFamily: 'MyFont'),
+                    primary: report.rmMUV + report.pmMUV > 0
+                        ? KelloggColors.cockRed
+                        : KelloggColors.green,
+                  ),
+                  icon: ClipRRect(
+                    borderRadius: BorderRadius.circular(iconImageBorder),
+                    child: Container(
+                      height: mediumIconSize,
+                      width: mediumIconSize,
+                      padding: EdgeInsets.all(minimumPadding / 2),
+                      child: new Image.asset(
+                        'images/$arrowImg2.png',
+                      ),
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+          ),
           SizedBox(height: defaultPadding),
         ],
       ),

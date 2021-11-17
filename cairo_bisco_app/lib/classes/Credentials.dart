@@ -42,6 +42,16 @@ class Credentials {
   static Map<String, String> adminDocumentNames = new Map<String, String>();
   static Map<String, String> ownerDocumentNames = new Map<String, String>();
 
+  static String getUserName() {
+    String name = userEmail.split("@")[0];
+    List<String> nameParts = name.split(".");
+    String modifiedName = "";
+    for (String part in nameParts) {
+      modifiedName += part + " ";
+    }
+    return modifiedName;
+  }
+
   static bool isAdmin(String email) {
     return admin_emails.contains(email.trim());
   }
@@ -74,7 +84,7 @@ class Credentials {
           ownerDocumentNames[admin.data().email.toString()] = admin.id;
         }
       }
-      print("super admins fetched");
+      print("owners fetched");
     });
   }
 

@@ -172,9 +172,7 @@ bool BadProductionDriver(MiniProductionReport report) {
   if (noWork)
     return false;
   else
-    return calculateMPSA(
-                calculateProductionKg(report, report.shiftProductionPlan),
-                calculateProductionKg(report, report.productionInCartons)) <
+    return calculateMPSA(report.planInKg, report.productionInKg) <
             Plans.mpsaTarget ||
         calculateOeeFromMiniReport(report) < Plans.targetOEE;
 }

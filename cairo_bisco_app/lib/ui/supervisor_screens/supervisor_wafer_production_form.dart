@@ -463,7 +463,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        smallerHeading('السرعة الفعلية\nActual Speed'),
+                        smallerHeading(
+                            'السرعة الفعلية لابطا ماكينة (الفرن)\nActual Speed of bottle neck'),
                         SizedBox(height: minimumPadding),
                         TextFormField(
                           initialValue: actualSpeed,

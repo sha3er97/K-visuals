@@ -21,7 +21,7 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("chart : $biscuits , $wafer , $maamoul , $other");
+    // print("chart : $biscuits , $wafer , $maamoul , $other");
     biscuitsSection = PieChartSectionData(
       color: KelloggColors.yellow,
       value: biscuits + dummyChartExtra,
@@ -67,7 +67,7 @@ class Chart extends StatelessWidget {
                 SizedBox(height: defaultPadding),
                 Text(
                   ((biscuits + wafer + maamoul) / 1000).toStringAsFixed(2) +
-                      " K",
+                      " T",
                   style: Theme.of(context).textTheme.headline4!.copyWith(
                         color: KelloggColors.darkBlue,
                         fontWeight: FontWeight.w600,
@@ -77,7 +77,7 @@ class Chart extends StatelessWidget {
                 Text("of " +
                     ((biscuits + wafer + maamoul + other) / 1000)
                         .toStringAsFixed(2) +
-                    " K"),
+                    " T"),
               ],
             ),
           ),
