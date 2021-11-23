@@ -5,7 +5,6 @@ import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
-import 'package:cairo_bisco_app/ui/admin_screens/admin_home_page.dart';
 import 'package:cairo_bisco_app/ui/floor_screens/floor_choose_area.dart';
 import 'package:cairo_bisco_app/ui/homePage.dart';
 import 'package:cairo_bisco_app/ui/login_screens/create_account.dart';
@@ -253,7 +252,7 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Dont have an account?',
+                      'Don\'t have an account?',
                       style: TextStyle(
                           color: KelloggColors.grey,
                           fontWeight: FontWeight.w400),
@@ -267,11 +266,48 @@ class _LoginState extends State<Login> {
                       },
                       child: Text('Sign up',
                           style: TextStyle(
+                            color: KelloggColors.green,
+                          )),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: defaultPadding,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Forgot Password?',
+                      style: TextStyle(
+                          color: KelloggColors.grey,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        setState(() {
+                          showSpinner = true;
+                          _email_validate = emptyField(email);
+                        });
+                        if (!_email_validate) {
+                          await _auth.sendPasswordResetEmail(email: email);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                                "Write the email you want to reset its password"),
+                          ));
+                        }
+                        setState(() {
+                          showSpinner = false;
+                        });
+                      },
+                      child: Text('Reset',
+                          style: TextStyle(
                             color: KelloggColors.darkRed,
                           )),
                     )
                   ],
-                )
+                ),
               ],
             ),
           ),

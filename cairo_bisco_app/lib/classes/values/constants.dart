@@ -1,6 +1,6 @@
 /** version number**/
-const versionNum = '2.0.3'; //edit also in pubspec.yaml
-const versionCode = 2; //edit also in pubspec.yaml
+const versionNum = '2.0.4'; //edit also in pubspec.yaml
+const versionCode = 3; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
 
@@ -10,7 +10,7 @@ const dummyChartExtra = 1.0;
 const defaultPadding = 16.0;
 const mediumPadding = 12.0;
 const minimumPadding = 8.0;
-const pushAwayPadding = 75.0;
+const pushAwayPadding = 60.0;
 
 //font sizes
 const largeButtonFont = 25.0;
@@ -55,7 +55,7 @@ const buttonHeight = 60.0;
 const buttonElevation = 5.0;
 
 /** time constants in seconds **/
-const splashScreenDuration = 3; //3 seconds
+const splashScreenDuration = 4; //3 seconds
 const floorScreenWheelDuration = 30; //30 seconds
 const floorScreenDashBoardDuration = 90; //1.5 minutes
 
