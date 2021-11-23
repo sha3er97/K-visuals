@@ -20,11 +20,11 @@ class _SplashState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Plans.getPlans();
-    SKU.getAllSku();
     Credentials.getCredentials();
     Credentials.getAdmins();
     Credentials.getOwners();
+    Plans.getPlans();
+    SKU.getAllSku();
   }
 
   @override

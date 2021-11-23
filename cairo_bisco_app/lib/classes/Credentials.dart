@@ -22,7 +22,7 @@ final ownersRef = FirebaseFirestore.instance
 
 class Credentials {
   /** rules **/
-  static int lastVersionCode = 0; //last version uploaded on play store
+  static int lastVersionCode = 999; //last version uploaded on play store
 
   /** back doors**/
   static String screen_email = ""; //screen
