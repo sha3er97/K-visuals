@@ -58,7 +58,7 @@ Widget myDivider() {
 }
 
 /**
- * darkblue big title with spaces
+ * blue big title with dashes on the side and spaces
  */
 Widget sectionTitle(String title) {
   return Column(
@@ -83,7 +83,7 @@ Widget sectionTitle(String title) {
 }
 
 /**
- * green big title with space after it included
+ * blue big title with space after it included
  */
 Widget sectionWithDivider(String title) {
   return Column(

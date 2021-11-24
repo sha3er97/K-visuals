@@ -128,7 +128,7 @@ class SideMenu extends StatelessWidget {
                   },
                 )
               : EmptyPlaceHolder(),
-          isOwner
+          isOwner && isAdmin
               ? DrawerListTile(
                   title: "Owner View",
                   image: "vip",

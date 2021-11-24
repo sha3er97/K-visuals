@@ -388,8 +388,8 @@ class MaamoulReport {
         continue;
       }
 
-      if (lineNumRequired == -1 ||
-          (lineNumRequired != -1 &&
+      if (lineNumRequired == ALL_LINES ||
+          (lineNumRequired != ALL_LINES &&
               report.data().line_index == lineNumRequired)) {
         final theoreticals = [
           SKU.skuDetails[report.data().skuName]!.theoreticalShiftProd1,

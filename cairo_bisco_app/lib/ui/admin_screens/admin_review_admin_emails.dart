@@ -138,7 +138,7 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             physics: ClampingScrollPhysics(),
-                            padding: const EdgeInsets.all(minimumPadding),
+                            // padding: const EdgeInsets.all(minimumPadding),
                             itemCount: Credentials.admin_emails.length,
                             itemBuilder: (BuildContext context, int index) {
                               return ListTile(

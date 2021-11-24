@@ -259,7 +259,7 @@ class QfsReport {
         continue;
       }
 
-      if (lineNumRequired != -1 &&
+      if (lineNumRequired != ALL_LINES &&
           areaRequired != TOTAL_PLANT &&
           report.data().line_index == lineNumRequired &&
           report.data().area == areaRequired) {
@@ -271,7 +271,7 @@ class QfsReport {
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
         // print('debug :: QfsReport chosen in first if');
-      } else if (lineNumRequired == -1 &&
+      } else if (lineNumRequired == ALL_LINES &&
           areaRequired != TOTAL_PLANT &&
           report.data().area == areaRequired) {
         // all shifts all lines in one area

@@ -55,13 +55,13 @@ const buttonHeight = 60.0;
 const buttonElevation = 5.0;
 
 /** time constants in seconds **/
-const splashScreenDuration = 4; //3 seconds
+const splashScreenDuration = 3; //3 seconds
 const floorScreenWheelDuration = 30; //30 seconds
 const floorScreenDashBoardDuration = 90; //1.5 minutes
 
 /** factory constants **/
-const maxScrap = 25.0;
-const maxFilmWaste = 25.0;
+const maxScrap = 20.0;
+const maxFilmWaste = 20.0;
 const monthDays = 28.0; // month is 28 days
 const standardShiftHours = 8.0;
 const factory_name = "bisco_cairo";
@@ -83,6 +83,8 @@ const BISCUIT_AREA = 0;
 const WAFER_AREA = 1;
 const MAAMOUL_AREA = 2;
 const TOTAL_PLANT = -1;
+
+const ALL_LINES = -1;
 
 const PRODUCTION_REPORT = 0; //0,1,2 are left for 3 production areas
 const QFS_REPORT = 3;

@@ -208,7 +208,7 @@ class OverWeightReport {
         continue;
       }
 
-      if (lineNumRequired != -1 &&
+      if (lineNumRequired != ALL_LINES &&
           areaRequired != TOTAL_PLANT &&
           report.data().line_index == lineNumRequired &&
           report.data().area == areaRequired) {
@@ -216,7 +216,7 @@ class OverWeightReport {
         temp_percent += report.data().percent;
         valid_reports_count++;
         print('debug :: OverWeightReport chosen in first if');
-      } else if (lineNumRequired == -1 &&
+      } else if (lineNumRequired == ALL_LINES &&
           areaRequired != TOTAL_PLANT &&
           report.data().area == areaRequired) {
         // all shifts all lines in one area

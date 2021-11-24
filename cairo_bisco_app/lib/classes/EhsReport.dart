@@ -259,7 +259,7 @@ class EhsReport {
         continue;
       }
 
-      if (lineNumRequired != -1 &&
+      if (lineNumRequired != ALL_LINES &&
           areaRequired != TOTAL_PLANT &&
           report.data().line_index == lineNumRequired &&
           report.data().area == areaRequired) {
@@ -271,7 +271,7 @@ class EhsReport {
         temp_risk_assessment += report.data().risk_assessment;
         temp_s7_index = max(temp_s7_index, report.data().s7_index);
         // print('debug :: EhsReport chosen in first if');
-      } else if (lineNumRequired == -1 &&
+      } else if (lineNumRequired == ALL_LINES &&
           areaRequired != TOTAL_PLANT &&
           report.data().area == areaRequired) {
         // all shifts all lines in one area
