@@ -19,7 +19,7 @@ bool canEditThisReport(String supName, int day, int month, int year) {
     return true;
   else {
     if (supName.compareTo(Credentials.getUserName()) == 0 &&
-        isSameDay(day, month, year))
+        inEditPeriod(day, month, year))
       return true;
     else
       return false;

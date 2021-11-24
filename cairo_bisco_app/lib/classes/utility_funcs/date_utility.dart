@@ -76,12 +76,11 @@ int getWeekNumber(int day, int month, int year) {
   return (diff.inDays / 7).ceil();
 }
 
-bool isSameDay(int day, int month, int year) {
+bool inEditPeriod(int day, int month, int year) {
   DateTime now = new DateTime.now();
 
-  if (now.hour < 16) //before 4 pm we are still yesterday
-  {
-    now = now.subtract(Duration(days: 1));
-  }
-  return (day == now.day && year == now.year && month == now.month);
+  final reportDate = new DateTime(year, month, day);
+  final authorityEnd = now.add(Duration(days: 2));
+  final diff = reportDate.difference(authorityEnd);
+  return (diff.inDays <= 2 && year == now.year && month == now.month);
 }
