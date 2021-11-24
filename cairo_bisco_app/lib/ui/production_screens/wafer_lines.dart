@@ -425,7 +425,7 @@ class _WaferLinesState extends State<WaferLines> {
                                       QueryDocumentSnapshot<OverWeightReport>>;
                           OverWeightReport temp_overweight_report =
                               OverWeightReport.getFilteredReportOfInterval(
-                                reportsList,
+                            reportsList,
                             int.parse(from_month),
                             int.parse(to_month),
                             int.parse(from_day),
