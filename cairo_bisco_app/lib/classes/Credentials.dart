@@ -60,8 +60,8 @@ class Credentials {
     return owner_emails.contains(email.trim());
   }
 
-  static Future<void> getAdmins() {
-    return adminsRef.get().then((QuerySnapshot snapshot) {
+  static Future<void> getAdmins() async {
+    await adminsRef.get().then((QuerySnapshot snapshot) {
       List<QueryDocumentSnapshot<Admin>> adminDocsList =
           snapshot.docs as List<QueryDocumentSnapshot<Admin>>;
       for (var admin in adminDocsList) {
@@ -70,12 +70,13 @@ class Credentials {
           adminDocumentNames[admin.data().email.toString()] = admin.id;
         }
       }
+      admin_emails.sort();
       print("admins fetched");
     });
   }
 
-  static Future<void> getOwners() {
-    return ownersRef.get().then((QuerySnapshot snapshot) {
+  static Future<void> getOwners() async {
+    await ownersRef.get().then((QuerySnapshot snapshot) {
       List<QueryDocumentSnapshot<Admin>> adminDocsList =
           snapshot.docs as List<QueryDocumentSnapshot<Admin>>;
       for (var admin in adminDocsList) {
@@ -84,6 +85,7 @@ class Credentials {
           ownerDocumentNames[admin.data().email.toString()] = admin.id;
         }
       }
+      owner_emails.sort();
       print("owners fetched");
     });
   }
@@ -91,41 +93,53 @@ class Credentials {
   static Future<void> addAdmin(
     context,
     String email,
-  ) {
-    return adminsRef
-        .add(Admin(email: email))
-        .then((value) => {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Email Added"),
-              )),
-              getAdmins(),
-              // Navigator.pop(context),
-            })
-        .catchError((error) => {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Failed to add Email: $error"),
-              ))
-            });
+  ) async {
+    if (!admin_emails.contains(email)) {
+      await adminsRef
+          .add(Admin(email: email))
+          .then((value) => {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Email Added"),
+                )),
+                getAdmins(),
+                // Navigator.pop(context),
+              })
+          .catchError((error) => {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Failed to add Email: $error"),
+                ))
+              });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Error :: Email Already exists"),
+      ));
+    }
   }
 
   static Future<void> addOwner(
     context,
     String email,
-  ) {
-    return ownersRef
-        .add(Admin(email: email))
-        .then((value) => {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Email Added"),
-              )),
-              getOwners(),
-              // Navigator.pop(context),
-            })
-        .catchError((error) => {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Failed to add Email: $error"),
-              ))
-            });
+  ) async {
+    if (!owner_emails.contains(email)) {
+      await ownersRef
+          .add(Admin(email: email))
+          .then((value) => {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Email Added"),
+                )),
+                getOwners(),
+                // Navigator.pop(context),
+              })
+          .catchError((error) => {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Failed to add Email: $error"),
+                ))
+              });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Error :: Email Already exists"),
+      ));
+    }
   }
 
   static Future<void> deleteAdmin(
@@ -172,8 +186,8 @@ class Credentials {
             });
   }
 
-  static Future<void> getCredentials() {
-    return FirebaseFirestore.instance
+  static Future<void> getCredentials() async {
+    await FirebaseFirestore.instance
         .collection(factory_name)
         .doc('credentials')
         .get()
