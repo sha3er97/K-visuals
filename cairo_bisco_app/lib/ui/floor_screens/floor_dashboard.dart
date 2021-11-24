@@ -13,6 +13,7 @@ import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/screen_widgets/ehs_column_screen.dart';
 import 'package:cairo_bisco_app/components/screen_widgets/production_column_screen.dart';
 import 'package:cairo_bisco_app/components/screen_widgets/qfs_column_screen.dart';
+import 'package:cairo_bisco_app/ui/error_success_screens/loading_screen.dart';
 import 'package:cairo_bisco_app/ui/floor_screens/floor_plant_wheel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +116,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                 return ErrorMessageHeading('Something went wrong');
               } else if (productionSnapshot.connectionState ==
                   ConnectionState.waiting) {
-                return ErrorMessageHeading("Loading");
+                return ColorLoader();
               } else {
                 MiniProductionReport temp_report;
                 switch (refNum) {
@@ -200,7 +201,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                                       'Something went wrong');
                                 } else if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return ErrorMessageHeading("Loading");
+                                  return ColorLoader();
                                 } else {
                                   try {
                                     List<QueryDocumentSnapshot<EhsReport>>

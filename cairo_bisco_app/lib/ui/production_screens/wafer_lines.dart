@@ -5,6 +5,7 @@ import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/production_widgets/scroll_production_line.dart';
+import 'package:cairo_bisco_app/ui/error_success_screens/loading_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -108,7 +109,7 @@ class _WaferLinesState extends State<WaferLines> {
                           return ErrorMessageHeading('Something went wrong');
                         } else if (overweightSnapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return ErrorMessageHeading("Loading");
+                          return ColorLoader();
                         } else {
                           List<QueryDocumentSnapshot<OverWeightReport>>
                               reportsList = overweightSnapshot.data!.docs
@@ -135,7 +136,7 @@ class _WaferLinesState extends State<WaferLines> {
                                     'Something went wrong');
                               } else if (productionSnapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return ErrorMessageHeading("Loading");
+                                return ColorLoader();
                               } else {
                                 try {
                                   List<QueryDocumentSnapshot<WaferReport>>
@@ -185,7 +186,7 @@ class _WaferLinesState extends State<WaferLines> {
                           return ErrorMessageHeading('Something went wrong');
                         } else if (overweightSnapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return ErrorMessageHeading("Loading");
+                          return ColorLoader();
                         } else {
                           List<QueryDocumentSnapshot<OverWeightReport>>
                               reportsList = overweightSnapshot.data!.docs
@@ -212,7 +213,7 @@ class _WaferLinesState extends State<WaferLines> {
                                     'Something went wrong');
                               } else if (productionSnapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return ErrorMessageHeading("Loading");
+                                return ColorLoader();
                               } else {
                                 try {
                                   List<QueryDocumentSnapshot<WaferReport>>
@@ -262,7 +263,7 @@ class _WaferLinesState extends State<WaferLines> {
                           return ErrorMessageHeading('Something went wrong');
                         } else if (overweightSnapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return ErrorMessageHeading("Loading");
+                          return ColorLoader();
                         } else {
                           List<QueryDocumentSnapshot<OverWeightReport>>
                               reportsList = overweightSnapshot.data!.docs
@@ -289,7 +290,7 @@ class _WaferLinesState extends State<WaferLines> {
                                     'Something went wrong');
                               } else if (productionSnapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return ErrorMessageHeading("Loading");
+                                return ColorLoader();
                               } else {
                                 try {
                                   List<QueryDocumentSnapshot<WaferReport>>
@@ -339,7 +340,7 @@ class _WaferLinesState extends State<WaferLines> {
                           return ErrorMessageHeading('Something went wrong');
                         } else if (overweightSnapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return ErrorMessageHeading("Loading");
+                          return ColorLoader();
                         } else {
                           List<QueryDocumentSnapshot<OverWeightReport>>
                               reportsList = overweightSnapshot.data!.docs
@@ -366,7 +367,7 @@ class _WaferLinesState extends State<WaferLines> {
                                     'Something went wrong');
                               } else if (productionSnapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return ErrorMessageHeading("Loading");
+                                return ColorLoader();
                               } else {
                                 try {
                                   List<QueryDocumentSnapshot<WaferReport>>
@@ -416,7 +417,7 @@ class _WaferLinesState extends State<WaferLines> {
                           return ErrorMessageHeading('Something went wrong');
                         } else if (overweightSnapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return ErrorMessageHeading("Loading");
+                          return ColorLoader();
                         } else {
                           List<QueryDocumentSnapshot<OverWeightReport>>
                               reportsList = overweightSnapshot.data!.docs
@@ -424,14 +425,14 @@ class _WaferLinesState extends State<WaferLines> {
                                       QueryDocumentSnapshot<OverWeightReport>>;
                           OverWeightReport temp_overweight_report =
                               OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
+                                reportsList,
                             int.parse(from_month),
                             int.parse(to_month),
                             int.parse(from_day),
                             int.parse(to_day),
                             int.parse(chosenYear),
                             WAFER_AREA,
-                            -1,
+                            ALL_LINES,
                           );
                           return FutureBuilder<QuerySnapshot>(
                             future: waferReportRef.get(),
@@ -443,7 +444,7 @@ class _WaferLinesState extends State<WaferLines> {
                                     'Something went wrong');
                               } else if (productionSnapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return ErrorMessageHeading("Loading");
+                                return ColorLoader();
                               } else {
                                 try {
                                   List<QueryDocumentSnapshot<WaferReport>>
@@ -452,13 +453,13 @@ class _WaferLinesState extends State<WaferLines> {
                                           QueryDocumentSnapshot<WaferReport>>;
                                   MiniProductionReport temp_report =
                                       WaferReport.getFilteredReportOfInterval(
-                                    reportsList,
+                                        reportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
-                                    -1,
+                                    ALL_LINES,
                                   );
                                   return Center(
                                     child: ProductionLine(

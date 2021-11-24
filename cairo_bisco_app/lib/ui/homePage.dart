@@ -28,6 +28,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'error_success_screens/loading_screen.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -141,7 +143,7 @@ class _HomeState extends State<HomePage> {
                           return ErrorMessageHeading('Something went wrong');
                         } else if (biscuitsSnapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return ErrorMessageHeading("Loading");
+                          return ColorLoader();
                         } else {
                           return FutureBuilder<QuerySnapshot>(
                               future: waferReportRef.get(),
@@ -152,7 +154,7 @@ class _HomeState extends State<HomePage> {
                                       'Something went wrong');
                                 } else if (waferSnapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return ErrorMessageHeading("Loading");
+                                  return ColorLoader();
                                 } else {
                                   return FutureBuilder<QuerySnapshot>(
                                       future: maamoulReportRef.get(),
@@ -165,7 +167,7 @@ class _HomeState extends State<HomePage> {
                                         } else if (maamoulSnapshot
                                                 .connectionState ==
                                             ConnectionState.waiting) {
-                                          return ErrorMessageHeading("Loading");
+                                          return ColorLoader();
                                         } else {
                                           List<
                                                   QueryDocumentSnapshot<
@@ -254,7 +256,7 @@ class _HomeState extends State<HomePage> {
                         return ErrorMessageHeading('Something went wrong');
                       } else if (snapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return ErrorMessageHeading("Loading");
+                        return ColorLoader();
                       } else {
                         try {
                           List<QueryDocumentSnapshot<BiscuitsReport>>
@@ -298,7 +300,7 @@ class _HomeState extends State<HomePage> {
                         return ErrorMessageHeading('Something went wrong');
                       } else if (snapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return ErrorMessageHeading("Loading");
+                        return ColorLoader();
                       } else {
                         try {
                           List<QueryDocumentSnapshot<WaferReport>> reportsList =
@@ -342,7 +344,7 @@ class _HomeState extends State<HomePage> {
                         return ErrorMessageHeading('Something went wrong');
                       } else if (snapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return ErrorMessageHeading("Loading");
+                        return ColorLoader();
                       } else {
                         try {
                           List<QueryDocumentSnapshot<MaamoulReport>>
@@ -387,7 +389,7 @@ class _HomeState extends State<HomePage> {
                           return ErrorMessageHeading('Something went wrong');
                         } else if (biscuitsSnapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return ErrorMessageHeading("Loading");
+                          return ColorLoader();
                         } else {
                           return FutureBuilder<QuerySnapshot>(
                               future: waferReportRef.get(),
@@ -398,7 +400,7 @@ class _HomeState extends State<HomePage> {
                                       'Something went wrong');
                                 } else if (waferSnapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return ErrorMessageHeading("Loading");
+                                  return ColorLoader();
                                 } else {
                                   return FutureBuilder<QuerySnapshot>(
                                       future: maamoulReportRef.get(),
@@ -411,7 +413,7 @@ class _HomeState extends State<HomePage> {
                                         } else if (maamoulSnapshot
                                                 .connectionState ==
                                             ConnectionState.waiting) {
-                                          return ErrorMessageHeading("Loading");
+                                          return ColorLoader();
                                         } else {
                                           List<
                                                   QueryDocumentSnapshot<
@@ -500,7 +502,7 @@ class _HomeState extends State<HomePage> {
                         return ErrorMessageHeading('Something went wrong');
                       } else if (snapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return ErrorMessageHeading('Loading');
+                        return ColorLoader();
                       } else {
                         try {
                           List<QueryDocumentSnapshot<QfsReport>> reportsList =
@@ -564,7 +566,7 @@ class _HomeState extends State<HomePage> {
                         return ErrorMessageHeading('Something went wrong');
                       } else if (snapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return ErrorMessageHeading("Loading");
+                        return ColorLoader();
                       } else {
                         try {
                           List<QueryDocumentSnapshot<EhsReport>> reportsList =

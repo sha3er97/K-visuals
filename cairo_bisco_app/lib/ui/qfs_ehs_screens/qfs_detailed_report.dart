@@ -7,6 +7,7 @@ import 'package:cairo_bisco_app/classes/values/form_values.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/1kpi_good_bad_indicator.dart';
+import 'package:cairo_bisco_app/ui/error_success_screens/loading_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -392,7 +393,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                     return ErrorMessageHeading('Something went wrong');
                   } else if (snapshot.connectionState ==
                       ConnectionState.waiting) {
-                    return ErrorMessageHeading('Loading');
+                    return ColorLoader();
                   } else {
                     try {
                       reportsList = snapshot.data!.docs

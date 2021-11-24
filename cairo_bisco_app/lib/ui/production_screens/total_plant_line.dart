@@ -7,6 +7,7 @@ import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/production_widgets/scroll_production_line.dart';
+import 'package:cairo_bisco_app/ui/error_success_screens/loading_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -114,7 +115,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                           return ErrorMessageHeading('Something went wrong');
                         } else if (biscuitsSnapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return ErrorMessageHeading("Loading");
+                          return ColorLoader();
                         } else {
                           return FutureBuilder<QuerySnapshot>(
                               future: waferReportRef.get(),
@@ -125,7 +126,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                       'Something went wrong');
                                 } else if (waferSnapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return ErrorMessageHeading("Loading");
+                                  return ColorLoader();
                                 } else {
                                   return FutureBuilder<QuerySnapshot>(
                                       future: maamoulReportRef.get(),
@@ -138,7 +139,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                         } else if (maamoulSnapshot
                                                 .connectionState ==
                                             ConnectionState.waiting) {
-                                          return ErrorMessageHeading("Loading");
+                                          return ColorLoader();
                                         } else {
                                           return FutureBuilder<QuerySnapshot>(
                                               future: overWeightReportRef.get(),
