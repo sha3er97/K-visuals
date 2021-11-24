@@ -131,7 +131,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: minimumPadding,
                     ),
-                    TextField(
+                    TextFormField(
                       style: (TextStyle(
                           color: Colors.white, fontWeight: FontWeight.w400)),
                       obscureText: true,
@@ -154,6 +154,9 @@ class _CreateAccountState extends State<CreateAccount> {
                       onChanged: (value) {
                         password = value;
                       },
+                      onFieldSubmitted: (value) async {
+                        await signUpPressed();
+                      },
                     ),
                   ],
                 ),
@@ -165,56 +168,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     btnText: 'SIGN UP',
                     color: KelloggColors.darkRed,
                     onPressed: () async {
-                      setState(() {
-                        showSpinner = true;
-                        _email_validate = emptyField(email);
-                        _password_validate = emptyField(password);
-                      });
-                      try {
-                        await _auth.createUserWithEmailAndPassword(
-                            email: email.trim(), password: password.trim());
-                        if (Credentials.isAdmin(email)) {
-                          Credentials.isUserAdmin = true;
-                        } else {
-                          Credentials.isUserAdmin = false;
-                        }
-                        if (Credentials.isOwner(email)) {
-                          Credentials.isUserOwner = true;
-                        } else {
-                          Credentials.isUserOwner = false;
-                        }
-                        Credentials.userEmail = email.toString();
-
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                // builder: (context) => SuccessScreen()
-                                builder: (context) => HomePage()));
-
-                        setState(() {
-                          showSpinner = false;
-                        });
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'weak-password') {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("The password provided is too weak"),
-                          ));
-                        } else if (e.code == 'email-already-in-use') {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(
-                                "The account already exists for that email"),
-                          ));
-                        }
-                        setState(() {
-                          showSpinner = false;
-                        });
-                      } catch (e) {
-                        print(e);
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("Something went wrong"),
-                        ));
-                      }
-                      // Add login code
+                      await signUpPressed();
                     },
                   ),
                 ),
@@ -248,5 +202,56 @@ class _CreateAccountState extends State<CreateAccount> {
         ),
       ),
     );
+  }
+
+  Future<void> signUpPressed() async {
+    setState(() {
+      showSpinner = true;
+      _email_validate = emptyField(email);
+      _password_validate = emptyField(password);
+    });
+    try {
+      await _auth.createUserWithEmailAndPassword(
+          email: email.trim(), password: password.trim());
+      if (Credentials.isAdmin(email)) {
+        Credentials.isUserAdmin = true;
+      } else {
+        Credentials.isUserAdmin = false;
+      }
+      if (Credentials.isOwner(email)) {
+        Credentials.isUserOwner = true;
+      } else {
+        Credentials.isUserOwner = false;
+      }
+      Credentials.userEmail = email.toString();
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              // builder: (context) => SuccessScreen()
+              builder: (context) => HomePage()));
+
+      setState(() {
+        showSpinner = false;
+      });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("The password provided is too weak"),
+        ));
+      } else if (e.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("The account already exists for that email"),
+        ));
+      }
+      setState(() {
+        showSpinner = false;
+      });
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Something went wrong"),
+      ));
+    }
   }
 }

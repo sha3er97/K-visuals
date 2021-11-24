@@ -131,7 +131,7 @@ class _LoginState extends State<Login> {
                       SizedBox(
                         height: minimumPadding,
                       ),
-                      TextField(
+                      TextFormField(
                         style: (TextStyle(
                             color: Colors.white, fontWeight: FontWeight.w400)),
                         obscureText: true,
@@ -155,6 +155,9 @@ class _LoginState extends State<Login> {
                         onChanged: (value) {
                           password = value;
                         },
+                        onFieldSubmitted: (value) async {
+                          await loginPressed();
+                        },
                       ),
                     ],
                   ),
@@ -166,72 +169,7 @@ class _LoginState extends State<Login> {
                       btnText: 'LOGIN',
                       color: KelloggColors.darkRed,
                       onPressed: () async {
-                        setState(() {
-                          showSpinner = true;
-                          _email_validate = emptyField(email);
-                          _password_validate = emptyField(password);
-                        });
-                        try {
-                          if (isScreen(email, password)) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    // builder: (context) => SuccessScreen()
-                                    builder: (context) => FloorChooseArea()));
-                          }
-                          // else if (isAdmin(email, password)) {
-                          //   Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           // builder: (context) => SuccessScreen()
-                          //           builder: (context) => AdminHomePage()));
-                          // }
-                          else {
-                            //normal user
-                            await _auth.signInWithEmailAndPassword(
-                                email: email.trim(), password: password.trim());
-                            if (Credentials.isAdmin(email)) {
-                              Credentials.isUserAdmin = true;
-                            } else {
-                              Credentials.isUserAdmin = false;
-                            }
-                            if (Credentials.isOwner(email)) {
-                              Credentials.isUserOwner = true;
-                            } else {
-                              Credentials.isUserOwner = false;
-                            }
-                            Credentials.userEmail = email.toString();
-
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    // builder: (context) => SuccessScreen()
-                                    builder: (context) => HomePage()));
-                          }
-                          setState(() {
-                            showSpinner = false;
-                          });
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'user-not-found') {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("No user found for that email"),
-                            ));
-                          } else if (e.code == 'wrong-password') {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content:
-                                  Text("Wrong password provided for that user"),
-                            ));
-                          } else if (e.code == 'invalid-email') {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Invalid Email"),
-                            ));
-                          }
-                          setState(() {
-                            showSpinner = false;
-                          });
-                        } catch (e) {
-                          print(e);
-                        }
+                        await loginPressed();
                       },
                     ),
                   ),
@@ -314,5 +252,73 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  Future<void> loginPressed() async {
+    setState(() {
+      showSpinner = true;
+      _email_validate = emptyField(email);
+      _password_validate = emptyField(password);
+    });
+    try {
+      if (isScreen(email, password)) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                // builder: (context) => SuccessScreen()
+                builder: (context) => FloorChooseArea()));
+      }
+      // else if (isAdmin(email, password)) {
+      //   Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //           // builder: (context) => SuccessScreen()
+      //           builder: (context) => AdminHomePage()));
+      // }
+      else {
+        //normal user
+        await _auth.signInWithEmailAndPassword(
+            email: email.trim(), password: password.trim());
+        if (Credentials.isAdmin(email)) {
+          Credentials.isUserAdmin = true;
+        } else {
+          Credentials.isUserAdmin = false;
+        }
+        if (Credentials.isOwner(email)) {
+          Credentials.isUserOwner = true;
+        } else {
+          Credentials.isUserOwner = false;
+        }
+        Credentials.userEmail = email.toString();
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                // builder: (context) => SuccessScreen()
+                builder: (context) => HomePage()));
+      }
+      setState(() {
+        showSpinner = false;
+      });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("No user found for that email"),
+        ));
+      } else if (e.code == 'wrong-password') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Wrong password provided for that user"),
+        ));
+      } else if (e.code == 'invalid-email') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Invalid Email"),
+        ));
+      }
+      setState(() {
+        showSpinner = false;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 }
