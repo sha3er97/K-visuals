@@ -23,10 +23,12 @@ import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/production_widgets/chart.dart';
 import 'package:cairo_bisco_app/components/production_widgets/production_info_card.dart';
 import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/6kpis_good_bad_indicator.dart';
+import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:cairo_bisco_app/components/special_components/side_menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'error_success_screens/loading_screen.dart';
 
@@ -135,118 +137,125 @@ class _HomeState extends State<HomePage> {
                   Center(child: smallerHeading(todayDateText())),
                   SizedBox(height: defaultPadding),
                   sectionTitle('Production'),
-                  FutureBuilder<QuerySnapshot>(
-                      future: biscuitsReportRef.get(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> biscuitsSnapshot) {
-                        if (biscuitsSnapshot.hasError) {
-                          return ErrorMessageHeading('Something went wrong');
-                        } else if (biscuitsSnapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return ColorLoader();
-                        } else {
-                          return FutureBuilder<QuerySnapshot>(
-                              future: waferReportRef.get(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot> waferSnapshot) {
-                                if (waferSnapshot.hasError) {
-                                  return ErrorMessageHeading(
-                                      'Something went wrong');
-                                } else if (waferSnapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return ColorLoader();
-                                } else {
-                                  return FutureBuilder<QuerySnapshot>(
-                                      future: maamoulReportRef.get(),
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<QuerySnapshot>
-                                              maamoulSnapshot) {
-                                        if (maamoulSnapshot.hasError) {
-                                          return ErrorMessageHeading(
-                                              'Something went wrong');
-                                        } else if (maamoulSnapshot
-                                                .connectionState ==
-                                            ConnectionState.waiting) {
-                                          return ColorLoader();
-                                        } else {
-                                          List<
-                                                  QueryDocumentSnapshot<
-                                                      BiscuitsReport>>
-                                              biscuitsReportsList =
-                                              biscuitsSnapshot.data!.docs
-                                                  as List<
+                  kIsWeb
+                      ? EmptyPlaceHolder()
+                      : FutureBuilder<QuerySnapshot>(
+                          future: biscuitsReportRef.get(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> biscuitsSnapshot) {
+                            if (biscuitsSnapshot.hasError) {
+                              return ErrorMessageHeading(
+                                  'Something went wrong');
+                            } else if (biscuitsSnapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return ColorLoader();
+                            } else {
+                              return FutureBuilder<QuerySnapshot>(
+                                  future: waferReportRef.get(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<QuerySnapshot>
+                                          waferSnapshot) {
+                                    if (waferSnapshot.hasError) {
+                                      return ErrorMessageHeading(
+                                          'Something went wrong');
+                                    } else if (waferSnapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return ColorLoader();
+                                    } else {
+                                      return FutureBuilder<QuerySnapshot>(
+                                          future: maamoulReportRef.get(),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<QuerySnapshot>
+                                                  maamoulSnapshot) {
+                                            if (maamoulSnapshot.hasError) {
+                                              return ErrorMessageHeading(
+                                                  'Something went wrong');
+                                            } else if (maamoulSnapshot
+                                                    .connectionState ==
+                                                ConnectionState.waiting) {
+                                              return ColorLoader();
+                                            } else {
+                                              List<
                                                       QueryDocumentSnapshot<
-                                                          BiscuitsReport>>;
-                                          MiniProductionReport
-                                              temp_biscuit_report =
-                                              BiscuitsReport
-                                                  .getFilteredReportOfInterval(
-                                            biscuitsReportsList,
-                                            int.parse(getMonth()),
-                                            int.parse(getMonth()),
-                                            int.parse(getDay()),
-                                            int.parse(getDay()),
-                                            int.parse(getYear()),
-                                            -1,
-                                          );
-                                          List<
-                                                  QueryDocumentSnapshot<
-                                                      WaferReport>>
-                                              waferReportsList =
-                                              waferSnapshot.data!.docs as List<
-                                                  QueryDocumentSnapshot<
-                                                      WaferReport>>;
-                                          MiniProductionReport
-                                              temp_wafer_report = WaferReport
-                                                  .getFilteredReportOfInterval(
-                                            waferReportsList,
-                                            int.parse(getMonth()),
-                                            int.parse(getMonth()),
-                                            int.parse(getDay()),
-                                            int.parse(getDay()),
-                                            int.parse(getYear()),
-                                            -1,
-                                          );
-                                          List<
-                                                  QueryDocumentSnapshot<
-                                                      MaamoulReport>>
-                                              maamoulReportsList =
-                                              maamoulSnapshot.data!.docs
-                                                  as List<
+                                                          BiscuitsReport>>
+                                                  biscuitsReportsList =
+                                                  biscuitsSnapshot.data!.docs
+                                                      as List<
+                                                          QueryDocumentSnapshot<
+                                                              BiscuitsReport>>;
+                                              MiniProductionReport
+                                                  temp_biscuit_report =
+                                                  BiscuitsReport
+                                                      .getFilteredReportOfInterval(
+                                                biscuitsReportsList,
+                                                int.parse(getMonth()),
+                                                int.parse(getMonth()),
+                                                int.parse(getDay()),
+                                                int.parse(getDay()),
+                                                int.parse(getYear()),
+                                                -1,
+                                              );
+                                              List<
                                                       QueryDocumentSnapshot<
-                                                          MaamoulReport>>;
-                                          MiniProductionReport
-                                              temp_maamoul_report =
-                                              MaamoulReport
-                                                  .getFilteredReportOfInterval(
-                                            maamoulReportsList,
-                                            int.parse(getMonth()),
-                                            int.parse(getMonth()),
-                                            int.parse(getDay()),
-                                            int.parse(getDay()),
-                                            int.parse(getYear()),
-                                            -1,
-                                          );
-                                          return Chart(
-                                            biscuits: temp_biscuit_report
-                                                .productionInKg,
-                                            wafer: temp_wafer_report
-                                                .productionInKg,
-                                            maamoul: temp_maamoul_report
-                                                .productionInKg,
-                                            other: temp_biscuit_report.scrap +
-                                                temp_biscuit_report.rework +
-                                                temp_wafer_report.scrap +
-                                                temp_wafer_report.rework +
-                                                temp_maamoul_report.scrap +
-                                                temp_maamoul_report.rework,
-                                          );
-                                        }
-                                      });
-                                }
-                              });
-                        }
-                      }),
+                                                          WaferReport>>
+                                                  waferReportsList =
+                                                  waferSnapshot.data!.docs
+                                                      as List<
+                                                          QueryDocumentSnapshot<
+                                                              WaferReport>>;
+                                              MiniProductionReport
+                                                  temp_wafer_report =
+                                                  WaferReport
+                                                      .getFilteredReportOfInterval(
+                                                waferReportsList,
+                                                int.parse(getMonth()),
+                                                int.parse(getMonth()),
+                                                int.parse(getDay()),
+                                                int.parse(getDay()),
+                                                int.parse(getYear()),
+                                                -1,
+                                              );
+                                              List<
+                                                      QueryDocumentSnapshot<
+                                                          MaamoulReport>>
+                                                  maamoulReportsList =
+                                                  maamoulSnapshot.data!.docs
+                                                      as List<
+                                                          QueryDocumentSnapshot<
+                                                              MaamoulReport>>;
+                                              MiniProductionReport
+                                                  temp_maamoul_report =
+                                                  MaamoulReport
+                                                      .getFilteredReportOfInterval(
+                                                maamoulReportsList,
+                                                int.parse(getMonth()),
+                                                int.parse(getMonth()),
+                                                int.parse(getDay()),
+                                                int.parse(getDay()),
+                                                int.parse(getYear()),
+                                                -1,
+                                              );
+                                              return Chart(
+                                                biscuits: temp_biscuit_report
+                                                    .productionInKg,
+                                                wafer: temp_wafer_report
+                                                    .productionInKg,
+                                                maamoul: temp_maamoul_report
+                                                    .productionInKg,
+                                                other: temp_biscuit_report
+                                                        .scrap +
+                                                    temp_biscuit_report.rework +
+                                                    temp_wafer_report.scrap +
+                                                    temp_wafer_report.rework +
+                                                    temp_maamoul_report.scrap +
+                                                    temp_maamoul_report.rework,
+                                              );
+                                            }
+                                          });
+                                    }
+                                  });
+                            }
+                          }),
                   /////////////////////////////////////////////////////////////////////////
                   FutureBuilder<QuerySnapshot>(
                     future: biscuitsReportRef.get(),

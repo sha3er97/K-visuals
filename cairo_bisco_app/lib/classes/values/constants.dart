@@ -1,11 +1,12 @@
 /** version number**/
-const versionNum = '2.0.4'; //edit also in pubspec.yaml
+const versionNum = '2.0.5'; //edit also in pubspec.yaml
 const versionCode = 3; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
 
 /** ui design constants **/
 const dummyChartExtra = 1.0;
+
 //padding
 const defaultPadding = 16.0;
 const mediumPadding = 12.0;
