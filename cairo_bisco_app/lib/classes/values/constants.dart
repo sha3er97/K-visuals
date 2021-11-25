@@ -57,7 +57,7 @@ const buttonElevation = 5.0;
 /** time constants in seconds **/
 const splashScreenDuration = 3; //3 seconds
 const floorScreenWheelDuration = 30; //30 seconds
-const floorScreenDashBoardDuration = 90; //1.5 minutes
+const floorScreenDashBoardDuration = 60; //1 minute
 
 /** factory constants **/
 const maxScrap = 20.0;
