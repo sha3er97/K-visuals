@@ -153,8 +153,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                 } else if (overweightSnapshot
                                                         .connectionState ==
                                                     ConnectionState.waiting) {
-                                                  return ErrorMessageHeading(
-                                                      "Loading");
+                                                  return ColorLoader();
                                                 } else {
                                                   List<
                                                           QueryDocumentSnapshot<
