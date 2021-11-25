@@ -53,7 +53,7 @@ class ProductionLine extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: minimumPadding),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         "Cartons",
@@ -73,7 +73,7 @@ class ProductionLine extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: minimumPadding),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         "Plan",
@@ -93,7 +93,7 @@ class ProductionLine extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: minimumPadding),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         "Actual",
@@ -315,7 +315,7 @@ class ProductionLine extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: BoxConstraints.tightFor(height: regularBoxHeight),
                 child: ElevatedButton.icon(
-                  label: Text(overweight.toStringAsFixed(1) + " %"),
+                  label: Text(overweight.toStringAsFixed(2) + " %"),
                   style: ElevatedButton.styleFrom(
                     textStyle: TextStyle(
                         fontSize: largeButtonFont, fontFamily: 'MyFont'),
@@ -495,7 +495,7 @@ class ProductionLine extends StatelessWidget {
                     primary: noWork
                         ? KelloggColors.green
                         : calculateMPSA(
-                                    report.planInKg, report.productionInKg) >
+                                    report.planInKg, report.productionInKg) >=
                                 Plans.mpsaTarget
                             ? KelloggColors.green
                             : KelloggColors.cockRed,

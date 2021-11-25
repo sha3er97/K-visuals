@@ -69,7 +69,7 @@ class ProductionColScreen extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: minimumPadding),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         "انتاج الكراتين",
@@ -89,7 +89,27 @@ class ProductionColScreen extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: minimumPadding),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "الخطة بالكراتين",
+                        style: TextStyle(
+                          color: KelloggColors.grey,
+                          fontSize: minimumFontSize,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      subHeading(report.shiftProductionPlan.toString()),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: minimumPadding),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         "انتاج بالطن",
