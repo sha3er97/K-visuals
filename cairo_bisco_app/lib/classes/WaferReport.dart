@@ -38,7 +38,8 @@ class WaferReport {
       mc2FilmUsed,
       mc1WasteKg,
       mc2WasteKg,
-      shiftHours;
+      shiftHours,
+      wastedMinutes;
 
   WaferReport({
     required this.area,
@@ -71,6 +72,7 @@ class WaferReport {
     required this.month,
     required this.day,
     required this.shiftHours,
+    required this.wastedMinutes,
   });
 
   WaferReport.fromJson(Map<String, Object?> json)
@@ -105,6 +107,9 @@ class WaferReport {
           mc1WasteKg: parseJsonToDouble(json['mc1WasteKg']!),
           mc2WasteKg: parseJsonToDouble(json['mc2WasteKg']!),
           shiftHours: parseJsonToDouble(json['shiftHours']!),
+          wastedMinutes: json['wastedMinutes'] == null
+              ? 0
+              : parseJsonToDouble(json['wastedMinutes']!),
         );
 
   Map<String, Object?> toJson() {
@@ -139,6 +144,7 @@ class WaferReport {
       'mc1WasteKg': mc1WasteKg,
       'mc2WasteKg': mc2WasteKg,
       'shiftHours': shiftHours,
+      'wastedMinutes': wastedMinutes,
     };
   }
 
@@ -173,6 +179,7 @@ class WaferReport {
     int month,
     int day,
     double shiftHours,
+    double wastedMinutes,
   ) async {
     final waferReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -215,6 +222,7 @@ class WaferReport {
         mc1WasteKg: mc1WasteKg,
         mc2WasteKg: mc2WasteKg,
         shiftHours: shiftHours,
+        wastedMinutes: wastedMinutes,
       ),
     );
   }
@@ -252,6 +260,7 @@ class WaferReport {
     int month,
     int day,
     double shiftHours,
+    double wastedMinutes,
   ) async {
     final waferReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -295,6 +304,7 @@ class WaferReport {
           'mc1WasteKg': mc1WasteKg,
           'mc2WasteKg': mc2WasteKg,
           'shiftHours': shiftHours,
+          'wastedMinutes': wastedMinutes,
         })
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -386,7 +396,9 @@ class WaferReport {
         temp_rework = 0.0,
         temp_theoreticalPlan = 0.0,
         temp_rm_muv = 0.0,
-        temp_pm_muv = 0.0;
+        temp_pm_muv = 0.0,
+        temp_wasted_minutes = 0.0,
+        temp_all_shift_hours = 0.0;
     int temp_productionInCartons = 0, temp_productionPlan = 0;
     String lastSkuName = '-';
     // String lastSkuName = SKU.biscuitSKU[0];
@@ -422,8 +434,8 @@ class WaferReport {
         temp_planInKg += calculateProductionKg(
             report.data(), report.data().shiftProductionPlan);
 
-        temp_theoreticalPlan += theoreticals[report.data().line_index - 1] *
-            (report.data().shiftHours / standardShiftHours);
+        temp_theoreticalPlan +=
+            calculateNetTheoreticalOfReport(report.data(), theoreticals);
 
         temp_productionPlan += report.data().shiftProductionPlan;
         temp_scrap += calculateAllScrap(WAFER_AREA, report.data());
@@ -433,6 +445,9 @@ class WaferReport {
         lastSkuName = report.data().skuName;
         temp_rm_muv += calculateRmMUV(WAFER_AREA, report.data());
         temp_pm_muv += calculatePmMUV(WAFER_AREA, report.data());
+        temp_all_shift_hours += report.data().shiftHours;
+        temp_wasted_minutes += report.data().wastedMinutes;
+
         print('debug :: WaferReport chosen in first if');
       } else {
         print(
@@ -463,6 +478,8 @@ class WaferReport {
       theoreticalAverage: temp_theoreticalPlan,
       pmMUV: temp_pm_muv,
       rmMUV: temp_rm_muv,
+      wastedMinutes: temp_wasted_minutes,
+      plannedHours: temp_all_shift_hours,
     );
   }
 
@@ -498,6 +515,7 @@ class WaferReport {
       coolerRework: 0.0,
       creamScrap: 0.0,
       shiftHours: standardShiftHours,
+      wastedMinutes: 0.0,
     );
   }
 }

@@ -9,6 +9,7 @@ import 'package:cairo_bisco_app/classes/values/constants.dart';
 
 import '../EhsReport.dart';
 import '../SKU.dart';
+import 'date_utility.dart';
 
 double parseJsonToDouble(dynamic dAmount) {
   double returnAmount = 0.00;
@@ -35,10 +36,6 @@ double calculateMPSA(num plan, num done) {
   return (min(plan, done).toDouble() * 100) / max(plan, done);
 }
 
-double calculateOeeFromMiniReport(MiniProductionReport report) {
-  return (report.productionInKg.toDouble() / report.theoreticalAverage) * 100;
-}
-
 double calculateRmMUV(int refNum, report) {
   if (report.productionInCartons == 0) return 0.0;
   //todo :: check the equation
@@ -58,20 +55,32 @@ double calculatePmMUV(int refNum, report) {
       SKU.skuDetails[report.skuName]!.pm_cost;
 }
 
-double calculateAllUsedFilmWaste(report) {
-  return report.mc1FilmUsed + report.mc2FilmUsed;
-}
-
-double calculateAllWastedFilmWaste(report) {
-  return report.mc1WasteKg + report.mc2WasteKg;
-}
-
 double calculateWastePercent(double used, double wasted) {
   return (wasted / used) * 100;
 }
 
 double calculateScrapPercent(MiniProductionReport report) {
   return report.scrap * 100 / calculateAllWeightFromMiniReport(report);
+}
+
+String calculateDifferenceInCartonsTarget(MiniProductionReport report) {
+  bool noWork = report.productionInCartons == 0;
+  bool prodTargetDone =
+      noWork || report.productionInCartons - report.shiftProductionPlan >= 0;
+  return (prodTargetDone ? "" : "-") +
+      (report.productionInCartons - report.shiftProductionPlan)
+          .abs()
+          .toString() +
+      " C";
+}
+/*************************** utility functions ***********************************************/
+
+double calculateAllUsedFilmWaste(report) {
+  return report.mc1FilmUsed + report.mc2FilmUsed;
+}
+
+double calculateAllWastedFilmWaste(report) {
+  return report.mc1WasteKg + report.mc2WasteKg;
 }
 
 double calculateAllScrap(refNum, report) {
@@ -123,21 +132,13 @@ double calculateAllRework(refNum, report) {
 double calculateAllWeightFromOriginalReport(refNum, report) {
   return calculateAllRework(refNum, report) +
       calculateAllScrap(refNum, report) +
-      report.productionInCartons * SKU.skuDetails[report.skuName]!.cartonWeight;
+      calculateProductionKg(report, report.productionInCartons);
+  //todo :: add overweight
 }
 
 double calculateAllWeightFromMiniReport(MiniProductionReport report) {
   return report.scrap + report.rework + report.productionInKg;
-}
-
-double calculateOeeFromOriginalReport(report, theoreticalKg) {
-  return (calculateProductionKg(report, report.productionInCartons) /
-          theoreticalKg) *
-      100;
-}
-
-double calculateOeeFromRawNumbers(prodKg, theoreticalKg) {
-  return (prodKg / theoreticalKg) * 100;
+  //todo :: add overweight
 }
 
 double calculateProductionKg(report, int cartons) {
@@ -145,15 +146,67 @@ double calculateProductionKg(report, int cartons) {
   return (cartons * SKU.skuDetails[report.skuName]!.cartonWeight);
 }
 
-String calculateDifferenceInCartonsTarget(MiniProductionReport report) {
-  bool noWork = report.productionInCartons == 0;
-  bool prodTargetDone =
-      noWork || report.productionInCartons - report.shiftProductionPlan >= 0;
-  return (prodTargetDone ? "" : "-") +
-      (report.productionInCartons - report.shiftProductionPlan)
-          .abs()
-          .toString() +
-      " C";
+double calculateNetTheoreticalOfReport(
+  report,
+  theoreticals,
+) {
+  return theoreticals[report.line_index - 1] *
+      ((report.shiftHours - minutesToHours(report.wastedMinutes)) /
+          standardShiftHours);
+}
+
+/*************************OEE calculations*********************************/
+double calculateOeeFromOriginalReport(report, theoreticalKg, int refNum) {
+  // return (calculateProductionKg(report, report.productionInCartons) /
+  //         theoreticalKg) *
+  //     100;
+  return calculateRateFromOriginalReport(report, theoreticalKg, refNum) *
+      calculateQualityFromOriginalReport(report, refNum) *
+      calculateAvailabilityFromOriginalReport(report) *
+      100;
+}
+
+double calculateAvailabilityFromOriginalReport(report) {
+  return (report.shiftHours - minutesToHours(report.wastedMinutes)) /
+      report.shiftHours;
+}
+
+double calculateRateFromOriginalReport(
+  report,
+  theoreticalKg,
+  int refNum,
+) {
+  return calculateAllWeightFromOriginalReport(refNum, report) / theoreticalKg;
+}
+
+double calculateQualityFromOriginalReport(
+  report,
+  int refNum,
+) {
+  return calculateProductionKg(report, report.productionInCartons) /
+      calculateAllWeightFromOriginalReport(refNum, report);
+}
+
+/***********************************/
+double calculateOeeFromMiniReport(MiniProductionReport report) {
+  // return (report.productionInKg.toDouble() / report.theoreticalAverage) * 100;
+  return calculateRate(report) *
+      calculateQuality(report) *
+      calculateAvailability(report) *
+      100;
+}
+
+double calculateAvailability(MiniProductionReport report) {
+  return (report.plannedHours - minutesToHours(report.wastedMinutes)) /
+      report.plannedHours;
+}
+
+double calculateRate(MiniProductionReport report) {
+  return calculateAllWeightFromMiniReport(report) / report.theoreticalAverage;
+}
+
+double calculateQuality(MiniProductionReport report) {
+  return report.productionInKg / calculateAllWeightFromMiniReport(report);
 }
 
 /************************************DRIVERS*************************************************/

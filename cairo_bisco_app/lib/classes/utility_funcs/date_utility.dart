@@ -84,3 +84,7 @@ bool inEditPeriod(int day, int month, int year) {
   final diff = reportDate.difference(authorityEnd);
   return (diff.inDays <= 2 && year == now.year && month == now.month);
 }
+
+double minutesToHours(double minutes) {
+  return minutes / 60;
+}

@@ -161,7 +161,8 @@ class ExcelUtilities {
         totMc2Used = 0.0,
         avgOverweight = 0.0,
         totScrap = 0.0,
-        totWeight = 0.0;
+        totWeight = 0.0,
+        avgOEE = 0.0;
     int totCartons = 0;
     for (BiscuitsReport report in reportsList) {
       final theoreticals = [
@@ -194,6 +195,15 @@ class ExcelUtilities {
               ? getCorrespondingOverweight(report)
               : (avgOverweight + getCorrespondingOverweight(report)) / 2)
           : avgOverweight;
+      avgOEE = (avgOEE == 0.0
+          ? calculateOeeFromOriginalReport(report,
+              calculateNetTheoreticalOfReport(report, theoreticals), refNum)
+          : (avgOEE +
+                  calculateOeeFromOriginalReport(
+                      report,
+                      calculateNetTheoreticalOfReport(report, theoreticals),
+                      refNum)) /
+              2);
       totScrap += calculateAllScrap(refNum, report);
       totWeight += calculateAllWeightFromOriginalReport(refNum, report);
       totCartons += report.productionInCartons;
@@ -242,11 +252,13 @@ class ExcelUtilities {
                 100 /
                 calculateAllWeightFromOriginalReport(refNum, report))
             .toStringAsFixed(1),
-        "Speed Loss",
-        "Availability%",
-        "Quality%",
-        calculateOeeFromOriginalReport(
-                report, theoreticals[report.line_index - 1])
+        report.wastedMinutes.toString(),
+        (calculateAvailabilityFromOriginalReport(report) * 100)
+            .toStringAsFixed(1),
+        (calculateQualityFromOriginalReport(report, refNum) * 100)
+            .toStringAsFixed(1),
+        calculateOeeFromOriginalReport(report,
+                calculateNetTheoreticalOfReport(report, theoreticals), refNum)
             .toStringAsFixed(1),
         doesHaveCorrespondingOverweight(report)
             ? (calculateProductionKg(report, report.productionInCartons) *
@@ -299,7 +311,7 @@ class ExcelUtilities {
       '-',
       '-',
       '-',
-      calculateOeeFromRawNumbers(totKg, totTheoreticals).toStringAsFixed(1),
+      avgOEE.toStringAsFixed(1),
       (totKg * avgOverweight).toStringAsFixed(1),
       totCartons.toString(),
       '-',
@@ -333,7 +345,8 @@ class ExcelUtilities {
         totMc2Used = 0.0,
         avgOverweight = 0.0,
         totScrap = 0.0,
-        totWeight = 0.0;
+        totWeight = 0.0,
+        avgOEE = 0.0;
     int totCartons = 0;
     for (WaferReport report in reportsList) {
       final theoreticals = [
@@ -366,6 +379,15 @@ class ExcelUtilities {
               ? getCorrespondingOverweight(report)
               : (avgOverweight + getCorrespondingOverweight(report)) / 2)
           : avgOverweight;
+      avgOEE = (avgOEE == 0.0
+          ? calculateOeeFromOriginalReport(report,
+              calculateNetTheoreticalOfReport(report, theoreticals), refNum)
+          : (avgOEE +
+                  calculateOeeFromOriginalReport(
+                      report,
+                      calculateNetTheoreticalOfReport(report, theoreticals),
+                      refNum)) /
+              2);
       totScrap += calculateAllScrap(refNum, report);
       totWeight += calculateAllWeightFromOriginalReport(refNum, report);
       totCartons += report.productionInCartons;
@@ -414,11 +436,13 @@ class ExcelUtilities {
                 100 /
                 calculateAllWeightFromOriginalReport(refNum, report))
             .toStringAsFixed(1),
-        "Speed Loss",
-        "Availability%",
-        "Quality%",
-        calculateOeeFromOriginalReport(
-                report, theoreticals[report.line_index - 1])
+        report.wastedMinutes.toString(),
+        (calculateAvailabilityFromOriginalReport(report) * 100)
+            .toStringAsFixed(1),
+        (calculateQualityFromOriginalReport(report, refNum) * 100)
+            .toStringAsFixed(1),
+        calculateOeeFromOriginalReport(report,
+                calculateNetTheoreticalOfReport(report, theoreticals), refNum)
             .toStringAsFixed(1),
         doesHaveCorrespondingOverweight(report)
             ? (calculateProductionKg(report, report.productionInCartons) *
@@ -470,7 +494,7 @@ class ExcelUtilities {
       '-',
       '-',
       '-',
-      calculateOeeFromRawNumbers(totKg, totTheoreticals).toStringAsFixed(1),
+      avgOEE.toStringAsFixed(1),
       (totKg * avgOverweight).toStringAsFixed(1),
       totCartons.toString(),
       '-',
@@ -502,7 +526,8 @@ class ExcelUtilities {
         totMc2Used = 0.0,
         avgOverweight = 0.0,
         totScrap = 0.0,
-        totWeight = 0.0;
+        totWeight = 0.0,
+        avgOEE = 0.0;
     int totCartons = 0;
     for (MaamoulReport report in reportsList) {
       final theoreticals = [
@@ -533,6 +558,15 @@ class ExcelUtilities {
               ? getCorrespondingOverweight(report)
               : (avgOverweight + getCorrespondingOverweight(report)) / 2)
           : avgOverweight;
+      avgOEE = (avgOEE == 0.0
+          ? calculateOeeFromOriginalReport(report,
+              calculateNetTheoreticalOfReport(report, theoreticals), refNum)
+          : (avgOEE +
+                  calculateOeeFromOriginalReport(
+                      report,
+                      calculateNetTheoreticalOfReport(report, theoreticals),
+                      refNum)) /
+              2);
       totScrap += calculateAllScrap(refNum, report);
       totWeight += calculateAllWeightFromOriginalReport(refNum, report);
       totCartons += report.productionInCartons;
@@ -579,11 +613,13 @@ class ExcelUtilities {
                 100 /
                 calculateAllWeightFromOriginalReport(refNum, report))
             .toStringAsFixed(1),
-        "Speed Loss",
-        "Availability%",
-        "Quality%",
-        calculateOeeFromOriginalReport(
-                report, theoreticals[report.line_index - 1])
+        report.wastedMinutes.toString(),
+        (calculateAvailabilityFromOriginalReport(report) * 100)
+            .toStringAsFixed(1),
+        (calculateQualityFromOriginalReport(report, refNum) * 100)
+            .toStringAsFixed(1),
+        calculateOeeFromOriginalReport(report,
+                calculateNetTheoreticalOfReport(report, theoreticals), refNum)
             .toStringAsFixed(1),
         doesHaveCorrespondingOverweight(report)
             ? (calculateProductionKg(report, report.productionInCartons) *
@@ -633,7 +669,7 @@ class ExcelUtilities {
       '-',
       '-',
       '-',
-      calculateOeeFromRawNumbers(totKg, totTheoreticals).toStringAsFixed(1),
+      avgOEE.toStringAsFixed(1),
       (totKg * avgOverweight).toStringAsFixed(1),
       totCartons.toString(),
       '-',

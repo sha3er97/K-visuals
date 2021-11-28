@@ -71,7 +71,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
       mc2FilmUsed,
       mc1WasteKg,
       mc2WasteKg,
-      shiftHours;
+      shiftHours,
+      wastedMinutes;
 
   bool _sup_name_validate = false,
       _shift_plan_validate = false,
@@ -95,7 +96,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
       _mc2FilmUsed_validate = false,
       _mc1WasteKg_validate = false,
       _mc2WasteKg_validate = false,
-      _shiftHours_validate = false;
+      _shiftHours_validate = false,
+      _wastedMinutes_validate = false;
 
   //drop down values
   late String selectedShift,
@@ -171,6 +173,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
     shiftHours = isEdit
         ? reportDetails.shiftHours.toString()
         : standardShiftHours.toString();
+    wastedMinutes = isEdit ? reportDetails.wastedMinutes.toString() : '';
 
     ///////////////////////////////////////////////////////////////////////////////
     selectedShift = shifts[reportDetails.shift_index];
@@ -181,7 +184,6 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
     selectedDay =
         days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
-    print("initial line :" + selectedProdLine.toString());
 
     sku = isEdit ? reportDetails.skuName : SKU.waferSKU[0];
   }
@@ -507,6 +509,45 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                           ),
                           onChanged: (value) {
                             shiftProductionPlan = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        ///////////////////////////////////////////////////////////////
+                        smallerHeading(
+                            'اجمالي توقفات الخط بالدقيقة\nTotal line stops in Minutes'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: wastedMinutes,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _wastedMinutes_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            wastedMinutes = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -1305,6 +1346,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             emptyField(mc2WasteKg);
                                         _shiftHours_validate =
                                             emptyField(shiftHours);
+                                        _wastedMinutes_validate =
+                                            emptyField(wastedMinutes);
                                       });
                                       try {
                                         if (!_sup_name_validate &&
@@ -1329,7 +1372,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             !_mc2FilmUsed_validate &&
                                             !_mc1WasteKg_validate &&
                                             !_mc2WasteKg_validate &&
-                                            !_shiftHours_validate) {
+                                            !_shiftHours_validate &&
+                                            !_wastedMinutes_validate) {
                                           WaferReport.addReport(
                                             supName,
                                             sku,
@@ -1363,6 +1407,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             int.parse(selectedMonth),
                                             int.parse(selectedDay),
                                             double.parse(shiftHours),
+                                            double.parse(wastedMinutes),
                                           );
                                           Navigator.push(
                                               context,
@@ -1444,6 +1489,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             emptyField(mc2WasteKg);
                                         _shiftHours_validate =
                                             emptyField(shiftHours);
+                                        _wastedMinutes_validate =
+                                            emptyField(wastedMinutes);
                                       });
                                       try {
                                         if (!_sup_name_validate &&
@@ -1468,7 +1515,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             !_mc2FilmUsed_validate &&
                                             !_mc1WasteKg_validate &&
                                             !_mc2WasteKg_validate &&
-                                            !_shiftHours_validate) {
+                                            !_shiftHours_validate &&
+                                            !_wastedMinutes_validate) {
                                           if (canEditThisReport(
                                               supName,
                                               int.parse(selectedDay),
@@ -1509,6 +1557,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                               int.parse(selectedMonth),
                                               int.parse(selectedDay),
                                               double.parse(shiftHours),
+                                              double.parse(wastedMinutes),
                                             );
                                           } else {
                                             ScaffoldMessenger.of(context)

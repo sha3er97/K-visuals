@@ -1,5 +1,5 @@
 /** version number**/
-const versionNum = '2.0.5'; //edit also in pubspec.yaml
+const versionNum = '2.0.6'; //edit also in pubspec.yaml
 const versionCode = 3; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
@@ -200,7 +200,7 @@ List<String> biscuitsHeaders = [
   "Scrap kg",
   "Rework%",
   "Scrap%",
-  "Speed Loss",
+  "Lost Time",
   "Availability%",
   "Quality%",
   "OEE%",
@@ -244,7 +244,7 @@ List<String> waferHeaders = [
   "Scrap kg",
   "Rework%",
   "Scrap%",
-  "Speed Loss",
+  "Lost Time",
   "Availability%",
   "Quality%",
   "OEE%",
@@ -286,7 +286,7 @@ List<String> maamoulHeaders = [
   "Scrap kg",
   "Rework%",
   "Scrap%",
-  "Speed Loss",
+  "Lost Time",
   "Availability%",
   "Quality%",
   "OEE%",
