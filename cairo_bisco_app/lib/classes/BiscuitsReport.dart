@@ -107,6 +107,7 @@ class BiscuitsReport {
           mc1WasteKg: parseJsonToDouble(json['mc1WasteKg']!),
           mc2WasteKg: parseJsonToDouble(json['mc2WasteKg']!),
           shiftHours: parseJsonToDouble(json['shiftHours']!),
+          //for backward compatibility
           wastedMinutes: json['wastedMinutes'] == null
               ? 0
               : parseJsonToDouble(json['wastedMinutes']!),

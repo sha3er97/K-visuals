@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
@@ -86,7 +89,9 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
 
   //temp variables
   QfsReport temp_qfs = QfsReport.getEmptyReport();
-  List<QueryDocumentSnapshot<QfsReport>> reportsList = [];
+  List<QueryDocumentSnapshot<QfsReport>> qfsReportsList = [];
+  OverWeightReport temp_overweight = OverWeightReport.getEmptyReport();
+  List<QueryDocumentSnapshot<OverWeightReport>> overweightReportsList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +100,17 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
         .doc('quality_reports')
         .collection(validated_year.toString())
         .withConverter<QfsReport>(
-          fromFirestore: (snapshot, _) => QfsReport.fromJson(snapshot.data()!),
+          fromFirestore: (qfsSnapshot, _) =>
+              QfsReport.fromJson(qfsSnapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    final overWeightReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('overWeight_reports')
+        .collection(validated_year.toString())
+        .withConverter<OverWeightReport>(
+          fromFirestore: (OverWeightSnapshot, _) =>
+              OverWeightReport.fromJson(OverWeightSnapshot.data()!),
           toFirestore: (report, _) => report.toJson(),
         );
     return ModalProgressHUD(
@@ -122,7 +137,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                 children: [
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: defaultPadding),
+                    const EdgeInsets.symmetric(horizontal: defaultPadding),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Text(
@@ -138,7 +153,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   Expanded(
                     child: Padding(
                       padding:
-                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -153,7 +168,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -167,7 +182,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   Expanded(
                     child: Padding(
                       padding:
-                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -182,7 +197,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -197,7 +212,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                     flex: 2,
                     child: Padding(
                       padding:
-                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -212,7 +227,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -229,7 +244,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                 children: [
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: defaultPadding),
+                    const EdgeInsets.symmetric(horizontal: defaultPadding),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Text(
@@ -245,7 +260,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   Expanded(
                     child: Padding(
                       padding:
-                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -260,7 +275,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -274,7 +289,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   Expanded(
                     child: Padding(
                       padding:
-                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -289,7 +304,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -304,7 +319,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                     flex: 2,
                     child: Padding(
                       padding:
-                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -319,7 +334,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -360,17 +375,25 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                           calculateInterval();
                           setState(() {
                             temp_qfs = QfsReport.getFilteredReportOfInterval(
-                                reportsList,
+                                qfsReportsList,
                                 validated_month_from,
                                 validated_month_to,
                                 validated_day_from,
                                 validated_day_to,
                                 validated_year,
-                                -1,
-                                -1);
+                                TOTAL_PLANT,
+                                ALL_LINES);
+                            temp_overweight =
+                                OverWeightReport.getFilteredReportOfInterval(
+                                    overweightReportsList,
+                                    validated_month_from,
+                                    validated_month_to,
+                                    validated_day_from,
+                                    validated_day_to,
+                                    validated_year,
+                                    TOTAL_PLANT,
+                                    ALL_LINES);
                           });
-                          // print("debug :: quality incidents = " +
-                          //     temp_qfs.quality_incidents.toString());
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text("Report refreshed"),
                           ));
@@ -388,154 +411,183 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
               StreamBuilder<QuerySnapshot>(
                 stream: qualityReportRef.snapshots(),
                 builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
+                    AsyncSnapshot<QuerySnapshot> qfsSnapshot) {
+                  if (qfsSnapshot.hasError) {
                     return ErrorMessageHeading('Something went wrong');
-                  } else if (snapshot.connectionState ==
+                  } else if (qfsSnapshot.connectionState ==
                       ConnectionState.waiting) {
                     return ColorLoader();
                   } else {
-                    try {
-                      reportsList = snapshot.data!.docs
-                          as List<QueryDocumentSnapshot<QfsReport>>;
-                      // print("qfs ::" + reportsList.length.toString());
-                      return Column(
-                        children: [
-                          SizedBox(height: defaultPadding),
-                          IntrinsicHeight(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: minimumPadding),
-                                  child: Container(
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: minimumPadding),
-                                    child: KPI1GoodBadIndicator(
-                                      circleColor:
-                                          temp_qfs.quality_incidents > 0
-                                              ? KelloggColors.cockRed
-                                              : KelloggColors.green,
-                                      title: 'Quality\nIncidents',
-                                      circleText:
-                                          temp_qfs.quality_incidents.toString(),
+                    return FutureBuilder<QuerySnapshot>(
+                        future: overWeightReportRef.get(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
+                          if (overweightSnapshot.hasError) {
+                            return ErrorMessageHeading('Something went wrong');
+                          } else if (overweightSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return ColorLoader();
+                          } else {
+                            try {
+                              overweightReportsList =
+                                  overweightSnapshot.data!.docs as List<
+                                      QueryDocumentSnapshot<OverWeightReport>>;
+                              qfsReportsList = qfsSnapshot.data!.docs
+                                  as List<QueryDocumentSnapshot<QfsReport>>;
+                              //integration part
+                              int temp_pes = max(temp_qfs.pes_index,
+                                  temp_overweight.pes_index);
+                              int temp_complaints = max(
+                                  temp_qfs.consumer_complaints,
+                                  temp_overweight.consumer_complaints);
+                              int temp_g6 = max(
+                                  temp_qfs.g6_index, temp_overweight.g6_index);
+                              return Column(
+                                children: [
+                                  SizedBox(height: defaultPadding),
+                                  IntrinsicHeight(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: minimumPadding),
+                                          child: Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: minimumPadding),
+                                            child: KPI1GoodBadIndicator(
+                                              circleColor:
+                                                  temp_qfs.quality_incidents > 0
+                                                      ? KelloggColors.cockRed
+                                                      : KelloggColors.green,
+                                              title: 'Quality\nIncidents',
+                                              circleText: temp_qfs
+                                                  .quality_incidents
+                                                  .toString(),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: minimumPadding),
+                                          child: Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: minimumPadding),
+                                            child: KPI1GoodBadIndicator(
+                                              circleColor:
+                                                  temp_qfs.food_safety_incidents >
+                                                          0
+                                                      ? KelloggColors.cockRed
+                                                      : KelloggColors.green,
+                                              title: 'Food Safety\nIncidents',
+                                              circleText: temp_qfs
+                                                  .food_safety_incidents
+                                                  .toString(),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: minimumPadding),
-                                  child: Container(
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: minimumPadding),
-                                    child: KPI1GoodBadIndicator(
-                                      circleColor:
-                                          temp_qfs.food_safety_incidents > 0
-                                              ? KelloggColors.cockRed
-                                              : KelloggColors.green,
-                                      title: 'Food Safety\nIncidents',
-                                      circleText: temp_qfs.food_safety_incidents
-                                          .toString(),
+                                  SizedBox(height: defaultPadding),
+                                  IntrinsicHeight(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: minimumPadding),
+                                          child: Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: minimumPadding),
+                                            child: KPI1GoodBadIndicator(
+                                              circleColor:
+                                                  temp_qfs.ccp_failure > 0
+                                                      ? KelloggColors.cockRed
+                                                      : KelloggColors.green,
+                                              title: 'CCP\nFailures',
+                                              circleText: temp_qfs.ccp_failure
+                                                  .toString(),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: minimumPadding),
+                                          child: Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: minimumPadding),
+                                            child: KPI1GoodBadIndicator(
+                                              circleColor: temp_pes == 3
+                                                  ? KelloggColors.cockRed
+                                                  : temp_pes == 2
+                                                      ? KelloggColors.yellow
+                                                      : KelloggColors.green,
+                                              title: 'PES\n(B&C Defects)',
+                                              circleText: Pes[temp_pes],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: defaultPadding),
-                          IntrinsicHeight(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: minimumPadding),
-                                  child: Container(
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: minimumPadding),
-                                    child: KPI1GoodBadIndicator(
-                                      circleColor: temp_qfs.ccp_failure > 0
-                                          ? KelloggColors.cockRed
-                                          : KelloggColors.green,
-                                      title: 'CCP\nFailures',
-                                      circleText:
-                                          temp_qfs.ccp_failure.toString(),
+                                  SizedBox(height: defaultPadding),
+                                  IntrinsicHeight(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: minimumPadding),
+                                          child: Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: minimumPadding),
+                                            child: KPI1GoodBadIndicator(
+                                              circleColor: temp_complaints > 0
+                                                  ? KelloggColors.cockRed
+                                                  : KelloggColors.green,
+                                              title: 'Consumer\nComplaints',
+                                              circleText:
+                                                  temp_complaints.toString(),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: minimumPadding),
+                                          child: Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: minimumPadding),
+                                            child: KPI1GoodBadIndicator(
+                                              circleColor: temp_g6 == 2
+                                                  ? KelloggColors.cockRed
+                                                  : temp_g6 == 1
+                                                      ? KelloggColors.yellow
+                                                      : KelloggColors.green,
+                                              title: 'G6 Escalation',
+                                              circleText: G6[temp_g6],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: minimumPadding),
-                                  child: Container(
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: minimumPadding),
-                                    child: KPI1GoodBadIndicator(
-                                      circleColor: temp_qfs.pes_index == 3
-                                          ? KelloggColors.cockRed
-                                          : temp_qfs.pes_index == 2
-                                              ? KelloggColors.yellow
-                                              : KelloggColors.green,
-                                      title: 'PES\n(B&C Defects)',
-                                      circleText: Pes[temp_qfs.pes_index],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: defaultPadding),
-                          IntrinsicHeight(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: minimumPadding),
-                                  child: Container(
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: minimumPadding),
-                                    child: KPI1GoodBadIndicator(
-                                      circleColor:
-                                          temp_qfs.consumer_complaints > 0
-                                              ? KelloggColors.cockRed
-                                              : KelloggColors.green,
-                                      title: 'Consumer\nComplaints',
-                                      circleText: temp_qfs.consumer_complaints
-                                          .toString(),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: minimumPadding),
-                                  child: Container(
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: minimumPadding),
-                                    child: KPI1GoodBadIndicator(
-                                      circleColor: temp_qfs.g6_index == 2
-                                          ? KelloggColors.cockRed
-                                          : temp_qfs.g6_index == 1
-                                              ? KelloggColors.yellow
-                                              : KelloggColors.green,
-                                      title: 'G6 Escalation',
-                                      circleText: G6[temp_qfs.g6_index],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: defaultPadding),
-                        ],
-                      );
-                    } catch (e) {
-                      print(e);
-                      return ErrorMessageHeading('Something went wrong');
-                    }
+                                  SizedBox(height: defaultPadding),
+                                ],
+                              );
+                            } catch (e) {
+                              print(e);
+                              return ErrorMessageHeading(
+                                  'Something went wrong');
+                            }
+                          }
+                        });
                   }
                 },
               ),

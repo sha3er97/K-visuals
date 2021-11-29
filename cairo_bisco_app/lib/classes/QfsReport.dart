@@ -12,9 +12,9 @@ class QfsReport {
   final int quality_incidents,
       food_safety_incidents,
       ccp_failure,
-      consumer_complaints,
-      pes_index,
-      g6_index,
+      consumer_complaints, //for backward compatibility
+      pes_index, //for backward compatibility
+      g6_index, //for backward compatibility
       line_index,
       shift_index,
       area,
@@ -22,20 +22,21 @@ class QfsReport {
       month,
       day;
 
-  QfsReport(
-      {required this.area,
-      required this.shift_index, //unused for now
-      required this.line_index,
-      required this.pes_index,
-      required this.g6_index,
-      required this.supName,
-      required this.quality_incidents,
-      required this.food_safety_incidents,
-      required this.ccp_failure,
-      required this.year,
-      required this.month,
-      required this.day,
-      required this.consumer_complaints});
+  QfsReport({
+    required this.area,
+    required this.shift_index, //unused for now
+    required this.line_index,
+    required this.pes_index,
+    required this.g6_index,
+    required this.supName,
+    required this.quality_incidents,
+    required this.food_safety_incidents,
+    required this.ccp_failure,
+    required this.year,
+    required this.month,
+    required this.day,
+    required this.consumer_complaints,
+  });
 
   QfsReport.fromJson(Map<String, Object?> json)
       : this(
@@ -45,13 +46,17 @@ class QfsReport {
           area: json['area']! as int,
           shift_index: json['shift_index']! as int,
           line_index: json['line_index']! as int,
-          pes_index: json['pes_index']! as int,
-          g6_index: json['g6_index']! as int,
           supName: json['supName']! as String,
           quality_incidents: json['quality_incidents']! as int,
           food_safety_incidents: json['food_safety_incidents']! as int,
           ccp_failure: json['ccp_failure']! as int,
-          consumer_complaints: json['consumer_complaints']! as int,
+
+          //for backward compatibility
+          consumer_complaints: json['consumer_complaints'] == null
+              ? 0
+              : json['consumer_complaints']! as int,
+          pes_index: json['pes_index'] == null ? 0 : json['pes_index']! as int,
+          g6_index: json['g6_index'] == null ? 0 : json['g6_index']! as int,
         );
 
   Map<String, Object?> toJson() {
@@ -62,13 +67,13 @@ class QfsReport {
       'area': area,
       'shift_index': shift_index,
       'line_index': line_index,
-      'pes_index': pes_index,
-      'g6_index': g6_index,
       'supName': supName,
       'quality_incidents': quality_incidents,
       'food_safety_incidents': food_safety_incidents,
       'ccp_failure': ccp_failure,
-      'consumer_complaints': consumer_complaints,
+      // 'consumer_complaints': consumer_complaints,
+      // 'pes_index': pes_index,
+      // 'g6_index': g6_index,
     };
   }
 
@@ -77,14 +82,11 @@ class QfsReport {
     int quality_incidents,
     int food_safety_incidents,
     int ccp_failure,
-    int consumer_complaints,
     int year,
     int month,
     int day,
     int shift_index,
     int line_index,
-    int pes_index,
-    int g6_index,
     int area,
   ) async {
     final qualityReportRef = FirebaseFirestore.instance
@@ -101,11 +103,14 @@ class QfsReport {
         quality_incidents: quality_incidents,
         food_safety_incidents: food_safety_incidents,
         ccp_failure: ccp_failure,
-        consumer_complaints: consumer_complaints,
+        consumer_complaints: 0,
+        //for backward compatibility
         shift_index: shift_index,
         line_index: line_index,
-        pes_index: pes_index,
-        g6_index: g6_index,
+        pes_index: 0,
+        //for backward compatibility
+        g6_index: 0,
+        //for backward compatibility
         area: area,
         year: year,
         month: month,
@@ -121,14 +126,11 @@ class QfsReport {
     int quality_incidents,
     int food_safety_incidents,
     int ccp_failure,
-    int consumer_complaints,
     int year,
     int month,
     int day,
     int shift_index,
     int line_index,
-    int pes_index,
-    int g6_index,
     int area,
   ) async {
     final qualityReportRef = FirebaseFirestore.instance
@@ -148,13 +150,10 @@ class QfsReport {
           'area': area,
           'shift_index': shift_index,
           'line_index': line_index,
-          'pes_index': pes_index,
-          'g6_index': g6_index,
           'supName': supName,
           'quality_incidents': quality_incidents,
           'food_safety_incidents': food_safety_incidents,
           'ccp_failure': ccp_failure,
-          'consumer_complaints': consumer_complaints,
         })
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -241,9 +240,9 @@ class QfsReport {
     int temp_quality_incidents = 0,
         temp_food_safety_incidents = 0,
         temp_ccp_failure = 0,
-        temp_consumer_complaints = 0,
-        temp_pes_index = 0,
-        temp_g6_index = 0;
+        temp_consumer_complaints = 0, //for backward compatibility
+        temp_pes_index = 0, //for backward compatibility
+        temp_g6_index = 0; //for backward compatibility
     for (var report in reportsList) {
       if (!isDayInInterval(
         report.data().day,
@@ -267,9 +266,12 @@ class QfsReport {
         temp_quality_incidents += report.data().quality_incidents;
         temp_food_safety_incidents += report.data().food_safety_incidents;
         temp_ccp_failure += report.data().ccp_failure;
-        temp_consumer_complaints += report.data().consumer_complaints;
-        temp_pes_index = max(temp_pes_index, report.data().pes_index);
-        temp_g6_index = max(temp_g6_index, report.data().g6_index);
+        temp_consumer_complaints +=
+            report.data().consumer_complaints; //for backward compatibility
+        temp_pes_index = max(temp_pes_index,
+            report.data().pes_index); //for backward compatibility
+        temp_g6_index = max(
+            temp_g6_index, report.data().g6_index); //for backward compatibility
         // print('debug :: QfsReport chosen in first if');
       } else if (lineNumRequired == ALL_LINES &&
           areaRequired != TOTAL_PLANT &&
@@ -278,18 +280,24 @@ class QfsReport {
         temp_quality_incidents += report.data().quality_incidents;
         temp_food_safety_incidents += report.data().food_safety_incidents;
         temp_ccp_failure += report.data().ccp_failure;
-        temp_consumer_complaints += report.data().consumer_complaints;
-        temp_pes_index = max(temp_pes_index, report.data().pes_index);
-        temp_g6_index = max(temp_g6_index, report.data().g6_index);
+        temp_consumer_complaints +=
+            report.data().consumer_complaints; //for backward compatibility
+        temp_pes_index = max(temp_pes_index,
+            report.data().pes_index); //for backward compatibility
+        temp_g6_index = max(
+            temp_g6_index, report.data().g6_index); //for backward compatibility
         // print('debug :: QfsReport chosen in second if');
       } else if (areaRequired == TOTAL_PLANT) {
         // all shifts all lines all areas
         temp_quality_incidents += report.data().quality_incidents;
         temp_food_safety_incidents += report.data().food_safety_incidents;
         temp_ccp_failure += report.data().ccp_failure;
-        temp_consumer_complaints += report.data().consumer_complaints;
-        temp_pes_index = max(temp_pes_index, report.data().pes_index);
-        temp_g6_index = max(temp_g6_index, report.data().g6_index);
+        temp_consumer_complaints +=
+            report.data().consumer_complaints; //for backward compatibility
+        temp_pes_index = max(temp_pes_index,
+            report.data().pes_index); //for backward compatibility
+        temp_g6_index = max(
+            temp_g6_index, report.data().g6_index); //for backward compatibility
         // print('debug :: QfsReport chosen in third if');
       } else {
         // print('debug :: QfsReport filtered out');
@@ -301,11 +309,14 @@ class QfsReport {
       quality_incidents: temp_quality_incidents,
       food_safety_incidents: temp_food_safety_incidents,
       ccp_failure: temp_ccp_failure,
-      consumer_complaints: temp_consumer_complaints,
       shift_index: -1,
       line_index: lineNumRequired,
       pes_index: temp_pes_index,
+      //for backward compatibility
       g6_index: temp_g6_index,
+      //for backward compatibility
+      consumer_complaints: temp_consumer_complaints,
+      //for backward compatibility
       area: areaRequired,
       year: -1,
       month: -1,
@@ -320,10 +331,13 @@ class QfsReport {
       food_safety_incidents: 0,
       ccp_failure: 0,
       consumer_complaints: 0,
+      //for backward compatibility
       shift_index: 0,
       line_index: 1,
       pes_index: 0,
+      //for backward compatibility
       g6_index: 0,
+      //for backward compatibility
       area: -1,
       year: -1,
       month: -1,

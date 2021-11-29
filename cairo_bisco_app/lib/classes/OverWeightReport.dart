@@ -1,5 +1,7 @@
 import 'dart:collection';
+import 'dart:math';
 
+import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
@@ -9,7 +11,14 @@ import 'package:flutter/material.dart';
 class OverWeightReport {
   final String supName;
   final double percent;
-  final int line_index, area, year, month, day;
+  final int line_index,
+      area,
+      year,
+      month,
+      day,
+      consumer_complaints,
+      pes_index,
+      g6_index;
 
   OverWeightReport({
     required this.area,
@@ -17,19 +26,27 @@ class OverWeightReport {
     required this.supName,
     required this.year,
     required this.percent,
+    required this.consumer_complaints,
+    required this.pes_index,
+    required this.g6_index,
     required this.month,
     required this.day,
   });
 
   OverWeightReport.fromJson(Map<String, Object?> json)
       : this(
-          year: json['year']! as int,
+    year: json['year']! as int,
           month: json['month']! as int,
           day: json['day']! as int,
           area: json['area']! as int,
           line_index: json['line_index']! as int,
           supName: json['supName']! as String,
-          percent: json['percent']! as double,
+          consumer_complaints: json['consumer_complaints'] == null
+              ? 0
+              : json['consumer_complaints']! as int,
+          pes_index: json['pes_index'] == null ? 0 : json['pes_index']! as int,
+          g6_index: json['g6_index'] == null ? 0 : json['g6_index']! as int,
+          percent: parseJsonToDouble(json['percent']!),
         );
 
   Map<String, Object?> toJson() {
@@ -41,6 +58,9 @@ class OverWeightReport {
       'line_index': line_index,
       'supName': supName,
       'percent': percent,
+      'g6_index': g6_index,
+      'pes_index': pes_index,
+      'consumer_complaints': consumer_complaints,
     };
   }
 
@@ -52,6 +72,9 @@ class OverWeightReport {
     int year,
     int month,
     int day,
+    int g6_index,
+    int pes_index,
+    int consumer_complaints,
   ) async {
     final overWeightReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -71,6 +94,9 @@ class OverWeightReport {
         year: year,
         month: month,
         day: day,
+        consumer_complaints: consumer_complaints,
+        pes_index: pes_index,
+        g6_index: g6_index,
       ),
     );
   }
@@ -85,6 +111,9 @@ class OverWeightReport {
     int year,
     int month,
     int day,
+    int g6_index,
+    int pes_index,
+    int consumer_complaints,
   ) async {
     final overWeightReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -105,6 +134,9 @@ class OverWeightReport {
           'line_index': line_index,
           'supName': supName,
           'percent': percent,
+          'consumer_complaints': consumer_complaints,
+          'pes_index': pes_index,
+          'g6_index': g6_index,
         })
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -191,7 +223,10 @@ class OverWeightReport {
     int lineNumRequired,
   ) {
     double temp_percent = 0.0;
-    int valid_reports_count = 0;
+    int valid_reports_count = 0,
+        temp_consumer_complaints = 0,
+        temp_pes_index = 0,
+        temp_g6_index = 0;
 
     for (var report in reportsList) {
       if (!isDayInInterval(
@@ -215,6 +250,9 @@ class OverWeightReport {
         //all shifts in one line in one area
         temp_percent += report.data().percent;
         valid_reports_count++;
+        temp_consumer_complaints += report.data().consumer_complaints;
+        temp_pes_index = max(temp_pes_index, report.data().pes_index);
+        temp_g6_index = max(temp_g6_index, report.data().g6_index);
         print('debug :: OverWeightReport chosen in first if');
       } else if (lineNumRequired == ALL_LINES &&
           areaRequired != TOTAL_PLANT &&
@@ -222,11 +260,17 @@ class OverWeightReport {
         // all shifts all lines in one area
         temp_percent += report.data().percent;
         valid_reports_count++;
+        temp_consumer_complaints += report.data().consumer_complaints;
+        temp_pes_index = max(temp_pes_index, report.data().pes_index);
+        temp_g6_index = max(temp_g6_index, report.data().g6_index);
         print('debug :: OverWeightReport chosen in second if');
       } else if (areaRequired == TOTAL_PLANT) {
         // all shifts all lines all areas
         temp_percent += report.data().percent;
         valid_reports_count++;
+        temp_consumer_complaints += report.data().consumer_complaints;
+        temp_pes_index = max(temp_pes_index, report.data().pes_index);
+        temp_g6_index = max(temp_g6_index, report.data().g6_index);
         print('debug :: OverWeightReport chosen in third if');
       } else {
         print('debug :: OverWeightReport filtered out due to conditions');
@@ -241,6 +285,9 @@ class OverWeightReport {
       year: -1,
       month: -1,
       day: -1,
+      pes_index: temp_pes_index,
+      g6_index: temp_g6_index,
+      consumer_complaints: temp_consumer_complaints,
     );
   }
 
@@ -253,6 +300,9 @@ class OverWeightReport {
       year: -1,
       month: -1,
       day: -1,
+      pes_index: 0,
+      g6_index: 0,
+      consumer_complaints: 0,
     );
   }
 }

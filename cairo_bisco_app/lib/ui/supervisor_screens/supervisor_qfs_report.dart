@@ -51,38 +51,19 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
   final bool isEdit;
 
   bool showSpinner = false;
-  late String supName,
-      quality_incidents,
-      food_safety_incidents,
-      ccp_failure,
-      consumer_complaints;
+  late String supName, quality_incidents, food_safety_incidents, ccp_failure;
 
   bool _sup_name_validate = false,
       _quality_incidents_validate = false,
       _food_safety_incidents_validate = false,
-      _ccp_failure_validate = false,
-      _consumer_complaints_validate = false;
+      _ccp_failure_validate = false;
 
   //drop down values
   late String selectedShift,
       selectedYear,
       selectedMonth,
       selectedDay,
-      selectedProdLine,
-      selected_pes,
-      selected_G6;
-
-  VoidCallback? onPESChange(val) {
-    setState(() {
-      selected_pes = val;
-    });
-  }
-
-  VoidCallback? onG6Change(val) {
-    setState(() {
-      selected_G6 = val;
-    });
-  }
+      selectedProdLine;
 
   VoidCallback? onLineChange(val) {
     setState(() {
@@ -123,8 +104,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
     food_safety_incidents =
         isEdit ? reportDetails.food_safety_incidents.toString() : '';
     ccp_failure = isEdit ? reportDetails.ccp_failure.toString() : '';
-    consumer_complaints =
-        isEdit ? reportDetails.consumer_complaints.toString() : '';
+
     ///////////////////////////////////////////////////////////////////////////////
     selectedShift = shifts[reportDetails.shift_index];
     selectedYear =
@@ -134,8 +114,6 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
     selectedDay =
         days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
-    selected_pes = Pes[reportDetails.pes_index];
-    selected_G6 = G6[reportDetails.g6_index];
   }
 
   @override
@@ -486,95 +464,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                           },
                         ),
                         SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////
-                        smallerHeading('شكاوي المستهلكين\nConsumer Complaints'),
-                        SizedBox(height: minimumPadding),
-                        TextFormField(
-                          initialValue: consumer_complaints,
-                          style: TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _consumer_complaints_validate
-                                ? missingValueErrorText
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            consumer_complaints = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////
-                        smallerHeading('نتائج تقييم المنتج \nPES'),
-                        SizedBox(height: minimumPadding),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPadding),
-                          child: DropdownButtonFormField<String>(
-                            value: selected_pes,
-                            isExpanded: true,
-                            items: Pes.map((String value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style:
-                                      TextStyle(color: KelloggColors.darkRed),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: onPESChange,
-                          ),
-                        ),
-                        SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////
-                        smallerHeading(
-                            'نتيجة الست قواعد الذهبية \nG6 Escalation'),
-                        SizedBox(height: minimumPadding),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPadding),
-                          child: DropdownButtonFormField<String>(
-                            value: selected_G6,
-                            isExpanded: true,
-                            items: G6.map((String value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style:
-                                      TextStyle(color: KelloggColors.darkRed),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: onG6Change,
-                          ),
-                        ),
-                        SizedBox(height: defaultPadding),
+
                         ///////////////////////////////////////////////////////////////
                         isEdit
                             ? EmptyPlaceHolder()
@@ -587,8 +477,6 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                     onPressed: () async {
                                       setState(() {
                                         showSpinner = true;
-                                        _consumer_complaints_validate =
-                                            emptyField(consumer_complaints);
                                         _ccp_failure_validate =
                                             emptyField(ccp_failure);
                                         _food_safety_incidents_validate =
@@ -599,8 +487,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                             emptyField(supName);
                                       });
                                       try {
-                                        if (!_consumer_complaints_validate &&
-                                            !_ccp_failure_validate &&
+                                        if (!_ccp_failure_validate &&
                                             !_food_safety_incidents_validate &&
                                             !_quality_incidents_validate &&
                                             !_sup_name_validate) {
@@ -609,7 +496,6 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                               int.parse(quality_incidents),
                                               int.parse(food_safety_incidents),
                                               int.parse(ccp_failure),
-                                              int.parse(consumer_complaints),
                                               int.parse(selectedYear),
                                               int.parse(selectedMonth),
                                               int.parse(selectedDay),
@@ -618,8 +504,6 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                                       selectedProdLine) +
                                                   1,
                                               //line 1,2,3,4
-                                              Pes.indexOf(selected_pes),
-                                              G6.indexOf(selected_G6),
                                               refNum);
                                           Navigator.push(
                                               context,
@@ -655,8 +539,6 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                       setState(() {
                                         showSpinner = true;
 
-                                        _consumer_complaints_validate =
-                                            emptyField(consumer_complaints);
                                         _ccp_failure_validate =
                                             emptyField(ccp_failure);
                                         _food_safety_incidents_validate =
@@ -667,8 +549,7 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                             emptyField(supName);
                                       });
                                       try {
-                                        if (!_consumer_complaints_validate &&
-                                            !_ccp_failure_validate &&
+                                        if (!_ccp_failure_validate &&
                                             !_food_safety_incidents_validate &&
                                             !_quality_incidents_validate &&
                                             !_sup_name_validate) {
@@ -685,7 +566,6 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                                 int.parse(
                                                     food_safety_incidents),
                                                 int.parse(ccp_failure),
-                                                int.parse(consumer_complaints),
                                                 int.parse(selectedYear),
                                                 int.parse(selectedMonth),
                                                 int.parse(selectedDay),
@@ -694,8 +574,6 @@ class _SupervisorQfsReportState extends State<SupervisorQfsReport> {
                                                         selectedProdLine) +
                                                     1,
                                                 //line 1,2,3,4
-                                                Pes.indexOf(selected_pes),
-                                                G6.indexOf(selected_G6),
                                                 refNum);
                                           } else {
                                             ScaffoldMessenger.of(context)

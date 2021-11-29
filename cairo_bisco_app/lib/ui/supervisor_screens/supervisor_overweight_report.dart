@@ -53,18 +53,36 @@ class _SupervisorOverWeightReportFormState
   final bool isEdit;
 
   bool showSpinner = false;
-  late String supName, percent;
+  late String supName, percent, consumer_complaints;
 
   bool _sup_name_validate = false,
       _percent_missing_validate = false,
-      _percent_value_validate = false;
+      _percent_value_validate = false,
+      _consumer_complaints_validate = false;
 
   //drop down values
-  late String selectedYear, selectedMonth, selectedDay, selectedProdLine;
+  late String selectedYear,
+      selectedMonth,
+      selectedDay,
+      selectedProdLine,
+      selected_pes,
+      selected_G6;
 
   VoidCallback? onLineChange(val) {
     setState(() {
       selectedProdLine = val;
+    });
+  }
+
+  VoidCallback? onPESChange(val) {
+    setState(() {
+      selected_pes = val;
+    });
+  }
+
+  VoidCallback? onG6Change(val) {
+    setState(() {
+      selected_G6 = val;
     });
   }
 
@@ -91,6 +109,8 @@ class _SupervisorOverWeightReportFormState
     super.initState();
     supName = isEdit ? reportDetails.supName : Credentials.getUserName();
     percent = isEdit ? reportDetails.percent.toString() : '';
+    consumer_complaints =
+        isEdit ? reportDetails.consumer_complaints.toString() : '';
     ///////////////////////////////////////////////////////////////////////////////
     selectedYear =
         years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
@@ -99,6 +119,8 @@ class _SupervisorOverWeightReportFormState
     selectedDay =
         days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
+    selected_pes = Pes[reportDetails.pes_index];
+    selected_G6 = G6[reportDetails.g6_index];
   }
 
   @override
@@ -346,6 +368,95 @@ class _SupervisorOverWeightReportFormState
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
+                        smallerHeading('شكاوي المستهلكين\nConsumer Complaints'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: consumer_complaints,
+                          style: TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _consumer_complaints_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            consumer_complaints = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        ///////////////////////////////////////////////////////////////
+                        smallerHeading('نتائج تقييم المنتج \nPES'),
+                        SizedBox(height: minimumPadding),
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPadding),
+                          child: DropdownButtonFormField<String>(
+                            value: selected_pes,
+                            isExpanded: true,
+                            items: Pes.map((String value) {
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style:
+                                      TextStyle(color: KelloggColors.darkRed),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: onPESChange,
+                          ),
+                        ),
+                        SizedBox(height: defaultPadding),
+                        ///////////////////////////////////////////////////////////////
+                        smallerHeading(
+                            'نتيجة الست قواعد الذهبية \nG6 Escalation'),
+                        SizedBox(height: minimumPadding),
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPadding),
+                          child: DropdownButtonFormField<String>(
+                            value: selected_G6,
+                            isExpanded: true,
+                            items: G6.map((String value) {
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style:
+                                      TextStyle(color: KelloggColors.darkRed),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: onG6Change,
+                          ),
+                        ),
+                        SizedBox(height: defaultPadding),
+                        ///////////////////////////////////////////////////////////////
                         isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
@@ -357,29 +468,37 @@ class _SupervisorOverWeightReportFormState
                                     onPressed: () async {
                                       setState(() {
                                         showSpinner = true;
-                                        _percent_missing_validate =
-                                            emptyField(percent);
+
                                         if (!_percent_missing_validate)
                                           _percent_value_validate =
                                               isNotPercent(percent);
                                         _sup_name_validate =
                                             emptyField(supName);
+                                        _percent_missing_validate =
+                                            emptyField(percent);
+                                        _consumer_complaints_validate =
+                                            emptyField(consumer_complaints);
                                       });
                                       try {
                                         if (!_percent_missing_validate &&
                                             !_percent_value_validate &&
-                                            !_sup_name_validate) {
+                                            !_sup_name_validate &&
+                                            !_consumer_complaints_validate) {
                                           OverWeightReport.addReport(
-                                              supName,
-                                              double.parse(percent),
-                                              prod_lines4.indexOf(
-                                                      selectedProdLine) +
-                                                  1,
-                                              //line 1,2,3,4
-                                              refNum,
-                                              int.parse(selectedYear),
-                                              int.parse(selectedMonth),
-                                              int.parse(selectedDay));
+                                            supName,
+                                            double.parse(percent),
+                                            prod_lines4
+                                                    .indexOf(selectedProdLine) +
+                                                1,
+                                            //line 1,2,3,4
+                                            refNum,
+                                            int.parse(selectedYear),
+                                            int.parse(selectedMonth),
+                                            int.parse(selectedDay),
+                                            G6.indexOf(selected_G6),
+                                            Pes.indexOf(selected_pes),
+                                            int.parse(consumer_complaints),
+                                          );
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -421,29 +540,36 @@ class _SupervisorOverWeightReportFormState
                                               isNotPercent(percent);
                                         _sup_name_validate =
                                             emptyField(supName);
+                                        _consumer_complaints_validate =
+                                            emptyField(consumer_complaints);
                                       });
                                       try {
                                         if (!_percent_missing_validate &&
                                             !_percent_value_validate &&
-                                            !_sup_name_validate) {
+                                            !_sup_name_validate &&
+                                            !_consumer_complaints_validate) {
                                           if (canEditThisReport(
                                               supName,
                                               int.parse(selectedDay),
                                               int.parse(selectedMonth),
                                               int.parse(selectedYear))) {
                                             OverWeightReport.editReport(
-                                                context,
-                                                reportID,
-                                                supName,
-                                                double.parse(percent),
-                                                prod_lines4.indexOf(
-                                                        selectedProdLine) +
-                                                    1,
-                                                //line 1,2,3,4
-                                                refNum,
-                                                int.parse(selectedYear),
-                                                int.parse(selectedMonth),
-                                                int.parse(selectedDay));
+                                              context,
+                                              reportID,
+                                              supName,
+                                              double.parse(percent),
+                                              prod_lines4.indexOf(
+                                                      selectedProdLine) +
+                                                  1,
+                                              //line 1,2,3,4
+                                              refNum,
+                                              int.parse(selectedYear),
+                                              int.parse(selectedMonth),
+                                              int.parse(selectedDay),
+                                              G6.indexOf(selected_G6),
+                                              Pes.indexOf(selected_pes),
+                                              int.parse(consumer_complaints),
+                                            );
                                           } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(SnackBar(

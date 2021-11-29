@@ -116,7 +116,7 @@ class SupervisorHomePage extends StatelessWidget {
                       ),
                       child: ElevatedButton.icon(
                         label: Text(
-                          'QFS Report\nتقرير الجودة',
+                          'QFS Shifts Report\nتقرير الجودة لكل وردية',
                           overflow: TextOverflow.ellipsis,
                         ),
                         style: ElevatedButton.styleFrom(
@@ -236,7 +236,7 @@ class SupervisorHomePage extends StatelessWidget {
                       ),
                       child: ElevatedButton.icon(
                         label: Text(
-                          'OverWeight Report\n تقرير فرق الوزن',
+                          'QFS Day Report\nتقرير الجودة لليوم',
                         ),
                         style: ElevatedButton.styleFrom(
                           textStyle: TextStyle(
@@ -253,7 +253,7 @@ class SupervisorHomePage extends StatelessWidget {
                             width: mediumIconSize,
                             padding: EdgeInsets.all(minimumPadding / 2),
                             child: new Image.asset(
-                              'images/overweight.png',
+                              'images/quality.png',
                               color: KelloggColors.white,
                             ),
                           ),
