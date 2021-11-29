@@ -137,7 +137,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                 children: [
                   Padding(
                     padding:
-                    const EdgeInsets.symmetric(horizontal: defaultPadding),
+                        const EdgeInsets.symmetric(horizontal: defaultPadding),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Text(
@@ -153,7 +153,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   Expanded(
                     child: Padding(
                       padding:
-                      const EdgeInsets.symmetric(horizontal: mediumPadding),
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -168,7 +168,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -182,7 +182,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   Expanded(
                     child: Padding(
                       padding:
-                      const EdgeInsets.symmetric(horizontal: mediumPadding),
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -197,7 +197,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -212,7 +212,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                     flex: 2,
                     child: Padding(
                       padding:
-                      const EdgeInsets.symmetric(horizontal: mediumPadding),
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -227,7 +227,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -244,7 +244,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                 children: [
                   Padding(
                     padding:
-                    const EdgeInsets.symmetric(horizontal: defaultPadding),
+                        const EdgeInsets.symmetric(horizontal: defaultPadding),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Text(
@@ -260,7 +260,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   Expanded(
                     child: Padding(
                       padding:
-                      const EdgeInsets.symmetric(horizontal: mediumPadding),
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -275,7 +275,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -289,7 +289,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                   Expanded(
                     child: Padding(
                       padding:
-                      const EdgeInsets.symmetric(horizontal: mediumPadding),
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -304,7 +304,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -319,7 +319,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                     flex: 2,
                     child: Padding(
                       padding:
-                      const EdgeInsets.symmetric(horizontal: mediumPadding),
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: minimumPadding),
                         child: Column(
@@ -334,7 +334,7 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                   child: Text(
                                     value,
                                     style:
-                                    TextStyle(color: KelloggColors.darkRed),
+                                        TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),

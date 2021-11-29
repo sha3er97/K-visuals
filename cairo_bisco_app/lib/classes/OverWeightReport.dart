@@ -35,7 +35,7 @@ class OverWeightReport {
 
   OverWeightReport.fromJson(Map<String, Object?> json)
       : this(
-    year: json['year']! as int,
+          year: json['year']! as int,
           month: json['month']! as int,
           day: json['day']! as int,
           area: json['area']! as int,
