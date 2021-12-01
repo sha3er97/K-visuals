@@ -418,8 +418,8 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                       ConnectionState.waiting) {
                     return ColorLoader();
                   } else {
-                    return FutureBuilder<QuerySnapshot>(
-                        future: overWeightReportRef.get(),
+                    return StreamBuilder<QuerySnapshot>(
+                        stream: overWeightReportRef.snapshots(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
                           if (overweightSnapshot.hasError) {

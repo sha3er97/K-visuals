@@ -7,11 +7,14 @@ this screen will contain
 4- qfs brief
 5- ehs brief
  *********************************/
+import 'dart:math';
+
 import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
 import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
 import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
 import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
+import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
 import 'package:cairo_bisco_app/classes/WaferReport.dart';
@@ -46,6 +49,15 @@ class _HomeState extends State<HomePage> {
       .collection(getYear())
       .withConverter<QfsReport>(
         fromFirestore: (snapshot, _) => QfsReport.fromJson(snapshot.data()!),
+        toFirestore: (report, _) => report.toJson(),
+      );
+  final overWeightReportRef = FirebaseFirestore.instance
+      .collection(factory_name)
+      .doc('overWeight_reports')
+      .collection(getYear())
+      .withConverter<OverWeightReport>(
+        fromFirestore: (OverWeightSnapshot, _) =>
+            OverWeightReport.fromJson(OverWeightSnapshot.data()!),
         toFirestore: (report, _) => report.toJson(),
       );
   final ehsReportRef = FirebaseFirestore.instance
@@ -139,8 +151,8 @@ class _HomeState extends State<HomePage> {
                   sectionTitle('Production'),
                   kIsWeb
                       ? EmptyPlaceHolder()
-                      : FutureBuilder<QuerySnapshot>(
-                          future: biscuitsReportRef.get(),
+                      : StreamBuilder<QuerySnapshot>(
+                          stream: biscuitsReportRef.snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> biscuitsSnapshot) {
                             if (biscuitsSnapshot.hasError) {
@@ -150,8 +162,8 @@ class _HomeState extends State<HomePage> {
                                 ConnectionState.waiting) {
                               return ColorLoader();
                             } else {
-                              return FutureBuilder<QuerySnapshot>(
-                                  future: waferReportRef.get(),
+                              return StreamBuilder<QuerySnapshot>(
+                                  stream: waferReportRef.snapshots(),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<QuerySnapshot>
                                           waferSnapshot) {
@@ -162,8 +174,8 @@ class _HomeState extends State<HomePage> {
                                         ConnectionState.waiting) {
                                       return ColorLoader();
                                     } else {
-                                      return FutureBuilder<QuerySnapshot>(
-                                          future: maamoulReportRef.get(),
+                                      return StreamBuilder<QuerySnapshot>(
+                                          stream: maamoulReportRef.snapshots(),
                                           builder: (BuildContext context,
                                               AsyncSnapshot<QuerySnapshot>
                                                   maamoulSnapshot) {
@@ -257,8 +269,8 @@ class _HomeState extends State<HomePage> {
                             }
                           }),
                   /////////////////////////////////////////////////////////////////////////
-                  FutureBuilder<QuerySnapshot>(
-                    future: biscuitsReportRef.get(),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: biscuitsReportRef.snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) {
@@ -301,8 +313,8 @@ class _HomeState extends State<HomePage> {
                       }
                     },
                   ),
-                  FutureBuilder<QuerySnapshot>(
-                    future: waferReportRef.get(),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: waferReportRef.snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) {
@@ -345,8 +357,8 @@ class _HomeState extends State<HomePage> {
                       }
                     },
                   ),
-                  FutureBuilder<QuerySnapshot>(
-                    future: maamoulReportRef.get(),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: maamoulReportRef.snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) {
@@ -390,8 +402,8 @@ class _HomeState extends State<HomePage> {
                     },
                   ),
                   ///////////////////////////////////////////////////////////////////
-                  FutureBuilder<QuerySnapshot>(
-                      future: biscuitsReportRef.get(),
+                  StreamBuilder<QuerySnapshot>(
+                      stream: biscuitsReportRef.snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> biscuitsSnapshot) {
                         if (biscuitsSnapshot.hasError) {
@@ -400,8 +412,8 @@ class _HomeState extends State<HomePage> {
                             ConnectionState.waiting) {
                           return ColorLoader();
                         } else {
-                          return FutureBuilder<QuerySnapshot>(
-                              future: waferReportRef.get(),
+                          return StreamBuilder<QuerySnapshot>(
+                              stream: waferReportRef.snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> waferSnapshot) {
                                 if (waferSnapshot.hasError) {
@@ -411,8 +423,8 @@ class _HomeState extends State<HomePage> {
                                     ConnectionState.waiting) {
                                   return ColorLoader();
                                 } else {
-                                  return FutureBuilder<QuerySnapshot>(
-                                      future: maamoulReportRef.get(),
+                                  return StreamBuilder<QuerySnapshot>(
+                                      stream: maamoulReportRef.snapshots(),
                                       builder: (BuildContext context,
                                           AsyncSnapshot<QuerySnapshot>
                                               maamoulSnapshot) {
@@ -503,72 +515,111 @@ class _HomeState extends State<HomePage> {
                       }),
                   //////////////////////////////////////////////////////////////////
                   sectionTitle('QFS'),
-                  FutureBuilder<QuerySnapshot>(
-                    future: qualityReportRef.get(),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: qualityReportRef.snapshots(),
                     builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
+                        AsyncSnapshot<QuerySnapshot> qfsSnapshot) {
+                      if (qfsSnapshot.hasError) {
                         return ErrorMessageHeading('Something went wrong');
-                      } else if (snapshot.connectionState ==
+                      } else if (qfsSnapshot.connectionState ==
                           ConnectionState.waiting) {
                         return ColorLoader();
                       } else {
-                        try {
-                          List<QueryDocumentSnapshot<QfsReport>> reportsList =
-                              snapshot.data!.docs
-                                  as List<QueryDocumentSnapshot<QfsReport>>;
-                          // print("qfs ::" + reportsList.length.toString());
-                          QfsReport temp_qfs =
-                              QfsReport.getFilteredReportOfInterval(
-                                  reportsList,
-                                  int.parse(getMonth()),
-                                  int.parse(getMonth()),
-                                  int.parse(getDay()),
-                                  int.parse(getDay()),
-                                  int.parse(getYear()),
-                                  -1,
-                                  -1);
-                          return KPI6GoodBadIndicator(
-                            isScreenOnly: false,
-                            color1: temp_qfs.quality_incidents > 0
-                                ? KelloggColors.cockRed
-                                : KelloggColors.green,
-                            title1: 'Quality\nIncidents',
-                            color2: temp_qfs.food_safety_incidents > 0
-                                ? KelloggColors.cockRed
-                                : KelloggColors.green,
-                            title2: 'Food Safety\nIncidents',
-                            color3: temp_qfs.ccp_failure > 0
-                                ? KelloggColors.cockRed
-                                : KelloggColors.green,
-                            title3: 'CCP\nFailures',
-                            color4: temp_qfs.pes_index == 3
-                                ? KelloggColors.cockRed
-                                : temp_qfs.pes_index == 2
-                                    ? KelloggColors.yellow
-                                    : KelloggColors.green,
-                            title4: 'PES\n(B&C Defects)',
-                            color5: temp_qfs.consumer_complaints > 0
-                                ? KelloggColors.cockRed
-                                : KelloggColors.green,
-                            title5: 'Consumer\nComplaints',
-                            color6: temp_qfs.g6_index == 2
-                                ? KelloggColors.cockRed
-                                : temp_qfs.g6_index == 1
-                                    ? KelloggColors.yellow
-                                    : KelloggColors.green,
-                            title6: 'G6 Escalation',
-                          );
-                        } catch (e) {
-                          print(e);
-                          return ErrorMessageHeading('Something went wrong');
-                        }
+                        return StreamBuilder<QuerySnapshot>(
+                            stream: overWeightReportRef.snapshots(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot>
+                                    overweightSnapshot) {
+                              if (overweightSnapshot.hasError) {
+                                return ErrorMessageHeading(
+                                    'Something went wrong');
+                              } else if (overweightSnapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return ColorLoader();
+                              } else {
+                                try {
+                                  List<QueryDocumentSnapshot<QfsReport>>
+                                      qfsReportsList = qfsSnapshot.data!.docs
+                                          as List<
+                                              QueryDocumentSnapshot<QfsReport>>;
+                                  List<QueryDocumentSnapshot<OverWeightReport>>
+                                      overweightReportsList =
+                                      overweightSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<
+                                              OverWeightReport>>;
+                                  QfsReport temp_qfs =
+                                      QfsReport.getFilteredReportOfInterval(
+                                          qfsReportsList,
+                                          int.parse(getMonth()),
+                                          int.parse(getMonth()),
+                                          int.parse(getDay()),
+                                          int.parse(getDay()),
+                                          int.parse(getYear()),
+                                          TOTAL_PLANT,
+                                          ALL_LINES);
+                                  OverWeightReport temp_overweight =
+                                      OverWeightReport
+                                          .getFilteredReportOfInterval(
+                                              overweightReportsList,
+                                              int.parse(getMonth()),
+                                              int.parse(getMonth()),
+                                              int.parse(getDay()),
+                                              int.parse(getDay()),
+                                              int.parse(getYear()),
+                                              TOTAL_PLANT,
+                                              ALL_LINES);
+                                  //integration part
+                                  int temp_pes = max(temp_qfs.pes_index,
+                                      temp_overweight.pes_index);
+                                  int temp_complaints = max(
+                                      temp_qfs.consumer_complaints,
+                                      temp_overweight.consumer_complaints);
+                                  int temp_g6 = max(temp_qfs.g6_index,
+                                      temp_overweight.g6_index);
+                                  return KPI6GoodBadIndicator(
+                                    isScreenOnly: false,
+                                    color1: temp_qfs.quality_incidents > 0
+                                        ? KelloggColors.cockRed
+                                        : KelloggColors.green,
+                                    title1: 'Quality\nIncidents',
+                                    color2: temp_qfs.food_safety_incidents > 0
+                                        ? KelloggColors.cockRed
+                                        : KelloggColors.green,
+                                    title2: 'Food Safety\nIncidents',
+                                    color3: temp_qfs.ccp_failure > 0
+                                        ? KelloggColors.cockRed
+                                        : KelloggColors.green,
+                                    title3: 'CCP\nFailures',
+                                    color4: temp_pes == 3
+                                        ? KelloggColors.cockRed
+                                        : temp_pes == 2
+                                            ? KelloggColors.yellow
+                                            : KelloggColors.green,
+                                    title4: 'PES\n(B&C Defects)',
+                                    color5: temp_complaints > 0
+                                        ? KelloggColors.cockRed
+                                        : KelloggColors.green,
+                                    title5: 'Consumer\nComplaints',
+                                    color6: temp_g6 == 2
+                                        ? KelloggColors.cockRed
+                                        : temp_g6 == 1
+                                            ? KelloggColors.yellow
+                                            : KelloggColors.green,
+                                    title6: 'G6 Escalation',
+                                  );
+                                } catch (e) {
+                                  print(e);
+                                  return ErrorMessageHeading(
+                                      'Something went wrong');
+                                }
+                              }
+                            });
                       }
                     },
                   ),
                   sectionTitle('EHS'),
-                  FutureBuilder<QuerySnapshot>(
-                    future: ehsReportRef.get(),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: ehsReportRef.snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) {
