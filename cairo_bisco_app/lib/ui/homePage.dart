@@ -205,7 +205,7 @@ class _HomeState extends State<HomePage> {
                                                 int.parse(getDay()),
                                                 int.parse(getDay()),
                                                 int.parse(getYear()),
-                                                -1,
+                                                ALL_LINES,
                                               );
                                               List<
                                                       QueryDocumentSnapshot<
@@ -225,7 +225,7 @@ class _HomeState extends State<HomePage> {
                                                 int.parse(getDay()),
                                                 int.parse(getDay()),
                                                 int.parse(getYear()),
-                                                -1,
+                                                ALL_LINES,
                                               );
                                               List<
                                                       QueryDocumentSnapshot<
@@ -245,7 +245,7 @@ class _HomeState extends State<HomePage> {
                                                 int.parse(getDay()),
                                                 int.parse(getDay()),
                                                 int.parse(getYear()),
-                                                -1,
+                                                ALL_LINES,
                                               );
                                               return Chart(
                                                 biscuits: temp_biscuit_report
@@ -291,7 +291,7 @@ class _HomeState extends State<HomePage> {
                             int.parse(getDay()),
                             int.parse(getDay()),
                             int.parse(getYear()),
-                            -1,
+                            ALL_LINES,
                           );
                           // setState(() {
                           // biscuitsKg = temp_report.productionInKg;
@@ -335,7 +335,7 @@ class _HomeState extends State<HomePage> {
                             int.parse(getDay()),
                             int.parse(getDay()),
                             int.parse(getYear()),
-                            -1,
+                            ALL_LINES,
                           );
                           // setState(() {
                           // waferKg = temp_report.productionInKg;
@@ -379,7 +379,7 @@ class _HomeState extends State<HomePage> {
                             int.parse(getDay()),
                             int.parse(getDay()),
                             int.parse(getYear()),
-                            -1,
+                            ALL_LINES,
                           );
                           // setState(() {
                           // maamoulKg = temp_report.productionInKg;
@@ -454,7 +454,7 @@ class _HomeState extends State<HomePage> {
                                             int.parse(getDay()),
                                             int.parse(getDay()),
                                             int.parse(getYear()),
-                                            -1,
+                                            ALL_LINES,
                                           );
                                           List<
                                                   QueryDocumentSnapshot<
@@ -472,7 +472,7 @@ class _HomeState extends State<HomePage> {
                                             int.parse(getDay()),
                                             int.parse(getDay()),
                                             int.parse(getYear()),
-                                            -1,
+                                            ALL_LINES,
                                           );
                                           List<
                                                   QueryDocumentSnapshot<
@@ -492,7 +492,7 @@ class _HomeState extends State<HomePage> {
                                             int.parse(getDay()),
                                             int.parse(getDay()),
                                             int.parse(getYear()),
-                                            -1,
+                                            ALL_LINES,
                                           );
                                           return ProductionInfoCard(
                                             image: "recycle",
@@ -632,7 +632,6 @@ class _HomeState extends State<HomePage> {
                           List<QueryDocumentSnapshot<EhsReport>> reportsList =
                               snapshot.data!.docs
                                   as List<QueryDocumentSnapshot<EhsReport>>;
-                          // print("ehs ::" + reportsList.length.toString());
                           EhsReport temp_ehs =
                               EhsReport.getFilteredReportOfInterval(
                                   reportsList,
@@ -641,8 +640,8 @@ class _HomeState extends State<HomePage> {
                                   int.parse(getDay()),
                                   int.parse(getDay()),
                                   int.parse(getYear()),
-                                  -1,
-                                  -1);
+                                  TOTAL_PLANT,
+                                  ALL_LINES);
                           return KPI6GoodBadIndicator(
                             isScreenOnly: false,
                             color1: temp_ehs.firstAid_incidents > 0
