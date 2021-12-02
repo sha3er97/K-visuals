@@ -199,7 +199,7 @@ class _HomeState extends State<HomePage> {
                                                   temp_biscuit_report =
                                                   BiscuitsReport
                                                       .getFilteredReportOfInterval(
-                                                    biscuitsReportsList,
+                                                biscuitsReportsList,
                                                 int.parse(getMonth()),
                                                 int.parse(getMonth()),
                                                 int.parse(getDay()),
