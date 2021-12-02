@@ -288,7 +288,7 @@ class _HomeState extends State<HomePage> {
                                   QueryDocumentSnapshot<BiscuitsReport>>;
                           MiniProductionReport temp_report =
                               BiscuitsReport.getFilteredReportOfInterval(
-                                reportsList,
+                            reportsList,
                             int.parse(getMonth()),
                             int.parse(getMonth()),
                             int.parse(getDay()),
