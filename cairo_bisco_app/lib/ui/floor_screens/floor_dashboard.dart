@@ -4,6 +4,7 @@ import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
 import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
 import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
+import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
 import 'package:cairo_bisco_app/classes/WaferReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
@@ -46,6 +47,15 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
       .collection(getYear())
       .withConverter<QfsReport>(
         fromFirestore: (snapshot, _) => QfsReport.fromJson(snapshot.data()!),
+        toFirestore: (report, _) => report.toJson(),
+      );
+  final overWeightReportRef = FirebaseFirestore.instance
+      .collection(factory_name)
+      .doc('overWeight_reports')
+      .collection(getYear())
+      .withConverter<OverWeightReport>(
+        fromFirestore: (OverWeightSnapshot, _) =>
+            OverWeightReport.fromJson(OverWeightSnapshot.data()!),
         toFirestore: (report, _) => report.toJson(),
       );
   final ehsReportRef = FirebaseFirestore.instance
@@ -118,177 +128,223 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                   ConnectionState.waiting) {
                 return ColorLoader();
               } else {
-                MiniProductionReport temp_report;
-                switch (refNum) {
-                  case BISCUIT_AREA:
-                    List<QueryDocumentSnapshot<BiscuitsReport>>
-                        biscuitsReportsList = productionSnapshot.data!.docs
-                            as List<QueryDocumentSnapshot<BiscuitsReport>>;
-                    temp_report = BiscuitsReport.getFilteredReportOfInterval(
-                      biscuitsReportsList,
-                      int.parse(getMonth()),
-                      int.parse(getMonth()),
-                      int.parse(getDay()),
-                      int.parse(getDay()),
-                      int.parse(getYear()),
-                      lineNum,
-                    );
-                    break;
-                  case WAFER_AREA:
-                    List<QueryDocumentSnapshot<WaferReport>> waferReportsList =
-                        productionSnapshot.data!.docs
-                            as List<QueryDocumentSnapshot<WaferReport>>;
-                    temp_report = WaferReport.getFilteredReportOfInterval(
-                      waferReportsList,
-                      int.parse(getMonth()),
-                      int.parse(getMonth()),
-                      int.parse(getDay()),
-                      int.parse(getDay()),
-                      int.parse(getYear()),
-                      lineNum,
-                    );
-                    break;
-                  default: //case MAAMOUL_AREA :
-                    List<QueryDocumentSnapshot<MaamoulReport>>
-                        maamoulReportsList = productionSnapshot.data!.docs
-                            as List<QueryDocumentSnapshot<MaamoulReport>>;
-                    temp_report = MaamoulReport.getFilteredReportOfInterval(
-                      maamoulReportsList,
-                      int.parse(getMonth()),
-                      int.parse(getMonth()),
-                      int.parse(getDay()),
-                      int.parse(getDay()),
-                      int.parse(getYear()),
-                      lineNum,
-                    );
-                    break;
-                }
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: minimumPadding),
-                            child: Column(
-                              children: [
-                                // sectionTitle('الانتاج'),
-                                Center(
-                                  child: ProductionColScreen(
-                                    report: temp_report,
-                                    prodType: type,
-                                    lineNum: lineNum,
+                return FutureBuilder<QuerySnapshot>(
+                  future: overWeightReportRef.get(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
+                    if (overweightSnapshot.hasError) {
+                      return ErrorMessageHeading('Something went wrong');
+                    } else if (overweightSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return ErrorMessageHeading("overweightSnapshot Loading");
+                    } else {
+                      List<QueryDocumentSnapshot<OverWeightReport>>
+                          reportsList = overweightSnapshot.data!.docs
+                              as List<QueryDocumentSnapshot<OverWeightReport>>;
+                      OverWeightReport temp_overweight =
+                          OverWeightReport.getFilteredReportOfInterval(
+                              reportsList,
+                              int.parse(getMonth()),
+                              int.parse(getMonth()),
+                              int.parse(getDay()),
+                              int.parse(getDay()),
+                              int.parse(getYear()),
+                              prodType.indexOf(type),
+                              lineNum);
+
+                      List<OverWeightReport> overweightTempList =
+                          OverWeightReport.getAllReportsOfInterval(
+                        reportsList,
+                        int.parse(getMonth()),
+                        int.parse(getMonth()),
+                        int.parse(getDay()),
+                        int.parse(getDay()),
+                        int.parse(getYear()),
+                        refNum,
+                      ).values.toList();
+
+                      MiniProductionReport temp_report;
+                      switch (refNum) {
+                        case BISCUIT_AREA:
+                          List<QueryDocumentSnapshot<BiscuitsReport>>
+                              biscuitsReportsList =
+                              productionSnapshot.data!.docs as List<
+                                  QueryDocumentSnapshot<BiscuitsReport>>;
+                          temp_report =
+                              BiscuitsReport.getFilteredReportOfInterval(
+                            biscuitsReportsList,
+                            int.parse(getMonth()),
+                            int.parse(getMonth()),
+                            int.parse(getDay()),
+                            int.parse(getDay()),
+                            int.parse(getYear()),
+                            lineNum,
+                            overweightTempList,
+                          );
+                          break;
+                        case WAFER_AREA:
+                          List<QueryDocumentSnapshot<WaferReport>>
+                              waferReportsList = productionSnapshot.data!.docs
+                                  as List<QueryDocumentSnapshot<WaferReport>>;
+                          temp_report = WaferReport.getFilteredReportOfInterval(
+                            waferReportsList,
+                            int.parse(getMonth()),
+                            int.parse(getMonth()),
+                            int.parse(getDay()),
+                            int.parse(getDay()),
+                            int.parse(getYear()),
+                            lineNum,
+                            overweightTempList,
+                          );
+                          break;
+                        default: //case MAAMOUL_AREA :
+                          List<QueryDocumentSnapshot<MaamoulReport>>
+                              maamoulReportsList = productionSnapshot.data!.docs
+                                  as List<QueryDocumentSnapshot<MaamoulReport>>;
+                          temp_report =
+                              MaamoulReport.getFilteredReportOfInterval(
+                            maamoulReportsList,
+                            int.parse(getMonth()),
+                            int.parse(getMonth()),
+                            int.parse(getDay()),
+                            int.parse(getDay()),
+                            int.parse(getYear()),
+                            lineNum,
+                            overweightTempList,
+                          );
+                          break;
+                      }
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: minimumPadding),
+                                  child: Column(
+                                    children: [
+                                      // sectionTitle('الانتاج'),
+                                      Center(
+                                        child: ProductionColScreen(
+                                          report: temp_report,
+                                          prodType: type,
+                                          lineNum: lineNum,
+                                          overweight: temp_overweight.percent,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(width: defaultPadding),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: minimumPadding),
+                                  child: StreamBuilder<QuerySnapshot>(
+                                    stream: ehsReportRef.snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        return ErrorMessageHeading(
+                                            'Something went wrong');
+                                      } else if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return ColorLoader();
+                                      } else {
+                                        try {
+                                          List<QueryDocumentSnapshot<EhsReport>>
+                                              reportsList = snapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          EhsReport>>;
+                                          EhsReport temp_ehs = EhsReport
+                                              .getFilteredReportOfInterval(
+                                                  reportsList,
+                                                  int.parse(getMonth()),
+                                                  int.parse(getMonth()),
+                                                  int.parse(getDay()),
+                                                  int.parse(getDay()),
+                                                  int.parse(getYear()),
+                                                  prodType.indexOf(type),
+                                                  lineNum);
+                                          return EHSColScreen(
+                                            recordable_incidents:
+                                                temp_ehs.recordable_incidents,
+                                            firstAid_incidents:
+                                                temp_ehs.firstAid_incidents,
+                                            nearMiss: temp_ehs.nearMiss,
+                                            report: temp_report,
+                                          );
+                                        } catch (e) {
+                                          print(e);
+                                          return ErrorMessageHeading(
+                                              'Something went wrong');
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: defaultPadding),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: minimumPadding),
+                                  child: StreamBuilder<QuerySnapshot>(
+                                    stream: qualityReportRef.snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        return ErrorMessageHeading(
+                                            'Something went wrong');
+                                      } else if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return ErrorMessageHeading('Loading');
+                                      } else {
+                                        try {
+                                          List<QueryDocumentSnapshot<QfsReport>>
+                                              reportsList = snapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          QfsReport>>;
+                                          QfsReport temp_qfs = QfsReport
+                                              .getFilteredReportOfInterval(
+                                                  reportsList,
+                                                  int.parse(getMonth()),
+                                                  int.parse(getMonth()),
+                                                  int.parse(getDay()),
+                                                  int.parse(getDay()),
+                                                  int.parse(getYear()),
+                                                  prodType.indexOf(type),
+                                                  lineNum);
+                                          return QFSColScreen(
+                                            report: temp_report,
+                                            quality_incidents:
+                                                temp_qfs.quality_incidents,
+                                            food_safety_incidents:
+                                                temp_qfs.food_safety_incidents,
+                                            overweight: temp_overweight.percent,
+                                          );
+                                        } catch (e) {
+                                          print(e);
+                                          return ErrorMessageHeading(
+                                              'Something went wrong');
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        SizedBox(width: defaultPadding),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: minimumPadding),
-                            child: StreamBuilder<QuerySnapshot>(
-                              stream: ehsReportRef.snapshots(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasError) {
-                                  return ErrorMessageHeading(
-                                      'Something went wrong');
-                                } else if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return ColorLoader();
-                                } else {
-                                  try {
-                                    List<QueryDocumentSnapshot<EhsReport>>
-                                        reportsList =
-                                        snapshot.data!.docs as List<
-                                            QueryDocumentSnapshot<EhsReport>>;
-                                    // print("ehs ::" + reportsList.length.toString());
-                                    EhsReport temp_ehs =
-                                        EhsReport.getFilteredReportOfInterval(
-                                            reportsList,
-                                            int.parse(getMonth()),
-                                            int.parse(getMonth()),
-                                            int.parse(getDay()),
-                                            int.parse(getDay()),
-                                            int.parse(getYear()),
-                                            prodType.indexOf(type),
-                                            lineNum);
-                                    return EHSColScreen(
-                                      recordable_incidents:
-                                          temp_ehs.recordable_incidents,
-                                      firstAid_incidents:
-                                          temp_ehs.firstAid_incidents,
-                                      nearMiss: temp_ehs.nearMiss,
-                                      report: temp_report,
-                                    );
-                                  } catch (e) {
-                                    print(e);
-                                    return ErrorMessageHeading(
-                                        'Something went wrong');
-                                  }
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: defaultPadding),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: minimumPadding),
-                            child: StreamBuilder<QuerySnapshot>(
-                              stream: qualityReportRef.snapshots(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasError) {
-                                  return ErrorMessageHeading(
-                                      'Something went wrong');
-                                } else if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return ErrorMessageHeading('Loading');
-                                } else {
-                                  try {
-                                    List<QueryDocumentSnapshot<QfsReport>>
-                                        reportsList =
-                                        snapshot.data!.docs as List<
-                                            QueryDocumentSnapshot<QfsReport>>;
-                                    // print("qfs ::" + reportsList.length.toString());
-                                    QfsReport temp_qfs =
-                                        QfsReport.getFilteredReportOfInterval(
-                                            reportsList,
-                                            int.parse(getMonth()),
-                                            int.parse(getMonth()),
-                                            int.parse(getDay()),
-                                            int.parse(getDay()),
-                                            int.parse(getYear()),
-                                            prodType.indexOf(type),
-                                            lineNum);
-                                    return QFSColScreen(
-                                      report: temp_report,
-                                      quality_incidents:
-                                          temp_qfs.quality_incidents,
-                                      food_safety_incidents:
-                                          temp_qfs.food_safety_incidents,
-                                    );
-                                  } catch (e) {
-                                    print(e);
-                                    return ErrorMessageHeading(
-                                        'Something went wrong');
-                                  }
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      );
+                    }
+                  },
                 );
               }
             }),

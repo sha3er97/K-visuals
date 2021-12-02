@@ -279,7 +279,8 @@ class OverWeightReport {
     //return the total in capsulized form
     return OverWeightReport(
       supName: '',
-      percent: temp_percent / valid_reports_count,
+      percent:
+          valid_reports_count == 0 ? 0.0 : temp_percent / valid_reports_count,
       line_index: lineNumRequired,
       area: areaRequired,
       year: -1,

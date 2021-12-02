@@ -228,19 +228,20 @@ class ProductionLine extends StatelessWidget {
             axes: <RadialAxis>[
               RadialAxis(minimum: 0, maximum: 100, pointers: <GaugePointer>[
                 NeedlePointer(
-                    value: calculateOeeFromMiniReport(report),
+                    value: calculateOeeFromMiniReport(report, overweight),
                     enableAnimation: true)
               ], ranges: <GaugeRange>[
                 GaugeRange(
-                    startValue: Plans.targetOEE - 1,
-                    endValue: Plans.targetOEE + 1,
+                    startValue: Plans.targetOEE - oeeMargin,
+                    endValue: Plans.targetOEE + oeeMargin,
                     color: KelloggColors.green),
                 // GaugeRange(startValue: 50, endValue: 100, color: Colors.orange),
                 // GaugeRange(startValue: 100, endValue: 150, color: Colors.red)
               ], annotations: <GaugeAnnotation>[
                 GaugeAnnotation(
                     widget: Text(
-                      calculateOeeFromMiniReport(report).toStringAsFixed(1) +
+                      calculateOeeFromMiniReport(report, overweight)
+                              .toStringAsFixed(1) +
                           ' %',
                       style: TextStyle(
                           fontSize: largeFontSize, fontWeight: FontWeight.bold),
@@ -266,7 +267,7 @@ class ProductionLine extends StatelessWidget {
                   maximum: maxScrap,
                   pointers: <GaugePointer>[
                     NeedlePointer(
-                        value: calculateScrapPercent(report),
+                        value: calculateScrapPercent(report, overweight),
                         enableAnimation: true)
                   ],
                   ranges: <GaugeRange>[
@@ -290,7 +291,8 @@ class ProductionLine extends StatelessWidget {
                   annotations: <GaugeAnnotation>[
                     GaugeAnnotation(
                         widget: Text(
-                          calculateScrapPercent(report).toStringAsFixed(1) +
+                          calculateScrapPercent(report, overweight)
+                                  .toStringAsFixed(1) +
                               ' %',
                           style: TextStyle(
                               fontSize: largeFontSize,

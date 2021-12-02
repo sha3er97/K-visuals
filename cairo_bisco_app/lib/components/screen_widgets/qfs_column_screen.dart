@@ -15,9 +15,11 @@ class QFSColScreen extends StatelessWidget {
     required this.quality_incidents,
     required this.food_safety_incidents,
     required this.report,
+    required this.overweight,
   }) : super(key: key);
   final int quality_incidents, food_safety_incidents;
   final MiniProductionReport report;
+  final double overweight;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +87,8 @@ class QFSColScreen extends StatelessWidget {
           axes: <RadialAxis>[
             RadialAxis(minimum: 0, maximum: maxScrap, pointers: <GaugePointer>[
               NeedlePointer(
-                  value: calculateScrapPercent(report), enableAnimation: true)
+                  value: calculateScrapPercent(report, overweight),
+                  enableAnimation: true)
             ], ranges: <GaugeRange>[
               GaugeRange(
                   startValue: 0,
@@ -102,7 +105,9 @@ class QFSColScreen extends StatelessWidget {
             ], annotations: <GaugeAnnotation>[
               GaugeAnnotation(
                   widget: Text(
-                    calculateScrapPercent(report).toStringAsFixed(1) + ' %',
+                    calculateScrapPercent(report, overweight)
+                            .toStringAsFixed(1) +
+                        ' %',
                     style: TextStyle(
                         fontSize: largeFontSize, fontWeight: FontWeight.bold),
                   ),

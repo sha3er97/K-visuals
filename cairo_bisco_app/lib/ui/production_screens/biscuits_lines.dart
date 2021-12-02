@@ -126,6 +126,16 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                             BISCUIT_AREA,
                             1,
                           );
+                          List<OverWeightReport> overweightTempList =
+                              OverWeightReport.getAllReportsOfInterval(
+                            reportsList,
+                            int.parse(from_month),
+                            int.parse(to_month),
+                            int.parse(from_day),
+                            int.parse(to_day),
+                            int.parse(chosenYear),
+                            BISCUIT_AREA,
+                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
                             future: biscuitsReportRef.get(),
                             builder: (BuildContext context,
@@ -147,13 +157,14 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                   MiniProductionReport temp_report =
                                       BiscuitsReport
                                           .getFilteredReportOfInterval(
-                                    reportsList,
+                                        reportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
                                     1,
+                                    overweightTempList,
                                   );
                                   return Center(
                                     child: ProductionLine(
@@ -205,6 +216,16 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                             BISCUIT_AREA,
                             2,
                           );
+                          List<OverWeightReport> overweightTempList =
+                              OverWeightReport.getAllReportsOfInterval(
+                            reportsList,
+                            int.parse(from_month),
+                            int.parse(to_month),
+                            int.parse(from_day),
+                            int.parse(to_day),
+                            int.parse(chosenYear),
+                            BISCUIT_AREA,
+                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
                             future: biscuitsReportRef.get(),
                             builder: (BuildContext context,
@@ -226,13 +247,14 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                   MiniProductionReport temp_report =
                                       BiscuitsReport
                                           .getFilteredReportOfInterval(
-                                    reportsList,
+                                        reportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
                                     2,
+                                    overweightTempList,
                                   );
                                   return Center(
                                     child: ProductionLine(
@@ -284,6 +306,16 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                             BISCUIT_AREA,
                             3,
                           );
+                          List<OverWeightReport> overweightTempList =
+                              OverWeightReport.getAllReportsOfInterval(
+                            reportsList,
+                            int.parse(from_month),
+                            int.parse(to_month),
+                            int.parse(from_day),
+                            int.parse(to_day),
+                            int.parse(chosenYear),
+                            BISCUIT_AREA,
+                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
                             future: biscuitsReportRef.get(),
                             builder: (BuildContext context,
@@ -305,13 +337,14 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                   MiniProductionReport temp_report =
                                       BiscuitsReport
                                           .getFilteredReportOfInterval(
-                                    reportsList,
+                                        reportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
                                     3,
+                                    overweightTempList,
                                   );
                                   return Center(
                                     child: ProductionLine(
@@ -363,6 +396,16 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                             BISCUIT_AREA,
                             4,
                           );
+                          List<OverWeightReport> overweightTempList =
+                              OverWeightReport.getAllReportsOfInterval(
+                            reportsList,
+                            int.parse(from_month),
+                            int.parse(to_month),
+                            int.parse(from_day),
+                            int.parse(to_day),
+                            int.parse(chosenYear),
+                            BISCUIT_AREA,
+                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
                             future: biscuitsReportRef.get(),
                             builder: (BuildContext context,
@@ -384,13 +427,14 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                   MiniProductionReport temp_report =
                                       BiscuitsReport
                                           .getFilteredReportOfInterval(
-                                    reportsList,
+                                        reportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
                                     4,
+                                    overweightTempList,
                                   );
                                   return Center(
                                     child: ProductionLine(
@@ -442,6 +486,16 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                             BISCUIT_AREA,
                             ALL_LINES,
                           );
+                          List<OverWeightReport> overweightTempList =
+                              OverWeightReport.getAllReportsOfInterval(
+                            reportsList,
+                            int.parse(from_month),
+                            int.parse(to_month),
+                            int.parse(from_day),
+                            int.parse(to_day),
+                            int.parse(chosenYear),
+                            BISCUIT_AREA,
+                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
                             future: biscuitsReportRef.get(),
                             builder: (BuildContext context,
@@ -463,13 +517,14 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                   MiniProductionReport temp_report =
                                       BiscuitsReport
                                           .getFilteredReportOfInterval(
-                                    reportsList,
+                                        reportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
                                     ALL_LINES,
+                                    overweightTempList,
                                   );
                                   return Center(
                                     child: ProductionLine(

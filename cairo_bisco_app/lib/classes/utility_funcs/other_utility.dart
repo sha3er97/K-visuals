@@ -1,4 +1,5 @@
 import 'package:cairo_bisco_app/classes/Credentials.dart';
+import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 
 import 'date_utility.dart';
@@ -24,4 +25,41 @@ bool canEditThisReport(String supName, int day, int month, int year) {
     else
       return false;
   }
+}
+
+double getCorrespondingOverweight(
+    prodReport, List<OverWeightReport> overweightList) {
+  if (doesHaveCorrespondingOverweight(prodReport, overweightList)) {
+    for (OverWeightReport report in overweightList) {
+      if (report.day == prodReport.day &&
+          report.month == prodReport.month &&
+          report.line_index == prodReport.line_index &&
+          report.year == prodReport.year) {
+        print(report.day.toString() +
+            " " +
+            report.month.toString() +
+            " " +
+            report.line_index.toString() +
+            " " +
+            report.year.toString() +
+            " " +
+            report.percent.toString());
+        return report.percent;
+      }
+    }
+  }
+  return 99.9;
+}
+
+bool doesHaveCorrespondingOverweight(
+    prodReport, List<OverWeightReport> overweightList) {
+  for (OverWeightReport report in overweightList) {
+    if (report.day == prodReport.day &&
+        report.month == prodReport.month &&
+        report.line_index == prodReport.line_index &&
+        report.year == prodReport.year) {
+      return true;
+    }
+  }
+  return false;
 }

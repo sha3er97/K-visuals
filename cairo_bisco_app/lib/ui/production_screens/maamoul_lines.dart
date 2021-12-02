@@ -118,6 +118,16 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                             MAAMOUL_AREA,
                             1,
                           );
+                          List<OverWeightReport> overweightTempList =
+                              OverWeightReport.getAllReportsOfInterval(
+                            reportsList,
+                            int.parse(from_month),
+                            int.parse(to_month),
+                            int.parse(from_day),
+                            int.parse(to_day),
+                            int.parse(chosenYear),
+                            MAAMOUL_AREA,
+                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
                             future: maamoulReportRef.get(),
                             builder: (BuildContext context,
@@ -137,13 +147,14 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                           QueryDocumentSnapshot<MaamoulReport>>;
                                   MiniProductionReport temp_report =
                                       MaamoulReport.getFilteredReportOfInterval(
-                                    reportsList,
+                                        reportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
                                     1,
+                                    overweightTempList,
                                   );
                                   return Center(
                                     child: ProductionLine(
@@ -195,6 +206,16 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                             MAAMOUL_AREA,
                             2,
                           );
+                          List<OverWeightReport> overweightTempList =
+                              OverWeightReport.getAllReportsOfInterval(
+                            reportsList,
+                            int.parse(from_month),
+                            int.parse(to_month),
+                            int.parse(from_day),
+                            int.parse(to_day),
+                            int.parse(chosenYear),
+                            MAAMOUL_AREA,
+                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
                             future: maamoulReportRef.get(),
                             builder: (BuildContext context,
@@ -214,13 +235,14 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                           QueryDocumentSnapshot<MaamoulReport>>;
                                   MiniProductionReport temp_report =
                                       MaamoulReport.getFilteredReportOfInterval(
-                                    reportsList,
+                                        reportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
                                     2,
+                                    overweightTempList,
                                   );
                                   return Center(
                                     child: ProductionLine(
@@ -272,6 +294,16 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                             MAAMOUL_AREA,
                             ALL_LINES,
                           );
+                          List<OverWeightReport> overweightTempList =
+                              OverWeightReport.getAllReportsOfInterval(
+                            reportsList,
+                            int.parse(from_month),
+                            int.parse(to_month),
+                            int.parse(from_day),
+                            int.parse(to_day),
+                            int.parse(chosenYear),
+                            MAAMOUL_AREA,
+                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
                             future: maamoulReportRef.get(),
                             builder: (BuildContext context,
@@ -291,13 +323,14 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                           QueryDocumentSnapshot<MaamoulReport>>;
                                   MiniProductionReport temp_report =
                                       MaamoulReport.getFilteredReportOfInterval(
-                                    reportsList,
+                                        reportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
                                     ALL_LINES,
+                                    overweightTempList,
                                   );
                                   return Center(
                                     child: ProductionLine(

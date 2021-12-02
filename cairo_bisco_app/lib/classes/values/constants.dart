@@ -1,11 +1,14 @@
+import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
+
 /** version number**/
-const versionNum = '2.0.6'; //edit also in pubspec.yaml
-const versionCode = 3; //edit also in pubspec.yaml
+const versionNum = '3.0.0'; //edit also in pubspec.yaml
+const versionCode = 4; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
 
 /** ui design constants **/
 const dummyChartExtra = 1.0;
+const oeeMargin = 1;
 
 //padding
 const defaultPadding = 16.0;
@@ -94,6 +97,7 @@ const OVERWEIGHT_REPORT = 5;
 const PEOPLE_REPORT = 6;
 const NRC_REPORT = 7;
 
+List<OverWeightReport> overweightDummyList = [];
 List<String> prodType = <String>[
   'Biscuits',
   'Wafer',
@@ -200,7 +204,7 @@ List<String> biscuitsHeaders = [
   "Scrap kg",
   "Rework%",
   "Scrap%",
-  "Lost Time",
+  "Rate%",
   "Availability%",
   "Quality%",
   "OEE%",
@@ -244,7 +248,7 @@ List<String> waferHeaders = [
   "Scrap kg",
   "Rework%",
   "Scrap%",
-  "Lost Time",
+  "Rate%",
   "Availability%",
   "Quality%",
   "OEE%",
@@ -286,7 +290,7 @@ List<String> maamoulHeaders = [
   "Scrap kg",
   "Rework%",
   "Scrap%",
-  "Lost Time",
+  "Rate%",
   "Availability%",
   "Quality%",
   "OEE%",

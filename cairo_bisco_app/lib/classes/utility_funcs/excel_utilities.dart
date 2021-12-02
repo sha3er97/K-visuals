@@ -15,6 +15,8 @@ import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:permission_handler/permission_handler.dart';
 
+import 'other_utility.dart';
+
 class ExcelUtilities {
   static var excel;
   late Sheet sheetObject;
@@ -102,41 +104,6 @@ class ExcelUtilities {
     }
   }
 
-  double getCorrespondingOverweight(prodReport) {
-    if (doesHaveCorrespondingOverweight(prodReport)) {
-      for (OverWeightReport report in this.overweightList) {
-        if (report.day == prodReport.day &&
-            report.month == prodReport.month &&
-            report.line_index == prodReport.line_index &&
-            report.year == prodReport.year) {
-          print(report.day.toString() +
-              " " +
-              report.month.toString() +
-              " " +
-              report.line_index.toString() +
-              " " +
-              report.year.toString() +
-              " " +
-              report.percent.toString());
-          return report.percent;
-        }
-      }
-    }
-    return 99.9;
-  }
-
-  bool doesHaveCorrespondingOverweight(prodReport) {
-    for (OverWeightReport report in this.overweightList) {
-      if (report.day == prodReport.day &&
-          report.month == prodReport.month &&
-          report.line_index == prodReport.line_index &&
-          report.year == prodReport.year) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   void insertBiscuitReportRows(
     List<BiscuitsReport> reportsList,
   ) {
@@ -171,6 +138,11 @@ class ExcelUtilities {
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd3,
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd4
       ];
+      double matchedOverWeight =
+          doesHaveCorrespondingOverweight(report, this.overweightList)
+              ? getCorrespondingOverweight(report, this.overweightList)
+              : 0.0;
+      /////////////////////////////////////////////////////////////
       totTheoreticals += theoreticals[report.line_index - 1];
       totKg += calculateProductionKg(report, report.productionInCartons);
       totRework += calculateAllRework(refNum, report);
@@ -190,24 +162,33 @@ class ExcelUtilities {
       totMc1Used += report.mc1FilmUsed;
       totMc2Waste += report.mc2WasteKg;
       totMc2Used += report.mc2FilmUsed;
-      avgOverweight = doesHaveCorrespondingOverweight(report)
+      avgOverweight = doesHaveCorrespondingOverweight(
+              report, this.overweightList)
           ? (avgOverweight == 0.0
-              ? getCorrespondingOverweight(report)
-              : (avgOverweight + getCorrespondingOverweight(report)) / 2)
+              ? getCorrespondingOverweight(report, this.overweightList)
+              : (avgOverweight +
+                      getCorrespondingOverweight(report, this.overweightList)) /
+                  2)
           : avgOverweight;
       avgOEE = (avgOEE == 0.0
-          ? calculateOeeFromOriginalReport(report,
-              calculateNetTheoreticalOfReport(report, theoreticals), refNum)
+          ? calculateOeeFromOriginalReport(
+              report,
+              calculateNetTheoreticalOfReport(report, theoreticals),
+              refNum,
+              matchedOverWeight)
           : (avgOEE +
                   calculateOeeFromOriginalReport(
                       report,
                       calculateNetTheoreticalOfReport(report, theoreticals),
-                      refNum)) /
+                      refNum,
+                      matchedOverWeight)) /
               2);
       totScrap += calculateAllScrap(refNum, report);
-      totWeight += calculateAllWeightFromOriginalReport(refNum, report);
+      totWeight += calculateAllWeightFromOriginalReport(
+          refNum, report, matchedOverWeight);
       totCartons += report.productionInCartons;
       /////////////////////////////////////////////////////////////
+
       List<String> row = [
         constructDate(report.day, report.month, report.year),
         prodType[refNum],
@@ -240,29 +221,41 @@ class ExcelUtilities {
         report.mc2WasteKg.toString(),
         calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg)
             .toStringAsFixed(1),
-        doesHaveCorrespondingOverweight(report)
-            ? getCorrespondingOverweight(report).toString()
+        doesHaveCorrespondingOverweight(report, this.overweightList)
+            ? getCorrespondingOverweight(report, this.overweightList).toString()
             : "-",
         calculateAllScrap(refNum, report).toString(),
         (calculateAllRework(refNum, report) *
                 100 /
-                calculateAllWeightFromOriginalReport(refNum, report))
+                calculateAllWeightFromOriginalReport(
+                    refNum, report, matchedOverWeight))
             .toStringAsFixed(1),
         (calculateAllScrap(refNum, report) *
                 100 /
-                calculateAllWeightFromOriginalReport(refNum, report))
+                calculateAllWeightFromOriginalReport(
+                    refNum, report, matchedOverWeight))
             .toStringAsFixed(1),
-        report.wastedMinutes.toString(),
+        (calculateRateFromOriginalReport(
+                    report,
+                    calculateNetTheoreticalOfReport(report, theoreticals),
+                    refNum,
+                    matchedOverWeight) *
+                100)
+            .toStringAsFixed(1),
         (calculateAvailabilityFromOriginalReport(report) * 100)
             .toStringAsFixed(1),
-        (calculateQualityFromOriginalReport(report, refNum) * 100)
+        (calculateQualityFromOriginalReport(report, refNum, matchedOverWeight) *
+                100)
             .toStringAsFixed(1),
-        calculateOeeFromOriginalReport(report,
-                calculateNetTheoreticalOfReport(report, theoreticals), refNum)
+        calculateOeeFromOriginalReport(
+                report,
+                calculateNetTheoreticalOfReport(report, theoreticals),
+                refNum,
+                matchedOverWeight)
             .toStringAsFixed(1),
-        doesHaveCorrespondingOverweight(report)
+        doesHaveCorrespondingOverweight(report, this.overweightList)
             ? (calculateProductionKg(report, report.productionInCartons) *
-                    getCorrespondingOverweight(report))
+                    getCorrespondingOverweight(report, this.overweightList))
                 .toStringAsFixed(1)
             : "-",
         report.productionInCartons.toString(),
@@ -355,6 +348,11 @@ class ExcelUtilities {
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd3,
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd4
       ];
+      double matchedOverWeight =
+          doesHaveCorrespondingOverweight(report, this.overweightList)
+              ? getCorrespondingOverweight(report, this.overweightList)
+              : 0.0;
+      /////////////////////////////////////////////////////////////
       totTheoreticals += theoreticals[report.line_index - 1];
       totKg += calculateProductionKg(report, report.productionInCartons);
       totRework += calculateAllRework(refNum, report);
@@ -374,22 +372,30 @@ class ExcelUtilities {
       totMc1Used += report.mc1FilmUsed;
       totMc2Waste += report.mc2WasteKg;
       totMc2Used += report.mc2FilmUsed;
-      avgOverweight = doesHaveCorrespondingOverweight(report)
+      avgOverweight = doesHaveCorrespondingOverweight(
+              report, this.overweightList)
           ? (avgOverweight == 0.0
-              ? getCorrespondingOverweight(report)
-              : (avgOverweight + getCorrespondingOverweight(report)) / 2)
+              ? getCorrespondingOverweight(report, this.overweightList)
+              : (avgOverweight +
+                      getCorrespondingOverweight(report, this.overweightList)) /
+                  2)
           : avgOverweight;
       avgOEE = (avgOEE == 0.0
-          ? calculateOeeFromOriginalReport(report,
-              calculateNetTheoreticalOfReport(report, theoreticals), refNum)
+          ? calculateOeeFromOriginalReport(
+              report,
+              calculateNetTheoreticalOfReport(report, theoreticals),
+              refNum,
+              matchedOverWeight)
           : (avgOEE +
                   calculateOeeFromOriginalReport(
                       report,
                       calculateNetTheoreticalOfReport(report, theoreticals),
-                      refNum)) /
+                      refNum,
+                      matchedOverWeight)) /
               2);
       totScrap += calculateAllScrap(refNum, report);
-      totWeight += calculateAllWeightFromOriginalReport(refNum, report);
+      totWeight += calculateAllWeightFromOriginalReport(
+          refNum, report, matchedOverWeight);
       totCartons += report.productionInCartons;
       /////////////////////////////////////////////////////////////
       List<String> row = [
@@ -424,29 +430,41 @@ class ExcelUtilities {
         report.mc2WasteKg.toString(),
         calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg)
             .toStringAsFixed(1),
-        doesHaveCorrespondingOverweight(report)
-            ? getCorrespondingOverweight(report).toString()
+        doesHaveCorrespondingOverweight(report, this.overweightList)
+            ? getCorrespondingOverweight(report, this.overweightList).toString()
             : "-",
         calculateAllScrap(refNum, report).toString(),
         (calculateAllRework(refNum, report) *
                 100 /
-                calculateAllWeightFromOriginalReport(refNum, report))
+                calculateAllWeightFromOriginalReport(
+                    refNum, report, matchedOverWeight))
             .toStringAsFixed(1),
         (calculateAllScrap(refNum, report) *
                 100 /
-                calculateAllWeightFromOriginalReport(refNum, report))
+                calculateAllWeightFromOriginalReport(
+                    refNum, report, matchedOverWeight))
             .toStringAsFixed(1),
-        report.wastedMinutes.toString(),
+        (calculateRateFromOriginalReport(
+                    report,
+                    calculateNetTheoreticalOfReport(report, theoreticals),
+                    refNum,
+                    matchedOverWeight) *
+                100)
+            .toStringAsFixed(1),
         (calculateAvailabilityFromOriginalReport(report) * 100)
             .toStringAsFixed(1),
-        (calculateQualityFromOriginalReport(report, refNum) * 100)
+        (calculateQualityFromOriginalReport(report, refNum, matchedOverWeight) *
+                100)
             .toStringAsFixed(1),
-        calculateOeeFromOriginalReport(report,
-                calculateNetTheoreticalOfReport(report, theoreticals), refNum)
+        calculateOeeFromOriginalReport(
+                report,
+                calculateNetTheoreticalOfReport(report, theoreticals),
+                refNum,
+                matchedOverWeight)
             .toStringAsFixed(1),
-        doesHaveCorrespondingOverweight(report)
+        doesHaveCorrespondingOverweight(report, this.overweightList)
             ? (calculateProductionKg(report, report.productionInCartons) *
-                    getCorrespondingOverweight(report))
+                    getCorrespondingOverweight(report, this.overweightList))
                 .toStringAsFixed(1)
             : "-",
         report.productionInCartons.toString(),
@@ -536,6 +554,11 @@ class ExcelUtilities {
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd3,
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd4
       ];
+      double matchedOverWeight =
+          doesHaveCorrespondingOverweight(report, this.overweightList)
+              ? getCorrespondingOverweight(report, this.overweightList)
+              : 0.0;
+      /////////////////////////////////////////////////////////////
       totTheoreticals += theoreticals[report.line_index - 1];
       totKg += calculateProductionKg(report, report.productionInCartons);
       totRework += calculateAllRework(refNum, report);
@@ -553,22 +576,30 @@ class ExcelUtilities {
       totMc1Used += report.mc1FilmUsed;
       totMc2Waste += report.mc2WasteKg;
       totMc2Used += report.mc2FilmUsed;
-      avgOverweight = doesHaveCorrespondingOverweight(report)
+      avgOverweight = doesHaveCorrespondingOverweight(
+              report, this.overweightList)
           ? (avgOverweight == 0.0
-              ? getCorrespondingOverweight(report)
-              : (avgOverweight + getCorrespondingOverweight(report)) / 2)
+              ? getCorrespondingOverweight(report, this.overweightList)
+              : (avgOverweight +
+                      getCorrespondingOverweight(report, this.overweightList)) /
+                  2)
           : avgOverweight;
       avgOEE = (avgOEE == 0.0
-          ? calculateOeeFromOriginalReport(report,
-              calculateNetTheoreticalOfReport(report, theoreticals), refNum)
+          ? calculateOeeFromOriginalReport(
+              report,
+              calculateNetTheoreticalOfReport(report, theoreticals),
+              refNum,
+              matchedOverWeight)
           : (avgOEE +
                   calculateOeeFromOriginalReport(
                       report,
                       calculateNetTheoreticalOfReport(report, theoreticals),
-                      refNum)) /
+                      refNum,
+                      matchedOverWeight)) /
               2);
       totScrap += calculateAllScrap(refNum, report);
-      totWeight += calculateAllWeightFromOriginalReport(refNum, report);
+      totWeight += calculateAllWeightFromOriginalReport(
+          refNum, report, matchedOverWeight);
       totCartons += report.productionInCartons;
       /////////////////////////////////////////////////////////////
       List<String> row = [
@@ -601,29 +632,41 @@ class ExcelUtilities {
         report.mc2WasteKg.toString(),
         calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg)
             .toStringAsFixed(1),
-        doesHaveCorrespondingOverweight(report)
-            ? getCorrespondingOverweight(report).toString()
+        doesHaveCorrespondingOverweight(report, this.overweightList)
+            ? getCorrespondingOverweight(report, this.overweightList).toString()
             : "-",
         calculateAllScrap(refNum, report).toString(),
         (calculateAllRework(refNum, report) *
                 100 /
-                calculateAllWeightFromOriginalReport(refNum, report))
+                calculateAllWeightFromOriginalReport(
+                    refNum, report, matchedOverWeight))
             .toStringAsFixed(1),
         (calculateAllScrap(refNum, report) *
                 100 /
-                calculateAllWeightFromOriginalReport(refNum, report))
+                calculateAllWeightFromOriginalReport(
+                    refNum, report, matchedOverWeight))
             .toStringAsFixed(1),
-        report.wastedMinutes.toString(),
+        (calculateRateFromOriginalReport(
+                    report,
+                    calculateNetTheoreticalOfReport(report, theoreticals),
+                    refNum,
+                    matchedOverWeight) *
+                100)
+            .toStringAsFixed(1),
         (calculateAvailabilityFromOriginalReport(report) * 100)
             .toStringAsFixed(1),
-        (calculateQualityFromOriginalReport(report, refNum) * 100)
+        (calculateQualityFromOriginalReport(report, refNum, matchedOverWeight) *
+                100)
             .toStringAsFixed(1),
-        calculateOeeFromOriginalReport(report,
-                calculateNetTheoreticalOfReport(report, theoreticals), refNum)
+        calculateOeeFromOriginalReport(
+                report,
+                calculateNetTheoreticalOfReport(report, theoreticals),
+                refNum,
+                matchedOverWeight)
             .toStringAsFixed(1),
-        doesHaveCorrespondingOverweight(report)
+        doesHaveCorrespondingOverweight(report, this.overweightList)
             ? (calculateProductionKg(report, report.productionInCartons) *
-                    getCorrespondingOverweight(report))
+                    getCorrespondingOverweight(report, this.overweightList))
                 .toStringAsFixed(1)
             : "-",
         report.productionInCartons.toString(),

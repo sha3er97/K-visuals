@@ -36,11 +36,12 @@ double calculateMPSA(num plan, num done) {
   return (min(plan, done).toDouble() * 100) / max(plan, done);
 }
 
-double calculateRmMUV(int refNum, report) {
+double calculateRmMUV(int refNum, report, double matchedOverWeight) {
   if (report.productionInCartons == 0) return 0.0;
   //todo :: check the equation
-  double target = calculateAllWeightFromOriginalReport(refNum, report) *
-      (SKU.skuDetails[report.skuName]!.targetScrap / 100);
+  double target =
+      calculateAllWeightFromOriginalReport(refNum, report, matchedOverWeight) *
+          (SKU.skuDetails[report.skuName]!.targetScrap / 100);
   return ((calculateAllScrap(refNum, report) - target) /
           SKU.skuDetails[report.skuName]!.cartonWeight) *
       SKU.skuDetails[report.skuName]!.rm_cost;
@@ -59,8 +60,13 @@ double calculateWastePercent(double used, double wasted) {
   return (wasted / used) * 100;
 }
 
-double calculateScrapPercent(MiniProductionReport report) {
-  return report.scrap * 100 / calculateAllWeightFromMiniReport(report);
+double calculateScrapPercent(
+  MiniProductionReport report,
+  double matchedOverWeight,
+) {
+  return report.scrap *
+      100 /
+      calculateAllWeightFromMiniReport(report, matchedOverWeight);
 }
 
 String calculateDifferenceInCartonsTarget(MiniProductionReport report) {
@@ -129,16 +135,23 @@ double calculateAllRework(refNum, report) {
   return 0;
 }
 
-double calculateAllWeightFromOriginalReport(refNum, report) {
-  return calculateAllRework(refNum, report) +
+double calculateAllWeightFromOriginalReport(
+  int refNum,
+  report,
+  double matchedOverWeight,
+) {
+  double allWeight = calculateAllRework(refNum, report) +
       calculateAllScrap(refNum, report) +
       calculateProductionKg(report, report.productionInCartons);
-  //todo :: add overweight
+  return allWeight * matchedOverWeight + allWeight;
 }
 
-double calculateAllWeightFromMiniReport(MiniProductionReport report) {
-  return report.scrap + report.rework + report.productionInKg;
-  //todo :: add overweight
+double calculateAllWeightFromMiniReport(
+  MiniProductionReport report,
+  double matchedOverWeight,
+) {
+  double allWeight = report.scrap + report.rework + report.productionInKg;
+  return allWeight * matchedOverWeight + allWeight;
 }
 
 double calculateProductionKg(report, int cartons) {
@@ -156,12 +169,18 @@ double calculateNetTheoreticalOfReport(
 }
 
 /*************************OEE calculations*********************************/
-double calculateOeeFromOriginalReport(report, theoreticalKg, int refNum) {
+double calculateOeeFromOriginalReport(
+  report,
+  theoreticalKg,
+  int refNum,
+  double matchedOverWeight,
+) {
   // return (calculateProductionKg(report, report.productionInCartons) /
   //         theoreticalKg) *
   //     100;
-  return calculateRateFromOriginalReport(report, theoreticalKg, refNum) *
-      calculateQualityFromOriginalReport(report, refNum) *
+  return calculateRateFromOriginalReport(
+          report, theoreticalKg, refNum, matchedOverWeight) *
+      calculateQualityFromOriginalReport(report, refNum, matchedOverWeight) *
       calculateAvailabilityFromOriginalReport(report) *
       100;
 }
@@ -175,23 +194,30 @@ double calculateRateFromOriginalReport(
   report,
   theoreticalKg,
   int refNum,
+  double matchedOverWeight,
 ) {
-  return calculateAllWeightFromOriginalReport(refNum, report) / theoreticalKg;
+  return calculateAllWeightFromOriginalReport(
+          refNum, report, matchedOverWeight) /
+      theoreticalKg;
 }
 
 double calculateQualityFromOriginalReport(
   report,
   int refNum,
+  double matchedOverWeight,
 ) {
   return calculateProductionKg(report, report.productionInCartons) /
-      calculateAllWeightFromOriginalReport(refNum, report);
+      calculateAllWeightFromOriginalReport(refNum, report, matchedOverWeight);
 }
 
 /***********************************/
-double calculateOeeFromMiniReport(MiniProductionReport report) {
+double calculateOeeFromMiniReport(
+  MiniProductionReport report,
+  double matchedOverWeight,
+) {
   // return (report.productionInKg.toDouble() / report.theoreticalAverage) * 100;
-  return calculateRate(report) *
-      calculateQuality(report) *
+  return calculateRate(report, matchedOverWeight) *
+      calculateQuality(report, matchedOverWeight) *
       calculateAvailability(report) *
       100;
 }
@@ -201,12 +227,20 @@ double calculateAvailability(MiniProductionReport report) {
       report.plannedHours;
 }
 
-double calculateRate(MiniProductionReport report) {
-  return calculateAllWeightFromMiniReport(report) / report.theoreticalAverage;
+double calculateRate(
+  MiniProductionReport report,
+  double matchedOverWeight,
+) {
+  return calculateAllWeightFromMiniReport(report, matchedOverWeight) /
+      report.theoreticalAverage;
 }
 
-double calculateQuality(MiniProductionReport report) {
-  return report.productionInKg / calculateAllWeightFromMiniReport(report);
+double calculateQuality(
+  MiniProductionReport report,
+  double matchedOverWeight,
+) {
+  return report.productionInKg /
+      calculateAllWeightFromMiniReport(report, matchedOverWeight);
 }
 
 /************************************DRIVERS*************************************************/
@@ -220,14 +254,17 @@ bool BadEHSDriver(EhsReport report) {
       report.lostTime_incidents > 0;
 }
 
-bool BadProductionDriver(MiniProductionReport report) {
+bool BadProductionDriver(
+  MiniProductionReport report,
+  double matchedOverWeight,
+) {
   bool noWork = report.productionInCartons == 0;
   if (noWork)
     return false;
   else
     return calculateMPSA(report.planInKg, report.productionInKg) <
             Plans.mpsaTarget ||
-        calculateOeeFromMiniReport(report) < Plans.targetOEE;
+        calculateOeeFromMiniReport(report, matchedOverWeight) < Plans.targetOEE;
 }
 
 bool BadPeopleDriver(PeopleReport report) {

@@ -2,12 +2,14 @@ import 'dart:collection';
 
 import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/other_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'MiniProductionReport.dart';
+import 'OverWeightReport.dart';
 import 'SKU.dart';
 
 class MaamoulReport {
@@ -370,6 +372,7 @@ class MaamoulReport {
     int day_to,
     int year,
     int lineNumRequired,
+    List<OverWeightReport> overweightList,
   ) {
     double temp_scrap = 0.0,
         temp_used_film = 0.0,
@@ -399,7 +402,11 @@ class MaamoulReport {
             report.data().day.toString());
         continue;
       }
-
+      double matchedOverWeight =
+          doesHaveCorrespondingOverweight(report, overweightList)
+              ? getCorrespondingOverweight(report, overweightList)
+              : 0.0;
+      /////////////////////////////////////////////////////////////
       if (lineNumRequired == ALL_LINES ||
           (lineNumRequired != ALL_LINES &&
               report.data().line_index == lineNumRequired)) {
@@ -426,7 +433,8 @@ class MaamoulReport {
         temp_wasted_film += report.data().mc2WasteKg + report.data().mc1WasteKg;
         temp_used_film += report.data().mc2FilmUsed + report.data().mc1FilmUsed;
         lastSkuName = report.data().skuName;
-        temp_rm_muv += calculateRmMUV(MAAMOUL_AREA, report.data());
+        temp_rm_muv +=
+            calculateRmMUV(MAAMOUL_AREA, report.data(), matchedOverWeight);
         temp_pm_muv += calculatePmMUV(MAAMOUL_AREA, report.data());
         temp_all_shift_hours += report.data().shiftHours;
         temp_wasted_minutes += report.data().wastedMinutes;

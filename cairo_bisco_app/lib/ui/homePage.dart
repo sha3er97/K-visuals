@@ -30,8 +30,8 @@ import 'package:cairo_bisco_app/components/special_components/place_holders.dart
 import 'package:cairo_bisco_app/components/special_components/side_menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
 
 import 'error_success_screens/loading_screen.dart';
 
@@ -199,13 +199,14 @@ class _HomeState extends State<HomePage> {
                                                   temp_biscuit_report =
                                                   BiscuitsReport
                                                       .getFilteredReportOfInterval(
-                                                biscuitsReportsList,
+                                                    biscuitsReportsList,
                                                 int.parse(getMonth()),
                                                 int.parse(getMonth()),
                                                 int.parse(getDay()),
                                                 int.parse(getDay()),
                                                 int.parse(getYear()),
                                                 ALL_LINES,
+                                                overweightDummyList,
                                               );
                                               List<
                                                       QueryDocumentSnapshot<
@@ -219,13 +220,14 @@ class _HomeState extends State<HomePage> {
                                                   temp_wafer_report =
                                                   WaferReport
                                                       .getFilteredReportOfInterval(
-                                                waferReportsList,
+                                                    waferReportsList,
                                                 int.parse(getMonth()),
                                                 int.parse(getMonth()),
                                                 int.parse(getDay()),
                                                 int.parse(getDay()),
                                                 int.parse(getYear()),
                                                 ALL_LINES,
+                                                overweightDummyList,
                                               );
                                               List<
                                                       QueryDocumentSnapshot<
@@ -239,13 +241,14 @@ class _HomeState extends State<HomePage> {
                                                   temp_maamoul_report =
                                                   MaamoulReport
                                                       .getFilteredReportOfInterval(
-                                                maamoulReportsList,
+                                                    maamoulReportsList,
                                                 int.parse(getMonth()),
                                                 int.parse(getMonth()),
                                                 int.parse(getDay()),
                                                 int.parse(getDay()),
                                                 int.parse(getYear()),
                                                 ALL_LINES,
+                                                overweightDummyList,
                                               );
                                               return Chart(
                                                 biscuits: temp_biscuit_report
@@ -285,13 +288,14 @@ class _HomeState extends State<HomePage> {
                                   QueryDocumentSnapshot<BiscuitsReport>>;
                           MiniProductionReport temp_report =
                               BiscuitsReport.getFilteredReportOfInterval(
-                            reportsList,
+                                reportsList,
                             int.parse(getMonth()),
                             int.parse(getMonth()),
                             int.parse(getDay()),
                             int.parse(getDay()),
                             int.parse(getYear()),
                             ALL_LINES,
+                            overweightDummyList,
                           );
                           // setState(() {
                           // biscuitsKg = temp_report.productionInKg;
@@ -329,13 +333,14 @@ class _HomeState extends State<HomePage> {
                                   as List<QueryDocumentSnapshot<WaferReport>>;
                           MiniProductionReport temp_report =
                               WaferReport.getFilteredReportOfInterval(
-                            reportsList,
+                                reportsList,
                             int.parse(getMonth()),
                             int.parse(getMonth()),
                             int.parse(getDay()),
                             int.parse(getDay()),
                             int.parse(getYear()),
                             ALL_LINES,
+                            overweightDummyList,
                           );
                           // setState(() {
                           // waferKg = temp_report.productionInKg;
@@ -373,13 +378,14 @@ class _HomeState extends State<HomePage> {
                                   as List<QueryDocumentSnapshot<MaamoulReport>>;
                           MiniProductionReport temp_report =
                               MaamoulReport.getFilteredReportOfInterval(
-                            reportsList,
+                                reportsList,
                             int.parse(getMonth()),
                             int.parse(getMonth()),
                             int.parse(getDay()),
                             int.parse(getDay()),
                             int.parse(getYear()),
                             ALL_LINES,
+                            overweightDummyList,
                           );
                           // setState(() {
                           // maamoulKg = temp_report.productionInKg;
@@ -448,13 +454,14 @@ class _HomeState extends State<HomePage> {
                                               temp_biscuit_report =
                                               BiscuitsReport
                                                   .getFilteredReportOfInterval(
-                                            biscuitsReportsList,
+                                                biscuitsReportsList,
                                             int.parse(getMonth()),
                                             int.parse(getMonth()),
                                             int.parse(getDay()),
                                             int.parse(getDay()),
                                             int.parse(getYear()),
                                             ALL_LINES,
+                                            overweightDummyList,
                                           );
                                           List<
                                                   QueryDocumentSnapshot<
@@ -473,6 +480,7 @@ class _HomeState extends State<HomePage> {
                                             int.parse(getDay()),
                                             int.parse(getYear()),
                                             ALL_LINES,
+                                            overweightDummyList,
                                           );
                                           List<
                                                   QueryDocumentSnapshot<
@@ -486,13 +494,14 @@ class _HomeState extends State<HomePage> {
                                               temp_maamoul_report =
                                               MaamoulReport
                                                   .getFilteredReportOfInterval(
-                                            maamoulReportsList,
+                                                maamoulReportsList,
                                             int.parse(getMonth()),
                                             int.parse(getMonth()),
                                             int.parse(getDay()),
                                             int.parse(getDay()),
                                             int.parse(getYear()),
                                             ALL_LINES,
+                                            overweightDummyList,
                                           );
                                           return ProductionInfoCard(
                                             image: "recycle",
