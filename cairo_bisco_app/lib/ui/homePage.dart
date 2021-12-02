@@ -241,7 +241,7 @@ class _HomeState extends State<HomePage> {
                                                   temp_maamoul_report =
                                                   MaamoulReport
                                                       .getFilteredReportOfInterval(
-                                                    maamoulReportsList,
+                                                maamoulReportsList,
                                                 int.parse(getMonth()),
                                                 int.parse(getMonth()),
                                                 int.parse(getDay()),

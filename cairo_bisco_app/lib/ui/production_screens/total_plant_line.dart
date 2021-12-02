@@ -244,7 +244,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                       temp_maamoul_report =
                                                       MaamoulReport
                                                           .getFilteredReportOfInterval(
-                                                        maamoulReportsList,
+                                                    maamoulReportsList,
                                                     int.parse(from_month),
                                                     int.parse(to_month),
                                                     int.parse(from_day),
