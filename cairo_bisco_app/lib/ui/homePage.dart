@@ -220,7 +220,7 @@ class _HomeState extends State<HomePage> {
                                                   temp_wafer_report =
                                                   WaferReport
                                                       .getFilteredReportOfInterval(
-                                                    waferReportsList,
+                                                waferReportsList,
                                                 int.parse(getMonth()),
                                                 int.parse(getMonth()),
                                                 int.parse(getDay()),
