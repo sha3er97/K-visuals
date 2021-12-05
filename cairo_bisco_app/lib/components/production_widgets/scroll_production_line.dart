@@ -216,6 +216,44 @@ class ProductionLine extends StatelessWidget {
             ),
           ),
           SizedBox(height: defaultPadding),
+          Center(
+            child: Text('Stopped Time',
+                style: TextStyle(
+                    fontSize: largeFontSize,
+                    fontWeight: FontWeight.bold,
+                    color: KelloggColors.darkRed)),
+          ),
+          SizedBox(height: defaultPadding),
+          Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(BoxImageBorder),
+              child: ConstrainedBox(
+                constraints: BoxConstraints.tightFor(height: buttonHeight),
+                child: ElevatedButton.icon(
+                  label: Text(
+                      report.wastedMinutes.round().toString() + " Minutes"),
+                  style: ElevatedButton.styleFrom(
+                      textStyle: TextStyle(
+                          fontSize: largeButtonFont, fontFamily: 'MyFont'),
+                      primary: KelloggColors.grey),
+                  icon: ClipRRect(
+                    borderRadius: BorderRadius.circular(iconImageBorder),
+                    child: Container(
+                      height: mediumIconSize,
+                      width: mediumIconSize,
+                      padding: EdgeInsets.all(minimumPadding / 2),
+                      child: new Image.asset(
+                        'images/safety.png',
+                        color: KelloggColors.white,
+                      ),
+                    ),
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: defaultPadding),
           SfRadialGauge(
             title: GaugeTitle(
                 text: 'OEE%',
