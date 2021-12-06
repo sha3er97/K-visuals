@@ -408,8 +408,8 @@ class _HomeState extends State<HomePage> {
                     },
                   ),
                   ///////////////////////////////////////////////////////////////////
-                  StreamBuilder<QuerySnapshot>(
-                      stream: biscuitsReportRef.snapshots(),
+                  FutureBuilder<QuerySnapshot>(
+                      future: biscuitsReportRef.get(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> biscuitsSnapshot) {
                         if (biscuitsSnapshot.hasError) {
@@ -418,8 +418,8 @@ class _HomeState extends State<HomePage> {
                             ConnectionState.waiting) {
                           return ColorLoader();
                         } else {
-                          return StreamBuilder<QuerySnapshot>(
-                              stream: waferReportRef.snapshots(),
+                          return FutureBuilder<QuerySnapshot>(
+                              future: waferReportRef.get(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> waferSnapshot) {
                                 if (waferSnapshot.hasError) {
@@ -429,8 +429,8 @@ class _HomeState extends State<HomePage> {
                                     ConnectionState.waiting) {
                                   return ColorLoader();
                                 } else {
-                                  return StreamBuilder<QuerySnapshot>(
-                                      stream: maamoulReportRef.snapshots(),
+                                  return FutureBuilder<QuerySnapshot>(
+                                      future: maamoulReportRef.get(),
                                       builder: (BuildContext context,
                                           AsyncSnapshot<QuerySnapshot>
                                               maamoulSnapshot) {

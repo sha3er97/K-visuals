@@ -421,8 +421,8 @@ class WaferReport {
         continue;
       }
       double matchedOverWeight =
-          doesHaveCorrespondingOverweight(report, overweightList)
-              ? getCorrespondingOverweight(report, overweightList)
+          doesHaveCorrespondingOverweight(report.data(), overweightList)
+              ? getCorrespondingOverweight(report.data(), overweightList)
               : 0.0;
       /////////////////////////////////////////////////////////////
       if (lineNumRequired == ALL_LINES ||
