@@ -402,10 +402,11 @@ class MaamoulReport {
             report.data().day.toString());
         continue;
       }
-      double matchedOverWeight =
-          doesHaveCorrespondingOverweight(report.data(), overweightList)
-              ? getCorrespondingOverweight(report.data(), overweightList)
-              : 0.0;
+      double matchedOverWeight = doesProdReportHaveCorrespondingOverweight(
+              report.data(), overweightList)
+          ? getCorrespondingOverweightToProdReport(
+              report.data(), overweightList)
+          : 0.0;
       /////////////////////////////////////////////////////////////
       if (lineNumRequired == ALL_LINES ||
           (lineNumRequired != ALL_LINES &&
