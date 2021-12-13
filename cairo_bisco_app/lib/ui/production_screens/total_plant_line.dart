@@ -223,7 +223,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                       temp_wafer_report =
                                                       WaferReport
                                                           .getFilteredReportOfInterval(
-                                                        waferReportsList,
+                                                    waferReportsList,
                                                     int.parse(from_month),
                                                     int.parse(to_month),
                                                     int.parse(from_day),
