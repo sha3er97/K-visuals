@@ -1,4 +1,5 @@
 import 'package:cairo_bisco_app/classes/Credentials.dart';
+import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 
@@ -27,23 +28,14 @@ bool canEditThisReport(String supName, int day, int month, int year) {
   }
 }
 
-double getCorrespondingOverweight(
+double getCorrespondingOverweightToProdReport(
     prodReport, List<OverWeightReport> overweightList) {
-  if (doesHaveCorrespondingOverweight(prodReport, overweightList)) {
+  if (doesProdReportHaveCorrespondingOverweight(prodReport, overweightList)) {
     for (OverWeightReport report in overweightList) {
       if (report.day == prodReport.day &&
           report.month == prodReport.month &&
           report.line_index == prodReport.line_index &&
           report.year == prodReport.year) {
-        print(report.day.toString() +
-            " " +
-            report.month.toString() +
-            " " +
-            report.line_index.toString() +
-            " " +
-            report.year.toString() +
-            " " +
-            report.percent.toString());
         return report.percent;
       }
     }
@@ -51,12 +43,38 @@ double getCorrespondingOverweight(
   return 99.9;
 }
 
-bool doesHaveCorrespondingOverweight(
+bool doesProdReportHaveCorrespondingOverweight(
     prodReport, List<OverWeightReport> overweightList) {
   for (OverWeightReport report in overweightList) {
     if (report.day == prodReport.day &&
         report.month == prodReport.month &&
         report.line_index == prodReport.line_index &&
+        report.year == prodReport.year) {
+      return true;
+    }
+  }
+  return false;
+}
+
+double getCorrespondingOverweightToMiniReport(
+    MiniProductionReport prodReport, List<OverWeightReport> overweightList) {
+  if (doesProdReportHaveCorrespondingOverweight(prodReport, overweightList)) {
+    for (OverWeightReport report in overweightList) {
+      if (report.day == prodReport.day &&
+          report.month == prodReport.month &&
+          report.year == prodReport.year) {
+        return report.percent;
+      }
+    }
+  }
+  return 99.9;
+}
+
+bool doesMiniReportHaveCorrespondingOverweight(
+    prodReport, List<OverWeightReport> overweightList) {
+  for (OverWeightReport report in overweightList) {
+    if (report.day == prodReport.day &&
+        report.month == prodReport.month &&
         report.year == prodReport.year) {
       return true;
     }

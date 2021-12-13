@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
 import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
+import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/WaferReport.dart';
@@ -26,7 +27,7 @@ class ExcelUtilities {
 
   ExcelUtilities({required this.refNum}) {
     excel = Excel.createExcel(); // automatically creates 1 empty sheet: Sheet1
-    areaName = prodType[refNum];
+    areaName = refNum != TOTAL_PLANT ? prodType[refNum] : "Total";
     sheetObject = excel[areaName];
     excel.delete('Sheet1');
   }
@@ -101,6 +102,9 @@ class ExcelUtilities {
       case MAAMOUL_AREA:
         sheetObject.insertRowIterables(maamoulHeaders, 0);
         break;
+      case TOTAL_PLANT:
+        sheetObject.insertRowIterables(totalPlantHeaders, 0);
+        break;
     }
   }
 
@@ -138,10 +142,10 @@ class ExcelUtilities {
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd3,
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd4
       ];
-      double matchedOverWeight =
-          doesHaveCorrespondingOverweight(report, this.overweightList)
-              ? getCorrespondingOverweight(report, this.overweightList)
-              : 0.0;
+      double matchedOverWeight = doesProdReportHaveCorrespondingOverweight(
+              report, this.overweightList)
+          ? getCorrespondingOverweightToProdReport(report, this.overweightList)
+          : 0.0;
       /////////////////////////////////////////////////////////////
       totTheoreticals += theoreticals[report.line_index - 1];
       totKg += calculateProductionKg(report, report.productionInCartons);
@@ -162,14 +166,16 @@ class ExcelUtilities {
       totMc1Used += report.mc1FilmUsed;
       totMc2Waste += report.mc2WasteKg;
       totMc2Used += report.mc2FilmUsed;
-      avgOverweight = doesHaveCorrespondingOverweight(
-              report, this.overweightList)
-          ? (avgOverweight == 0.0
-              ? getCorrespondingOverweight(report, this.overweightList)
-              : (avgOverweight +
-                      getCorrespondingOverweight(report, this.overweightList)) /
-                  2)
-          : avgOverweight;
+      avgOverweight =
+          doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
+              ? (avgOverweight == 0.0
+                  ? getCorrespondingOverweightToProdReport(
+                      report, this.overweightList)
+                  : (avgOverweight +
+                          getCorrespondingOverweightToProdReport(
+                              report, this.overweightList)) /
+                      2)
+              : avgOverweight;
       avgOEE = (avgOEE == 0.0
           ? calculateOeeFromOriginalReport(
               report,
@@ -221,8 +227,10 @@ class ExcelUtilities {
         report.mc2WasteKg.toString(),
         calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg)
             .toStringAsFixed(1),
-        doesHaveCorrespondingOverweight(report, this.overweightList)
-            ? getCorrespondingOverweight(report, this.overweightList).toString()
+        doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
+            ? getCorrespondingOverweightToProdReport(
+                    report, this.overweightList)
+                .toString()
             : "-",
         calculateAllScrap(refNum, report).toString(),
         (calculateAllRework(refNum, report) *
@@ -253,11 +261,9 @@ class ExcelUtilities {
                 refNum,
                 matchedOverWeight)
             .toStringAsFixed(1),
-        doesHaveCorrespondingOverweight(report, this.overweightList)
-            ? (calculateProductionKg(report, report.productionInCartons) *
-                    getCorrespondingOverweight(report, this.overweightList))
-                .toStringAsFixed(1)
-            : "-",
+        (calculateProductionKg(report, report.productionInCartons) *
+                matchedOverWeight)
+            .toStringAsFixed(1),
         report.productionInCartons.toString(),
         report.month.toString(),
         getWeekNumber(report.day, report.month, report.year).toString(),
@@ -348,10 +354,10 @@ class ExcelUtilities {
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd3,
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd4
       ];
-      double matchedOverWeight =
-          doesHaveCorrespondingOverweight(report, this.overweightList)
-              ? getCorrespondingOverweight(report, this.overweightList)
-              : 0.0;
+      double matchedOverWeight = doesProdReportHaveCorrespondingOverweight(
+              report, this.overweightList)
+          ? getCorrespondingOverweightToProdReport(report, this.overweightList)
+          : 0.0;
       /////////////////////////////////////////////////////////////
       totTheoreticals += theoreticals[report.line_index - 1];
       totKg += calculateProductionKg(report, report.productionInCartons);
@@ -372,14 +378,16 @@ class ExcelUtilities {
       totMc1Used += report.mc1FilmUsed;
       totMc2Waste += report.mc2WasteKg;
       totMc2Used += report.mc2FilmUsed;
-      avgOverweight = doesHaveCorrespondingOverweight(
-              report, this.overweightList)
-          ? (avgOverweight == 0.0
-              ? getCorrespondingOverweight(report, this.overweightList)
-              : (avgOverweight +
-                      getCorrespondingOverweight(report, this.overweightList)) /
-                  2)
-          : avgOverweight;
+      avgOverweight =
+          doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
+              ? (avgOverweight == 0.0
+                  ? getCorrespondingOverweightToProdReport(
+                      report, this.overweightList)
+                  : (avgOverweight +
+                          getCorrespondingOverweightToProdReport(
+                              report, this.overweightList)) /
+                      2)
+              : avgOverweight;
       avgOEE = (avgOEE == 0.0
           ? calculateOeeFromOriginalReport(
               report,
@@ -430,8 +438,10 @@ class ExcelUtilities {
         report.mc2WasteKg.toString(),
         calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg)
             .toStringAsFixed(1),
-        doesHaveCorrespondingOverweight(report, this.overweightList)
-            ? getCorrespondingOverweight(report, this.overweightList).toString()
+        doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
+            ? getCorrespondingOverweightToProdReport(
+                    report, this.overweightList)
+                .toString()
             : "-",
         calculateAllScrap(refNum, report).toString(),
         (calculateAllRework(refNum, report) *
@@ -462,11 +472,9 @@ class ExcelUtilities {
                 refNum,
                 matchedOverWeight)
             .toStringAsFixed(1),
-        doesHaveCorrespondingOverweight(report, this.overweightList)
-            ? (calculateProductionKg(report, report.productionInCartons) *
-                    getCorrespondingOverweight(report, this.overweightList))
-                .toStringAsFixed(1)
-            : "-",
+        (calculateProductionKg(report, report.productionInCartons) *
+                matchedOverWeight)
+            .toStringAsFixed(1),
         report.productionInCartons.toString(),
         report.month.toString(),
         getWeekNumber(report.day, report.month, report.year).toString(),
@@ -554,10 +562,10 @@ class ExcelUtilities {
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd3,
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd4
       ];
-      double matchedOverWeight =
-          doesHaveCorrespondingOverweight(report, this.overweightList)
-              ? getCorrespondingOverweight(report, this.overweightList)
-              : 0.0;
+      double matchedOverWeight = doesProdReportHaveCorrespondingOverweight(
+              report, this.overweightList)
+          ? getCorrespondingOverweightToProdReport(report, this.overweightList)
+          : 0.0;
       /////////////////////////////////////////////////////////////
       totTheoreticals += theoreticals[report.line_index - 1];
       totKg += calculateProductionKg(report, report.productionInCartons);
@@ -576,14 +584,16 @@ class ExcelUtilities {
       totMc1Used += report.mc1FilmUsed;
       totMc2Waste += report.mc2WasteKg;
       totMc2Used += report.mc2FilmUsed;
-      avgOverweight = doesHaveCorrespondingOverweight(
-              report, this.overweightList)
-          ? (avgOverweight == 0.0
-              ? getCorrespondingOverweight(report, this.overweightList)
-              : (avgOverweight +
-                      getCorrespondingOverweight(report, this.overweightList)) /
-                  2)
-          : avgOverweight;
+      avgOverweight =
+          doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
+              ? (avgOverweight == 0.0
+                  ? getCorrespondingOverweightToProdReport(
+                      report, this.overweightList)
+                  : (avgOverweight +
+                          getCorrespondingOverweightToProdReport(
+                              report, this.overweightList)) /
+                      2)
+              : avgOverweight;
       avgOEE = (avgOEE == 0.0
           ? calculateOeeFromOriginalReport(
               report,
@@ -632,8 +642,10 @@ class ExcelUtilities {
         report.mc2WasteKg.toString(),
         calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg)
             .toStringAsFixed(1),
-        doesHaveCorrespondingOverweight(report, this.overweightList)
-            ? getCorrespondingOverweight(report, this.overweightList).toString()
+        doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
+            ? getCorrespondingOverweightToProdReport(
+                    report, this.overweightList)
+                .toString()
             : "-",
         calculateAllScrap(refNum, report).toString(),
         (calculateAllRework(refNum, report) *
@@ -664,11 +676,9 @@ class ExcelUtilities {
                 refNum,
                 matchedOverWeight)
             .toStringAsFixed(1),
-        doesHaveCorrespondingOverweight(report, this.overweightList)
-            ? (calculateProductionKg(report, report.productionInCartons) *
-                    getCorrespondingOverweight(report, this.overweightList))
-                .toStringAsFixed(1)
-            : "-",
+        (calculateProductionKg(report, report.productionInCartons) *
+                matchedOverWeight)
+            .toStringAsFixed(1),
         report.productionInCartons.toString(),
         report.month.toString(),
         getWeekNumber(report.day, report.month, report.year).toString(),
@@ -715,6 +725,106 @@ class ExcelUtilities {
       avgOEE.toStringAsFixed(1),
       (totKg * avgOverweight).toStringAsFixed(1),
       totCartons.toString(),
+      '-',
+      '-',
+      '-',
+    ];
+    sheetObject.appendRow(tot);
+  }
+
+  void insertTotalReportRows(
+    List<MiniProductionReport> reportsList,
+  ) {
+    double totKg = 0.0,
+        totRework = 0.0,
+        totFilmWaste = 0.0,
+        totFilmUsed = 0.0,
+        avgOverweight = 0.0,
+        totScrap = 0.0,
+        totWeight = 0.0,
+        avgOEE = 0.0,
+        totOverWeightKg = 0.0,
+        totPlanKg = 0.0,
+        totRmMuv = 0.0;
+    int totCartons = 0;
+    for (MiniProductionReport report in reportsList) {
+      totPlanKg += report.planInKg;
+      totRmMuv += report.rmMUV;
+      avgOverweight =
+          doesMiniReportHaveCorrespondingOverweight(report, this.overweightList)
+              ? (avgOverweight == 0.0
+                  ? getCorrespondingOverweightToMiniReport(
+                      report, this.overweightList)
+                  : (avgOverweight +
+                          getCorrespondingOverweightToMiniReport(
+                              report, this.overweightList)) /
+                      2)
+              : avgOverweight;
+      double matchedOverWeight = doesMiniReportHaveCorrespondingOverweight(
+              report, this.overweightList)
+          ? getCorrespondingOverweightToMiniReport(report, this.overweightList)
+          : 0.0;
+      totKg += report.productionInKg;
+      totRework += report.rework;
+      totScrap += report.scrap;
+      totWeight += calculateAllWeightFromMiniReport(report, matchedOverWeight);
+      totCartons += report.productionInCartons;
+      totOverWeightKg += matchedOverWeight * report.productionInKg;
+      avgOEE = (avgOEE == 0.0
+          ? calculateOeeFromMiniReport(report, matchedOverWeight)
+          : (avgOEE + calculateOeeFromMiniReport(report, matchedOverWeight)) /
+              2);
+      /////////////////////////////////////////////////////////////
+      List<String> row = [
+        constructDate(report.day, report.month, report.year),
+        report.planInKg.toStringAsFixed(1),
+        report.productionInKg.toStringAsFixed(1),
+        report.productionInCartons.toString(),
+        doesMiniReportHaveCorrespondingOverweight(report, this.overweightList)
+            ? getCorrespondingOverweightToMiniReport(
+                    report, this.overweightList)
+                .toString()
+            : "-",
+        (matchedOverWeight * report.productionInKg).toStringAsFixed(1),
+        report.scrap.toString(),
+        (report.scrap *
+                100 /
+                calculateAllWeightFromMiniReport(report, matchedOverWeight))
+            .toStringAsFixed(1),
+        (report.rework *
+                100 /
+                calculateAllWeightFromMiniReport(report, matchedOverWeight))
+            .toStringAsFixed(1),
+        calculateWastePercent(report.totalFilmUsed, report.totalFilmWasted)
+            .toStringAsFixed(1),
+        (calculateRate(report, matchedOverWeight) * 100).toStringAsFixed(1),
+        (calculateAvailability(report) * 100).toStringAsFixed(1),
+        (calculateQuality(report, matchedOverWeight) * 100).toStringAsFixed(1),
+        calculateOeeFromMiniReport(report, matchedOverWeight)
+            .toStringAsFixed(1),
+        report.rmMUV.toStringAsFixed(1),
+        report.month.toString(),
+        getWeekNumber(report.day, report.month, report.year).toString(),
+        report.year.toString(),
+      ];
+      sheetObject.appendRow(row);
+    }
+    List<String> tot = [
+      'TOTAL',
+      totPlanKg.toStringAsFixed(1),
+      totKg.toStringAsFixed(1),
+      totCartons.toString(),
+      avgOverweight.toStringAsFixed(2),
+      totOverWeightKg.toStringAsFixed(1),
+      totScrap.toStringAsFixed(1),
+      (totScrap * 100 / totWeight).toStringAsFixed(1),
+      (totRework * 100 / totWeight).toStringAsFixed(1),
+      calculateWastePercent(totFilmUsed, totFilmWaste).toStringAsFixed(1),
+      '-',
+      '-',
+      '-',
+      avgOEE.toStringAsFixed(1),
+      totRmMuv.toStringAsFixed(1),
       '-',
       '-',
       '-',

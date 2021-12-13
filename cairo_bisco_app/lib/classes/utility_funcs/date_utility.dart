@@ -88,3 +88,17 @@ bool inEditPeriod(int day, int month, int year) {
 double minutesToHours(double minutes) {
   return minutes / 60;
 }
+
+List<DateTime> getDaysInInterval(
+  DateTime start,
+  DateTime end,
+) {
+  List<DateTime> out = [];
+  DateTime tempDay = start;
+  while (tempDay.isBefore(end)) {
+    out.add(tempDay);
+    tempDay.add(Duration(days: 1));
+  }
+  out.add(end);
+  return out;
+}

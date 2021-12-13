@@ -175,7 +175,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                     int.parse(to_day),
                                                     int.parse(chosenYear),
                                                     TOTAL_PLANT,
-                                                    -1,
+                                                    ALL_LINES,
                                                   );
                                                   List<OverWeightReport>
                                                       overweightTempList =
@@ -202,13 +202,13 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                       temp_biscuit_report =
                                                       BiscuitsReport
                                                           .getFilteredReportOfInterval(
-                                                    biscuitsReportsList,
+                                                        biscuitsReportsList,
                                                     int.parse(from_month),
                                                     int.parse(to_month),
                                                     int.parse(from_day),
                                                     int.parse(to_day),
                                                     int.parse(chosenYear),
-                                                    -1,
+                                                    ALL_LINES,
                                                     overweightTempList,
                                                   );
                                                   List<
@@ -223,13 +223,13 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                       temp_wafer_report =
                                                       WaferReport
                                                           .getFilteredReportOfInterval(
-                                                    waferReportsList,
+                                                        waferReportsList,
                                                     int.parse(from_month),
                                                     int.parse(to_month),
                                                     int.parse(from_day),
                                                     int.parse(to_day),
                                                     int.parse(chosenYear),
-                                                    -1,
+                                                    ALL_LINES,
                                                     overweightTempList,
                                                   );
                                                   List<
@@ -244,13 +244,13 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                       temp_maamoul_report =
                                                       MaamoulReport
                                                           .getFilteredReportOfInterval(
-                                                    maamoulReportsList,
+                                                        maamoulReportsList,
                                                     int.parse(from_month),
                                                     int.parse(to_month),
                                                     int.parse(from_day),
                                                     int.parse(to_day),
                                                     int.parse(chosenYear),
-                                                    -1,
+                                                    ALL_LINES,
                                                     overweightTempList,
                                                   );
                                                   return Center(
