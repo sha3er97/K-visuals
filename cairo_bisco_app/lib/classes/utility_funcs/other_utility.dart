@@ -30,14 +30,12 @@ bool canEditThisReport(String supName, int day, int month, int year) {
 
 double getCorrespondingOverweightToProdReport(
     prodReport, List<OverWeightReport> overweightList) {
-  if (doesProdReportHaveCorrespondingOverweight(prodReport, overweightList)) {
-    for (OverWeightReport report in overweightList) {
-      if (report.day == prodReport.day &&
-          report.month == prodReport.month &&
-          report.line_index == prodReport.line_index &&
-          report.year == prodReport.year) {
-        return report.percent;
-      }
+  for (OverWeightReport report in overweightList) {
+    if (report.day == prodReport.day &&
+        report.month == prodReport.month &&
+        report.line_index == prodReport.line_index &&
+        report.year == prodReport.year) {
+      return report.percent;
     }
   }
   return 99.9;
@@ -58,20 +56,18 @@ bool doesProdReportHaveCorrespondingOverweight(
 
 double getCorrespondingOverweightToMiniReport(
     MiniProductionReport prodReport, List<OverWeightReport> overweightList) {
-  if (doesProdReportHaveCorrespondingOverweight(prodReport, overweightList)) {
-    for (OverWeightReport report in overweightList) {
-      if (report.day == prodReport.day &&
-          report.month == prodReport.month &&
-          report.year == prodReport.year) {
-        return report.percent;
-      }
+  for (OverWeightReport report in overweightList) {
+    if (report.day == prodReport.day &&
+        report.month == prodReport.month &&
+        report.year == prodReport.year) {
+      return report.percent;
     }
   }
   return 99.9;
 }
 
 bool doesMiniReportHaveCorrespondingOverweight(
-    prodReport, List<OverWeightReport> overweightList) {
+    MiniProductionReport prodReport, List<OverWeightReport> overweightList) {
   for (OverWeightReport report in overweightList) {
     if (report.day == prodReport.day &&
         report.month == prodReport.month &&

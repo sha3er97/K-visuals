@@ -207,7 +207,8 @@ class OverWeightReport {
             report.data().day.toString());
         continue;
       }
-      if (report.data().area == refNum) hashMap[report.id] = report.data();
+      if (report.data().area == refNum || refNum == TOTAL_PLANT)
+        hashMap[report.id] = report.data();
     }
     return hashMap as HashMap<String, OverWeightReport>;
   }
@@ -227,6 +228,7 @@ class OverWeightReport {
         temp_consumer_complaints = 0,
         temp_pes_index = 0,
         temp_g6_index = 0;
+    int temp_month = month_from, temp_day = day_from, temp_year = year;
 
     for (var report in reportsList) {
       if (!isDayInInterval(
@@ -253,6 +255,9 @@ class OverWeightReport {
         temp_consumer_complaints += report.data().consumer_complaints;
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
+        temp_month = report.data().month;
+        temp_day = report.data().day;
+        temp_year = report.data().year;
         print('debug :: OverWeightReport chosen in first if');
       } else if (lineNumRequired == ALL_LINES &&
           areaRequired != TOTAL_PLANT &&
@@ -263,6 +268,9 @@ class OverWeightReport {
         temp_consumer_complaints += report.data().consumer_complaints;
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
+        temp_month = report.data().month;
+        temp_day = report.data().day;
+        temp_year = report.data().year;
         print('debug :: OverWeightReport chosen in second if');
       } else if (areaRequired == TOTAL_PLANT) {
         // all shifts all lines all areas
@@ -271,6 +279,9 @@ class OverWeightReport {
         temp_consumer_complaints += report.data().consumer_complaints;
         temp_pes_index = max(temp_pes_index, report.data().pes_index);
         temp_g6_index = max(temp_g6_index, report.data().g6_index);
+        temp_month = report.data().month;
+        temp_day = report.data().day;
+        temp_year = report.data().year;
         print('debug :: OverWeightReport chosen in third if');
       } else {
         print('debug :: OverWeightReport filtered out due to conditions');
@@ -283,9 +294,9 @@ class OverWeightReport {
           valid_reports_count == 0 ? 0.0 : temp_percent / valid_reports_count,
       line_index: lineNumRequired,
       area: areaRequired,
-      year: -1,
-      month: -1,
-      day: -1,
+      year: temp_year,
+      month: temp_month,
+      day: temp_day,
       pes_index: temp_pes_index,
       g6_index: temp_g6_index,
       consumer_complaints: temp_consumer_complaints,

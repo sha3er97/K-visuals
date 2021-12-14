@@ -405,6 +405,8 @@ class WaferReport {
         temp_all_shift_hours = 0.0;
     int temp_productionInCartons = 0, temp_productionPlan = 0;
     String lastSkuName = '-';
+    int temp_month = month_from, temp_day = day_from, temp_year = year;
+
     // String lastSkuName = SKU.biscuitSKU[0];
     for (var report in reportsList) {
       if (!isDayInInterval(
@@ -457,7 +459,9 @@ class WaferReport {
         temp_pm_muv += calculatePmMUV(WAFER_AREA, report.data());
         temp_all_shift_hours += report.data().shiftHours;
         temp_wasted_minutes += report.data().wastedMinutes;
-
+        temp_month = report.data().month;
+        temp_day = report.data().day;
+        temp_year = report.data().year;
         print('debug :: WaferReport chosen in first if');
       } else {
         print(
@@ -471,9 +475,9 @@ class WaferReport {
       shift_index: -1,
       line_index: -1,
       area: -1,
-      year: -1,
-      month: -1,
-      day: -1,
+      year: temp_year,
+      month: temp_month,
+      day: temp_day,
       scrap: temp_scrap,
       productionInCartons: temp_productionInCartons,
       productionInKg: temp_productionInKg,

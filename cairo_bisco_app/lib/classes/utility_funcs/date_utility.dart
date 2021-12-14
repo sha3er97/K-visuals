@@ -97,7 +97,7 @@ List<DateTime> getDaysInInterval(
   DateTime tempDay = start;
   while (tempDay.isBefore(end)) {
     out.add(tempDay);
-    tempDay.add(Duration(days: 1));
+    tempDay = tempDay.add(Duration(days: 1));
   }
   out.add(end);
   return out;

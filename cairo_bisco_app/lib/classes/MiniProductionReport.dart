@@ -85,6 +85,7 @@ class MiniProductionReport {
         temp_wasted_minutes = 0.0,
         temp_all_shift_hours = 0.0;
     int temp_productionInCartons = 0, temp_productionPlan = 0;
+    int temp_month = -1, temp_day = -1, temp_year = -1;
     for (var report in reportsList) {
       temp_productionInCartons += report.productionInCartons;
       temp_productionInKg += report.productionInKg;
@@ -99,6 +100,9 @@ class MiniProductionReport {
       temp_pm_muv += report.pmMUV;
       temp_wasted_minutes += report.wastedMinutes;
       temp_all_shift_hours += report.plannedHours;
+      temp_month = report.month;
+      temp_day = report.day;
+      temp_year = report.year;
     }
     //return the total in capsulized form
     return MiniProductionReport(
@@ -106,9 +110,9 @@ class MiniProductionReport {
       shift_index: -1,
       line_index: -1,
       area: TOTAL_PLANT,
-      year: -1,
-      month: -1,
-      day: -1,
+      year: temp_year,
+      month: temp_month,
+      day: temp_day,
       scrap: temp_scrap,
       productionInCartons: temp_productionInCartons,
       productionInKg: temp_productionInKg,

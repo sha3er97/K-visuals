@@ -205,7 +205,8 @@ class ExcelUtilities {
         theoreticals[report.line_index - 1].toString(),
         "Kg",
         report.actualSpeed.toString(),
-        calculateProductionKg(report, report.productionInCartons).toString(),
+        calculateProductionKg(report, report.productionInCartons)
+            .toStringAsFixed(1),
         calculateAllRework(refNum, report).toString(),
         report.extrusionRework.toString(),
         report.extrusionScrap.toString(),
@@ -262,7 +263,7 @@ class ExcelUtilities {
                 matchedOverWeight)
             .toStringAsFixed(1),
         (calculateProductionKg(report, report.productionInCartons) *
-                matchedOverWeight)
+                (matchedOverWeight / 100))
             .toStringAsFixed(1),
         report.productionInCartons.toString(),
         report.month.toString(),
@@ -280,7 +281,7 @@ class ExcelUtilities {
       '-',
       '-',
       '-',
-      totTheoreticals.toString(),
+      totTheoreticals.toStringAsFixed(2),
       '-',
       '-',
       totKg.toStringAsFixed(1),
@@ -299,9 +300,9 @@ class ExcelUtilities {
       totPackingScrap.toString(),
       totBoxesWaste.toString(),
       totCartonWaste.toString(),
-      totMc1Waste.toString(),
+      totMc1Waste.toStringAsFixed(1),
       calculateWastePercent(totMc1Used, totMc1Waste).toStringAsFixed(1),
-      totMc2Waste.toString(),
+      totMc2Waste.toStringAsFixed(1),
       calculateWastePercent(totMc2Used, totMc2Waste).toStringAsFixed(1),
       avgOverweight.toStringAsFixed(1),
       totScrap.toString(),
@@ -311,7 +312,7 @@ class ExcelUtilities {
       '-',
       '-',
       avgOEE.toStringAsFixed(1),
-      (totKg * avgOverweight).toStringAsFixed(1),
+      (totKg * (avgOverweight / 100)).toStringAsFixed(1),
       totCartons.toString(),
       '-',
       '-',
@@ -416,7 +417,8 @@ class ExcelUtilities {
         theoreticals[report.line_index - 1].toString(),
         "Kg",
         report.actualSpeed.toString(),
-        calculateProductionKg(report, report.productionInCartons).toString(),
+        calculateProductionKg(report, report.productionInCartons)
+            .toStringAsFixed(1),
         calculateAllRework(refNum, report).toString(),
         report.ovenRework.toString(),
         report.ovenScrap.toString(),
@@ -473,7 +475,7 @@ class ExcelUtilities {
                 matchedOverWeight)
             .toStringAsFixed(1),
         (calculateProductionKg(report, report.productionInCartons) *
-                matchedOverWeight)
+                (matchedOverWeight / 100))
             .toStringAsFixed(1),
         report.productionInCartons.toString(),
         report.month.toString(),
@@ -490,7 +492,7 @@ class ExcelUtilities {
       '-',
       '-',
       '-',
-      totTheoreticals.toString(),
+      totTheoreticals.toStringAsFixed(2),
       '-',
       '-',
       totKg.toStringAsFixed(1),
@@ -509,9 +511,9 @@ class ExcelUtilities {
       totPackingScrap.toString(),
       totBoxesWaste.toString(),
       totCartonWaste.toString(),
-      totMc1Waste.toString(),
+      totMc1Waste.toStringAsFixed(1),
       calculateWastePercent(totMc1Used, totMc1Waste).toStringAsFixed(1),
-      totMc2Waste.toString(),
+      totMc2Waste.toStringAsFixed(1),
       calculateWastePercent(totMc2Used, totMc2Waste).toStringAsFixed(1),
       avgOverweight.toStringAsFixed(1),
       totScrap.toString(),
@@ -521,7 +523,7 @@ class ExcelUtilities {
       '-',
       '-',
       avgOEE.toStringAsFixed(1),
-      (totKg * avgOverweight).toStringAsFixed(1),
+      (totKg * (avgOverweight / 100)).toStringAsFixed(1),
       totCartons.toString(),
       '-',
       '-',
@@ -622,7 +624,8 @@ class ExcelUtilities {
         theoreticals[report.line_index - 1].toString(),
         "Kg",
         report.actualSpeed.toString(),
-        calculateProductionKg(report, report.productionInCartons).toString(),
+        calculateProductionKg(report, report.productionInCartons)
+            .toStringAsFixed(1),
         calculateAllRework(refNum, report).toString(),
         report.mixerRework.toString(),
         report.mixerScrap.toString(),
@@ -677,7 +680,7 @@ class ExcelUtilities {
                 matchedOverWeight)
             .toStringAsFixed(1),
         (calculateProductionKg(report, report.productionInCartons) *
-                matchedOverWeight)
+                (matchedOverWeight / 100))
             .toStringAsFixed(1),
         report.productionInCartons.toString(),
         report.month.toString(),
@@ -694,7 +697,7 @@ class ExcelUtilities {
       '-',
       '-',
       '-',
-      totTheoreticals.toString(),
+      totTheoreticals.toStringAsFixed(2),
       '-',
       '-',
       totKg.toStringAsFixed(1),
@@ -711,9 +714,9 @@ class ExcelUtilities {
       totPackingScrap.toString(),
       totBoxesWaste.toString(),
       totCartonWaste.toString(),
-      totMc1Waste.toString(),
+      totMc1Waste.toStringAsFixed(1),
       calculateWastePercent(totMc1Used, totMc1Waste).toStringAsFixed(1),
-      totMc2Waste.toString(),
+      totMc2Waste.toStringAsFixed(1),
       calculateWastePercent(totMc2Used, totMc2Waste).toStringAsFixed(1),
       avgOverweight.toStringAsFixed(1),
       totScrap.toString(),
@@ -723,7 +726,7 @@ class ExcelUtilities {
       '-',
       '-',
       avgOEE.toStringAsFixed(1),
-      (totKg * avgOverweight).toStringAsFixed(1),
+      (totKg * (avgOverweight / 100)).toStringAsFixed(1),
       totCartons.toString(),
       '-',
       '-',
@@ -748,6 +751,8 @@ class ExcelUtilities {
         totRmMuv = 0.0;
     int totCartons = 0;
     for (MiniProductionReport report in reportsList) {
+      totFilmUsed += report.totalFilmUsed;
+      totFilmWaste += report.totalFilmWasted;
       totPlanKg += report.planInKg;
       totRmMuv += report.rmMUV;
       avgOverweight =
@@ -769,11 +774,14 @@ class ExcelUtilities {
       totScrap += report.scrap;
       totWeight += calculateAllWeightFromMiniReport(report, matchedOverWeight);
       totCartons += report.productionInCartons;
-      totOverWeightKg += matchedOverWeight * report.productionInKg;
-      avgOEE = (avgOEE == 0.0
-          ? calculateOeeFromMiniReport(report, matchedOverWeight)
-          : (avgOEE + calculateOeeFromMiniReport(report, matchedOverWeight)) /
-              2);
+      totOverWeightKg += (matchedOverWeight / 100) * report.productionInKg;
+      avgOEE = calculateOeeFromMiniReport(report, matchedOverWeight) == 0.0
+          ? avgOEE
+          : (avgOEE == 0.0
+              ? calculateOeeFromMiniReport(report, matchedOverWeight)
+              : (avgOEE +
+                      calculateOeeFromMiniReport(report, matchedOverWeight)) /
+                  2);
       /////////////////////////////////////////////////////////////
       List<String> row = [
         constructDate(report.day, report.month, report.year),
@@ -785,7 +793,7 @@ class ExcelUtilities {
                     report, this.overweightList)
                 .toString()
             : "-",
-        (matchedOverWeight * report.productionInKg).toStringAsFixed(1),
+        ((matchedOverWeight / 100) * report.productionInKg).toStringAsFixed(1),
         report.scrap.toString(),
         (report.scrap *
                 100 /

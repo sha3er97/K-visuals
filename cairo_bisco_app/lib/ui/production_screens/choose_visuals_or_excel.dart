@@ -259,10 +259,10 @@ class ChooseVisualsOrExcel extends StatelessWidget {
                                 temp_maamoul_report
                               ]));
                               // done :: send the whole list to util
-                              util.insertTotalReportRows(allReports);
-                              util.saveFile(context, from_day, to_day,
-                                  from_month, to_month);
                             }
+                            util.insertTotalReportRows(allReports);
+                            util.saveFile(context, from_day, to_day, from_month,
+                                to_month);
                           });
                         });
                       });
