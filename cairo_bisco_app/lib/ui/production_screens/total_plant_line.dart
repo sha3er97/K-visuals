@@ -91,7 +91,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
             tabs: [
               Tab(
                 icon: Icon(
-                  Icons.dashboard_customize_rounded,
+                  Icons.add_box,
                 ),
                 text: "Total Plant",
               ),

@@ -36,8 +36,8 @@ class ProductionLine extends StatelessWidget {
     String arrowImg5 = report.pmMUV <= 0 ? "up" : "down";
 
     return Container(
-      margin: EdgeInsets.all(defaultPadding),
-      padding: EdgeInsets.all(defaultPadding),
+      margin: EdgeInsets.symmetric(vertical: defaultPadding),
+      // padding: EdgeInsets.all(defaultPadding),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,13 +228,13 @@ class ProductionLine extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(BoxImageBorder),
               child: ConstrainedBox(
-                constraints: BoxConstraints.tightFor(height: buttonHeight),
+                constraints: BoxConstraints.tightFor(height: minimumBoxHeight),
                 child: ElevatedButton.icon(
                   label: Text(
                       report.wastedMinutes.round().toString() + " Minutes"),
                   style: ElevatedButton.styleFrom(
                       textStyle: TextStyle(
-                          fontSize: largeButtonFont, fontFamily: 'MyFont'),
+                          fontSize: aboveMediumFontSize, fontFamily: 'MyFont'),
                       primary: KelloggColors.grey),
                   icon: ClipRRect(
                     borderRadius: BorderRadius.circular(iconImageBorder),
@@ -253,7 +253,7 @@ class ProductionLine extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: defaultPadding),
+          SizedBox(height: minimumPadding),
           SfRadialGauge(
             title: GaugeTitle(
                 text: 'OEE%',
@@ -289,7 +289,7 @@ class ProductionLine extends StatelessWidget {
               ])
             ],
           ),
-          SizedBox(height: defaultPadding),
+          SizedBox(height: minimumPadding),
           SfRadialGauge(
             title: GaugeTitle(
                 text: 'Scrap%',
@@ -379,7 +379,7 @@ class ProductionLine extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: defaultPadding),
+          SizedBox(height: minimumPadding),
           SfRadialGauge(
             title: GaugeTitle(
                 text: 'Film Waste%',

@@ -1,7 +1,7 @@
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 
 /** version number**/
-const versionNum = '3.0.3'; //edit also in pubspec.yaml
+const versionNum = '3.0.4'; //edit also in pubspec.yaml
 const versionCode = 5; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
@@ -48,6 +48,7 @@ const borderWidth = 2.0;
 const regularIconSize = 40.0;
 const smallIconSize = 25.0;
 const mediumIconSize = 50.0;
+const minimumBoxHeight = 50.0;
 const regularBoxHeight = 150.0;
 const LargeBoxHeight = 200.0;
 const TightBoxWidth = 300.0;
