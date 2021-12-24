@@ -281,7 +281,7 @@ class ProductionColScreen extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(BoxImageBorder),
               child: ConstrainedBox(
-                constraints: BoxConstraints.tightFor(height: regularBoxHeight),
+                constraints: BoxConstraints.tightFor(height: kpiBoxHeight),
                 child: ElevatedButton.icon(
                   label: Text(((report.rmMUV + report.pmMUV) / 1000)
                           .toStringAsFixed(2) +

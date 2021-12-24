@@ -74,47 +74,62 @@ class QFSColScreen extends StatelessWidget {
             ],
           ),
         ),
-        myDivider(),
-        SfRadialGauge(
-          title: GaugeTitle(
-              text: 'نسبة الهالك %',
-              textStyle: TextStyle(
-                  fontSize: largeFontSize,
-                  fontWeight: FontWeight.bold,
-                  color: KelloggColors.darkRed)),
-          enableLoadingAnimation: true,
-          animationDuration: 2000,
-          axes: <RadialAxis>[
-            RadialAxis(minimum: 0, maximum: maxScrap, pointers: <GaugePointer>[
-              NeedlePointer(
-                  value: calculateScrapPercent(report, overweight),
-                  enableAnimation: true)
-            ], ranges: <GaugeRange>[
-              GaugeRange(
-                  startValue: 0,
-                  endValue: noWork
-                      ? Plans.universalTargetScrap
-                      : SKU.skuDetails[report.skuName]!.targetScrap,
-                  color: KelloggColors.successGreen),
-              GaugeRange(
-                  startValue: noWork
-                      ? Plans.universalTargetScrap
-                      : SKU.skuDetails[report.skuName]!.targetScrap,
-                  endValue: maxScrap,
-                  color: KelloggColors.clearRed)
-            ], annotations: <GaugeAnnotation>[
-              GaugeAnnotation(
-                  widget: Text(
-                    calculateScrapPercent(report, overweight)
-                            .toStringAsFixed(1) +
-                        ' %',
-                    style: TextStyle(
-                        fontSize: largeFontSize, fontWeight: FontWeight.bold),
-                  ),
-                  positionFactor: 0.5,
-                  angle: 90)
-            ])
-          ],
+        myHorizontalDivider(),
+        Center(
+          child: Container(
+            height: screenGaugeSize,
+            width: screenGaugeSize,
+            child: SfRadialGauge(
+              title: GaugeTitle(
+                  text: 'نسبة الهالك %',
+                  textStyle: TextStyle(
+                      fontSize: largeFontSize,
+                      fontWeight: FontWeight.bold,
+                      color: KelloggColors.darkRed)),
+              enableLoadingAnimation: true,
+              animationDuration: 2000,
+              axes: <RadialAxis>[
+                RadialAxis(
+                    minimum: 0,
+                    maximum: maxScrap,
+                    pointers: <GaugePointer>[
+                      NeedlePointer(
+                        value: calculateScrapPercent(report, overweight),
+                        needleLength: screenGaugeNeedleLength,
+                        needleEndWidth: needleEndWidth,
+                        enableAnimation: true,
+                      )
+                    ],
+                    ranges: <GaugeRange>[
+                      GaugeRange(
+                          startValue: 0,
+                          endValue: noWork
+                              ? Plans.universalTargetScrap
+                              : SKU.skuDetails[report.skuName]!.targetScrap,
+                          color: KelloggColors.successGreen),
+                      GaugeRange(
+                          startValue: noWork
+                              ? Plans.universalTargetScrap
+                              : SKU.skuDetails[report.skuName]!.targetScrap,
+                          endValue: maxScrap,
+                          color: KelloggColors.clearRed)
+                    ],
+                    annotations: <GaugeAnnotation>[
+                      GaugeAnnotation(
+                          widget: Text(
+                            calculateScrapPercent(report, overweight)
+                                    .toStringAsFixed(1) +
+                                ' %',
+                            style: TextStyle(
+                                fontSize: largeFontSize,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          positionFactor: 0.5,
+                          angle: 90)
+                    ])
+              ],
+            ),
+          ),
         ),
       ],
     );

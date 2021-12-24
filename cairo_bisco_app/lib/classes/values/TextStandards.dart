@@ -20,6 +20,7 @@ Widget ErrorMessageHeading(String title) {
 Text subHeading(String title) {
   return Text(
     title,
+    textAlign: TextAlign.center,
     style: TextStyle(
       color: KelloggColors.darkRed,
       fontSize: largeFontSize,
@@ -31,6 +32,7 @@ Text subHeading(String title) {
 Text smallerHeading(String title) {
   return Text(
     title,
+    textAlign: TextAlign.center,
     style: TextStyle(
         fontSize: mediumFontSize,
         fontWeight: FontWeight.w500,
@@ -48,10 +50,20 @@ Text adminHeading(String title) {
   );
 }
 
-Widget myDivider() {
+Widget myHorizontalDivider() {
   return Divider(
     height: 20,
     thickness: 3,
+    indent: 5,
+    endIndent: 5,
+  );
+}
+
+Widget myVerticalDivider() {
+  return VerticalDivider(
+    width: 15,
+    thickness: 3,
+    // color: KelloggColors.darkRed,
     indent: 5,
     endIndent: 5,
   );
@@ -90,7 +102,7 @@ Widget sectionWithDivider(String title) {
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      myDivider(),
+      myHorizontalDivider(),
       Text(
         title,
         maxLines: 2,

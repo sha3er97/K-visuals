@@ -136,7 +136,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                       return ErrorMessageHeading('Something went wrong');
                     } else if (overweightSnapshot.connectionState ==
                         ConnectionState.waiting) {
-                      return ErrorMessageHeading("overweightSnapshot Loading");
+                      return ColorLoader();
                     } else {
                       List<QueryDocumentSnapshot<OverWeightReport>>
                           reportsList = overweightSnapshot.data!.docs

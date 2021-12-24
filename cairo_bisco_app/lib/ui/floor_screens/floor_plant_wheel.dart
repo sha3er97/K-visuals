@@ -15,6 +15,7 @@ import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/6kpis_good_bad_indicator.dart';
+import 'package:cairo_bisco_app/ui/error_success_screens/loading_screen.dart';
 import 'package:cairo_bisco_app/ui/floor_screens/floor_dashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -172,7 +173,7 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
                   return ErrorMessageHeading('Something went wrong');
                 } else if (productionSnapshot.connectionState ==
                     ConnectionState.waiting) {
-                  return ErrorMessageHeading("Production Loading");
+                  return ColorLoader();
                 } else {
                   return FutureBuilder<QuerySnapshot>(
                     future: overWeightReportRef.get(),
@@ -182,8 +183,7 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
                         return ErrorMessageHeading('Something went wrong');
                       } else if (overweightSnapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return ErrorMessageHeading(
-                            "overweightSnapshot Loading");
+                        return ColorLoader();
                       } else {
                         List<QueryDocumentSnapshot<OverWeightReport>>
                             reportsList = overweightSnapshot.data!.docs as List<
@@ -271,7 +271,7 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
                                   'Something went wrong');
                             } else if (qualitySnapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return ErrorMessageHeading("QFS Loading");
+                              return ColorLoader();
                             } else {
                               List<QueryDocumentSnapshot<QfsReport>>
                                   reportsList = qualitySnapshot.data!.docs
@@ -295,7 +295,7 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
                                         'Something went wrong');
                                   } else if (ehsSnapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    return ErrorMessageHeading("EHS Loading");
+                                    return ColorLoader();
                                   } else {
                                     List<QueryDocumentSnapshot<EhsReport>>
                                         reportsList =
@@ -322,8 +322,7 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
                                         } else if (peopleSnapshot
                                                 .connectionState ==
                                             ConnectionState.waiting) {
-                                          return ErrorMessageHeading(
-                                              "people Loading");
+                                          return ColorLoader();
                                         } else {
                                           List<
                                                   QueryDocumentSnapshot<
@@ -354,8 +353,7 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
                                               } else if (nrcSnapshot
                                                       .connectionState ==
                                                   ConnectionState.waiting) {
-                                                return ErrorMessageHeading(
-                                                    "NRC Loading");
+                                                return ColorLoader();
                                               } else {
                                                 List<
                                                         QueryDocumentSnapshot<

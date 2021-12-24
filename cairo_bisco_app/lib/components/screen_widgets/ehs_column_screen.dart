@@ -88,55 +88,64 @@ class EHSColScreen extends StatelessWidget {
             ],
           ),
         ),
-        myDivider(),
-        SfRadialGauge(
-          title: GaugeTitle(
-              text: 'هالك التغليف %',
-              textStyle: TextStyle(
-                  fontSize: largeFontSize,
-                  fontWeight: FontWeight.bold,
-                  color: KelloggColors.darkRed)),
-          enableLoadingAnimation: true,
-          animationDuration: 2000,
-          axes: <RadialAxis>[
-            RadialAxis(
-                minimum: 0,
-                maximum: maxFilmWaste,
-                pointers: <GaugePointer>[
-                  NeedlePointer(
-                      value: calculateWastePercent(
-                          report.totalFilmUsed, report.totalFilmWasted),
-                      enableAnimation: true)
-                ],
-                ranges: <GaugeRange>[
-                  GaugeRange(
-                      startValue: 0,
-                      endValue: noWork
-                          ? Plans.universalTargetFilmWaste
-                          : SKU.skuDetails[report.skuName]!.targetFilmWaste,
-                      color: KelloggColors.successGreen),
-                  GaugeRange(
-                      startValue: noWork
-                          ? Plans.universalTargetFilmWaste
-                          : SKU.skuDetails[report.skuName]!.targetFilmWaste,
-                      endValue: maxFilmWaste,
-                      color: KelloggColors.clearRed)
-                ],
-                annotations: <GaugeAnnotation>[
-                  GaugeAnnotation(
-                      widget: Text(
-                        calculateWastePercent(report.totalFilmUsed,
-                                    report.totalFilmWasted)
-                                .toStringAsFixed(1) +
-                            ' %',
-                        style: TextStyle(
-                            fontSize: largeFontSize,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      positionFactor: 0.5,
-                      angle: 90)
-                ])
-          ],
+        myHorizontalDivider(),
+        Center(
+          child: Container(
+            height: screenGaugeSize,
+            width: screenGaugeSize,
+            child: SfRadialGauge(
+              title: GaugeTitle(
+                  text: 'هالك التغليف %',
+                  textStyle: TextStyle(
+                      fontSize: largeFontSize,
+                      fontWeight: FontWeight.bold,
+                      color: KelloggColors.darkRed)),
+              enableLoadingAnimation: true,
+              animationDuration: 2000,
+              axes: <RadialAxis>[
+                RadialAxis(
+                    minimum: 0,
+                    maximum: maxFilmWaste,
+                    pointers: <GaugePointer>[
+                      NeedlePointer(
+                        value: calculateWastePercent(
+                            report.totalFilmUsed, report.totalFilmWasted),
+                        needleLength: screenGaugeNeedleLength,
+                        needleEndWidth: needleEndWidth,
+                        enableAnimation: true,
+                      )
+                    ],
+                    ranges: <GaugeRange>[
+                      GaugeRange(
+                          startValue: 0,
+                          endValue: noWork
+                              ? Plans.universalTargetFilmWaste
+                              : SKU.skuDetails[report.skuName]!.targetFilmWaste,
+                          color: KelloggColors.successGreen),
+                      GaugeRange(
+                          startValue: noWork
+                              ? Plans.universalTargetFilmWaste
+                              : SKU.skuDetails[report.skuName]!.targetFilmWaste,
+                          endValue: maxFilmWaste,
+                          color: KelloggColors.clearRed)
+                    ],
+                    annotations: <GaugeAnnotation>[
+                      GaugeAnnotation(
+                          widget: Text(
+                            calculateWastePercent(report.totalFilmUsed,
+                                        report.totalFilmWasted)
+                                    .toStringAsFixed(1) +
+                                ' %',
+                            style: TextStyle(
+                                fontSize: largeFontSize,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          positionFactor: 0.5,
+                          angle: 90)
+                    ])
+              ],
+            ),
+          ),
         ),
       ],
     );

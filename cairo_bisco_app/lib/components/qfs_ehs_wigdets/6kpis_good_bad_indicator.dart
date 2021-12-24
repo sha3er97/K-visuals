@@ -2,6 +2,7 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class KPI6GoodBadIndicator extends StatelessWidget {
   KPI6GoodBadIndicator({
@@ -30,7 +31,11 @@ class KPI6GoodBadIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: isScreenOnly ? 2.0 : 1.05,
+      aspectRatio: isScreenOnly
+          ? 2.0
+          : kIsWeb
+              ? 3.0
+              : 1.05,
       child: Card(
         // color: Colors.white,
         child: Row(

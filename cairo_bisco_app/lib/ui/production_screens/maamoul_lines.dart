@@ -168,6 +168,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                       report: temp_report,
                                       overweight:
                                           temp_overweight_report.percent,
+                                      isWebView: false,
                                     ),
                                   );
                                 } catch (e) {
@@ -256,6 +257,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                       report: temp_report,
                                       overweight:
                                           temp_overweight_report.percent,
+                                      isWebView: false,
                                     ),
                                   );
                                 } catch (e) {
@@ -344,6 +346,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                       report: temp_report,
                                       overweight:
                                           temp_overweight_report.percent,
+                                      isWebView: false,
                                     ),
                                   );
                                 } catch (e) {
@@ -479,67 +482,89 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                           child: ErrorMessageHeading(
                                               "This View is Available for Web only"),
                                         )
-                                      : Row(
-                                          children: [
-                                            Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal:
-                                                            minimumPadding),
-                                                child: Column(
-                                                  children: [
-                                                    Center(
-                                                      child: ProductionLine(
-                                                        report: temp_report1,
-                                                        overweight:
-                                                            overWeight1.percent,
+                                      : IntrinsicHeight(
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal:
+                                                          minimumPadding),
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: minimumPadding,
                                                       ),
-                                                    ),
-                                                  ],
+                                                      adminHeading("Line 1"),
+                                                      Center(
+                                                        child: ProductionLine(
+                                                          report: temp_report1,
+                                                          overweight:
+                                                              overWeight1
+                                                                  .percent,
+                                                          isWebView: true,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal:
-                                                            minimumPadding),
-                                                child: Column(
-                                                  children: [
-                                                    Center(
-                                                      child: ProductionLine(
-                                                        report: temp_report2,
-                                                        overweight:
-                                                            overWeight2.percent,
+                                              myVerticalDivider(),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal:
+                                                          minimumPadding),
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: minimumPadding,
                                                       ),
-                                                    ),
-                                                  ],
+                                                      adminHeading("Line 2"),
+                                                      Center(
+                                                        child: ProductionLine(
+                                                          report: temp_report2,
+                                                          overweight:
+                                                              overWeight2
+                                                                  .percent,
+                                                          isWebView: true,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal:
-                                                            minimumPadding),
-                                                child: Column(
-                                                  children: [
-                                                    Center(
-                                                      child: ProductionLine(
-                                                        report: temp_reportAll,
-                                                        overweight:
-                                                            overWeightAll
-                                                                .percent,
+                                              myVerticalDivider(),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal:
+                                                          minimumPadding),
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: minimumPadding,
                                                       ),
-                                                    ),
-                                                  ],
+                                                      adminHeading("Total"),
+                                                      Center(
+                                                        child: ProductionLine(
+                                                          report:
+                                                              temp_reportAll,
+                                                          overweight:
+                                                              overWeightAll
+                                                                  .percent,
+                                                          isWebView: true,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         );
                                 } catch (e) {
                                   print(e);

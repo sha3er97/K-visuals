@@ -265,6 +265,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                       overweight:
                                                           temp_overweight_report
                                                               .percent,
+                                                      isWebView: false,
                                                     ),
                                                   );
                                                 }
