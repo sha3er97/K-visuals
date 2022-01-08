@@ -9,7 +9,7 @@ import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/WaferReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/excel_utilities.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/production_excel_utilities.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/alert_dialog.dart';
@@ -164,7 +164,8 @@ class ChooseVisualsOrExcel extends StatelessWidget {
               btn_icon: Icons.file_download,
               param_onPressed: () async {
                 try {
-                  ExcelUtilities util = ExcelUtilities(refNum: refNum);
+                  ProductionExcelUtilities util =
+                      ProductionExcelUtilities(refNum: refNum);
                   util.insertHeaders();
 
                   overWeightReportRef
@@ -261,8 +262,8 @@ class ChooseVisualsOrExcel extends StatelessWidget {
                               // done :: send the whole list to util
                             }
                             util.insertTotalReportRows(allReports);
-                            util.saveFile(context, from_day, to_day, from_month,
-                                to_month);
+                            util.saveExcelFile(context, from_day, to_day,
+                                from_month, to_month);
                           });
                         });
                       });
@@ -319,7 +320,7 @@ class ChooseVisualsOrExcel extends StatelessWidget {
                             util.insertMaamoulReportRows(prodTempList);
                             break;
                         }
-                        util.saveFile(
+                        util.saveExcelFile(
                             context, from_day, to_day, from_month, to_month);
                       });
                     }

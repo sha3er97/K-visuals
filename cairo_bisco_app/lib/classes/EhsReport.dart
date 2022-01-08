@@ -244,6 +244,8 @@ class EhsReport {
         temp_nearMiss = 0,
         temp_risk_assessment = 0,
         temp_s7_index = 0;
+    int temp_month = month_from, temp_day = day_from, temp_year = year;
+
     for (var report in reportsList) {
       if (!isDayInInterval(
         report.data().day,
@@ -270,6 +272,9 @@ class EhsReport {
         temp_nearMiss += report.data().nearMiss;
         temp_risk_assessment += report.data().risk_assessment;
         temp_s7_index = max(temp_s7_index, report.data().s7_index);
+        temp_month = report.data().month;
+        temp_day = report.data().day;
+        temp_year = report.data().year;
         // print('debug :: EhsReport chosen in first if');
       } else if (lineNumRequired == ALL_LINES &&
           areaRequired != TOTAL_PLANT &&
@@ -281,6 +286,9 @@ class EhsReport {
         temp_nearMiss += report.data().nearMiss;
         temp_risk_assessment += report.data().risk_assessment;
         temp_s7_index = max(temp_s7_index, report.data().s7_index);
+        temp_month = report.data().month;
+        temp_day = report.data().day;
+        temp_year = report.data().year;
         // print('debug :: EhsReport chosen in second if');
       } else if (areaRequired == TOTAL_PLANT) {
         // all shifts all lines all areas
@@ -290,6 +298,9 @@ class EhsReport {
         temp_nearMiss += report.data().nearMiss;
         temp_risk_assessment += report.data().risk_assessment;
         temp_s7_index = max(temp_s7_index, report.data().s7_index);
+        temp_month = report.data().month;
+        temp_day = report.data().day;
+        temp_year = report.data().year;
         // print('debug :: EhsReport chosen in third if');
       } else {
         // print('debug :: EhsReport filtered out due to conditions');
@@ -307,9 +318,9 @@ class EhsReport {
       lostTime_incidents: temp_lostTime_incidents,
       firstAid_incidents: temp_firstAid_incidents,
       area: areaRequired,
-      year: -1,
-      month: -1,
-      day: -1,
+      year: temp_year,
+      month: temp_month,
+      day: temp_day,
     );
   }
 

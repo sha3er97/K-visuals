@@ -243,6 +243,8 @@ class QfsReport {
         temp_consumer_complaints = 0, //for backward compatibility
         temp_pes_index = 0, //for backward compatibility
         temp_g6_index = 0; //for backward compatibility
+    int temp_month = month_from, temp_day = day_from, temp_year = year;
+
     for (var report in reportsList) {
       if (!isDayInInterval(
         report.data().day,
@@ -272,6 +274,9 @@ class QfsReport {
             report.data().pes_index); //for backward compatibility
         temp_g6_index = max(
             temp_g6_index, report.data().g6_index); //for backward compatibility
+        temp_month = report.data().month;
+        temp_day = report.data().day;
+        temp_year = report.data().year;
         // print('debug :: QfsReport chosen in first if');
       } else if (lineNumRequired == ALL_LINES &&
           areaRequired != TOTAL_PLANT &&
@@ -286,6 +291,9 @@ class QfsReport {
             report.data().pes_index); //for backward compatibility
         temp_g6_index = max(
             temp_g6_index, report.data().g6_index); //for backward compatibility
+        temp_month = report.data().month;
+        temp_day = report.data().day;
+        temp_year = report.data().year;
         // print('debug :: QfsReport chosen in second if');
       } else if (areaRequired == TOTAL_PLANT) {
         // all shifts all lines all areas
@@ -298,6 +306,9 @@ class QfsReport {
             report.data().pes_index); //for backward compatibility
         temp_g6_index = max(
             temp_g6_index, report.data().g6_index); //for backward compatibility
+        temp_month = report.data().month;
+        temp_day = report.data().day;
+        temp_year = report.data().year;
         // print('debug :: QfsReport chosen in third if');
       } else {
         // print('debug :: QfsReport filtered out');
@@ -318,9 +329,9 @@ class QfsReport {
       consumer_complaints: temp_consumer_complaints,
       //for backward compatibility
       area: areaRequired,
-      year: -1,
-      month: -1,
-      day: -1,
+      year: temp_year,
+      month: temp_month,
+      day: temp_day,
     );
   }
 

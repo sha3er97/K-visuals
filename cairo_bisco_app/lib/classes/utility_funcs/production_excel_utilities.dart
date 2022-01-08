@@ -18,14 +18,14 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'other_utility.dart';
 
-class ExcelUtilities {
+class ProductionExcelUtilities {
   static var excel;
   late Sheet sheetObject;
   final int refNum;
   late String areaName;
   late List<OverWeightReport> overweightList;
 
-  ExcelUtilities({required this.refNum}) {
+  ProductionExcelUtilities({required this.refNum}) {
     excel = Excel.createExcel(); // automatically creates 1 empty sheet: Sheet1
     areaName = refNum != TOTAL_PLANT ? prodType[refNum] : "Total";
     sheetObject = excel[areaName];
@@ -36,7 +36,7 @@ class ExcelUtilities {
     this.overweightList = overweightList;
   }
 
-  Future<void> saveFile(
+  Future<void> saveExcelFile(
     context,
     String from_day,
     String to_day,

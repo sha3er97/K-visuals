@@ -3,10 +3,12 @@ import 'dart:math';
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/other_excel_utilities.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/classes/values/form_values.dart';
+import 'package:cairo_bisco_app/components/alert_dialog.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/1kpi_good_bad_indicator.dart';
@@ -579,6 +581,126 @@ class _QfsDetailedReportState extends State<QfsDetailedReport> {
                                     ),
                                   ),
                                   SizedBox(height: defaultPadding),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.all(minimumPadding),
+                                    child: Center(
+                                      child: RoundedButton(
+                                          btnText: 'Export Detailed Report',
+                                          color: KelloggColors.green,
+                                          onPressed: () {
+                                            if (int.parse(_selectedYearTo) !=
+                                                int.parse(_selectedYearFrom))
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Error : invalid interval (reports of same year only are allowed)"),
+                                              ));
+                                            else {
+                                              DateTime dateFrom = DateTime(
+                                                  int.parse(_selectedYearTo),
+                                                  int.parse(_selectedMonthFrom),
+                                                  int.parse(_selectedDayFrom));
+                                              DateTime dateAfter = DateTime(
+                                                  int.parse(_selectedYearTo),
+                                                  int.parse(_selectedMonthTo),
+                                                  int.parse(_selectedDayTo));
+                                              if (dateFrom
+                                                      .isBefore(dateAfter) ||
+                                                  dateFrom.isAtSameMomentAs(
+                                                      dateAfter)) {
+                                                calculateInterval();
+                                                OtherExcelUtilities util =
+                                                    OtherExcelUtilities(
+                                                        refNum: QFS_REPORT);
+                                                util.insertHeaders();
+                                                qualityReportRef.get().then(
+                                                    (QuerySnapshot
+                                                        qfsSnapshot) {
+                                                  overWeightReportRef
+                                                      .get()
+                                                      .then((QuerySnapshot
+                                                          overWeightSnapshot) {
+                                                    try {
+                                                      List<QfsReport>
+                                                          allQfsReports = [];
+                                                      List<OverWeightReport>
+                                                          allDailyReports = [];
+                                                      List<
+                                                              QueryDocumentSnapshot<
+                                                                  QfsReport>>
+                                                          qfsReportsList =
+                                                          qfsSnapshot.docs as List<
+                                                              QueryDocumentSnapshot<
+                                                                  QfsReport>>;
+                                                      List<
+                                                              QueryDocumentSnapshot<
+                                                                  OverWeightReport>>
+                                                          overweightReportsList =
+                                                          overWeightSnapshot
+                                                                  .docs
+                                                              as List<
+                                                                  QueryDocumentSnapshot<
+                                                                      OverWeightReport>>;
+                                                      for (DateTime tempDay in getDaysInInterval(
+                                                          new DateTime(
+                                                              validated_year,
+                                                              validated_month_from,
+                                                              validated_day_from),
+                                                          new DateTime(
+                                                              validated_year,
+                                                              validated_month_to,
+                                                              validated_day_to))) {
+                                                        allQfsReports.add(QfsReport
+                                                            .getFilteredReportOfInterval(
+                                                          qfsReportsList,
+                                                          tempDay.month,
+                                                          tempDay.month,
+                                                          tempDay.day,
+                                                          tempDay.day,
+                                                          tempDay.year,
+                                                          TOTAL_PLANT,
+                                                          ALL_LINES,
+                                                        ));
+                                                        allDailyReports.add(
+                                                            OverWeightReport
+                                                                .getFilteredReportOfInterval(
+                                                          overweightReportsList,
+                                                          tempDay.month,
+                                                          tempDay.month,
+                                                          tempDay.day,
+                                                          tempDay.day,
+                                                          tempDay.year,
+                                                          TOTAL_PLANT,
+                                                          ALL_LINES,
+                                                        ));
+                                                      }
+
+                                                      util.insertQfsReportRows(
+                                                          allQfsReports,
+                                                          allDailyReports);
+
+                                                      util.saveExcelFile(
+                                                          context,
+                                                          validated_day_from
+                                                              .toString(),
+                                                          validated_day_to
+                                                              .toString(),
+                                                          validated_month_from
+                                                              .toString(),
+                                                          validated_month_to
+                                                              .toString());
+                                                    } catch (e) {
+                                                      showExcelAlertDialog(
+                                                          context, false, "");
+                                                    }
+                                                  });
+                                                });
+                                              }
+                                            }
+                                          }),
+                                    ),
+                                  ),
                                 ],
                               );
                             } catch (e) {

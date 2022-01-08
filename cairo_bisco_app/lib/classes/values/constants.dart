@@ -1,8 +1,8 @@
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 
 /** version number**/
-const versionNum = '3.0.5'; //edit also in pubspec.yaml
-const versionCode = 5; //edit also in pubspec.yaml
+const versionNum = '3.0.6'; //edit also in pubspec.yaml
+const versionCode = 6; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
 
@@ -112,7 +112,14 @@ List<String> prodType = <String>[
   'Wafer',
   'Maamoul',
 ];
-
+List<String> reportTypeNames = <String>[
+  'Production',
+  'Production',
+  'Production',
+  'QFS',
+  'EHS',
+  '' // more reports
+];
 List<String> months = <String>[
   '1',
   '2',
@@ -325,6 +332,32 @@ List<String> totalPlantHeaders = [
   "Quality%",
   "OEE%",
   "RM MUV",
+  "Month",
+  "Week",
+  "Year"
+];
+
+List<String> QfsHeaders = [
+  "Date",
+  "Quality Incidents",
+  "Food Safety Incidents",
+  "CCP Failures",
+  "Consumer Complaints",
+  "G6 Escalation",
+  "Pes",
+  "Month",
+  "Week",
+  "Year"
+];
+
+List<String> EhsHeaders = [
+  "Date",
+  "First Aid Incidents",
+  "Lost Time Incidents",
+  "Recordable Incidents",
+  "Near Miss",
+  "Pre-shift risk Assessment",
+  "S7 Tours",
   "Month",
   "Week",
   "Year"

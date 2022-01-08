@@ -2,10 +2,12 @@ import 'package:cairo_bisco_app/classes/EhsReport.dart';
 import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/other_excel_utilities.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/classes/values/form_values.dart';
+import 'package:cairo_bisco_app/components/alert_dialog.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/1kpi_good_bad_indicator.dart';
@@ -369,8 +371,8 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
                                 validated_day_from,
                                 validated_day_to,
                                 validated_year,
-                                -1,
-                                -1);
+                                TOTAL_PLANT,
+                                ALL_LINES);
                           });
                           // print("debug :: near miss = " +
                           //     temp_ehs.nearMiss.toString());
@@ -542,6 +544,83 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
                     }
                   }
                 },
+              ),
+              SizedBox(height: defaultPadding),
+              Padding(
+                padding: const EdgeInsets.all(minimumPadding),
+                child: Center(
+                  child: RoundedButton(
+                      btnText: 'Export Detailed Report',
+                      color: KelloggColors.green,
+                      onPressed: () {
+                        if (int.parse(_selectedYearTo) !=
+                            int.parse(_selectedYearFrom))
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                                "Error : invalid interval (reports of same year only are allowed)"),
+                          ));
+                        else {
+                          DateTime dateFrom = DateTime(
+                              int.parse(_selectedYearTo),
+                              int.parse(_selectedMonthFrom),
+                              int.parse(_selectedDayFrom));
+                          DateTime dateAfter = DateTime(
+                              int.parse(_selectedYearTo),
+                              int.parse(_selectedMonthTo),
+                              int.parse(_selectedDayTo));
+                          if (dateFrom.isBefore(dateAfter) ||
+                              dateFrom.isAtSameMomentAs(dateAfter)) {
+                            calculateInterval();
+                            OtherExcelUtilities util =
+                                OtherExcelUtilities(refNum: EHS_REPORT);
+                            util.insertHeaders();
+                            ehsReportRef
+                                .get()
+                                .then((QuerySnapshot ehsSnapshot) {
+                              try {
+                                List<EhsReport> allReports = [];
+
+                                List<QueryDocumentSnapshot<EhsReport>>
+                                    ehsReportsList = ehsSnapshot.docs as List<
+                                        QueryDocumentSnapshot<EhsReport>>;
+                                for (DateTime tempDay in getDaysInInterval(
+                                    new DateTime(
+                                        validated_year,
+                                        validated_month_from,
+                                        validated_day_from),
+                                    new DateTime(
+                                        validated_year,
+                                        validated_month_to,
+                                        validated_day_to))) {
+                                  allReports.add(
+                                      EhsReport.getFilteredReportOfInterval(
+                                    ehsReportsList,
+                                    tempDay.month,
+                                    tempDay.month,
+                                    tempDay.day,
+                                    tempDay.day,
+                                    tempDay.year,
+                                    TOTAL_PLANT,
+                                    ALL_LINES,
+                                  ));
+                                }
+
+                                util.insertEhsReportRows(allReports);
+
+                                util.saveExcelFile(
+                                    context,
+                                    validated_day_from.toString(),
+                                    validated_day_to.toString(),
+                                    validated_month_from.toString(),
+                                    validated_month_to.toString());
+                              } catch (e) {
+                                showExcelAlertDialog(context, false, "");
+                              }
+                            });
+                          }
+                        }
+                      }),
+                ),
               ),
             ],
           ),
