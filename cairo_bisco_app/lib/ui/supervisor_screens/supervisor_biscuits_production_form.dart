@@ -185,7 +185,9 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
         days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
 
-    sku = isEdit ? reportDetails.skuName : SKU.biscuitSKU[0];
+    sku = isEdit
+        ? reportDetails.skuName
+        : SKU.allSkus[refNum][0]; //SKU.biscuitSKU[0];
   }
 
   @override
@@ -458,7 +460,7 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                             // decoration: InputDecoration(labelText: 'اختر'),
                             value: sku,
                             isExpanded: true,
-                            items: SKU.biscuitSKU.map((String value) {
+                            items: SKU.allSkus[refNum].map((String value) {
                               return new DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(

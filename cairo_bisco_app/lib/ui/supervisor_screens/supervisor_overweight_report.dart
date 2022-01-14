@@ -1,5 +1,6 @@
 import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
+import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/other_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
@@ -66,7 +67,14 @@ class _SupervisorOverWeightReportFormState
       selectedDay,
       selectedProdLine,
       selected_pes,
-      selected_G6;
+      selected_G6,
+      sku;
+
+  VoidCallback? onSKUChange(val) {
+    setState(() {
+      sku = val;
+    });
+  }
 
   VoidCallback? onLineChange(val) {
     setState(() {
@@ -121,6 +129,11 @@ class _SupervisorOverWeightReportFormState
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
     selected_pes = Pes[reportDetails.pes_index];
     selected_G6 = G6[reportDetails.g6_index];
+    sku = isEdit
+        ? (reportDetails.skuName.toString().compareTo('-') == 0
+            ? SKU.allSkus[refNum][0]
+            : reportDetails.skuName)
+        : SKU.allSkus[refNum][0];
   }
 
   @override
@@ -329,6 +342,32 @@ class _SupervisorOverWeightReportFormState
                         ),
                         SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////////////
+                        smallerHeading('نوع المنتج \nReported SKU'),
+                        SizedBox(height: minimumPadding),
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPadding),
+                          child: DropdownButtonFormField<String>(
+                            // decoration: InputDecoration(labelText: 'اختر'),
+                            value: sku,
+                            isExpanded: true,
+                            items: SKU.allSkus[refNum].map((String value) {
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style:
+                                      TextStyle(color: KelloggColors.darkRed),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: onSKUChange,
+                          ),
+                        ),
+                        SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////////
                         smallerHeading(
                             'نسبة زيادة الوزن \nOverWeight Percentage'),
                         SizedBox(height: minimumPadding),
@@ -486,6 +525,7 @@ class _SupervisorOverWeightReportFormState
                                             !_consumer_complaints_validate) {
                                           OverWeightReport.addReport(
                                             supName,
+                                            sku,
                                             double.parse(percent),
                                             prod_lines4
                                                     .indexOf(selectedProdLine) +
@@ -557,6 +597,7 @@ class _SupervisorOverWeightReportFormState
                                               context,
                                               reportID,
                                               supName,
+                                              sku,
                                               double.parse(percent),
                                               prod_lines4.indexOf(
                                                       selectedProdLine) +

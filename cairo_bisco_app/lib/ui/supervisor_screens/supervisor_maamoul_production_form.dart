@@ -172,13 +172,15 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
     ///////////////////////////////////////////////////////////////////////////////
     selectedShift = shifts[reportDetails.shift_index];
     selectedYear =
-        years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
+    years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
     selectedMonth =
-        months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
+    months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
     selectedDay =
-        days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
+    days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
-    sku = isEdit ? reportDetails.skuName : SKU.maamoulSKU[0];
+    sku = isEdit
+        ? reportDetails.skuName
+        : SKU.allSkus[refNum][0]; //SKU.maamoulSKU[0];
   }
 
   @override
@@ -458,13 +460,13 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                             // decoration: InputDecoration(labelText: 'اختر'),
                             value: sku,
                             isExpanded: true,
-                            items: SKU.maamoulSKU.map((String value) {
+                            items: SKU.allSkus[refNum].map((String value) {
                               return new DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),

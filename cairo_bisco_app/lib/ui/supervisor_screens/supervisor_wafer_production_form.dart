@@ -185,7 +185,9 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
         days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
 
-    sku = isEdit ? reportDetails.skuName : SKU.waferSKU[0];
+    sku = isEdit
+        ? reportDetails.skuName
+        : SKU.allSkus[refNum][0]; //SKU.waferSKU[0];
   }
 
   @override
@@ -457,7 +459,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                             // decoration: InputDecoration(labelText: 'اختر'),
                             value: sku,
                             isExpanded: true,
-                            items: SKU.waferSKU.map((String value) {
+                            items: SKU.allSkus[refNum].map((String value) {
                               return new DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(

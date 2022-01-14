@@ -230,6 +230,7 @@ class SKU {
   ];
   static Map<String, SKU> skuDetails = new Map<String, SKU>();
   static Map<String, String> skuDocumentNames = new Map<String, String>();
+  static List<List<String>> allSkus = [biscuitSKU, waferSKU, maamoulSKU];
 
   static void getAllSku() {
     biscuitSKU.clear();
