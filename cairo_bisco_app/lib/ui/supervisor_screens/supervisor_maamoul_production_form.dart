@@ -172,11 +172,11 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
     ///////////////////////////////////////////////////////////////////////////////
     selectedShift = shifts[reportDetails.shift_index];
     selectedYear =
-    years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
+        years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
     selectedMonth =
-    months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
+        months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
     selectedDay =
-    days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
+        days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
     sku = isEdit
         ? reportDetails.skuName
@@ -466,7 +466,7 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                 child: Text(
                                   value,
                                   style:
-                                  TextStyle(color: KelloggColors.darkRed),
+                                      TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),

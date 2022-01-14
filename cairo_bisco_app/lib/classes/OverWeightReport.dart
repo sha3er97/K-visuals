@@ -36,7 +36,7 @@ class OverWeightReport {
 
   OverWeightReport.fromJson(Map<String, Object?> json)
       : this(
-    year: json['year']! as int,
+          year: json['year']! as int,
           month: json['month']! as int,
           day: json['day']! as int,
           area: json['area']! as int,
@@ -133,18 +133,18 @@ class OverWeightReport {
     await overWeightReportRef
         .doc(id)
         .update({
-      'year': year,
-      'month': month,
-      'day': day,
-      'area': area,
-      'line_index': line_index,
-      'supName': supName,
-      'skuName': skuName,
-      'percent': percent,
-      'consumer_complaints': consumer_complaints,
-      'pes_index': pes_index,
-      'g6_index': g6_index,
-    })
+          'year': year,
+          'month': month,
+          'day': day,
+          'area': area,
+          'line_index': line_index,
+          'supName': supName,
+          'skuName': skuName,
+          'percent': percent,
+          'consumer_complaints': consumer_complaints,
+          'pes_index': pes_index,
+          'g6_index': g6_index,
+        })
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text("Report Updated"),
@@ -235,19 +235,13 @@ class OverWeightReport {
         temp_consumer_complaints = 0,
         temp_pes_index = 0,
         temp_g6_index = 0;
-    int temp_month = month_from,
-        temp_day = day_from,
-        temp_year = year;
+    int temp_month = month_from, temp_day = day_from, temp_year = year;
     String lastSkuName = '-';
 
     for (var report in reportsList) {
       if (!isDayInInterval(
-        report
-            .data()
-            .day,
-        report
-            .data()
-            .month,
+        report.data().day,
+        report.data().month,
         month_from,
         month_to,
         day_from,
@@ -264,31 +258,15 @@ class OverWeightReport {
           report.data().line_index == lineNumRequired &&
           report.data().area == areaRequired) {
         //all shifts in one line in one area
-        temp_percent += report
-            .data()
-            .percent;
+        temp_percent += report.data().percent;
         valid_reports_count++;
-        temp_consumer_complaints += report
-            .data()
-            .consumer_complaints;
-        temp_pes_index = max(temp_pes_index, report
-            .data()
-            .pes_index);
-        temp_g6_index = max(temp_g6_index, report
-            .data()
-            .g6_index);
-        temp_month = report
-            .data()
-            .month;
-        temp_day = report
-            .data()
-            .day;
-        temp_year = report
-            .data()
-            .year;
-        lastSkuName = report
-            .data()
-            .skuName;
+        temp_consumer_complaints += report.data().consumer_complaints;
+        temp_pes_index = max(temp_pes_index, report.data().pes_index);
+        temp_g6_index = max(temp_g6_index, report.data().g6_index);
+        temp_month = report.data().month;
+        temp_day = report.data().day;
+        temp_year = report.data().year;
+        lastSkuName = report.data().skuName;
         print('debug :: OverWeightReport chosen in first if');
       } else if (lineNumRequired == ALL_LINES &&
           areaRequired != TOTAL_PLANT &&
