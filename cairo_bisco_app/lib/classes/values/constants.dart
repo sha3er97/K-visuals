@@ -1,15 +1,15 @@
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 
 /** version number**/
-const versionNum = '3.0.6'; //edit also in pubspec.yaml
-const versionCode = 6; //edit also in pubspec.yaml
+const versionNum = '3.0.7'; //edit also in pubspec.yaml
+const versionCode = 7; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
 
 /** ui design constants **/
 const dummyChartExtra = 1.0;
 const oeeMargin = 1;
-
+const misleadingResolvingOpacity = 0.75;
 //padding
 const defaultPadding = 16.0;
 const mediumPadding = 12.0;
@@ -24,6 +24,7 @@ const mediumFontSize = 14.0;
 const minimumFontSize = 12.0;
 
 // curvature radius
+const radiusForFullCircle = 35.0;
 const textFieldRadius = 20.0;
 const textFieldBorderRadius = 1.0;
 const textFieldFocusedBorderRadius = 1.0;
@@ -48,6 +49,7 @@ const borderWidth = 2.0;
 const regularIconSize = 40.0;
 const smallIconSize = 25.0;
 const mediumIconSize = 50.0;
+const aboveMediumIconSize = 65.0;
 const minimumBoxHeight = 40.0;
 const kpiBoxHeight = 100.0;
 const regularBoxHeight = 150.0;
@@ -67,6 +69,8 @@ const buttonWidth = 200.0;
 const buttonHeight = 60.0;
 const buttonElevation = 5.0;
 
+//arrow constants
+const arrowStrokeWidth = 4.0;
 /** time constants in seconds **/
 const splashScreenDuration = 3; //3 seconds
 const floorScreenWheelDuration = 30; //30 seconds

@@ -9,6 +9,8 @@ import 'package:cairo_bisco_app/components/special_components/place_holders.dart
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
+import 'oee_diagram.dart';
+
 class ProductionLine extends StatelessWidget {
   const ProductionLine({
     Key? key,
@@ -262,57 +264,68 @@ class ProductionLine extends StatelessWidget {
             ),
           ),
           SizedBox(height: minimumPadding),
-          Center(
-            child: Container(
-              height: !isWebView ? LargeGaugeSize : gaugeSize,
-              width: !isWebView ? LargeGaugeSize : gaugeSize,
-              child: SfRadialGauge(
-                title: GaugeTitle(
-                    text: 'OEE%',
-                    textStyle: TextStyle(
-                        fontSize: aboveMediumFontSize,
-                        fontWeight: FontWeight.bold,
-                        color: KelloggColors.darkRed)),
-                enableLoadingAnimation: true,
-                animationDuration: 2000,
-                axes: <RadialAxis>[
-                  RadialAxis(minimum: 0, maximum: 100, pointers: <GaugePointer>[
-                    NeedlePointer(
-                      value: calculateOeeFromMiniReport(report, overweight),
-                      enableAnimation: true,
-                      needleLength: !isWebView
-                          ? LargeGaugeNeedleLength
-                          : gaugeNeedleLength,
-                      needleEndWidth: needleEndWidth,
-                    )
-                  ], ranges: <GaugeRange>[
-                    GaugeRange(
-                        startValue: Plans.targetOEE - oeeMargin,
-                        endValue: Plans.targetOEE + oeeMargin,
-                        color: KelloggColors.green),
-                    // GaugeRange(startValue: 50, endValue: 100, color: Colors.orange),
-                    // GaugeRange(startValue: 100, endValue: 150, color: Colors.red)
-                  ], annotations: <GaugeAnnotation>[
-                    GaugeAnnotation(
-                        widget: Text(
-                          calculateOeeFromMiniReport(report, overweight)
-                                  .toStringAsFixed(1) +
-                              ' %',
-                          style: TextStyle(
-                            color: KelloggColors.darkRed,
-                            fontSize: !isWebView
-                                ? aboveMediumFontSize
-                                : minimumFontSize,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        positionFactor: 0.5,
-                        angle: 90)
-                  ])
-                ],
-              ),
-            ),
+          OeeDiagram(
+            report: report,
+            overweight: overweight,
+            isWebView: isWebView,
+            circleColor:
+                calculateOeeFromMiniReport(report, overweight) < Plans.targetOEE
+                    ? KelloggColors.cockRed
+                    : KelloggColors.green,
           ),
+          myHorizontalDivider(),
+          SizedBox(height: minimumPadding),
+          // Center(
+          //   child: Container(
+          //     height: !isWebView ? LargeGaugeSize : gaugeSize,
+          //     width: !isWebView ? LargeGaugeSize : gaugeSize,
+          //     child: SfRadialGauge(
+          //       title: GaugeTitle(
+          //           text: 'OEE%',
+          //           textStyle: TextStyle(
+          //               fontSize: aboveMediumFontSize,
+          //               fontWeight: FontWeight.bold,
+          //               color: KelloggColors.darkRed)),
+          //       enableLoadingAnimation: true,
+          //       animationDuration: 2000,
+          //       axes: <RadialAxis>[
+          //         RadialAxis(minimum: 0, maximum: 100, pointers: <GaugePointer>[
+          //           NeedlePointer(
+          //             value: calculateOeeFromMiniReport(report, overweight),
+          //             enableAnimation: true,
+          //             needleLength: !isWebView
+          //                 ? LargeGaugeNeedleLength
+          //                 : gaugeNeedleLength,
+          //             needleEndWidth: needleEndWidth,
+          //           )
+          //         ], ranges: <GaugeRange>[
+          //           GaugeRange(
+          //               startValue: Plans.targetOEE - oeeMargin,
+          //               endValue: Plans.targetOEE + oeeMargin,
+          //               color: KelloggColors.green),
+          //           // GaugeRange(startValue: 50, endValue: 100, color: Colors.orange),
+          //           // GaugeRange(startValue: 100, endValue: 150, color: Colors.red)
+          //         ], annotations: <GaugeAnnotation>[
+          //           GaugeAnnotation(
+          //               widget: Text(
+          //                 calculateOeeFromMiniReport(report, overweight)
+          //                         .toStringAsFixed(1) +
+          //                     ' %',
+          //                 style: TextStyle(
+          //                   color: KelloggColors.darkRed,
+          //                   fontSize: !isWebView
+          //                       ? aboveMediumFontSize
+          //                       : minimumFontSize,
+          //                   fontWeight: FontWeight.bold,
+          //                 ),
+          //               ),
+          //               positionFactor: 0.5,
+          //               angle: 90)
+          //         ])
+          //       ],
+          //     ),
+          //   ),
+          // ),
           Center(
             child: Container(
               height: !isWebView ? LargeGaugeSize : gaugeSize,

@@ -29,6 +29,26 @@ Text subHeading(String title) {
   );
 }
 
+Text aboveMediumHeading(String title) {
+  return Text(
+    title,
+    style: TextStyle(
+        fontSize: aboveMediumFontSize,
+        fontWeight: FontWeight.bold,
+        color: KelloggColors.darkRed),
+  );
+}
+
+Text WebCustomizedHeading(String title, double webFactor) {
+  return Text(
+    title,
+    style: TextStyle(
+        fontSize: webFactor * aboveMediumFontSize,
+        fontWeight: FontWeight.bold,
+        color: KelloggColors.white),
+  );
+}
+
 Text smallerHeading(String title) {
   return Text(
     title,
