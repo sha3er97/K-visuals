@@ -1,15 +1,17 @@
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 
-/** version number**/
+/** version configs**/
 const versionNum = '3.0.8'; //edit also in pubspec.yaml
 const versionCode = 8; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
 
 /** ui design constants **/
+//customization variables
 const dummyChartExtra = 1.0;
 const oeeMargin = 1;
 const misleadingResolvingOpacity = 0.75;
+
 //padding
 const defaultPadding = 16.0;
 const mediumPadding = 12.0;
@@ -56,6 +58,7 @@ const regularBoxHeight = 150.0;
 const LargeBoxHeight = 200.0;
 const TightBoxWidth = 300.0;
 const logoHeight = 175.0;
+
 //gauges constants
 const gaugeSize = 175.0;
 const LargeGaugeSize = 250.0;
@@ -64,6 +67,7 @@ const gaugeNeedleLength = 0.4;
 const LargeGaugeNeedleLength = 0.5;
 const screenGaugeNeedleLength = 0.6;
 const needleEndWidth = 5.0;
+
 //button
 const buttonWidth = 200.0;
 const buttonHeight = 60.0;
@@ -71,6 +75,7 @@ const buttonElevation = 5.0;
 
 //arrow constants
 const arrowStrokeWidth = 4.0;
+
 /** time constants in seconds **/
 const splashScreenDuration = 3; //3 seconds
 const floorScreenWheelDuration = 30; //30 seconds
@@ -95,6 +100,7 @@ const excelSuccessMsg = "File Downloaded Successfully";
 const excelFailureMsg = "Something went wrong in Exporting Report";
 const unauthorizedEditMsg =
     "Unauthorized Access please contact your administrator";
+
 /** MACROS **/
 const BISCUIT_AREA = 0;
 const WAFER_AREA = 1;
@@ -110,6 +116,7 @@ const OVERWEIGHT_REPORT = 5;
 const PEOPLE_REPORT = 6;
 const NRC_REPORT = 7;
 
+/** Constant Lists **/
 List<OverWeightReport> overweightDummyList = [];
 List<String> prodType = <String>[
   'Biscuits',

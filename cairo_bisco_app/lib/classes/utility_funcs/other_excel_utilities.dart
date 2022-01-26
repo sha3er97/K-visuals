@@ -103,32 +103,30 @@ class OtherExcelUtilities {
       totCCP += qfsReportsList[i].ccp_failure;
       totConsComplaints += qfsReportsList[i].consumer_complaints +
           dailyReportsList[i].consumer_complaints;
-      List<String> row = [
+      List<dynamic> row = [
         constructDateString(qfsReportsList[i].day, qfsReportsList[i].month,
             qfsReportsList[i].year),
-        qfsReportsList[i].quality_incidents.toString(),
-        qfsReportsList[i].food_safety_incidents.toString(),
-        qfsReportsList[i].ccp_failure.toString(),
+        qfsReportsList[i].quality_incidents,
+        qfsReportsList[i].food_safety_incidents,
+        qfsReportsList[i].ccp_failure,
         (qfsReportsList[i].consumer_complaints +
-                dailyReportsList[i].consumer_complaints)
-            .toString(),
+            dailyReportsList[i].consumer_complaints),
         G6[max(qfsReportsList[i].g6_index, dailyReportsList[i].g6_index)],
         Pes[max(qfsReportsList[i].pes_index, dailyReportsList[i].pes_index)],
-        qfsReportsList[i].month.toString(),
+        qfsReportsList[i].month,
         getWeekNumber(qfsReportsList[i].day, qfsReportsList[i].month,
-                qfsReportsList[i].year)
-            .toString(),
-        qfsReportsList[i].year.toString(),
+            qfsReportsList[i].year),
+        qfsReportsList[i].year,
       ];
       // print(row);
       sheetObject.appendRow(row);
     }
-    List<String> tot = [
+    List<dynamic> tot = [
       'TOTAL',
-      totQuality.toString(),
-      totFoodSafety.toString(),
-      totCCP.toString(),
-      totConsComplaints.toString(),
+      totQuality,
+      totFoodSafety,
+      totCCP,
+      totConsComplaints,
       '-',
       '-',
       '-',
@@ -152,28 +150,28 @@ class OtherExcelUtilities {
       totRecordable += report.recordable_incidents;
       totNearMiss += report.nearMiss;
       totPreShift += report.risk_assessment;
-      List<String> row = [
+      List<dynamic> row = [
         constructDateString(report.day, report.month, report.year),
-        report.firstAid_incidents.toString(),
-        report.lostTime_incidents.toString(),
-        report.recordable_incidents.toString(),
-        report.nearMiss.toString(),
-        report.risk_assessment.toString(),
+        report.firstAid_incidents,
+        report.lostTime_incidents,
+        report.recordable_incidents,
+        report.nearMiss,
+        report.risk_assessment,
         S7[report.s7_index],
-        report.month.toString(),
-        getWeekNumber(report.day, report.month, report.year).toString(),
-        report.year.toString(),
+        report.month,
+        getWeekNumber(report.day, report.month, report.year),
+        report.year,
       ];
       // print(row);
       sheetObject.appendRow(row);
     }
-    List<String> tot = [
+    List<dynamic> tot = [
       'TOTAL',
-      totFirstAid.toString(),
-      totLostTime.toString(),
-      totRecordable.toString(),
-      totNearMiss.toString(),
-      totPreShift.toString(),
+      totFirstAid,
+      totLostTime,
+      totRecordable,
+      totNearMiss,
+      totPreShift,
       '-',
       '-',
       '-',
