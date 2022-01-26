@@ -57,8 +57,12 @@ bool isDayInInterval(
       dateFrom.isAtSameMomentAs(dateToCheck);
 }
 
-String constructDate(int day, int month, int year) {
+String constructDateString(int day, int month, int year) {
   return day.toString() + "/" + month.toString() + "/" + year.toString();
+}
+
+DateTime constructDateObject(int day, int month, int year) {
+  return new DateTime(year, month, day);
 }
 
 int getWeekNumber(int day, int month, int year) {

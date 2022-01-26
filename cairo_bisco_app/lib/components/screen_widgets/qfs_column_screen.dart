@@ -89,44 +89,41 @@ class QFSColScreen extends StatelessWidget {
               enableLoadingAnimation: true,
               animationDuration: 2000,
               axes: <RadialAxis>[
-                RadialAxis(
-                    minimum: 0,
-                    maximum: maxScrap,
-                    pointers: <GaugePointer>[
-                      NeedlePointer(
-                        value: calculateScrapPercent(report, overweight),
-                        needleLength: screenGaugeNeedleLength,
-                        needleEndWidth: needleEndWidth,
-                        enableAnimation: true,
-                      )
-                    ],
-                    ranges: <GaugeRange>[
-                      GaugeRange(
-                          startValue: 0,
-                          endValue: noWork
-                              ? Plans.universalTargetScrap
-                              : SKU.skuDetails[report.skuName]!.targetScrap,
-                          color: KelloggColors.successGreen),
-                      GaugeRange(
-                          startValue: noWork
-                              ? Plans.universalTargetScrap
-                              : SKU.skuDetails[report.skuName]!.targetScrap,
-                          endValue: maxScrap,
-                          color: KelloggColors.clearRed)
-                    ],
-                    annotations: <GaugeAnnotation>[
-                      GaugeAnnotation(
-                          widget: Text(
-                            calculateScrapPercent(report, overweight)
-                                    .toStringAsFixed(1) +
-                                ' %',
-                            style: TextStyle(
-                                fontSize: largeFontSize,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          positionFactor: 0.5,
-                          angle: 90)
-                    ])
+                RadialAxis(minimum: 0, maximum: maxScrap, pointers: <
+                    GaugePointer>[
+                  NeedlePointer(
+                    value:
+                        calculateScrapPercentFromMiniReport(report, overweight),
+                    needleLength: screenGaugeNeedleLength,
+                    needleEndWidth: needleEndWidth,
+                    enableAnimation: true,
+                  )
+                ], ranges: <GaugeRange>[
+                  GaugeRange(
+                      startValue: 0,
+                      endValue: noWork
+                          ? Plans.universalTargetScrap
+                          : SKU.skuDetails[report.skuName]!.targetScrap,
+                      color: KelloggColors.successGreen),
+                  GaugeRange(
+                      startValue: noWork
+                          ? Plans.universalTargetScrap
+                          : SKU.skuDetails[report.skuName]!.targetScrap,
+                      endValue: maxScrap,
+                      color: KelloggColors.clearRed)
+                ], annotations: <GaugeAnnotation>[
+                  GaugeAnnotation(
+                      widget: Text(
+                        calculateScrapPercentFromMiniReport(report, overweight)
+                                .toStringAsFixed(1) +
+                            ' %',
+                        style: TextStyle(
+                            fontSize: largeFontSize,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      positionFactor: 0.5,
+                      angle: 90)
+                ])
               ],
             ),
           ),

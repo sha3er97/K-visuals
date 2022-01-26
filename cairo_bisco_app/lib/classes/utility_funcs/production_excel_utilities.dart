@@ -22,7 +22,7 @@ class ProductionExcelUtilities {
   static var excel;
   late Sheet sheetObject;
   final int refNum;
-  late String areaName;
+  late dynamic areaName;
   late List<OverWeightReport> overweightList;
 
   ProductionExcelUtilities({required this.refNum}) {
@@ -38,12 +38,12 @@ class ProductionExcelUtilities {
 
   Future<void> saveExcelFile(
     context,
-    String from_day,
-    String to_day,
-    String from_month,
-    String to_month,
+    dynamic from_day,
+    dynamic to_day,
+    dynamic from_month,
+    dynamic to_month,
   ) async {
-    String fileName =
+    dynamic fileName =
         "$areaName report $from_day-$from_month to $to_day-$to_month.xlsx";
     if (kIsWeb) {
       // running on the web!
@@ -135,6 +135,10 @@ class ProductionExcelUtilities {
         totWeight = 0.0,
         avgOEE = 0.0;
     int totCartons = 0;
+    reportsList.sort((a, b) {
+      return (constructDateObject(a.day, a.month, a.year))
+          .compareTo(constructDateObject(b.day, b.month, b.year));
+    });
     for (BiscuitsReport report in reportsList) {
       final theoreticals = [
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd1,
@@ -147,7 +151,7 @@ class ProductionExcelUtilities {
           ? getCorrespondingOverweightToProdReport(report, this.overweightList)
           : 0.0;
       /////////////////////////////////////////////////////////////
-      totTheoreticals += theoreticals[report.line_index - 1];
+      totTheoreticals += calculateNetTheoreticalOfReport(report, theoreticals);
       totKg += calculateProductionKg(report, report.productionInCartons);
       totRework += calculateAllRework(refNum, report);
       totExtrusionRework += report.extrusionRework;
@@ -195,125 +199,109 @@ class ProductionExcelUtilities {
       totCartons += report.productionInCartons;
       /////////////////////////////////////////////////////////////
 
-      List<String> row = [
-        constructDate(report.day, report.month, report.year),
+      List<dynamic> row = [
+        constructDateString(report.day, report.month, report.year),
         prodType[refNum],
-        (report.shift_index + 1).toString(),
-        report.shiftHours.toString(),
+        (report.shift_index + 1),
+        report.shiftHours,
         report.skuName,
         prod_lines4[report.line_index - 1],
-        theoreticals[report.line_index - 1].toString(),
+        calculateNetTheoreticalOfReport(report, theoreticals),
         "Kg",
-        report.actualSpeed.toString(),
-        calculateProductionKg(report, report.productionInCartons)
-            .toStringAsFixed(1),
-        calculateAllRework(refNum, report).toString(),
-        report.extrusionRework.toString(),
-        report.extrusionScrap.toString(),
-        report.ovenRework.toString(),
-        report.ovenScrap.toString(),
-        report.cutterRework.toString(),
-        report.cutterScrap.toString(),
-        report.conveyorRework.toString(),
-        report.conveyorScrap.toString(),
-        report.mc1Speed.toString(),
-        report.mc2Speed.toString(),
-        report.packingRework.toString(),
-        report.packingScrap.toString(),
-        report.boxesWaste.toString(),
-        report.cartonWaste.toString(),
-        report.mc1WasteKg.toString(),
-        calculateWastePercent(report.mc1FilmUsed, report.mc1WasteKg)
-            .toStringAsFixed(1),
-        report.mc2WasteKg.toString(),
-        calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg)
-            .toStringAsFixed(1),
+        report.actualSpeed,
+        calculateProductionKg(report, report.productionInCartons),
+        calculateAllRework(refNum, report),
+        report.extrusionRework,
+        report.extrusionScrap,
+        report.ovenRework,
+        report.ovenScrap,
+        report.cutterRework,
+        report.cutterScrap,
+        report.conveyorRework,
+        report.conveyorScrap,
+        report.mc1Speed,
+        report.mc2Speed,
+        report.packingRework,
+        report.packingScrap,
+        report.boxesWaste,
+        report.cartonWaste,
+        report.mc1WasteKg,
+        calculateWastePercent(report.mc1FilmUsed, report.mc1WasteKg),
+        report.mc2WasteKg,
+        calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg),
         doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
             ? getCorrespondingOverweightToProdReport(
-                    report, this.overweightList)
-                .toString()
+                report, this.overweightList)
             : "-",
-        calculateAllScrap(refNum, report).toString(),
-        (calculateAllRework(refNum, report) *
-                100 /
-                calculateAllWeightFromOriginalReport(
-                    refNum, report, matchedOverWeight))
-            .toStringAsFixed(1),
-        (calculateAllScrap(refNum, report) *
-                100 /
-                calculateAllWeightFromOriginalReport(
-                    refNum, report, matchedOverWeight))
-            .toStringAsFixed(1),
+        calculateAllScrap(refNum, report),
+        calculateReworkPercentFromOriginalReport(
+            refNum, report, matchedOverWeight),
+        calculateScrapPercentFromOriginalReport(
+            refNum, report, matchedOverWeight),
         (calculateRateFromOriginalReport(
-                    report,
-                    calculateNetTheoreticalOfReport(report, theoreticals),
-                    refNum,
-                    matchedOverWeight) *
-                100)
-            .toStringAsFixed(1),
-        (calculateAvailabilityFromOriginalReport(report) * 100)
-            .toStringAsFixed(1),
-        (calculateQualityFromOriginalReport(report, refNum, matchedOverWeight) *
-                100)
-            .toStringAsFixed(1),
-        calculateOeeFromOriginalReport(
                 report,
                 calculateNetTheoreticalOfReport(report, theoreticals),
                 refNum,
-                matchedOverWeight)
-            .toStringAsFixed(1),
-        (calculateProductionKg(report, report.productionInCartons) *
-                (matchedOverWeight / 100))
-            .toStringAsFixed(1),
-        report.productionInCartons.toString(),
-        report.month.toString(),
-        getWeekNumber(report.day, report.month, report.year).toString(),
-        report.year.toString(),
+                matchedOverWeight) *
+            100),
+        (calculateAvailabilityFromOriginalReport(report) * 100),
+        (calculateQualityFromOriginalReport(report, refNum, matchedOverWeight) *
+            100),
+        calculateOeeFromOriginalReport(
+            report,
+            calculateNetTheoreticalOfReport(report, theoreticals),
+            refNum,
+            matchedOverWeight),
+        calculateOverweightKgFromOriginalReport(report, matchedOverWeight),
+        report.productionInCartons,
+        report.month,
+        getWeekNumber(report.day, report.month, report.year),
+        report.year,
       ];
       // print(row);
       sheetObject.appendRow(row);
     }
 
-    List<String> tot = [
+    List<dynamic> tot = [
       'TOTAL',
       prodType[refNum],
       '-',
       '-',
       '-',
       '-',
-      totTheoreticals.toStringAsFixed(2),
+      totTheoreticals,
       '-',
       '-',
-      totKg.toStringAsFixed(1),
-      totRework.toString(),
-      totExtrusionRework.toString(),
-      totExtrusionScrap.toString(),
-      totOvenRework.toString(),
-      totOvenScrap.toString(),
-      totCutterRework.toString(),
-      totCutterScrap.toString(),
-      totConvRework.toString(),
-      totConvScrap.toString(),
+      totKg,
+      totRework,
+      totExtrusionRework,
+      totExtrusionScrap,
+      totOvenRework,
+      totOvenScrap,
+      totCutterRework,
+      totCutterScrap,
+      totConvRework,
+      totConvScrap,
       '-',
       '-',
-      totPackingRework.toString(),
-      totPackingScrap.toString(),
-      totBoxesWaste.toString(),
-      totCartonWaste.toString(),
-      totMc1Waste.toStringAsFixed(1),
-      calculateWastePercent(totMc1Used, totMc1Waste).toStringAsFixed(1),
-      totMc2Waste.toStringAsFixed(1),
-      calculateWastePercent(totMc2Used, totMc2Waste).toStringAsFixed(1),
-      avgOverweight.toStringAsFixed(1),
-      totScrap.toString(),
-      (totRework * 100 / totWeight).toStringAsFixed(1),
-      (totScrap * 100 / totWeight).toStringAsFixed(1),
+      totPackingRework,
+      totPackingScrap,
+      totBoxesWaste,
+      totCartonWaste,
+      totMc1Waste,
+      calculateWastePercent(totMc1Used, totMc1Waste),
+      totMc2Waste,
+      calculateWastePercent(totMc2Used, totMc2Waste),
+      double.parse(avgOverweight.toStringAsFixed(2)),
+      totScrap,
+      double.parse((totRework * 100 / totWeight).toStringAsFixed(2)),
+      double.parse((totScrap * 100 / totWeight).toStringAsFixed(2)),
       '-',
       '-',
       '-',
-      avgOEE.toStringAsFixed(1),
-      (totKg * (avgOverweight / 100)).toStringAsFixed(1),
-      totCartons.toString(),
+      double.parse(avgOEE.toStringAsFixed(2)),
+      double.parse((totKg * (avgOverweight / 100)).toStringAsFixed(2)),
+      totCartons,
       '-',
       '-',
       '-',
@@ -348,6 +336,10 @@ class ProductionExcelUtilities {
         totWeight = 0.0,
         avgOEE = 0.0;
     int totCartons = 0;
+    reportsList.sort((a, b) {
+      return (constructDateObject(a.day, a.month, a.year))
+          .compareTo(constructDateObject(b.day, b.month, b.year));
+    });
     for (WaferReport report in reportsList) {
       final theoreticals = [
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd1,
@@ -360,7 +352,7 @@ class ProductionExcelUtilities {
           ? getCorrespondingOverweightToProdReport(report, this.overweightList)
           : 0.0;
       /////////////////////////////////////////////////////////////
-      totTheoreticals += theoreticals[report.line_index - 1];
+      totTheoreticals += calculateNetTheoreticalOfReport(report, theoreticals);
       totKg += calculateProductionKg(report, report.productionInCartons);
       totRework += calculateAllRework(refNum, report);
       totCreamRework += report.creamRework;
@@ -407,124 +399,108 @@ class ProductionExcelUtilities {
           refNum, report, matchedOverWeight);
       totCartons += report.productionInCartons;
       /////////////////////////////////////////////////////////////
-      List<String> row = [
-        constructDate(report.day, report.month, report.year),
+      List<dynamic> row = [
+        constructDateString(report.day, report.month, report.year),
         prodType[refNum],
-        (report.shift_index + 1).toString(),
-        report.shiftHours.toString(),
+        (report.shift_index + 1),
+        report.shiftHours,
         report.skuName,
         prod_lines4[report.line_index - 1],
-        theoreticals[report.line_index - 1].toString(),
+        calculateNetTheoreticalOfReport(report, theoreticals),
         "Kg",
-        report.actualSpeed.toString(),
-        calculateProductionKg(report, report.productionInCartons)
-            .toStringAsFixed(1),
-        calculateAllRework(refNum, report).toString(),
-        report.ovenRework.toString(),
-        report.ovenScrap.toString(),
-        report.creamRework.toString(),
-        report.creamScrap.toString(),
-        report.coolerRework.toString(),
-        report.coolerScrap.toString(),
-        report.cutterRework.toString(),
-        report.cutterScrap.toString(),
-        report.mc1Speed.toString(),
-        report.mc2Speed.toString(),
-        report.packingRework.toString(),
-        report.packingScrap.toString(),
-        report.boxesWaste.toString(),
-        report.cartonWaste.toString(),
-        report.mc1WasteKg.toString(),
-        calculateWastePercent(report.mc1FilmUsed, report.mc1WasteKg)
-            .toStringAsFixed(1),
-        report.mc2WasteKg.toString(),
-        calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg)
-            .toStringAsFixed(1),
+        report.actualSpeed,
+        calculateProductionKg(report, report.productionInCartons),
+        calculateAllRework(refNum, report),
+        report.ovenRework,
+        report.ovenScrap,
+        report.creamRework,
+        report.creamScrap,
+        report.coolerRework,
+        report.coolerScrap,
+        report.cutterRework,
+        report.cutterScrap,
+        report.mc1Speed,
+        report.mc2Speed,
+        report.packingRework,
+        report.packingScrap,
+        report.boxesWaste,
+        report.cartonWaste,
+        report.mc1WasteKg,
+        calculateWastePercent(report.mc1FilmUsed, report.mc1WasteKg),
+        report.mc2WasteKg,
+        calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg),
         doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
             ? getCorrespondingOverweightToProdReport(
-                    report, this.overweightList)
-                .toString()
+                report, this.overweightList)
             : "-",
-        calculateAllScrap(refNum, report).toString(),
-        (calculateAllRework(refNum, report) *
-                100 /
-                calculateAllWeightFromOriginalReport(
-                    refNum, report, matchedOverWeight))
-            .toStringAsFixed(1),
-        (calculateAllScrap(refNum, report) *
-                100 /
-                calculateAllWeightFromOriginalReport(
-                    refNum, report, matchedOverWeight))
-            .toStringAsFixed(1),
+        calculateAllScrap(refNum, report),
+        calculateReworkPercentFromOriginalReport(
+            refNum, report, matchedOverWeight),
+        calculateScrapPercentFromOriginalReport(
+            refNum, report, matchedOverWeight),
         (calculateRateFromOriginalReport(
-                    report,
-                    calculateNetTheoreticalOfReport(report, theoreticals),
-                    refNum,
-                    matchedOverWeight) *
-                100)
-            .toStringAsFixed(1),
-        (calculateAvailabilityFromOriginalReport(report) * 100)
-            .toStringAsFixed(1),
-        (calculateQualityFromOriginalReport(report, refNum, matchedOverWeight) *
-                100)
-            .toStringAsFixed(1),
-        calculateOeeFromOriginalReport(
                 report,
                 calculateNetTheoreticalOfReport(report, theoreticals),
                 refNum,
-                matchedOverWeight)
-            .toStringAsFixed(1),
-        (calculateProductionKg(report, report.productionInCartons) *
-                (matchedOverWeight / 100))
-            .toStringAsFixed(1),
-        report.productionInCartons.toString(),
-        report.month.toString(),
-        getWeekNumber(report.day, report.month, report.year).toString(),
-        report.year.toString(),
+                matchedOverWeight) *
+            100),
+        (calculateAvailabilityFromOriginalReport(report) * 100),
+        (calculateQualityFromOriginalReport(report, refNum, matchedOverWeight) *
+            100),
+        calculateOeeFromOriginalReport(
+            report,
+            calculateNetTheoreticalOfReport(report, theoreticals),
+            refNum,
+            matchedOverWeight),
+        calculateOverweightKgFromOriginalReport(report, matchedOverWeight),
+        report.productionInCartons,
+        report.month,
+        getWeekNumber(report.day, report.month, report.year),
+        report.year,
       ];
       // print(row);
       sheetObject.appendRow(row);
     }
-    List<String> tot = [
+    List<dynamic> tot = [
       'TOTAL',
       prodType[refNum],
       '-',
       '-',
       '-',
       '-',
-      totTheoreticals.toStringAsFixed(2),
+      totTheoreticals,
       '-',
       '-',
-      totKg.toStringAsFixed(1),
-      totRework.toString(),
-      totOvenRework.toString(),
-      totOvenScrap.toString(),
-      totCreamRework.toString(),
-      totCreamScrap.toString(),
-      totCoolerRework.toString(),
-      totCoolerScrap.toString(),
-      totCutterRework.toString(),
-      totCutterScrap.toString(),
+      totKg,
+      totRework,
+      totOvenRework,
+      totOvenScrap,
+      totCreamRework,
+      totCreamScrap,
+      totCoolerRework,
+      totCoolerScrap,
+      totCutterRework,
+      totCutterScrap,
       '-',
       '-',
-      totPackingRework.toString(),
-      totPackingScrap.toString(),
-      totBoxesWaste.toString(),
-      totCartonWaste.toString(),
-      totMc1Waste.toStringAsFixed(1),
-      calculateWastePercent(totMc1Used, totMc1Waste).toStringAsFixed(1),
-      totMc2Waste.toStringAsFixed(1),
-      calculateWastePercent(totMc2Used, totMc2Waste).toStringAsFixed(1),
-      avgOverweight.toStringAsFixed(1),
-      totScrap.toString(),
-      (totRework * 100 / totWeight).toStringAsFixed(1),
-      (totScrap * 100 / totWeight).toStringAsFixed(1),
+      totPackingRework,
+      totPackingScrap,
+      totBoxesWaste,
+      totCartonWaste,
+      totMc1Waste,
+      calculateWastePercent(totMc1Used, totMc1Waste),
+      totMc2Waste,
+      calculateWastePercent(totMc2Used, totMc2Waste),
+      double.parse(avgOverweight.toStringAsFixed(2)),
+      totScrap,
+      double.parse((totRework * 100 / totWeight).toStringAsFixed(2)),
+      double.parse((totScrap * 100 / totWeight).toStringAsFixed(2)),
       '-',
       '-',
       '-',
-      avgOEE.toStringAsFixed(1),
-      (totKg * (avgOverweight / 100)).toStringAsFixed(1),
-      totCartons.toString(),
+      double.parse(avgOEE.toStringAsFixed(2)),
+      double.parse((totKg * (avgOverweight / 100)).toStringAsFixed(2)),
+      totCartons,
       '-',
       '-',
       '-',
@@ -557,6 +533,10 @@ class ProductionExcelUtilities {
         totWeight = 0.0,
         avgOEE = 0.0;
     int totCartons = 0;
+    reportsList.sort((a, b) {
+      return (constructDateObject(a.day, a.month, a.year))
+          .compareTo(constructDateObject(b.day, b.month, b.year));
+    });
     for (MaamoulReport report in reportsList) {
       final theoreticals = [
         SKU.skuDetails[report.skuName]!.theoreticalShiftProd1,
@@ -569,7 +549,7 @@ class ProductionExcelUtilities {
           ? getCorrespondingOverweightToProdReport(report, this.overweightList)
           : 0.0;
       /////////////////////////////////////////////////////////////
-      totTheoreticals += theoreticals[report.line_index - 1];
+      totTheoreticals += calculateNetTheoreticalOfReport(report, theoreticals);
       totKg += calculateProductionKg(report, report.productionInCartons);
       totRework += calculateAllRework(refNum, report);
       totMixerRework += report.mixerRework;
@@ -614,120 +594,104 @@ class ProductionExcelUtilities {
           refNum, report, matchedOverWeight);
       totCartons += report.productionInCartons;
       /////////////////////////////////////////////////////////////
-      List<String> row = [
-        constructDate(report.day, report.month, report.year),
+      List<dynamic> row = [
+        constructDateString(report.day, report.month, report.year),
         prodType[refNum],
-        (report.shift_index + 1).toString(),
-        report.shiftHours.toString(),
+        (report.shift_index + 1),
+        report.shiftHours,
         report.skuName,
         prod_lines4[report.line_index - 1],
-        theoreticals[report.line_index - 1].toString(),
+        calculateNetTheoreticalOfReport(report, theoreticals),
         "Kg",
-        report.actualSpeed.toString(),
-        calculateProductionKg(report, report.productionInCartons)
-            .toStringAsFixed(1),
-        calculateAllRework(refNum, report).toString(),
-        report.mixerRework.toString(),
-        report.mixerScrap.toString(),
-        report.stampingRework.toString(),
-        report.stampingScrap.toString(),
-        report.ovenRework.toString(),
-        report.ovenScrap.toString(),
-        report.mc1Speed.toString(),
-        report.mc2Speed.toString(),
-        report.packingRework.toString(),
-        report.packingScrap.toString(),
-        report.boxesWaste.toString(),
-        report.cartonWaste.toString(),
-        report.mc1WasteKg.toString(),
-        calculateWastePercent(report.mc1FilmUsed, report.mc1WasteKg)
-            .toStringAsFixed(1),
-        report.mc2WasteKg.toString(),
-        calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg)
-            .toStringAsFixed(1),
+        report.actualSpeed,
+        calculateProductionKg(report, report.productionInCartons),
+        calculateAllRework(refNum, report),
+        report.mixerRework,
+        report.mixerScrap,
+        report.stampingRework,
+        report.stampingScrap,
+        report.ovenRework,
+        report.ovenScrap,
+        report.mc1Speed,
+        report.mc2Speed,
+        report.packingRework,
+        report.packingScrap,
+        report.boxesWaste,
+        report.cartonWaste,
+        report.mc1WasteKg,
+        calculateWastePercent(report.mc1FilmUsed, report.mc1WasteKg),
+        report.mc2WasteKg,
+        calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg),
         doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
             ? getCorrespondingOverweightToProdReport(
-                    report, this.overweightList)
-                .toString()
+                report, this.overweightList)
             : "-",
-        calculateAllScrap(refNum, report).toString(),
-        (calculateAllRework(refNum, report) *
-                100 /
-                calculateAllWeightFromOriginalReport(
-                    refNum, report, matchedOverWeight))
-            .toStringAsFixed(1),
-        (calculateAllScrap(refNum, report) *
-                100 /
-                calculateAllWeightFromOriginalReport(
-                    refNum, report, matchedOverWeight))
-            .toStringAsFixed(1),
+        calculateAllScrap(refNum, report),
+        calculateReworkPercentFromOriginalReport(
+            refNum, report, matchedOverWeight),
+        calculateScrapPercentFromOriginalReport(
+            refNum, report, matchedOverWeight),
         (calculateRateFromOriginalReport(
-                    report,
-                    calculateNetTheoreticalOfReport(report, theoreticals),
-                    refNum,
-                    matchedOverWeight) *
-                100)
-            .toStringAsFixed(1),
-        (calculateAvailabilityFromOriginalReport(report) * 100)
-            .toStringAsFixed(1),
-        (calculateQualityFromOriginalReport(report, refNum, matchedOverWeight) *
-                100)
-            .toStringAsFixed(1),
-        calculateOeeFromOriginalReport(
                 report,
                 calculateNetTheoreticalOfReport(report, theoreticals),
                 refNum,
-                matchedOverWeight)
-            .toStringAsFixed(1),
-        (calculateProductionKg(report, report.productionInCartons) *
-                (matchedOverWeight / 100))
-            .toStringAsFixed(1),
-        report.productionInCartons.toString(),
-        report.month.toString(),
-        getWeekNumber(report.day, report.month, report.year).toString(),
-        report.year.toString(),
+                matchedOverWeight) *
+            100),
+        (calculateAvailabilityFromOriginalReport(report) * 100),
+        (calculateQualityFromOriginalReport(report, refNum, matchedOverWeight) *
+            100),
+        calculateOeeFromOriginalReport(
+            report,
+            calculateNetTheoreticalOfReport(report, theoreticals),
+            refNum,
+            matchedOverWeight),
+        calculateOverweightKgFromOriginalReport(report, matchedOverWeight),
+        report.productionInCartons,
+        report.month,
+        getWeekNumber(report.day, report.month, report.year),
+        report.year,
       ];
       // print(row);
       sheetObject.appendRow(row);
     }
-    List<String> tot = [
+    List<dynamic> tot = [
       'TOTAL',
       prodType[refNum],
       '-',
       '-',
       '-',
       '-',
-      totTheoreticals.toStringAsFixed(2),
+      totTheoreticals,
       '-',
       '-',
-      totKg.toStringAsFixed(1),
-      totRework.toString(),
-      totMixerRework.toString(),
-      totMixerScrap.toString(),
-      totStampingRework.toString(),
-      totStampingScrap.toString(),
-      totOvenRework.toString(),
-      totOvenScrap.toString(),
+      totKg,
+      totRework,
+      totMixerRework,
+      totMixerScrap,
+      totStampingRework,
+      totStampingScrap,
+      totOvenRework,
+      totOvenScrap,
       '-',
       '-',
-      totPackingRework.toString(),
-      totPackingScrap.toString(),
-      totBoxesWaste.toString(),
-      totCartonWaste.toString(),
-      totMc1Waste.toStringAsFixed(1),
-      calculateWastePercent(totMc1Used, totMc1Waste).toStringAsFixed(1),
-      totMc2Waste.toStringAsFixed(1),
-      calculateWastePercent(totMc2Used, totMc2Waste).toStringAsFixed(1),
-      avgOverweight.toStringAsFixed(1),
-      totScrap.toString(),
-      (totRework * 100 / totWeight).toStringAsFixed(1),
-      (totScrap * 100 / totWeight).toStringAsFixed(1),
+      totPackingRework,
+      totPackingScrap,
+      totBoxesWaste,
+      totCartonWaste,
+      totMc1Waste,
+      calculateWastePercent(totMc1Used, totMc1Waste),
+      totMc2Waste,
+      calculateWastePercent(totMc2Used, totMc2Waste),
+      double.parse(avgOverweight.toStringAsFixed(2)),
+      totScrap,
+      double.parse((totRework * 100 / totWeight).toStringAsFixed(2)),
+      double.parse((totScrap * 100 / totWeight).toStringAsFixed(2)),
       '-',
       '-',
       '-',
-      avgOEE.toStringAsFixed(1),
-      (totKg * (avgOverweight / 100)).toStringAsFixed(1),
-      totCartons.toString(),
+      double.parse(avgOEE.toStringAsFixed(2)),
+      double.parse((totKg * (avgOverweight / 100)).toStringAsFixed(2)),
+      totCartons,
       '-',
       '-',
       '-',
@@ -750,6 +714,10 @@ class ProductionExcelUtilities {
         totPlanKg = 0.0,
         totRmMuv = 0.0;
     int totCartons = 0;
+    reportsList.sort((a, b) {
+      return (constructDateObject(a.day, a.month, a.year))
+          .compareTo(constructDateObject(b.day, b.month, b.year));
+    });
     for (MiniProductionReport report in reportsList) {
       totFilmUsed += report.totalFilmUsed;
       totFilmWaste += report.totalFilmWasted;
@@ -774,7 +742,8 @@ class ProductionExcelUtilities {
       totScrap += report.scrap;
       totWeight += calculateAllWeightFromMiniReport(report, matchedOverWeight);
       totCartons += report.productionInCartons;
-      totOverWeightKg += (matchedOverWeight / 100) * report.productionInKg;
+      totOverWeightKg +=
+          calculateOverweightKgFromMiniReport(report, matchedOverWeight);
       avgOEE = calculateOeeFromMiniReport(report, matchedOverWeight) == 0.0
           ? avgOEE
           : (avgOEE == 0.0
@@ -783,56 +752,47 @@ class ProductionExcelUtilities {
                       calculateOeeFromMiniReport(report, matchedOverWeight)) /
                   2);
       /////////////////////////////////////////////////////////////
-      List<String> row = [
-        constructDate(report.day, report.month, report.year),
-        report.planInKg.toStringAsFixed(1),
-        report.productionInKg.toStringAsFixed(1),
-        report.productionInCartons.toString(),
+      List<dynamic> row = [
+        constructDateString(report.day, report.month, report.year),
+        report.planInKg,
+        report.productionInKg,
+        report.productionInCartons,
         doesMiniReportHaveCorrespondingOverweight(report, this.overweightList)
             ? getCorrespondingOverweightToMiniReport(
-                    report, this.overweightList)
-                .toString()
+                report, this.overweightList)
             : "-",
-        ((matchedOverWeight / 100) * report.productionInKg).toStringAsFixed(1),
-        report.scrap.toString(),
-        (report.scrap *
-                100 /
-                calculateAllWeightFromMiniReport(report, matchedOverWeight))
-            .toStringAsFixed(1),
-        (report.rework *
-                100 /
-                calculateAllWeightFromMiniReport(report, matchedOverWeight))
-            .toStringAsFixed(1),
-        calculateWastePercent(report.totalFilmUsed, report.totalFilmWasted)
-            .toStringAsFixed(1),
-        (calculateRate(report, matchedOverWeight) * 100).toStringAsFixed(1),
-        (calculateAvailability(report) * 100).toStringAsFixed(1),
-        (calculateQuality(report, matchedOverWeight) * 100).toStringAsFixed(1),
-        calculateOeeFromMiniReport(report, matchedOverWeight)
-            .toStringAsFixed(1),
-        report.rmMUV.toStringAsFixed(1),
-        report.month.toString(),
-        getWeekNumber(report.day, report.month, report.year).toString(),
-        report.year.toString(),
+        calculateOverweightKgFromMiniReport(report, matchedOverWeight),
+        report.scrap,
+        calculateScrapPercentFromMiniReport(report, matchedOverWeight),
+        calculateReworkPercentFromMiniReport(report, matchedOverWeight),
+        calculateWastePercent(report.totalFilmUsed, report.totalFilmWasted),
+        (calculateRate(report, matchedOverWeight) * 100),
+        (calculateAvailability(report) * 100),
+        (calculateQuality(report, matchedOverWeight) * 100),
+        calculateOeeFromMiniReport(report, matchedOverWeight),
+        report.rmMUV,
+        report.month,
+        getWeekNumber(report.day, report.month, report.year),
+        report.year,
       ];
       sheetObject.appendRow(row);
     }
-    List<String> tot = [
+    List<dynamic> tot = [
       'TOTAL',
-      totPlanKg.toStringAsFixed(1),
-      totKg.toStringAsFixed(1),
-      totCartons.toString(),
-      avgOverweight.toStringAsFixed(2),
-      totOverWeightKg.toStringAsFixed(1),
-      totScrap.toStringAsFixed(1),
-      (totScrap * 100 / totWeight).toStringAsFixed(1),
-      (totRework * 100 / totWeight).toStringAsFixed(1),
-      calculateWastePercent(totFilmUsed, totFilmWaste).toStringAsFixed(1),
+      totPlanKg,
+      totKg,
+      totCartons,
+      double.parse(avgOverweight.toStringAsFixed(2)),
+      double.parse(totOverWeightKg.toStringAsFixed(2)),
+      totScrap,
+      double.parse((totScrap * 100 / totWeight).toStringAsFixed(2)),
+      double.parse((totRework * 100 / totWeight).toStringAsFixed(2)),
+      calculateWastePercent(totFilmUsed, totFilmWaste),
       '-',
       '-',
       '-',
-      avgOEE.toStringAsFixed(1),
-      totRmMuv.toStringAsFixed(1),
+      double.parse(avgOEE.toStringAsFixed(2)),
+      totRmMuv,
       '-',
       '-',
       '-',

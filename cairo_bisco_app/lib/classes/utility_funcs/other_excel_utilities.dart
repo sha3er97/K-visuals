@@ -104,7 +104,7 @@ class OtherExcelUtilities {
       totConsComplaints += qfsReportsList[i].consumer_complaints +
           dailyReportsList[i].consumer_complaints;
       List<String> row = [
-        constructDate(qfsReportsList[i].day, qfsReportsList[i].month,
+        constructDateString(qfsReportsList[i].day, qfsReportsList[i].month,
             qfsReportsList[i].year),
         qfsReportsList[i].quality_incidents.toString(),
         qfsReportsList[i].food_safety_incidents.toString(),
@@ -153,7 +153,7 @@ class OtherExcelUtilities {
       totNearMiss += report.nearMiss;
       totPreShift += report.risk_assessment;
       List<String> row = [
-        constructDate(report.day, report.month, report.year),
+        constructDateString(report.day, report.month, report.year),
         report.firstAid_incidents.toString(),
         report.lostTime_incidents.toString(),
         report.recordable_incidents.toString(),

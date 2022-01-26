@@ -42,9 +42,10 @@ double calculateRmMUV(int refNum, report, double matchedOverWeight) {
   double target =
       calculateAllWeightFromOriginalReport(refNum, report, matchedOverWeight) *
           (SKU.skuDetails[report.skuName]!.targetScrap / 100);
-  return ((calculateAllScrap(refNum, report) - target) /
+  double res = ((calculateAllScrap(refNum, report) - target) /
           SKU.skuDetails[report.skuName]!.cartonWeight) *
       SKU.skuDetails[report.skuName]!.rm_cost;
+  return double.parse(res.toStringAsFixed(2));
 }
 
 double calculatePmMUV(int refNum, report) {
@@ -52,21 +53,56 @@ double calculatePmMUV(int refNum, report) {
   //todo :: check the equation
   double target = calculateAllUsedFilmWaste(report) *
       (SKU.skuDetails[report.skuName]!.targetFilmWaste / 100);
-  return (calculateAllWastedFilmWaste(report) - target) *
+  double res = (calculateAllWastedFilmWaste(report) - target) *
       SKU.skuDetails[report.skuName]!.pm_cost;
+  return double.parse(res.toStringAsFixed(2));
 }
 
 double calculateWastePercent(double used, double wasted) {
-  return (wasted / used) * 100;
+  double res = (wasted / used) * 100;
+  return double.parse(res.toStringAsFixed(1));
 }
 
-double calculateScrapPercent(
+double calculateScrapPercentFromMiniReport(
   MiniProductionReport report,
   double matchedOverWeight,
 ) {
-  return report.scrap *
+  double res = report.scrap *
       100 /
       calculateAllWeightFromMiniReport(report, matchedOverWeight);
+  return double.parse(res.toStringAsFixed(1));
+}
+
+double calculateReworkPercentFromMiniReport(
+  MiniProductionReport report,
+  double matchedOverWeight,
+) {
+  double res = report.rework *
+      100 /
+      calculateAllWeightFromMiniReport(report, matchedOverWeight);
+  return double.parse(res.toStringAsFixed(1));
+}
+
+double calculateScrapPercentFromOriginalReport(
+  int refNum,
+  report,
+  double matchedOverWeight,
+) {
+  double res = (calculateAllScrap(refNum, report) *
+      100 /
+      calculateAllWeightFromOriginalReport(refNum, report, matchedOverWeight));
+  return double.parse(res.toStringAsFixed(1));
+}
+
+double calculateReworkPercentFromOriginalReport(
+  int refNum,
+  report,
+  double matchedOverWeight,
+) {
+  double res = (calculateAllRework(refNum, report) *
+      100 /
+      calculateAllWeightFromOriginalReport(refNum, report, matchedOverWeight));
+  return double.parse(res.toStringAsFixed(1));
 }
 
 String calculateDifferenceInCartonsTarget(MiniProductionReport report) {
@@ -89,7 +125,7 @@ double calculateAllWastedFilmWaste(report) {
   return report.mc1WasteKg + report.mc2WasteKg;
 }
 
-double calculateAllScrap(refNum, report) {
+double calculateAllScrap(int refNum, report) {
   switch (refNum) {
     case BISCUIT_AREA:
       return report.cutterScrap +
@@ -112,7 +148,7 @@ double calculateAllScrap(refNum, report) {
   return 0;
 }
 
-double calculateAllRework(refNum, report) {
+double calculateAllRework(int refNum, report) {
   switch (refNum) {
     case BISCUIT_AREA:
       return report.packingRework +
@@ -163,9 +199,23 @@ double calculateNetTheoreticalOfReport(
   report,
   theoreticals,
 ) {
-  return theoreticals[report.line_index - 1] *
+  double res = theoreticals[report.line_index - 1] *
       ((report.shiftHours - minutesToHours(report.wastedMinutes)) /
           standardShiftHours);
+  return double.parse(res.toStringAsFixed(1));
+}
+
+double calculateOverweightKgFromOriginalReport(
+    report, double matchedOverWeight) {
+  double res = (calculateProductionKg(report, report.productionInCartons) *
+      (matchedOverWeight / 100));
+  return double.parse(res.toStringAsFixed(1));
+}
+
+double calculateOverweightKgFromMiniReport(
+    MiniProductionReport report, double matchedOverWeight) {
+  double res = report.productionInKg * (matchedOverWeight / 100);
+  return double.parse(res.toStringAsFixed(1));
 }
 
 /*************************OEE calculations*********************************/
@@ -175,18 +225,18 @@ double calculateOeeFromOriginalReport(
   int refNum,
   double matchedOverWeight,
 ) {
-  return calculateRateFromOriginalReport(
+  double res = calculateRateFromOriginalReport(
           report, theoreticalKg, refNum, matchedOverWeight) *
       calculateQualityFromOriginalReport(report, refNum, matchedOverWeight) *
       calculateAvailabilityFromOriginalReport(report) *
       100;
+  return double.parse(res.toStringAsFixed(1));
 }
 
 double calculateAvailabilityFromOriginalReport(report) {
-  return report.shiftHours == 0.0
-      ? 0.0
-      : (report.shiftHours - minutesToHours(report.wastedMinutes)) /
-          report.shiftHours;
+  double res = (report.shiftHours - minutesToHours(report.wastedMinutes)) /
+      report.shiftHours;
+  return report.shiftHours == 0.0 ? 0.0 : double.parse(res.toStringAsFixed(2));
 }
 
 double calculateRateFromOriginalReport(
@@ -195,11 +245,10 @@ double calculateRateFromOriginalReport(
   int refNum,
   double matchedOverWeight,
 ) {
-  return theoreticalKg == 0.0
-      ? 0.0
-      : calculateAllWeightFromOriginalReport(
-              refNum, report, matchedOverWeight) /
+  double res =
+      calculateAllWeightFromOriginalReport(refNum, report, matchedOverWeight) /
           theoreticalKg;
+  return theoreticalKg == 0.0 ? 0.0 : double.parse(res.toStringAsFixed(2));
 }
 
 double calculateQualityFromOriginalReport(
@@ -209,9 +258,9 @@ double calculateQualityFromOriginalReport(
 ) {
   double totWeight =
       calculateAllWeightFromOriginalReport(refNum, report, matchedOverWeight);
-  return totWeight == 0.0
-      ? 0.0
-      : calculateProductionKg(report, report.productionInCartons) / totWeight;
+  double res =
+      calculateProductionKg(report, report.productionInCartons) / totWeight;
+  return totWeight == 0.0 ? 0.0 : double.parse(res.toStringAsFixed(2));
 }
 
 /***********************************/
@@ -220,27 +269,30 @@ double calculateOeeFromMiniReport(
   double matchedOverWeight,
 ) {
   // return (report.productionInKg.toDouble() / report.theoreticalAverage) * 100;
-  return calculateRate(report, matchedOverWeight) *
+  double res = calculateRate(report, matchedOverWeight) *
       calculateQuality(report, matchedOverWeight) *
       calculateAvailability(report) *
       100;
+  return double.parse(res.toStringAsFixed(1));
 }
 
 double calculateAvailability(MiniProductionReport report) {
+  double res = (report.plannedHours - minutesToHours(report.wastedMinutes)) /
+      report.plannedHours;
   return report.plannedHours == 0.0
       ? 0.0
-      : (report.plannedHours - minutesToHours(report.wastedMinutes)) /
-          report.plannedHours;
+      : double.parse(res.toStringAsFixed(2));
 }
 
 double calculateRate(
   MiniProductionReport report,
   double matchedOverWeight,
 ) {
+  double res = calculateAllWeightFromMiniReport(report, matchedOverWeight) /
+      report.theoreticalAverage;
   return report.theoreticalAverage == 0.0
       ? 0.0
-      : calculateAllWeightFromMiniReport(report, matchedOverWeight) /
-          report.theoreticalAverage;
+      : double.parse(res.toStringAsFixed(2));
 }
 
 double calculateQuality(
@@ -249,7 +301,8 @@ double calculateQuality(
 ) {
   double totWeight =
       calculateAllWeightFromMiniReport(report, matchedOverWeight);
-  return totWeight == 0.0 ? 0.0 : report.productionInKg / totWeight;
+  double res = report.productionInKg / totWeight;
+  return totWeight == 0.0 ? 0.0 : double.parse(res.toStringAsFixed(2));
 }
 
 /************************************DRIVERS*************************************************/

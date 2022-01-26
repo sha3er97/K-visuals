@@ -345,7 +345,8 @@ class ProductionLine extends StatelessWidget {
                       maximum: maxScrap,
                       pointers: <GaugePointer>[
                         NeedlePointer(
-                          value: calculateScrapPercent(report, overweight),
+                          value: calculateScrapPercentFromMiniReport(
+                              report, overweight),
                           needleLength: !isWebView
                               ? LargeGaugeNeedleLength
                               : gaugeNeedleLength,
@@ -376,7 +377,8 @@ class ProductionLine extends StatelessWidget {
                       annotations: <GaugeAnnotation>[
                         GaugeAnnotation(
                             widget: Text(
-                              calculateScrapPercent(report, overweight)
+                              calculateScrapPercentFromMiniReport(
+                                          report, overweight)
                                       .toStringAsFixed(1) +
                                   ' %',
                               style: TextStyle(

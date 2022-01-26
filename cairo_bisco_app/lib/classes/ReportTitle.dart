@@ -24,7 +24,7 @@ class ReportTitle {
     List<ReportTitle> tempList = [];
     map.entries.forEach((e) {
       ReportTitle tempTitle = ReportTitle(
-        date: constructDate(e.value.day, e.value.month, e.value.year),
+        date: constructDateString(e.value.day, e.value.month, e.value.year),
         supName: e.value.supName,
         shift: -1,
         line: e.value.line_index - 1,
@@ -44,7 +44,7 @@ class ReportTitle {
     List<ReportTitle> tempList = [];
     map.entries.forEach((e) {
       ReportTitle tempTitle = ReportTitle(
-        date: constructDate(e.value.day, e.value.month, e.value.year),
+        date: constructDateString(e.value.day, e.value.month, e.value.year),
         supName: e.value.supName,
         shift: e.value.shift_index,
         line: -1,
@@ -63,7 +63,7 @@ class ReportTitle {
     List<ReportTitle> tempList = [];
     map.entries.forEach((e) {
       ReportTitle tempTitle = ReportTitle(
-        date: constructDate(e.value.day, e.value.month, e.value.year),
+        date: constructDateString(e.value.day, e.value.month, e.value.year),
         supName: e.value.supName,
         shift: e.value.shift_index,
         line: e.value.line_index - 1,
