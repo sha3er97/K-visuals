@@ -55,16 +55,21 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
       productionInCartons,
       extrusionScrap,
       extrusionRework,
+      extrusionScrapReason,
       ovenScrap,
       ovenRework,
+      ovenScrapReason,
       cutterScrap,
       cutterRework,
+      cutterScrapReason,
       conveyorScrap,
       conveyorRework,
+      conveyorScrapReason,
       mc1Speed,
       mc2Speed,
       packingScrap,
       packingRework,
+      packingScrapReason,
       boxesWaste,
       cartonWaste,
       mc1FilmUsed,
@@ -116,7 +121,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
   VoidCallback? onLineChange(val) {
     setState(() {
       selectedProdLine = val;
-      print("changed line :" + selectedProdLine.toString());
     });
   }
 
@@ -175,6 +179,17 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
         ? reportDetails.shiftHours.toString()
         : standardShiftHours.toString();
     wastedMinutes = isEdit ? reportDetails.wastedMinutes.toString() : '';
+    //3.0.8 additions
+    conveyorScrapReason =
+        isEdit ? reportDetails.conveyorScrapReason.toString() : '';
+    cutterScrapReason =
+        isEdit ? reportDetails.cutterScrapReason.toString() : '';
+    extrusionScrapReason =
+        isEdit ? reportDetails.extrusionScrapReason.toString() : '';
+    ovenScrapReason = isEdit ? reportDetails.ovenScrapReason.toString() : '';
+    packingScrapReason =
+        isEdit ? reportDetails.packingScrapReason.toString() : '';
+
     ///////////////////////////////////////////////////////////////////////////////
     selectedShift = shifts[reportDetails.shift_index];
     selectedYear =
@@ -234,7 +249,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                               fontWeight: FontWeight.w400)),
                           keyboardType: TextInputType.name,
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             labelText: uneditableLabelText,
                             border: OutlineInputBorder(
@@ -298,7 +312,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                             FilteringTextInputFormatter.digitsOnly
                           ],
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -490,7 +503,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                             FilteringTextInputFormatter.digitsOnly
                           ],
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -529,7 +541,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                             FilteringTextInputFormatter.digitsOnly
                           ],
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -566,7 +577,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -605,7 +615,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                             FilteringTextInputFormatter.digitsOnly
                           ],
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -643,7 +652,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -679,7 +687,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -705,6 +712,37 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////////////////////////////////////
+                        smallerHeading('سبب الهالك \nScrap Reason'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: extrusionScrapReason,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.multiline,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            extrusionScrapReason = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
                         sectionWithDivider('الفرن Oven'),
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
@@ -717,7 +755,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -753,7 +790,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -778,6 +814,38 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           },
                         ),
                         SizedBox(height: defaultPadding),
+
+                        //////////////////////////////////////////////////////////////////
+                        smallerHeading('سبب الهالك \nScrap Reason'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: ovenScrapReason,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.multiline,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            ovenScrapReason = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
                         //////////////////////////////////////////////////////////////////
                         sectionWithDivider('السكينة Cutter'),
                         /////////////////////////////////////////////////////////////////////////////////
@@ -791,7 +859,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -827,7 +894,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -853,6 +919,37 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////////////////////////////////////
+                        smallerHeading('سبب الهالك \nScrap Reason'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: cutterScrapReason,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.multiline,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            cutterScrapReason = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
                         sectionWithDivider('السير Conveyor'),
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
@@ -865,7 +962,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -901,7 +997,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -927,6 +1022,37 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////////////////////////////////////
+                        smallerHeading('سبب الهالك \nScrap Reason'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: conveyorScrapReason,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.multiline,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            conveyorScrapReason = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
                         sectionWithDivider('التعبئة Packaging'),
                         //////////////////////////////////////////////////////////////////
                         smallerHeading('السرعة الفعلية MC1'),
@@ -939,7 +1065,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -975,7 +1100,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1012,7 +1136,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1049,7 +1172,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1075,6 +1197,37 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
+                        smallerHeading('سبب الهالك \nScrap Reason'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: packingScrapReason,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.multiline,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            packingScrapReason = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
                         smallerHeading('هالك علب\nBoxes Waste'),
                         SizedBox(height: minimumPadding),
                         TextFormField(
@@ -1085,7 +1238,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1121,7 +1273,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1159,7 +1310,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1195,7 +1345,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1231,7 +1380,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1267,7 +1415,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1412,6 +1559,12 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                             int.parse(selectedDay),
                                             double.parse(shiftHours),
                                             double.parse(wastedMinutes),
+                                            //3.0.8 additions
+                                            extrusionScrapReason,
+                                            ovenScrapReason,
+                                            conveyorScrapReason,
+                                            cutterScrapReason,
+                                            packingScrapReason,
                                           );
                                           Navigator.push(
                                               context,
@@ -1563,6 +1716,12 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
                                               int.parse(selectedDay),
                                               double.parse(shiftHours),
                                               double.parse(wastedMinutes),
+                                              //3.0.8 additions
+                                              extrusionScrapReason,
+                                              ovenScrapReason,
+                                              conveyorScrapReason,
+                                              cutterScrapReason,
+                                              packingScrapReason,
                                             );
                                           } else {
                                             ScaffoldMessenger.of(context)

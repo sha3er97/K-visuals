@@ -55,14 +55,18 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
       productionInCartons,
       mixerScrap,
       mixerRework,
+      mixerScrapReason,
       stampingScrap,
       stampingRework,
+      stampingScrapReason,
       ovenScrap,
       ovenRework,
+      ovenScrapReason,
       mc1Speed,
       mc2Speed,
       packingScrap,
       packingRework,
+      packingScrapReason,
       boxesWaste,
       cartonWaste,
       mc1FilmUsed,
@@ -168,6 +172,13 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
         ? reportDetails.shiftHours.toString()
         : standardShiftHours.toString();
     wastedMinutes = isEdit ? reportDetails.wastedMinutes.toString() : '';
+    //3.0.8 additions
+    mixerScrapReason = isEdit ? reportDetails.mixerScrapReason.toString() : '';
+    stampingScrapReason =
+        isEdit ? reportDetails.stampingScrapReason.toString() : '';
+    ovenScrapReason = isEdit ? reportDetails.ovenScrapReason.toString() : '';
+    packingScrapReason =
+        isEdit ? reportDetails.packingScrapReason.toString() : '';
 
     ///////////////////////////////////////////////////////////////////////////////
     selectedShift = shifts[reportDetails.shift_index];
@@ -704,6 +715,37 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////////////////////////////////////
+                        smallerHeading('سبب الهالك \nScrap Reason'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: mixerScrapReason,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.multiline,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            mixerScrapReason = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
                         sectionWithDivider('التشكيل Stamping'),
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
@@ -778,6 +820,37 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////////////////////////////////////
+                        smallerHeading('سبب الهالك \nScrap Reason'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: stampingScrapReason,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.multiline,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            stampingScrapReason = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
                         sectionWithDivider('الفرن Oven'),
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
@@ -848,6 +921,37 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                           ),
                           onChanged: (value) {
                             ovenScrap = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        smallerHeading('سبب الهالك \nScrap Reason'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: ovenScrapReason,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.multiline,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            ovenScrapReason = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -1000,6 +1104,37 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
+                        smallerHeading('سبب الهالك \nScrap Reason'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: packingScrapReason,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.multiline,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            packingScrapReason = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
                         smallerHeading('هالك علب\nBoxes Waste'),
                         SizedBox(height: minimumPadding),
                         TextFormField(
@@ -1329,6 +1464,11 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                             int.parse(selectedDay),
                                             double.parse(shiftHours),
                                             double.parse(wastedMinutes),
+                                            //3.0.8 additions
+                                            mixerScrapReason,
+                                            ovenScrapReason,
+                                            stampingScrapReason,
+                                            packingScrapReason,
                                           );
                                           Navigator.push(
                                               context,
@@ -1471,6 +1611,11 @@ class _MaamoulProductionFormState extends State<MaamoulProductionForm> {
                                               int.parse(selectedDay),
                                               double.parse(shiftHours),
                                               double.parse(wastedMinutes),
+                                              //3.0.8 additions
+                                              mixerScrapReason,
+                                              ovenScrapReason,
+                                              stampingScrapReason,
+                                              packingScrapReason,
                                             );
                                           } else {
                                             ScaffoldMessenger.of(context)

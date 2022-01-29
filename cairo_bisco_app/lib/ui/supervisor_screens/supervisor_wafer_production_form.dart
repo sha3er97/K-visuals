@@ -55,16 +55,21 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
       productionInCartons,
       ovenScrap,
       ovenRework,
+      ovenScrapReason,
       creamScrap,
       creamRework,
+      creamScrapReason,
       coolerScrap,
       coolerRework,
+      coolerScrapReason,
       cutterScrap,
       cutterRework,
+      cutterScrapReason,
       mc1Speed,
       mc2Speed,
       packingScrap,
       packingRework,
+      packingScrapReason,
       boxesWaste,
       cartonWaste,
       mc1FilmUsed,
@@ -174,6 +179,15 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
         ? reportDetails.shiftHours.toString()
         : standardShiftHours.toString();
     wastedMinutes = isEdit ? reportDetails.wastedMinutes.toString() : '';
+    //3.0.8 additions
+    coolerScrapReason =
+        isEdit ? reportDetails.coolerScrapReason.toString() : '';
+    cutterScrapReason =
+        isEdit ? reportDetails.cutterScrapReason.toString() : '';
+    creamScrapReason = isEdit ? reportDetails.creamScrapReason.toString() : '';
+    ovenScrapReason = isEdit ? reportDetails.ovenScrapReason.toString() : '';
+    packingScrapReason =
+        isEdit ? reportDetails.packingScrapReason.toString() : '';
 
     ///////////////////////////////////////////////////////////////////////////////
     selectedShift = shifts[reportDetails.shift_index];
@@ -703,6 +717,37 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////////////////////////////////////
+                        smallerHeading('سبب الهالك \nScrap Reason'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: ovenScrapReason,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.multiline,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            ovenScrapReason = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
                         sectionWithDivider('الحشو Cream'),
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
@@ -773,6 +818,37 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                           ),
                           onChanged: (value) {
                             creamScrap = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        smallerHeading('سبب الهالك \nScrap Reason'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: creamScrapReason,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.multiline,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            creamScrapReason = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -851,6 +927,37 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         //////////////////////////////////////////////////////////////////
+                        smallerHeading('سبب الهالك \nScrap Reason'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: coolerScrapReason,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.multiline,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            coolerScrapReason = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
                         sectionWithDivider('المنشار Cutter'),
                         /////////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اعادة تشغيل\nRework'),
@@ -921,6 +1028,37 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                           ),
                           onChanged: (value) {
                             cutterScrap = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        smallerHeading('سبب الهالك \nScrap Reason'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: cutterScrapReason,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.multiline,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            cutterScrapReason = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -1073,6 +1211,37 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
+                        smallerHeading('سبب الهالك \nScrap Reason'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: packingScrapReason,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.multiline,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            packingScrapReason = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
                         smallerHeading('هالك علب\nBoxes Waste'),
                         SizedBox(height: minimumPadding),
                         TextFormField(
@@ -1410,6 +1579,12 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             int.parse(selectedDay),
                                             double.parse(shiftHours),
                                             double.parse(wastedMinutes),
+                                            //3.0.8 additions
+                                            creamScrapReason,
+                                            ovenScrapReason,
+                                            coolerScrapReason,
+                                            cutterScrapReason,
+                                            packingScrapReason,
                                           );
                                           Navigator.push(
                                               context,
@@ -1560,6 +1735,12 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                               int.parse(selectedDay),
                                               double.parse(shiftHours),
                                               double.parse(wastedMinutes),
+                                              //3.0.8 additions
+                                              creamScrapReason,
+                                              ovenScrapReason,
+                                              coolerScrapReason,
+                                              cutterScrapReason,
+                                              packingScrapReason,
                                             );
                                           } else {
                                             ScaffoldMessenger.of(context)

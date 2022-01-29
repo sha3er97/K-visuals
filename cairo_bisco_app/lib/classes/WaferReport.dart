@@ -13,7 +13,14 @@ import 'package:flutter/material.dart';
 import 'OverWeightReport.dart';
 
 class WaferReport {
-  final String supName, skuName;
+  final String supName,
+      skuName,
+      //3.0.8 additions
+      creamScrapReason,
+      ovenScrapReason,
+      coolerScrapReason,
+      cutterScrapReason,
+      packingScrapReason;
   final int shiftProductionPlan,
       productionInCartons,
       line_index,
@@ -76,6 +83,12 @@ class WaferReport {
     required this.day,
     required this.shiftHours,
     required this.wastedMinutes,
+    //3.0.8 additions
+    required this.creamScrapReason,
+    required this.ovenScrapReason,
+    required this.coolerScrapReason,
+    required this.cutterScrapReason,
+    required this.packingScrapReason,
   });
 
   WaferReport.fromJson(Map<String, Object?> json)
@@ -113,6 +126,22 @@ class WaferReport {
           wastedMinutes: json['wastedMinutes'] == null
               ? 0
               : parseJsonToDouble(json['wastedMinutes']!),
+          //3.0.8 additions
+          creamScrapReason: json['creamScrapReason'] == null
+              ? ''
+              : json['creamScrapReason']! as String,
+          cutterScrapReason: json['cutterScrapReason'] == null
+              ? ''
+              : json['cutterScrapReason']! as String,
+          coolerScrapReason: json['coolerScrapReason'] == null
+              ? ''
+              : json['coolerScrapReason']! as String,
+          ovenScrapReason: json['ovenScrapReason'] == null
+              ? ''
+              : json['ovenScrapReason']! as String,
+          packingScrapReason: json['packingScrapReason'] == null
+              ? ''
+              : json['packingScrapReason']! as String,
         );
 
   Map<String, Object?> toJson() {
@@ -148,6 +177,12 @@ class WaferReport {
       'mc2WasteKg': mc2WasteKg,
       'shiftHours': shiftHours,
       'wastedMinutes': wastedMinutes,
+      //3.0.8 additions
+      'creamScrapReason': creamScrapReason,
+      'ovenScrapReason': ovenScrapReason,
+      'coolerScrapReason': coolerScrapReason,
+      'cutterScrapReason': cutterScrapReason,
+      'packingScrapReason': packingScrapReason,
     };
   }
 
@@ -183,6 +218,12 @@ class WaferReport {
     int day,
     double shiftHours,
     double wastedMinutes,
+    //3.0.8 additions
+    String creamScrapReason,
+    String ovenScrapReason,
+    String coolerScrapReason,
+    String cutterScrapReason,
+    String packingScrapReason,
   ) async {
     final waferReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -226,6 +267,12 @@ class WaferReport {
         mc2WasteKg: mc2WasteKg,
         shiftHours: shiftHours,
         wastedMinutes: wastedMinutes,
+        //3.0.8 additions
+        creamScrapReason: creamScrapReason,
+        ovenScrapReason: ovenScrapReason,
+        coolerScrapReason: coolerScrapReason,
+        cutterScrapReason: cutterScrapReason,
+        packingScrapReason: packingScrapReason,
       ),
     );
   }
@@ -264,6 +311,12 @@ class WaferReport {
     int day,
     double shiftHours,
     double wastedMinutes,
+    //3.0.8 additions
+    String creamScrapReason,
+    String ovenScrapReason,
+    String coolerScrapReason,
+    String cutterScrapReason,
+    String packingScrapReason,
   ) async {
     final waferReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -308,6 +361,12 @@ class WaferReport {
           'mc2WasteKg': mc2WasteKg,
           'shiftHours': shiftHours,
           'wastedMinutes': wastedMinutes,
+          //3.0.8 additions
+          'creamScrapReason': creamScrapReason,
+          'ovenScrapReason': ovenScrapReason,
+          'coolerScrapReason': coolerScrapReason,
+          'cutterScrapReason': cutterScrapReason,
+          'packingScrapReason': packingScrapReason,
         })
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -530,6 +589,12 @@ class WaferReport {
       creamScrap: 0.0,
       shiftHours: standardShiftHours,
       wastedMinutes: 0.0,
+      //3.0.8 additions
+      creamScrapReason: '',
+      ovenScrapReason: '',
+      coolerScrapReason: '',
+      cutterScrapReason: '',
+      packingScrapReason: '',
     );
   }
 }

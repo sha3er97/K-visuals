@@ -13,7 +13,14 @@ import 'package:flutter/material.dart';
 import 'OverWeightReport.dart';
 
 class BiscuitsReport {
-  final String supName, skuName;
+  final String supName,
+      skuName,
+      //3.0.8 additions
+      extrusionScrapReason,
+      ovenScrapReason,
+      conveyorScrapReason,
+      cutterScrapReason,
+      packingScrapReason;
   final int shiftProductionPlan,
       productionInCartons,
       line_index,
@@ -76,6 +83,12 @@ class BiscuitsReport {
     required this.day,
     required this.shiftHours,
     required this.wastedMinutes,
+    //3.0.8 additions
+    required this.extrusionScrapReason,
+    required this.ovenScrapReason,
+    required this.conveyorScrapReason,
+    required this.cutterScrapReason,
+    required this.packingScrapReason,
   });
 
   BiscuitsReport.fromJson(Map<String, Object?> json)
@@ -114,6 +127,22 @@ class BiscuitsReport {
           wastedMinutes: json['wastedMinutes'] == null
               ? 0
               : parseJsonToDouble(json['wastedMinutes']!),
+          //3.0.8 additions
+          conveyorScrapReason: json['conveyorScrapReason'] == null
+              ? ''
+              : json['conveyorScrapReason']! as String,
+          cutterScrapReason: json['cutterScrapReason'] == null
+              ? ''
+              : json['cutterScrapReason']! as String,
+          extrusionScrapReason: json['extrusionScrapReason'] == null
+              ? ''
+              : json['extrusionScrapReason']! as String,
+          ovenScrapReason: json['ovenScrapReason'] == null
+              ? ''
+              : json['ovenScrapReason']! as String,
+          packingScrapReason: json['packingScrapReason'] == null
+              ? ''
+              : json['packingScrapReason']! as String,
         );
 
   Map<String, Object?> toJson() {
@@ -149,6 +178,12 @@ class BiscuitsReport {
       'mc2WasteKg': mc2WasteKg,
       'shiftHours': shiftHours,
       'wastedMinutes': wastedMinutes,
+      //3.0.8 additions
+      'extrusionScrapReason': extrusionScrapReason,
+      'packingScrapReason': packingScrapReason,
+      'cutterScrapReason': cutterScrapReason,
+      'conveyorScrapReason': conveyorScrapReason,
+      'ovenScrapReason': ovenScrapReason,
     };
   }
 
@@ -184,6 +219,12 @@ class BiscuitsReport {
     int day,
     double shiftHours,
     double wastedMinutes,
+    //3.0.8 additions
+    String extrusionScrapReason,
+    String ovenScrapReason,
+    String conveyorScrapReason,
+    String cutterScrapReason,
+    String packingScrapReason,
   ) async {
     final biscuitsReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -227,6 +268,12 @@ class BiscuitsReport {
         mc2WasteKg: mc2WasteKg,
         shiftHours: shiftHours,
         wastedMinutes: wastedMinutes,
+        //3.0.8 additions
+        extrusionScrapReason: extrusionScrapReason,
+        packingScrapReason: packingScrapReason,
+        cutterScrapReason: cutterScrapReason,
+        conveyorScrapReason: conveyorScrapReason,
+        ovenScrapReason: ovenScrapReason,
       ),
     );
   }
@@ -265,6 +312,12 @@ class BiscuitsReport {
     int day,
     double shiftHours,
     double wastedMinutes,
+    //3.0.8 additions
+    String extrusionScrapReason,
+    String ovenScrapReason,
+    String conveyorScrapReason,
+    String cutterScrapReason,
+    String packingScrapReason,
   ) async {
     final biscuitsReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -309,6 +362,12 @@ class BiscuitsReport {
           'mc2WasteKg': mc2WasteKg,
           'shiftHours': shiftHours,
           'wastedMinutes': wastedMinutes,
+          //3.0.8 additions
+          'extrusionScrapReason': extrusionScrapReason,
+          'packingScrapReason': packingScrapReason,
+          'cutterScrapReason': cutterScrapReason,
+          'conveyorScrapReason': conveyorScrapReason,
+          'ovenScrapReason': ovenScrapReason,
         })
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -531,6 +590,12 @@ class BiscuitsReport {
       skuName: '',
       shiftHours: standardShiftHours,
       wastedMinutes: 0.0,
+      //3.0.8 additions
+      extrusionScrapReason: '',
+      ovenScrapReason: '',
+      conveyorScrapReason: '',
+      cutterScrapReason: '',
+      packingScrapReason: '',
     );
   }
 }
