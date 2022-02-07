@@ -19,7 +19,12 @@ class MaamoulReport {
       mixerScrapReason,
       ovenScrapReason,
       stampingScrapReason,
-      packingScrapReason;
+      packingScrapReason,
+      //3.0.9 additions
+      mc1Type,
+      mc2Type,
+      mc3Type,
+      mc4Type;
   final int shiftProductionPlan,
       productionInCartons,
       line_index,
@@ -35,8 +40,6 @@ class MaamoulReport {
       mixerRework,
       stampingScrap,
       stampingRework,
-      mc1Speed,
-      mc2Speed,
       packingScrap,
       packingRework,
       boxesWaste,
@@ -46,7 +49,12 @@ class MaamoulReport {
       mc1WasteKg,
       mc2WasteKg,
       shiftHours,
-      wastedMinutes;
+      wastedMinutes,
+      mc1Speed,
+      mc2Speed,
+      //3.0.9 additions
+      mc3Speed,
+      mc4Speed;
 
   MaamoulReport({
     required this.area,
@@ -83,6 +91,13 @@ class MaamoulReport {
     required this.ovenScrapReason,
     required this.stampingScrapReason,
     required this.packingScrapReason,
+    //3.0.9 additions
+    required this.mc3Speed,
+    required this.mc4Speed,
+    required this.mc1Type,
+    required this.mc2Type,
+    required this.mc3Type,
+    required this.mc4Type,
   });
 
   MaamoulReport.fromJson(Map<String, Object?> json)
@@ -131,6 +146,17 @@ class MaamoulReport {
           packingScrapReason: json['packingScrapReason'] == null
               ? ''
               : json['packingScrapReason']! as String,
+          //3.0.9 additions
+          mc1Type: json['mc1Type'] == null ? '' : json['mc1Type']! as String,
+          mc2Type: json['mc2Type'] == null ? '' : json['mc2Type']! as String,
+          mc3Type: json['mc3Type'] == null ? '' : json['mc3Type']! as String,
+          mc4Type: json['mc4Type'] == null ? '' : json['mc4Type']! as String,
+          mc3Speed: json['mc3Speed'] == null
+              ? 0
+              : parseJsonToDouble(json['mc3Speed']!),
+          mc4Speed: json['mc4Speed'] == null
+              ? 0
+              : parseJsonToDouble(json['mc4Speed']!),
         );
 
   Map<String, Object?> toJson() {
@@ -169,6 +195,13 @@ class MaamoulReport {
       'ovenScrapReason': ovenScrapReason,
       'stampingScrapReason': stampingScrapReason,
       'packingScrapReason': packingScrapReason,
+      //3.0.9 additions
+      'mc1Type': mc1Type,
+      'mc2Type': mc2Type,
+      'mc3Type': mc3Type,
+      'mc4Type': mc4Type,
+      'mc3Speed': mc3Speed,
+      'mc4Speed': mc4Speed,
     };
   }
 
@@ -207,6 +240,13 @@ class MaamoulReport {
     String ovenScrapReason,
     String stampingScrapReason,
     String packingScrapReason,
+    //3.0.9 additions
+    double mc3Speed,
+    double mc4Speed,
+    String mc1Type,
+    String mc2Type,
+    String mc3Type,
+    String mc4Type,
   ) async {
     final MaamoulReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -253,6 +293,13 @@ class MaamoulReport {
         ovenScrapReason: ovenScrapReason,
         stampingScrapReason: stampingScrapReason,
         packingScrapReason: packingScrapReason,
+        //3.0.9 additions
+        mc1Type: mc1Type,
+        mc2Type: mc2Type,
+        mc3Type: mc3Type,
+        mc4Type: mc4Type,
+        mc3Speed: mc3Speed,
+        mc4Speed: mc4Speed,
       ),
     );
   }
@@ -294,6 +341,13 @@ class MaamoulReport {
     String ovenScrapReason,
     String stampingScrapReason,
     String packingScrapReason,
+    //3.0.9 additions
+    double mc3Speed,
+    double mc4Speed,
+    String mc1Type,
+    String mc2Type,
+    String mc3Type,
+    String mc4Type,
   ) async {
     final MaamoulReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -340,6 +394,13 @@ class MaamoulReport {
           'ovenScrapReason': ovenScrapReason,
           'stampingScrapReason': stampingScrapReason,
           'packingScrapReason': packingScrapReason,
+          //3.0.9 additions
+          'mc1Type': mc1Type,
+          'mc2Type': mc2Type,
+          'mc3Type': mc3Type,
+          'mc4Type': mc4Type,
+          'mc3Speed': mc3Speed,
+          'mc4Speed': mc4Speed,
         })
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -564,6 +625,13 @@ class MaamoulReport {
       ovenScrapReason: '',
       mixerScrapReason: '',
       packingScrapReason: '',
+      //3.0.9 additions
+      mc3Speed: 0.0,
+      mc4Speed: 0.0,
+      mc1Type: '',
+      mc2Type: '',
+      mc3Type: '',
+      mc4Type: '',
     );
   }
 }

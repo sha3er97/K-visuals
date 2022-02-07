@@ -20,7 +20,12 @@ class WaferReport {
       ovenScrapReason,
       coolerScrapReason,
       cutterScrapReason,
-      packingScrapReason;
+      packingScrapReason,
+      //3.0.9 additions
+      mc1Type,
+      mc2Type,
+      mc3Type,
+      mc4Type;
   final int shiftProductionPlan,
       productionInCartons,
       line_index,
@@ -38,8 +43,6 @@ class WaferReport {
       creamRework,
       coolerScrap,
       coolerRework,
-      mc1Speed,
-      mc2Speed,
       packingScrap,
       packingRework,
       boxesWaste,
@@ -49,7 +52,12 @@ class WaferReport {
       mc1WasteKg,
       mc2WasteKg,
       shiftHours,
-      wastedMinutes;
+      wastedMinutes,
+      mc1Speed,
+      mc2Speed,
+      //3.0.9 additions
+      mc3Speed,
+      mc4Speed;
 
   WaferReport({
     required this.area,
@@ -89,6 +97,13 @@ class WaferReport {
     required this.coolerScrapReason,
     required this.cutterScrapReason,
     required this.packingScrapReason,
+    //3.0.9 additions
+    required this.mc3Speed,
+    required this.mc4Speed,
+    required this.mc1Type,
+    required this.mc2Type,
+    required this.mc3Type,
+    required this.mc4Type,
   });
 
   WaferReport.fromJson(Map<String, Object?> json)
@@ -142,6 +157,17 @@ class WaferReport {
           packingScrapReason: json['packingScrapReason'] == null
               ? ''
               : json['packingScrapReason']! as String,
+          //3.0.9 additions
+          mc1Type: json['mc1Type'] == null ? '' : json['mc1Type']! as String,
+          mc2Type: json['mc2Type'] == null ? '' : json['mc2Type']! as String,
+          mc3Type: json['mc3Type'] == null ? '' : json['mc3Type']! as String,
+          mc4Type: json['mc4Type'] == null ? '' : json['mc4Type']! as String,
+          mc3Speed: json['mc3Speed'] == null
+              ? 0
+              : parseJsonToDouble(json['mc3Speed']!),
+          mc4Speed: json['mc4Speed'] == null
+              ? 0
+              : parseJsonToDouble(json['mc4Speed']!),
         );
 
   Map<String, Object?> toJson() {
@@ -183,6 +209,13 @@ class WaferReport {
       'coolerScrapReason': coolerScrapReason,
       'cutterScrapReason': cutterScrapReason,
       'packingScrapReason': packingScrapReason,
+      //3.0.9 additions
+      'mc1Type': mc1Type,
+      'mc2Type': mc2Type,
+      'mc3Type': mc3Type,
+      'mc4Type': mc4Type,
+      'mc3Speed': mc3Speed,
+      'mc4Speed': mc4Speed,
     };
   }
 
@@ -224,6 +257,13 @@ class WaferReport {
     String coolerScrapReason,
     String cutterScrapReason,
     String packingScrapReason,
+    //3.0.9 additions
+    double mc3Speed,
+    double mc4Speed,
+    String mc1Type,
+    String mc2Type,
+    String mc3Type,
+    String mc4Type,
   ) async {
     final waferReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -273,6 +313,13 @@ class WaferReport {
         coolerScrapReason: coolerScrapReason,
         cutterScrapReason: cutterScrapReason,
         packingScrapReason: packingScrapReason,
+        //3.0.9 additions
+        mc1Type: mc1Type,
+        mc2Type: mc2Type,
+        mc3Type: mc3Type,
+        mc4Type: mc4Type,
+        mc3Speed: mc3Speed,
+        mc4Speed: mc4Speed,
       ),
     );
   }
@@ -317,6 +364,13 @@ class WaferReport {
     String coolerScrapReason,
     String cutterScrapReason,
     String packingScrapReason,
+    //3.0.9 additions
+    double mc3Speed,
+    double mc4Speed,
+    String mc1Type,
+    String mc2Type,
+    String mc3Type,
+    String mc4Type,
   ) async {
     final waferReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -367,6 +421,13 @@ class WaferReport {
           'coolerScrapReason': coolerScrapReason,
           'cutterScrapReason': cutterScrapReason,
           'packingScrapReason': packingScrapReason,
+          //3.0.9 additions
+          'mc1Type': mc1Type,
+          'mc2Type': mc2Type,
+          'mc3Type': mc3Type,
+          'mc4Type': mc4Type,
+          'mc3Speed': mc3Speed,
+          'mc4Speed': mc4Speed,
         })
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -595,6 +656,13 @@ class WaferReport {
       coolerScrapReason: '',
       cutterScrapReason: '',
       packingScrapReason: '',
+      //3.0.9 additions
+      mc3Speed: 0.0,
+      mc4Speed: 0.0,
+      mc1Type: '',
+      mc2Type: '',
+      mc3Type: '',
+      mc4Type: '',
     );
   }
 }
