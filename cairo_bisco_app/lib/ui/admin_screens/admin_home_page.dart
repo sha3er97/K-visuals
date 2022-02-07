@@ -2,6 +2,7 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/components/buttons/gradient_general_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/log_out_btn.dart';
 import 'package:cairo_bisco_app/ui/admin_screens/admin_edit_targets.dart';
+import 'package:cairo_bisco_app/ui/admin_screens/admin_machines_list.dart';
 import 'package:cairo_bisco_app/ui/admin_screens/admin_main_add_sku.dart';
 import 'package:cairo_bisco_app/ui/admin_screens/admin_show_all_skus.dart';
 import 'package:flutter/material.dart';
@@ -98,6 +99,21 @@ class AdminHomePage extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ReviewOwnerEmails(),
+                    ),
+                  );
+                },
+              ),
+              GradientGeneralButton(
+                gradientColor1: KelloggColors.white,
+                gradientColor2: KelloggColors.orange,
+                mainColor: KelloggColors.darkBlue.withOpacity(0.5),
+                btn_icon: Icons.settings,
+                title: "Edit Machines",
+                param_onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MachinesList(),
                     ),
                   );
                 },

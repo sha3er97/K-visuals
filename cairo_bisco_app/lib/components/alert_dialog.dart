@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'buttons/cancel_dialog_btn.dart';
 import 'buttons/delete_admin_btn.dart';
+import 'buttons/delete_machine_btn.dart';
 import 'buttons/delete_owner_btn.dart';
 import 'buttons/get_update_btn.dart';
 
@@ -35,6 +36,27 @@ confirmDeleteAdminAlertDialog(BuildContext context, String email) {
     actions: [
       cancelDialogBtn(text: "Cancel"),
       deleteAdminBtn(email: email),
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+confirmDeleteMachineAlertDialog(BuildContext context, String name) {
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Machine Edit"),
+    content:
+        Text("Are you sure you want to remove \' $name \' from Machines list"),
+    actions: [
+      cancelDialogBtn(text: "Cancel"),
+      deleteMachineBtn(name: name),
     ],
   );
 

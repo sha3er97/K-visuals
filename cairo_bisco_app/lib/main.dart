@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'classes/Credentials.dart';
+import 'classes/Machine.dart';
 import 'classes/Plans.dart';
 import 'classes/SKU.dart';
 import 'components/alert_dialog.dart';
@@ -27,6 +28,7 @@ void main() {
 Future<void> loadRules() async {
   SKU.getAllSku();
   Plans.getPlans();
+  Machine.getPackingMachines();
   await Credentials.getCredentials();
   await Credentials.getAdmins();
   await Credentials.getOwners();
