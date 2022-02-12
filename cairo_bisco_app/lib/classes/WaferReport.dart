@@ -10,6 +10,7 @@ import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'Machine.dart';
 import 'OverWeightReport.dart';
 
 class WaferReport {
@@ -34,7 +35,7 @@ class WaferReport {
       year,
       month,
       day;
-  final double actualSpeed,
+  final double,
       ovenScrap,
       ovenRework,
       cutterScrap,
@@ -49,8 +50,12 @@ class WaferReport {
       cartonWaste,
       mc1FilmUsed,
       mc2FilmUsed,
+      mc3FilmUsed,
+      mc4FilmUsed,
       mc1WasteKg,
       mc2WasteKg,
+      mc3WasteKg,
+      mc4WasteKg,
       shiftHours,
       wastedMinutes,
       mc1Speed,
@@ -67,7 +72,6 @@ class WaferReport {
     required this.skuName,
     required this.shiftProductionPlan,
     required this.productionInCartons,
-    required this.actualSpeed,
     required this.ovenScrap,
     required this.ovenRework,
     required this.cutterScrap,
@@ -104,6 +108,10 @@ class WaferReport {
     required this.mc2Type,
     required this.mc3Type,
     required this.mc4Type,
+    required this.mc3FilmUsed,
+    required this.mc4FilmUsed,
+    required this.mc3WasteKg,
+    required this.mc4WasteKg,
   });
 
   WaferReport.fromJson(Map<String, Object?> json)
@@ -118,7 +126,6 @@ class WaferReport {
           productionInCartons: json['productionInCartons']! as int,
           supName: json['supName']! as String,
           skuName: json['skuName']! as String,
-          actualSpeed: parseJsonToDouble(json['actualSpeed']!),
           ovenScrap: parseJsonToDouble(json['ovenScrap']!),
           ovenRework: parseJsonToDouble(json['ovenRework']!),
           cutterScrap: parseJsonToDouble(json['cutterScrap']!),
@@ -158,16 +165,36 @@ class WaferReport {
               ? ''
               : json['packingScrapReason']! as String,
           //3.0.9 additions
-          mc1Type: json['mc1Type'] == null ? '' : json['mc1Type']! as String,
-          mc2Type: json['mc2Type'] == null ? '' : json['mc2Type']! as String,
-          mc3Type: json['mc3Type'] == null ? '' : json['mc3Type']! as String,
-          mc4Type: json['mc4Type'] == null ? '' : json['mc4Type']! as String,
+          mc1Type: json['mc1Type'] == null
+              ? Machine.packingMachinesList[0]
+              : json['mc1Type']! as String,
+          mc2Type: json['mc2Type'] == null
+              ? Machine.packingMachinesList[0]
+              : json['mc2Type']! as String,
+          mc3Type: json['mc3Type'] == null
+              ? Machine.packingMachinesList[0]
+              : json['mc3Type']! as String,
+          mc4Type: json['mc4Type'] == null
+              ? Machine.packingMachinesList[0]
+              : json['mc4Type']! as String,
           mc3Speed: json['mc3Speed'] == null
               ? 0
               : parseJsonToDouble(json['mc3Speed']!),
           mc4Speed: json['mc4Speed'] == null
               ? 0
               : parseJsonToDouble(json['mc4Speed']!),
+          mc3FilmUsed: json['mc3FilmUsed'] == null
+              ? 0
+              : parseJsonToDouble(json['mc3FilmUsed']!),
+          mc4FilmUsed: json['mc4FilmUsed'] == null
+              ? 0
+              : parseJsonToDouble(json['mc4FilmUsed']!),
+          mc3WasteKg: json['mc3WasteKg'] == null
+              ? 0
+              : parseJsonToDouble(json['mc3WasteKg']!),
+          mc4WasteKg: json['mc4WasteKg'] == null
+              ? 0
+              : parseJsonToDouble(json['mc4WasteKg']!),
         );
 
   Map<String, Object?> toJson() {
@@ -182,7 +209,6 @@ class WaferReport {
       'skuName': skuName,
       'shiftProductionPlan': shiftProductionPlan,
       'productionInCartons': productionInCartons,
-      'actualSpeed': actualSpeed,
       'ovenScrap': ovenScrap,
       'ovenRework': ovenRework,
       'cutterScrap': cutterScrap,
@@ -216,13 +242,16 @@ class WaferReport {
       'mc4Type': mc4Type,
       'mc3Speed': mc3Speed,
       'mc4Speed': mc4Speed,
+      'mc3FilmUsed': mc3FilmUsed,
+      'mc4FilmUsed': mc4FilmUsed,
+      'mc3WasteKg': mc3WasteKg,
+      'mc4WasteKg': mc4WasteKg,
     };
   }
 
   static void addReport(
     String supName,
     String skuName,
-    double actualSpeed,
     double ovenScrap,
     double ovenRework,
     double cutterScrap,
@@ -239,8 +268,12 @@ class WaferReport {
     double cartonWaste,
     double mc1FilmUsed,
     double mc2FilmUsed,
+    double mc3FilmUsed,
+    double mc4FilmUsed,
     double mc1WasteKg,
     double mc2WasteKg,
+    double mc3WasteKg,
+    double mc4WasteKg,
     int shiftProductionPlan,
     int productionInCartons,
     int line_index,
@@ -286,7 +319,6 @@ class WaferReport {
         skuName: skuName,
         shiftProductionPlan: shiftProductionPlan,
         productionInCartons: productionInCartons,
-        actualSpeed: actualSpeed,
         ovenScrap: ovenScrap,
         ovenRework: ovenRework,
         cutterScrap: cutterScrap,
@@ -320,6 +352,10 @@ class WaferReport {
         mc4Type: mc4Type,
         mc3Speed: mc3Speed,
         mc4Speed: mc4Speed,
+        mc3FilmUsed: mc3FilmUsed,
+        mc4FilmUsed: mc4FilmUsed,
+        mc3WasteKg: mc3WasteKg,
+        mc4WasteKg: mc4WasteKg,
       ),
     );
   }
@@ -329,7 +365,6 @@ class WaferReport {
     String id,
     String supName,
     String skuName,
-    double actualSpeed,
     double ovenScrap,
     double ovenRework,
     double cutterScrap,
@@ -346,8 +381,12 @@ class WaferReport {
     double cartonWaste,
     double mc1FilmUsed,
     double mc2FilmUsed,
+    double mc3FilmUsed,
+    double mc4FilmUsed,
     double mc1WasteKg,
     double mc2WasteKg,
+    double mc3WasteKg,
+    double mc4WasteKg,
     int shiftProductionPlan,
     int productionInCartons,
     int line_index,
@@ -394,7 +433,6 @@ class WaferReport {
           'skuName': skuName,
           'shiftProductionPlan': shiftProductionPlan,
           'productionInCartons': productionInCartons,
-          'actualSpeed': actualSpeed,
           'ovenScrap': ovenScrap,
           'ovenRework': ovenRework,
           'cutterScrap': cutterScrap,
@@ -428,6 +466,10 @@ class WaferReport {
           'mc4Type': mc4Type,
           'mc3Speed': mc3Speed,
           'mc4Speed': mc4Speed,
+          'mc3FilmUsed': mc3FilmUsed,
+          'mc4FilmUsed': mc4FilmUsed,
+          'mc3WasteKg': mc3WasteKg,
+          'mc4WasteKg': mc4WasteKg,
         })
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -571,8 +613,8 @@ class WaferReport {
         temp_productionPlan += report.data().shiftProductionPlan;
         temp_scrap += calculateAllScrap(WAFER_AREA, report.data());
         temp_rework += calculateAllRework(WAFER_AREA, report.data());
-        temp_wasted_film += report.data().mc2WasteKg + report.data().mc1WasteKg;
-        temp_used_film += report.data().mc2FilmUsed + report.data().mc1FilmUsed;
+        temp_wasted_film += calculateAllWastedFilmWaste(report.data());
+        temp_used_film += calculateAllUsedFilmWaste(report.data());
         lastSkuName = report.data().skuName;
         temp_rm_muv +=
             calculateRmMUV(WAFER_AREA, report.data(), matchedOverWeight);
@@ -642,7 +684,6 @@ class WaferReport {
       productionInCartons: 0,
       boxesWaste: 0.0,
       packingScrap: 0.0,
-      actualSpeed: 0.0,
       skuName: '',
       coolerScrap: 0.0,
       creamRework: 0.0,
@@ -663,6 +704,10 @@ class WaferReport {
       mc2Type: '',
       mc3Type: '',
       mc4Type: '',
+      mc3FilmUsed: 0.0,
+      mc3WasteKg: 0.0,
+      mc4FilmUsed: 0.0,
+      mc4WasteKg: 0.0,
     );
   }
 }

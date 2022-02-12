@@ -1,4 +1,5 @@
 import 'package:cairo_bisco_app/classes/Credentials.dart';
+import 'package:cairo_bisco_app/classes/Machine.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/WaferReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
@@ -43,7 +44,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
   });
 
   final String reportID;
-  final dynamic reportDetails;
+  final WaferReport reportDetails;
   final bool isEdit;
 
   bool showSpinner = false;
@@ -51,7 +52,6 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
 
   late String supName,
       shiftProductionPlan,
-      actualSpeed,
       productionInCartons,
       ovenScrap,
       ovenRework,
@@ -67,6 +67,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
       cutterScrapReason,
       mc1Speed,
       mc2Speed,
+      mc3Speed,
+      mc4Speed,
       packingScrap,
       packingRework,
       packingScrapReason,
@@ -77,11 +79,19 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
       mc1WasteKg,
       mc2WasteKg,
       shiftHours,
-      wastedMinutes;
+      wastedMinutes,
+      //3.0.9 additions
+      mc1Type,
+      mc2Type,
+      mc3Type,
+      mc4Type,
+      mc3FilmUsed,
+      mc4FilmUsed,
+      mc3WasteKg,
+      mc4WasteKg;
 
   bool _sup_name_validate = false,
       _shift_plan_validate = false,
-      _actualSpeed_validate = false,
       _productionInCartons_validate = false,
       _ovenScrap_validate = false,
       _ovenRework_validate = false,
@@ -93,14 +103,20 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
       _cutterRework_validate = false,
       _mc1Speed_validate = false,
       _mc2Speed_validate = false,
+      _mc3Speed_validate = false,
+      _mc4Speed_validate = false,
       _packingScrap_validate = false,
       _packingRework_validate = false,
       _boxesWaste_validate = false,
       _cartonWaste_validate = false,
       _mc1FilmUsed_validate = false,
       _mc2FilmUsed_validate = false,
+      _mc3FilmUsed_validate = false,
+      _mc4FilmUsed_validate = false,
       _mc1WasteKg_validate = false,
       _mc2WasteKg_validate = false,
+      _mc3WasteKg_validate = false,
+      _mc4WasteKg_validate = false,
       _shiftHours_validate = false,
       _wastedMinutes_validate = false;
 
@@ -115,6 +131,30 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
   VoidCallback? onSKUChange(val) {
     setState(() {
       sku = val;
+    });
+  }
+
+  VoidCallback? onMC1Change(val) {
+    setState(() {
+      mc1Type = val;
+    });
+  }
+
+  VoidCallback? onMC2Change(val) {
+    setState(() {
+      mc2Type = val;
+    });
+  }
+
+  VoidCallback? onMC3Change(val) {
+    setState(() {
+      mc3Type = val;
+    });
+  }
+
+  VoidCallback? onMC4Change(val) {
+    setState(() {
+      mc4Type = val;
     });
   }
 
@@ -154,7 +194,6 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
     supName = isEdit ? reportDetails.supName : Credentials.getUserName();
     shiftProductionPlan =
         isEdit ? reportDetails.shiftProductionPlan.toString() : '';
-    actualSpeed = isEdit ? reportDetails.actualSpeed.toString() : '';
     productionInCartons =
         isEdit ? reportDetails.productionInCartons.toString() : '';
     coolerScrap = isEdit ? reportDetails.coolerScrap.toString() : '';
@@ -165,16 +204,15 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
     cutterRework = isEdit ? reportDetails.cutterRework.toString() : '';
     creamScrap = isEdit ? reportDetails.creamScrap.toString() : '';
     creamRework = isEdit ? reportDetails.creamRework.toString() : '';
-    mc1Speed = isEdit ? reportDetails.mc1Speed.toString() : '';
-    mc2Speed = isEdit ? reportDetails.mc2Speed.toString() : '';
+
     packingScrap = isEdit ? reportDetails.packingScrap.toString() : '';
     packingRework = isEdit ? reportDetails.packingRework.toString() : '';
     boxesWaste = isEdit ? reportDetails.boxesWaste.toString() : '';
     cartonWaste = isEdit ? reportDetails.cartonWaste.toString() : '';
-    mc1FilmUsed = isEdit ? reportDetails.mc1FilmUsed.toString() : '';
-    mc2FilmUsed = isEdit ? reportDetails.mc2FilmUsed.toString() : '';
-    mc1WasteKg = isEdit ? reportDetails.mc1WasteKg.toString() : '';
-    mc2WasteKg = isEdit ? reportDetails.mc2WasteKg.toString() : '';
+    mc1FilmUsed = isEdit ? reportDetails.mc1FilmUsed.toString() : '0';
+    mc2FilmUsed = isEdit ? reportDetails.mc2FilmUsed.toString() : '0';
+    mc1WasteKg = isEdit ? reportDetails.mc1WasteKg.toString() : '0';
+    mc2WasteKg = isEdit ? reportDetails.mc2WasteKg.toString() : '0';
     shiftHours = isEdit
         ? reportDetails.shiftHours.toString()
         : standardShiftHours.toString();
@@ -188,7 +226,15 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
     ovenScrapReason = isEdit ? reportDetails.ovenScrapReason.toString() : '';
     packingScrapReason =
         isEdit ? reportDetails.packingScrapReason.toString() : '';
-
+    //3.0.9 additions
+    mc1Speed = isEdit ? reportDetails.mc1Speed.toString() : '0';
+    mc2Speed = isEdit ? reportDetails.mc2Speed.toString() : '0';
+    mc3Speed = isEdit ? reportDetails.mc3Speed.toString() : '0';
+    mc4Speed = isEdit ? reportDetails.mc4Speed.toString() : '0';
+    mc3FilmUsed = isEdit ? reportDetails.mc3FilmUsed.toString() : '0';
+    mc4FilmUsed = isEdit ? reportDetails.mc4FilmUsed.toString() : '0';
+    mc3WasteKg = isEdit ? reportDetails.mc3WasteKg.toString() : '0';
+    mc4WasteKg = isEdit ? reportDetails.mc4WasteKg.toString() : '0';
     ///////////////////////////////////////////////////////////////////////////////
     selectedShift = shifts[reportDetails.shift_index];
     selectedYear =
@@ -202,6 +248,11 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
     sku = isEdit
         ? reportDetails.skuName
         : SKU.allSkus[refNum][0]; //SKU.waferSKU[0];
+    //3.0.9 additions
+    mc1Type = isEdit ? reportDetails.mc1Type : Machine.packingMachinesList[0];
+    mc2Type = isEdit ? reportDetails.mc2Type : Machine.packingMachinesList[0];
+    mc3Type = isEdit ? reportDetails.mc3Type : Machine.packingMachinesList[0];
+    mc4Type = isEdit ? reportDetails.mc4Type : Machine.packingMachinesList[0];
   }
 
   @override
@@ -564,43 +615,6 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                           ),
                           onChanged: (value) {
                             wastedMinutes = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////
-                        smallerHeading(
-                            'السرعة الفعلية لابطا ماكينة (الفرن)\nActual Speed of bottle neck'),
-                        SizedBox(height: minimumPadding),
-                        TextFormField(
-                          initialValue: actualSpeed,
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _actualSpeed_validate
-                                ? missingValueErrorText
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            actualSpeed = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -1065,7 +1079,35 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         //////////////////////////////////////////////////////////////////
                         sectionWithDivider('التعبئة Packaging'),
                         //////////////////////////////////////////////////////////////////
-                        smallerHeading('السرعة الفعلية mc1'),
+                        smallerHeading(
+                            'نوع مكنة التغليف 1\nPacking Machine 1 Type'),
+                        SizedBox(height: minimumPadding),
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPadding),
+                          child: DropdownButtonFormField<String>(
+                            // decoration: InputDecoration(labelText: 'اختر'),
+                            value: mc1Type,
+                            isExpanded: true,
+                            items:
+                                Machine.packingMachinesList.map((String value) {
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style:
+                                      TextStyle(color: KelloggColors.darkRed),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: onMC1Change,
+                          ),
+                        ),
+                        SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////////
+                        smallerHeading('السرعة الفعلية MC1'),
                         SizedBox(height: minimumPadding),
                         TextFormField(
                           initialValue: mc1Speed,
@@ -1075,7 +1117,6 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1101,7 +1142,35 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////////////////
-                        smallerHeading('السرعة الفعلية mc2'),
+                        smallerHeading(
+                            'نوع مكنة التغليف 2\nPacking Machine 2 Type'),
+                        SizedBox(height: minimumPadding),
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPadding),
+                          child: DropdownButtonFormField<String>(
+                            // decoration: InputDecoration(labelText: 'اختر'),
+                            value: mc2Type,
+                            isExpanded: true,
+                            items:
+                                Machine.packingMachinesList.map((String value) {
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style:
+                                      TextStyle(color: KelloggColors.darkRed),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: onMC2Change,
+                          ),
+                        ),
+                        SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////////
+                        smallerHeading('السرعة الفعلية MC2'),
                         SizedBox(height: minimumPadding),
                         TextFormField(
                           initialValue: mc2Speed,
@@ -1111,7 +1180,6 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                           keyboardType:
                               TextInputType.numberWithOptions(decimal: true),
                           cursorColor: Colors.white,
-                          obscureText: false,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -1133,6 +1201,132 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                           ),
                           onChanged: (value) {
                             mc2Speed = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        ///////////////////////////////////////////////////////////////////////////
+                        smallerHeading(
+                            'نوع مكنة التغليف 3\nPacking Machine 3 Type'),
+                        SizedBox(height: minimumPadding),
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPadding),
+                          child: DropdownButtonFormField<String>(
+                            // decoration: InputDecoration(labelText: 'اختر'),
+                            value: mc3Type,
+                            isExpanded: true,
+                            items:
+                                Machine.packingMachinesList.map((String value) {
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style:
+                                      TextStyle(color: KelloggColors.darkRed),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: onMC3Change,
+                          ),
+                        ),
+                        SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////////
+                        smallerHeading('السرعة الفعلية MC3'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: mc3Speed,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _mc3Speed_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            mc3Speed = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        ///////////////////////////////////////////////////////////////////////////
+                        smallerHeading(
+                            'نوع مكنة التغليف 4\nPacking Machine 4 Type'),
+                        SizedBox(height: minimumPadding),
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPadding),
+                          child: DropdownButtonFormField<String>(
+                            // decoration: InputDecoration(labelText: 'اختر'),
+                            value: mc4Type,
+                            isExpanded: true,
+                            items:
+                                Machine.packingMachinesList.map((String value) {
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style:
+                                      TextStyle(color: KelloggColors.darkRed),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: onMC4Change,
+                          ),
+                        ),
+                        SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////////
+                        smallerHeading('السرعة الفعلية MC4'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: mc4Speed,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _mc4Speed_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            mc4Speed = value;
                           },
                         ),
                         SizedBox(height: defaultPadding),
@@ -1459,6 +1653,146 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                           },
                         ),
                         SizedBox(height: defaultPadding),
+                        ///////////////////////////////////////////////////////////////////////////////////////////////
+                        smallerHeading('الهالك بالكجم MC3'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: mc3WasteKg,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _mc3WasteKg_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            mc3WasteKg = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        ///////////////////////////////////////////////////////////////////////////
+                        smallerHeading('اجمالي الفيلم المستخدم MC3'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: mc3FilmUsed,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _mc3FilmUsed_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            mc3FilmUsed = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////
+                        smallerHeading('الهالك بالكجم MC4'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: mc4WasteKg,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _mc4WasteKg_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            mc4WasteKg = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        ///////////////////////////////////////////////////////////////////////////
+                        smallerHeading('اجمالي الفيلم المستخدم MC4'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: mc4FilmUsed,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _mc4FilmUsed_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            mc4FilmUsed = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
                         //////////////////////////////////button//////////////////////////
                         isEdit
                             ? EmptyPlaceHolder()
@@ -1475,8 +1809,6 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             emptyField(supName);
                                         _shift_plan_validate =
                                             emptyField(shiftProductionPlan);
-                                        _actualSpeed_validate =
-                                            emptyField(actualSpeed);
                                         _productionInCartons_validate =
                                             emptyField(productionInCartons);
                                         _creamScrap_validate =
@@ -1519,11 +1851,23 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             emptyField(shiftHours);
                                         _wastedMinutes_validate =
                                             emptyField(wastedMinutes);
+                                        //3.0.9 additions
+                                        _mc3Speed_validate =
+                                            emptyField(mc3Speed);
+                                        _mc4Speed_validate =
+                                            emptyField(mc4Speed);
+                                        _mc3FilmUsed_validate =
+                                            emptyField(mc3FilmUsed);
+                                        _mc4FilmUsed_validate =
+                                            emptyField(mc4FilmUsed);
+                                        _mc3WasteKg_validate =
+                                            emptyField(mc3WasteKg);
+                                        _mc4WasteKg_validate =
+                                            emptyField(mc4WasteKg);
                                       });
                                       try {
                                         if (!_sup_name_validate &&
                                             !_shift_plan_validate &&
-                                            !_actualSpeed_validate &&
                                             !_productionInCartons_validate &&
                                             !_ovenScrap_validate &&
                                             !_ovenRework_validate &&
@@ -1544,11 +1888,17 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             !_mc1WasteKg_validate &&
                                             !_mc2WasteKg_validate &&
                                             !_shiftHours_validate &&
-                                            !_wastedMinutes_validate) {
+                                            !_wastedMinutes_validate &&
+                                            //3.0.9 additions
+                                            !_mc3Speed_validate &&
+                                            !_mc4Speed_validate &&
+                                            !_mc3FilmUsed_validate &&
+                                            !_mc4FilmUsed_validate &&
+                                            !_mc3WasteKg_validate &&
+                                            !_mc4WasteKg_validate) {
                                           WaferReport.addReport(
                                             supName,
                                             sku,
-                                            double.parse(actualSpeed),
                                             double.parse(ovenScrap),
                                             double.parse(ovenRework),
                                             double.parse(cutterScrap),
@@ -1565,8 +1915,12 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             double.parse(cartonWaste),
                                             double.parse(mc1FilmUsed),
                                             double.parse(mc2FilmUsed),
+                                            double.parse(mc3FilmUsed),
+                                            double.parse(mc4FilmUsed),
                                             double.parse(mc1WasteKg),
                                             double.parse(mc2WasteKg),
+                                            double.parse(mc3WasteKg),
+                                            double.parse(mc4WasteKg),
                                             int.parse(shiftProductionPlan),
                                             int.parse(productionInCartons),
                                             prod_lines4
@@ -1585,6 +1939,13 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             coolerScrapReason,
                                             cutterScrapReason,
                                             packingScrapReason,
+                                            //3.0.9 additions
+                                            double.parse(mc3Speed),
+                                            double.parse(mc4Speed),
+                                            mc1Type,
+                                            mc2Type,
+                                            mc3Type,
+                                            mc4Type,
                                           );
                                           Navigator.push(
                                               context,
@@ -1624,8 +1985,6 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             emptyField(supName);
                                         _shift_plan_validate =
                                             emptyField(shiftProductionPlan);
-                                        _actualSpeed_validate =
-                                            emptyField(actualSpeed);
                                         _productionInCartons_validate =
                                             emptyField(productionInCartons);
                                         _creamScrap_validate =
@@ -1668,11 +2027,23 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             emptyField(shiftHours);
                                         _wastedMinutes_validate =
                                             emptyField(wastedMinutes);
+                                        //3.0.9 additions
+                                        _mc3Speed_validate =
+                                            emptyField(mc3Speed);
+                                        _mc4Speed_validate =
+                                            emptyField(mc4Speed);
+                                        _mc3FilmUsed_validate =
+                                            emptyField(mc3FilmUsed);
+                                        _mc4FilmUsed_validate =
+                                            emptyField(mc4FilmUsed);
+                                        _mc3WasteKg_validate =
+                                            emptyField(mc3WasteKg);
+                                        _mc4WasteKg_validate =
+                                            emptyField(mc4WasteKg);
                                       });
                                       try {
                                         if (!_sup_name_validate &&
                                             !_shift_plan_validate &&
-                                            !_actualSpeed_validate &&
                                             !_productionInCartons_validate &&
                                             !_ovenScrap_validate &&
                                             !_ovenRework_validate &&
@@ -1693,7 +2064,14 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             !_mc1WasteKg_validate &&
                                             !_mc2WasteKg_validate &&
                                             !_shiftHours_validate &&
-                                            !_wastedMinutes_validate) {
+                                            !_wastedMinutes_validate &&
+                                            //3.0.9 additions
+                                            !_mc3Speed_validate &&
+                                            !_mc4Speed_validate &&
+                                            !_mc3FilmUsed_validate &&
+                                            !_mc4FilmUsed_validate &&
+                                            !_mc3WasteKg_validate &&
+                                            !_mc4WasteKg_validate) {
                                           if (canEditThisReport(
                                               supName,
                                               int.parse(selectedDay),
@@ -1704,7 +2082,6 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                               reportID,
                                               supName,
                                               sku,
-                                              double.parse(actualSpeed),
                                               double.parse(ovenScrap),
                                               double.parse(ovenRework),
                                               double.parse(cutterScrap),
@@ -1721,8 +2098,12 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                               double.parse(cartonWaste),
                                               double.parse(mc1FilmUsed),
                                               double.parse(mc2FilmUsed),
+                                              double.parse(mc3FilmUsed),
+                                              double.parse(mc4FilmUsed),
                                               double.parse(mc1WasteKg),
                                               double.parse(mc2WasteKg),
+                                              double.parse(mc3WasteKg),
+                                              double.parse(mc4WasteKg),
                                               int.parse(shiftProductionPlan),
                                               int.parse(productionInCartons),
                                               prod_lines4.indexOf(
@@ -1741,6 +2122,13 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                               coolerScrapReason,
                                               cutterScrapReason,
                                               packingScrapReason,
+                                              //3.0.9 additions
+                                              double.parse(mc3Speed),
+                                              double.parse(mc4Speed),
+                                              mc1Type,
+                                              mc2Type,
+                                              mc3Type,
+                                              mc4Type,
                                             );
                                           } else {
                                             ScaffoldMessenger.of(context)

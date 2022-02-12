@@ -118,11 +118,17 @@ String calculateDifferenceInCartonsTarget(MiniProductionReport report) {
 /*************************** utility functions ***********************************************/
 
 double calculateAllUsedFilmWaste(report) {
-  return report.mc1FilmUsed + report.mc2FilmUsed;
+  return report.mc1FilmUsed +
+      report.mc2FilmUsed +
+      report.mc3FilmUsed +
+      report.mc4FilmUsed;
 }
 
 double calculateAllWastedFilmWaste(report) {
-  return report.mc1WasteKg + report.mc2WasteKg;
+  return report.mc1WasteKg +
+      report.mc2WasteKg +
+      report.mc3WasteKg +
+      report.mc4WasteKg;
 }
 
 double calculateAllScrap(int refNum, report) {
