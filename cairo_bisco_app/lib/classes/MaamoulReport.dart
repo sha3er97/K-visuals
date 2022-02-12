@@ -34,8 +34,7 @@ class MaamoulReport {
       year,
       month,
       day;
-  final double,
-      ovenScrap,
+  final double ovenScrap,
       ovenRework,
       mixerScrap,
       mixerRework,
