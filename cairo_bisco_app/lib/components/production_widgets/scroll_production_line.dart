@@ -48,7 +48,16 @@ class ProductionLine extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-            child: smallerHeading(report.skuName),
+            child: Text(
+              report.skuName,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: mediumFontSize,
+                  fontWeight: FontWeight.w500,
+                  color: KelloggColors.darkRed),
+              maxLines: 1,
+              overflow: TextOverflow.clip,
+            ),
           ),
           SizedBox(height: defaultPadding),
           Row(
@@ -236,9 +245,13 @@ class ProductionLine extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: BoxConstraints.tightFor(height: minimumBoxHeight),
                 child: ElevatedButton(
-                  child: Text("Stopped Time : " +
-                      report.wastedMinutes.round().toString() +
-                      " Minutes"),
+                  child: Text(
+                    "Stopped Time : " +
+                        report.wastedMinutes.round().toString() +
+                        " Mins.",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   style: ElevatedButton.styleFrom(
                       textStyle: TextStyle(
                           fontSize: aboveMediumFontSize, fontFamily: 'MyFont'),
