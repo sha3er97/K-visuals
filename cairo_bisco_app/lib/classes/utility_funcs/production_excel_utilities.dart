@@ -130,10 +130,15 @@ class ProductionExcelUtilities {
         totMc2Waste = 0.0,
         totMc1Used = 0.0,
         totMc2Used = 0.0,
+        totMc3Used = 0.0,
+        totMc4Used = 0.0,
+        totMc3Waste = 0.0,
+        totMc4Waste = 0.0,
         avgOverweight = 0.0,
         totScrap = 0.0,
         totWeight = 0.0,
-        avgOEE = 0.0;
+        avgOEE = 0.0,
+        totStoppedMinutes = 0.0;
     int totCartons = 0;
     reportsList.sort((a, b) {
       return (constructDateObject(a.day, a.month, a.year))
@@ -170,6 +175,10 @@ class ProductionExcelUtilities {
       totMc1Used += report.mc1FilmUsed;
       totMc2Waste += report.mc2WasteKg;
       totMc2Used += report.mc2FilmUsed;
+      totMc3Waste += report.mc3WasteKg;
+      totMc3Used += report.mc3FilmUsed;
+      totMc4Waste += report.mc4WasteKg;
+      totMc4Used += report.mc4FilmUsed;
       avgOverweight =
           doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
               ? (avgOverweight == 0.0
@@ -197,6 +206,7 @@ class ProductionExcelUtilities {
       totWeight += calculateAllWeightFromOriginalReport(
           refNum, report, matchedOverWeight);
       totCartons += report.productionInCartons;
+      totStoppedMinutes += report.wastedMinutes;
       /////////////////////////////////////////////////////////////
 
       List<dynamic> row = [
@@ -225,6 +235,8 @@ class ProductionExcelUtilities {
         report.conveyorScrapReason,
         report.mc1Speed,
         report.mc2Speed,
+        report.mc3Speed,
+        report.mc4Speed,
         report.packingRework,
         report.packingScrap,
         report.packingScrapReason,
@@ -234,6 +246,10 @@ class ProductionExcelUtilities {
         calculateWastePercent(report.mc1FilmUsed, report.mc1WasteKg),
         report.mc2WasteKg,
         calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg),
+        report.mc3WasteKg,
+        calculateWastePercent(report.mc3FilmUsed, report.mc3WasteKg),
+        report.mc4WasteKg,
+        calculateWastePercent(report.mc4FilmUsed, report.mc4WasteKg),
         doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
             ? getCorrespondingOverweightToProdReport(
                 report, this.overweightList)
@@ -272,31 +288,42 @@ class ProductionExcelUtilities {
       prodType[refNum],
       '-',
       '-',
+      totStoppedMinutes,
       '-',
       '-',
       totTheoreticals,
-      '-',
       '-',
       totKg,
       totRework,
       totExtrusionRework,
       totExtrusionScrap,
+      '-',
       totOvenRework,
       totOvenScrap,
+      '-',
       totCutterRework,
       totCutterScrap,
+      '-',
       totConvRework,
       totConvScrap,
       '-',
       '-',
+      '-',
+      '-',
+      '-',
       totPackingRework,
       totPackingScrap,
+      '-',
       totBoxesWaste,
       totCartonWaste,
       totMc1Waste,
       calculateWastePercent(totMc1Used, totMc1Waste),
       totMc2Waste,
       calculateWastePercent(totMc2Used, totMc2Waste),
+      totMc3Waste,
+      calculateWastePercent(totMc3Used, totMc3Waste),
+      totMc4Waste,
+      calculateWastePercent(totMc4Used, totMc4Waste),
       double.parse(avgOverweight.toStringAsFixed(2)),
       totScrap,
       double.parse((totRework * 100 / totWeight).toStringAsFixed(2)),
@@ -336,10 +363,15 @@ class ProductionExcelUtilities {
         totMc2Waste = 0.0,
         totMc1Used = 0.0,
         totMc2Used = 0.0,
+        totMc3Used = 0.0,
+        totMc4Used = 0.0,
+        totMc3Waste = 0.0,
+        totMc4Waste = 0.0,
         avgOverweight = 0.0,
         totScrap = 0.0,
         totWeight = 0.0,
-        avgOEE = 0.0;
+        avgOEE = 0.0,
+        totStoppedMinutes = 0.0;
     int totCartons = 0;
     reportsList.sort((a, b) {
       return (constructDateObject(a.day, a.month, a.year))
@@ -376,6 +408,10 @@ class ProductionExcelUtilities {
       totMc1Used += report.mc1FilmUsed;
       totMc2Waste += report.mc2WasteKg;
       totMc2Used += report.mc2FilmUsed;
+      totMc3Waste += report.mc3WasteKg;
+      totMc3Used += report.mc3FilmUsed;
+      totMc4Waste += report.mc4WasteKg;
+      totMc4Used += report.mc4FilmUsed;
       avgOverweight =
           doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
               ? (avgOverweight == 0.0
@@ -403,6 +439,7 @@ class ProductionExcelUtilities {
       totWeight += calculateAllWeightFromOriginalReport(
           refNum, report, matchedOverWeight);
       totCartons += report.productionInCartons;
+      totStoppedMinutes += report.wastedMinutes;
       /////////////////////////////////////////////////////////////
       List<dynamic> row = [
         constructDateString(report.day, report.month, report.year),
@@ -430,6 +467,8 @@ class ProductionExcelUtilities {
         report.cutterScrapReason,
         report.mc1Speed,
         report.mc2Speed,
+        report.mc3Speed,
+        report.mc4Speed,
         report.packingRework,
         report.packingScrap,
         report.packingScrapReason,
@@ -439,6 +478,10 @@ class ProductionExcelUtilities {
         calculateWastePercent(report.mc1FilmUsed, report.mc1WasteKg),
         report.mc2WasteKg,
         calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg),
+        report.mc3WasteKg,
+        calculateWastePercent(report.mc3FilmUsed, report.mc3WasteKg),
+        report.mc4WasteKg,
+        calculateWastePercent(report.mc4FilmUsed, report.mc4WasteKg),
         doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
             ? getCorrespondingOverweightToProdReport(
                 report, this.overweightList)
@@ -476,31 +519,42 @@ class ProductionExcelUtilities {
       prodType[refNum],
       '-',
       '-',
+      totStoppedMinutes,
       '-',
       '-',
       totTheoreticals,
-      '-',
       '-',
       totKg,
       totRework,
       totOvenRework,
       totOvenScrap,
+      '-',
       totCreamRework,
       totCreamScrap,
+      '-',
       totCoolerRework,
       totCoolerScrap,
+      '-',
       totCutterRework,
       totCutterScrap,
       '-',
       '-',
+      '-',
+      '-',
+      '-',
       totPackingRework,
       totPackingScrap,
+      '-',
       totBoxesWaste,
       totCartonWaste,
       totMc1Waste,
       calculateWastePercent(totMc1Used, totMc1Waste),
       totMc2Waste,
       calculateWastePercent(totMc2Used, totMc2Waste),
+      totMc3Waste,
+      calculateWastePercent(totMc3Used, totMc3Waste),
+      totMc4Waste,
+      calculateWastePercent(totMc4Used, totMc4Waste),
       double.parse(avgOverweight.toStringAsFixed(2)),
       totScrap,
       double.parse((totRework * 100 / totWeight).toStringAsFixed(2)),
@@ -538,10 +592,15 @@ class ProductionExcelUtilities {
         totMc2Waste = 0.0,
         totMc1Used = 0.0,
         totMc2Used = 0.0,
+        totMc3Used = 0.0,
+        totMc4Used = 0.0,
+        totMc3Waste = 0.0,
+        totMc4Waste = 0.0,
         avgOverweight = 0.0,
         totScrap = 0.0,
         totWeight = 0.0,
-        avgOEE = 0.0;
+        avgOEE = 0.0,
+        totStoppedMinutes = 0.0;
     int totCartons = 0;
     reportsList.sort((a, b) {
       return (constructDateObject(a.day, a.month, a.year))
@@ -576,6 +635,10 @@ class ProductionExcelUtilities {
       totMc1Used += report.mc1FilmUsed;
       totMc2Waste += report.mc2WasteKg;
       totMc2Used += report.mc2FilmUsed;
+      totMc3Waste += report.mc3WasteKg;
+      totMc3Used += report.mc3FilmUsed;
+      totMc4Waste += report.mc4WasteKg;
+      totMc4Used += report.mc4FilmUsed;
       avgOverweight =
           doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
               ? (avgOverweight == 0.0
@@ -603,6 +666,7 @@ class ProductionExcelUtilities {
       totWeight += calculateAllWeightFromOriginalReport(
           refNum, report, matchedOverWeight);
       totCartons += report.productionInCartons;
+      totStoppedMinutes += report.wastedMinutes;
       /////////////////////////////////////////////////////////////
       List<dynamic> row = [
         constructDateString(report.day, report.month, report.year),
@@ -627,6 +691,8 @@ class ProductionExcelUtilities {
         report.ovenScrapReason,
         report.mc1Speed,
         report.mc2Speed,
+        report.mc3Speed,
+        report.mc4Speed,
         report.packingRework,
         report.packingScrap,
         report.packingScrapReason,
@@ -636,6 +702,10 @@ class ProductionExcelUtilities {
         calculateWastePercent(report.mc1FilmUsed, report.mc1WasteKg),
         report.mc2WasteKg,
         calculateWastePercent(report.mc2FilmUsed, report.mc2WasteKg),
+        report.mc3WasteKg,
+        calculateWastePercent(report.mc3FilmUsed, report.mc3WasteKg),
+        report.mc4WasteKg,
+        calculateWastePercent(report.mc4FilmUsed, report.mc4WasteKg),
         doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
             ? getCorrespondingOverweightToProdReport(
                 report, this.overweightList)
@@ -673,29 +743,39 @@ class ProductionExcelUtilities {
       prodType[refNum],
       '-',
       '-',
+      totStoppedMinutes,
       '-',
       '-',
       totTheoreticals,
-      '-',
       '-',
       totKg,
       totRework,
       totMixerRework,
       totMixerScrap,
+      '-',
       totStampingRework,
       totStampingScrap,
+      '-',
       totOvenRework,
       totOvenScrap,
       '-',
       '-',
+      '-',
+      '-',
+      '-',
       totPackingRework,
       totPackingScrap,
+      '-',
       totBoxesWaste,
       totCartonWaste,
       totMc1Waste,
       calculateWastePercent(totMc1Used, totMc1Waste),
       totMc2Waste,
       calculateWastePercent(totMc2Used, totMc2Waste),
+      totMc3Waste,
+      calculateWastePercent(totMc3Used, totMc3Waste),
+      totMc4Waste,
+      calculateWastePercent(totMc4Used, totMc4Waste),
       double.parse(avgOverweight.toStringAsFixed(2)),
       totScrap,
       double.parse((totRework * 100 / totWeight).toStringAsFixed(2)),
@@ -726,7 +806,8 @@ class ProductionExcelUtilities {
         avgOEE = 0.0,
         totOverWeightKg = 0.0,
         totPlanKg = 0.0,
-        totRmMuv = 0.0;
+        totRmMuv = 0.0,
+        totStoppedMinutes = 0.0;
     int totCartons = 0;
     reportsList.sort((a, b) {
       return (constructDateObject(a.day, a.month, a.year))
@@ -765,12 +846,14 @@ class ProductionExcelUtilities {
               : (avgOEE +
                       calculateOeeFromMiniReport(report, matchedOverWeight)) /
                   2);
+      totStoppedMinutes += report.wastedMinutes;
       /////////////////////////////////////////////////////////////
       List<dynamic> row = [
         constructDateString(report.day, report.month, report.year),
         report.planInKg,
         report.productionInKg,
         report.productionInCartons,
+        report.wastedMinutes,
         doesMiniReportHaveCorrespondingOverweight(report, this.overweightList)
             ? getCorrespondingOverweightToMiniReport(
                 report, this.overweightList)
@@ -796,6 +879,7 @@ class ProductionExcelUtilities {
       totPlanKg,
       totKg,
       totCartons,
+      totStoppedMinutes,
       double.parse(avgOverweight.toStringAsFixed(2)),
       double.parse(totOverWeightKg.toStringAsFixed(2)),
       totScrap,
