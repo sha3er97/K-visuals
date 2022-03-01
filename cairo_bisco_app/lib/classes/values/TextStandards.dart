@@ -17,6 +17,21 @@ Widget ErrorMessageHeading(String title) {
   );
 }
 
+Widget NormalMessageHeading(String title) {
+  return Center(
+    child: Text(
+      '* ' + title + ' *',
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        color: KelloggColors.darkBlue,
+        fontSize: largeButtonFont,
+        fontWeight: FontWeight.w700,
+        wordSpacing: 1.5,
+      ),
+    ),
+  );
+}
+
 Text subHeading(String title) {
   return Text(
     title,
