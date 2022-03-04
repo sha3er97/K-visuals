@@ -199,7 +199,7 @@ class SKU {
     return RefSkuArr[refNum]
         .doc(skuDocumentNames[name])
         .update({
-      // 'name': name,
+          // 'name': name,
           'cartonWeight': cartonWeight,
           'theoreticalShiftProd1': theoreticalShiftProd1,
           'theoreticalShiftProd2': theoreticalShiftProd2,
