@@ -10,25 +10,25 @@ final biscuitsSkuRef = FirebaseFirestore.instance
     .doc('sku')
     .collection('biscuits_sku')
     .withConverter<SKU>(
-  fromFirestore: (snapshot, _) => SKU.fromJson(snapshot.data()!),
-  toFirestore: (sku, _) => sku.toJson(),
-);
+      fromFirestore: (snapshot, _) => SKU.fromJson(snapshot.data()!),
+      toFirestore: (sku, _) => sku.toJson(),
+    );
 final waferSkuRef = FirebaseFirestore.instance
     .collection(factory_name)
     .doc('sku')
     .collection('wafer_sku')
     .withConverter<SKU>(
-  fromFirestore: (snapshot, _) => SKU.fromJson(snapshot.data()!),
-  toFirestore: (sku, _) => sku.toJson(),
-);
+      fromFirestore: (snapshot, _) => SKU.fromJson(snapshot.data()!),
+      toFirestore: (sku, _) => sku.toJson(),
+    );
 final maamoulSkuRef = FirebaseFirestore.instance
     .collection(factory_name)
     .doc('sku')
     .collection('maamoul_sku')
     .withConverter<SKU>(
-  fromFirestore: (snapshot, _) => SKU.fromJson(snapshot.data()!),
-  toFirestore: (sku, _) => sku.toJson(),
-);
+      fromFirestore: (snapshot, _) => SKU.fromJson(snapshot.data()!),
+      toFirestore: (sku, _) => sku.toJson(),
+    );
 final RefSkuArr = [biscuitsSkuRef, waferSkuRef, maamoulSkuRef];
 
 class SKU {
@@ -74,11 +74,11 @@ class SKU {
 
   SKU.fromJson(Map<String, Object?> json)
       : this(
-    name: json['name']! as String,
-    boxesPerCarton: json['boxesPerCarton']! as int,
-    cartonWeight: parseJsonToDouble(json['cartonWeight']!),
-    theoreticalShiftProd1:
-    parseJsonToDouble(json['theoreticalShiftProd1']!),
+          name: json['name']! as String,
+          boxesPerCarton: json['boxesPerCarton']! as int,
+          cartonWeight: parseJsonToDouble(json['cartonWeight']!),
+          theoreticalShiftProd1:
+              parseJsonToDouble(json['theoreticalShiftProd1']!),
           theoreticalShiftProd2:
               parseJsonToDouble(json['theoreticalShiftProd2']!),
           theoreticalShiftProd3:
@@ -111,8 +111,9 @@ class SKU {
     };
   }
 
-  static void addSKU(int refNum,
-      String name,
+  static void addSKU(
+    int refNum,
+    String name,
     double cartonWeight,
     double theoreticalShiftProd1,
     double theoreticalShiftProd2,
@@ -212,27 +213,28 @@ class SKU {
           'pieceWeight': pieceWeight,
         })
         .then((value) => {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("SKU Updated"),
-      )),
-      getAllSku(),
-      Navigator.pop(context),
-    })
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("SKU Updated"),
+              )),
+              getAllSku(),
+              Navigator.pop(context),
+            })
         .catchError((error) => {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to update SKU: $error"),
-      ))
-    });
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to update SKU: $error"),
+              ))
+            });
   }
 
-  static Future<void> deleteSku(context,
-      int refNum,
-      String name,) {
+  static Future<void> deleteSku(
+    context,
+    int refNum,
+    String name,
+  ) {
     return RefSkuArr[refNum]
         .doc(skuDocumentNames[name])
         .delete()
-        .then((value) =>
-    {
+        .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text("SKU Deleted"),
               )),
