@@ -210,8 +210,8 @@ class OverWeightReport {
         day_to,
         year,
       )) {
-        print('debug :: OverWeightReport filtered out due to its date --> ' +
-            report.data().day.toString());
+        // print('debug :: OverWeightReport filtered out due to its date --> ' +
+        //     report.data().day.toString());
         continue;
       }
       if (report.data().area == refNum || refNum == TOTAL_PLANT)

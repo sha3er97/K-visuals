@@ -551,8 +551,8 @@ class MaamoulReport {
         day_to,
         year,
       )) {
-        print('debug :: MaamoulReport filtered out due to its date --> ' +
-            report.data().day.toString());
+        // print('debug :: MaamoulReport filtered out due to its date --> ' +
+        //     report.data().day.toString());
         continue;
       }
       double matchedOverWeight = doesProdReportHaveCorrespondingOverweight(
@@ -564,13 +564,12 @@ class MaamoulReport {
       if (lineNumRequired == ALL_LINES ||
           (lineNumRequired != ALL_LINES &&
               report.data().line_index == lineNumRequired)) {
-        final theoreticals = [
+        final simpleTheoreticals = [
           SKU.skuDetails[report.data().skuName]!.theoreticalShiftProd1,
           SKU.skuDetails[report.data().skuName]!.theoreticalShiftProd2,
           SKU.skuDetails[report.data().skuName]!.theoreticalShiftProd3,
           SKU.skuDetails[report.data().skuName]!.theoreticalShiftProd4
         ];
-        print(theoreticals);
         //all shifts in one line in one area
         temp_productionInCartons += report.data().productionInCartons;
         temp_productionInKg += calculateProductionKg(
@@ -579,7 +578,7 @@ class MaamoulReport {
             report.data(), report.data().shiftProductionPlan);
 
         temp_theoreticalPlan +=
-            calculateNetTheoreticalOfReport(report.data(), theoreticals);
+            calculateNetTheoreticalOfReport(report.data(), simpleTheoreticals);
 
         temp_productionPlan += report.data().shiftProductionPlan;
         temp_scrap += calculateAllScrap(MAAMOUL_AREA, report.data());

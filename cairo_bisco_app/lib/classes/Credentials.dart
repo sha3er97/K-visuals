@@ -23,6 +23,7 @@ final ownersRef = FirebaseFirestore.instance
 class Credentials {
   /** rules **/
   static int lastVersionCode = 999; //last version uploaded on play store
+  static bool isSimpleCalculation = false;
 
   /** back doors**/
   static String screen_email = ""; //screen
@@ -200,6 +201,8 @@ class Credentials {
         // Credentials.admin_password = documentSnapshot["admin_password"];
         Credentials.lastVersionCode =
             documentSnapshot["lastVersionCode"].toInt();
+        Credentials.isSimpleCalculation =
+            documentSnapshot["isSimpleCalculation"];
       } else {
         print('Document does not exist on the database');
       }

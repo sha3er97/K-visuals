@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
+import 'admin_edit_machines_nums_sku.dart';
+
 class AdminEditSku extends StatefulWidget {
   AdminEditSku({
     Key? key,
@@ -45,7 +47,8 @@ class _AdminEditSkuState extends State<AdminEditSku> {
       _targetFilmWaste_validate = false,
       _targetScrap_validate = false,
       _rm_cost_validate = false,
-      _pm_cost_validate = false;
+      _pm_cost_validate = false,
+      _piece_weight_validate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +65,8 @@ class _AdminEditSkuState extends State<AdminEditSku> {
         targetScrap = SKU.skuDetails[skuName]!.targetScrap.toString(),
         targetFilmWaste = SKU.skuDetails[skuName]!.targetFilmWaste.toString(),
         pm_cost = SKU.skuDetails[skuName]!.pm_cost.toString(),
-        rm_cost = SKU.skuDetails[skuName]!.rm_cost.toString();
+        rm_cost = SKU.skuDetails[skuName]!.rm_cost.toString(),
+        piece_weight = SKU.skuDetails[skuName]!.pieceWeight.toString();
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: SafeArea(
@@ -493,6 +497,62 @@ class _AdminEditSkuState extends State<AdminEditSku> {
                           },
                         ),
                         SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////
+                        smallerHeading('وزن القطعة\nPiece Weight'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: piece_weight,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _piece_weight_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            piece_weight = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+
+                        //////////////////////////////////////////////////////////////////
+                        Padding(
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                                btnText: 'Edit Machines Numbers',
+                                color: KelloggColors.green,
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AdminEditMachinesNumsSku(
+                                                refNum: refNum,
+                                                skuName: skuName,
+                                              )));
+                                }),
+                          ),
+                        ),
                         //////////////////////////////////////////////////////////////////
                         Padding(
                           padding: const EdgeInsets.all(minimumPadding),
@@ -521,6 +581,8 @@ class _AdminEditSkuState extends State<AdminEditSku> {
                                       emptyField(boxesPerCarton);
                                   _rm_cost_validate = emptyField(rm_cost);
                                   _pm_cost_validate = emptyField(pm_cost);
+                                  _piece_weight_validate =
+                                      emptyField(piece_weight);
                                 });
                                 try {
                                   if (!_targetFilmWaste_validate &&
@@ -532,7 +594,8 @@ class _AdminEditSkuState extends State<AdminEditSku> {
                                       !_theoreticalShiftProd3_validate &&
                                       !_theoreticalShiftProd4_validate &&
                                       !_rm_cost_validate &&
-                                      !_pm_cost_validate) {
+                                      !_pm_cost_validate &&
+                                      !_piece_weight_validate) {
                                     SKU.editSKU(
                                       context,
                                       refNum,
@@ -547,6 +610,7 @@ class _AdminEditSkuState extends State<AdminEditSku> {
                                       int.parse(boxesPerCarton),
                                       double.parse(rm_cost),
                                       double.parse(pm_cost),
+                                      double.parse(piece_weight),
                                     );
                                   } else {
                                     ScaffoldMessenger.of(context)

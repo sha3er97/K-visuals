@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
 import 'package:cairo_bisco_app/classes/NRCReport.dart';
 import 'package:cairo_bisco_app/classes/PeopleReport.dart';
@@ -203,12 +204,43 @@ double calculateProductionKg(report, int cartons) {
 
 double calculateNetTheoreticalOfReport(
   report,
-  theoreticals,
+  simpleTheoreticals,
 ) {
-  double res = theoreticals[report.line_index - 1] *
+  double res, theo;
+  if (Credentials.isSimpleCalculation) {
+    theo = simpleTheoreticals[report.line_index - 1];
+  } else {
+    theo = getTheoreticalOfReport(report) *
+        SKU.skuDetails[report.skuName]!.pieceWeight *
+        60 * //60 mins/hr
+        standardShiftHours /
+        1000; //gm --> kg
+  }
+  res = theo *
       ((report.shiftHours - minutesToHours(report.wastedMinutes)) /
           standardShiftHours);
   return double.parse(res.toStringAsFixed(1));
+}
+
+double getTheoreticalOfReport(report) {
+  double temp = 0;
+  if (report.mc1Speed != 0) {
+    temp += SKU.getMachineTheoretical(
+        report.mc1Type, report.skuName, report.line_index);
+  }
+  if (report.mc2Speed != 0) {
+    temp += SKU.getMachineTheoretical(
+        report.mc2Type, report.skuName, report.line_index);
+  }
+  if (report.mc3Speed != 0) {
+    temp += SKU.getMachineTheoretical(
+        report.mc3Type, report.skuName, report.line_index);
+  }
+  if (report.mc4Speed != 0) {
+    temp += SKU.getMachineTheoretical(
+        report.mc4Type, report.skuName, report.line_index);
+  }
+  return temp;
 }
 
 double calculateOverweightKgFromOriginalReport(

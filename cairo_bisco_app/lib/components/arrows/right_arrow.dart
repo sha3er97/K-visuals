@@ -54,8 +54,8 @@ class RightArrow extends CustomPainter {
     );
     textPainter.layout(minWidth: size.width);
     textPainter.paint(canvas, Offset(size.width * 0.25, 0));
-    print("debug arrows :: right width =" + size.width.toString());
-    print("debug arrows :: right height =" + size.height.toString());
+    // print("debug arrows :: right width =" + size.width.toString());
+    // print("debug arrows :: right height =" + size.height.toString());
     //
     // // Draw a double sided arrow.
     // path = Path();

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'buttons/cancel_dialog_btn.dart';
 import 'buttons/delete_admin_btn.dart';
 import 'buttons/delete_machine_btn.dart';
+import 'buttons/delete_machine_detail_btn.dart';
 import 'buttons/delete_owner_btn.dart';
 import 'buttons/get_update_btn.dart';
 
@@ -57,6 +58,36 @@ confirmDeleteMachineAlertDialog(BuildContext context, String name) {
     actions: [
       cancelDialogBtn(text: "Cancel"),
       deleteMachineBtn(name: name),
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+confirmDeleteMachineDetailAlertDialog(
+  BuildContext context,
+  int refNum,
+  String skuName,
+  String detailId,
+) {
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Machine Detail Edit"),
+    content: Text(
+        "Are you sure you want to remove this Detail from \' $skuName \' Machine Detail list"),
+    actions: [
+      cancelDialogBtn(text: "Cancel"),
+      deleteMachineDetailBtn(
+        refNum: refNum,
+        skuName: skuName,
+        detailId: detailId,
+      ),
     ],
   );
 

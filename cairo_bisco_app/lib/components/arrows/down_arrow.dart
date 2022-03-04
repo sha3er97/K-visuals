@@ -53,8 +53,8 @@ class DownArrow extends CustomPainter {
     );
     textPainter.layout(minWidth: size.width);
     textPainter.paint(canvas, Offset(size.width * 0.75, size.height * 0.06));
-    print("debug arrows :: down width =" + size.width.toString());
-    print("debug arrows :: down height =" + size.height.toString());
+    // print("debug arrows :: down width =" + size.width.toString());
+    // print("debug arrows :: down height =" + size.height.toString());
     //
     // // Draw a double sided arrow.
     // path = Path();

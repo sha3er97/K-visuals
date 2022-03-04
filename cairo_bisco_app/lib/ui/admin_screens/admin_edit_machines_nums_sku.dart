@@ -8,18 +8,58 @@ import 'package:cairo_bisco_app/components/alert_dialog.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-class MachinesList extends StatefulWidget {
+import '../../classes/SKU.dart';
+import '../../classes/values/form_values.dart';
+
+class AdminEditMachinesNumsSku extends StatefulWidget {
+  AdminEditMachinesNumsSku({
+    Key? key,
+    required this.refNum,
+    required this.skuName,
+  }) : super(key: key);
+  final int refNum;
+  final String skuName;
+
   @override
-  _MachinesListState createState() => _MachinesListState();
+  _AdminEditMachinesNumsSkuState createState() =>
+      _AdminEditMachinesNumsSkuState(
+        refNum: refNum,
+        skuName: skuName,
+      );
 }
 
-class _MachinesListState extends State<MachinesList> {
-  bool _valid_machine_validate = false;
+class _AdminEditMachinesNumsSkuState extends State<AdminEditMachinesNumsSku> {
+  _AdminEditMachinesNumsSkuState({
+    required this.refNum,
+    required this.skuName,
+  });
+
+  final int refNum;
+  final String skuName;
+
+  bool _valid_num_validate = false;
   bool showSpinner = false;
 
-  String machine = "";
+  String theoNum = "",
+      machineName = Machine.packingMachinesList[0],
+      selectedProdLine = prod_lines4[0];
+
+  VoidCallback? onLineChange(val) {
+    setState(() {
+      selectedProdLine = val;
+    });
+    return null;
+  }
+
+  VoidCallback? onMachineNameChange(val) {
+    setState(() {
+      machineName = val;
+    });
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +76,7 @@ class _MachinesListState extends State<MachinesList> {
               admin: true,
             ),
             title: Text(
-              "Packing Machines Names",
+              "Packing Machines Numbers",
               style: TextStyle(
                   color: KelloggColors.darkBlue,
                   fontWeight: FontWeight.w300,
@@ -56,10 +96,63 @@ class _MachinesListState extends State<MachinesList> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        adminHeading('Packing Machine Type'),
+                        SizedBox(height: minimumPadding),
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPadding),
+                          child: DropdownButtonFormField<String>(
+                            // decoration: InputDecoration(labelText: 'اختر'),
+                            value: machineName,
+                            isExpanded: true,
+                            items:
+                                Machine.packingMachinesList.map((String value) {
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style:
+                                      TextStyle(color: KelloggColors.darkRed),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: onMachineNameChange,
+                          ),
+                        ),
+                        SizedBox(height: defaultPadding),
+                        ///////////////////////////////////////////////////////////////
+                        adminHeading('Production Line'),
+                        SizedBox(height: minimumPadding),
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPadding),
+                          child: DropdownButtonFormField<String>(
+                            // decoration: InputDecoration(labelText: 'اختر'),
+                            value: selectedProdLine,
+                            isExpanded: true,
+                            items: prod_lines4.map((String value) {
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style:
+                                      TextStyle(color: KelloggColors.darkRed),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: onLineChange,
+                          ),
+                        ),
+                        SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            adminHeading('Machine Name:'),
+                            adminHeading('Pcs/Min :'),
                             SizedBox(width: minimumPadding),
                             Expanded(
                               child: TextFormField(
@@ -68,7 +161,10 @@ class _MachinesListState extends State<MachinesList> {
                                 style: (TextStyle(
                                     color: KelloggColors.darkBlue,
                                     fontWeight: FontWeight.w400)),
-                                keyboardType: TextInputType.name,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
                                 cursorColor: Colors.white,
                                 obscureText: false,
                                 decoration: InputDecoration(
@@ -79,7 +175,7 @@ class _MachinesListState extends State<MachinesList> {
                                     borderRadius: BorderRadius.all(
                                         Radius.circular(textFieldRadius)),
                                   ),
-                                  errorText: _valid_machine_validate
+                                  errorText: _valid_num_validate
                                       ? missingValueErrorText
                                       : null,
                                   focusedBorder: OutlineInputBorder(
@@ -91,7 +187,7 @@ class _MachinesListState extends State<MachinesList> {
                                   ),
                                 ),
                                 onChanged: (value) {
-                                  machine = value;
+                                  theoNum = value;
                                 },
                               ),
                             ),
@@ -103,18 +199,22 @@ class _MachinesListState extends State<MachinesList> {
                           padding: const EdgeInsets.all(minimumPadding),
                           child: Center(
                             child: RoundedButton(
-                              btnText: 'Add machine',
+                              btnText: 'Add Entry',
                               color: KelloggColors.darkBlue,
                               onPressed: () async {
                                 setState(() {
                                   showSpinner = true;
-                                  _valid_machine_validate = emptyField(machine);
+                                  _valid_num_validate = emptyField(theoNum);
                                 });
                                 try {
-                                  if (!_valid_machine_validate) {
-                                    Machine.addMachine(
+                                  if (!_valid_num_validate) {
+                                    SKU.addMachineDetail(
                                       context,
-                                      machine.trim(),
+                                      refNum,
+                                      skuName,
+                                      machineName,
+                                      int.parse(theoNum.trim()),
+                                      prod_lines4.indexOf(selectedProdLine) + 1,
                                     );
                                   } else {
                                     ScaffoldMessenger.of(context)
@@ -133,24 +233,37 @@ class _MachinesListState extends State<MachinesList> {
                           ),
                         ),
                         //////////////////////////////////////////////////////////////////
-                        sectionWithDivider('Existing machines'),
+                        sectionWithDivider('Existing Entries'),
                         /////////////////////////////////////////////////////////////////////////////////
                         ListView.builder(
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             physics: ClampingScrollPhysics(),
                             // padding: const EdgeInsets.all(minimumPadding),
-                            itemCount: Machine.packingMachinesList.length,
+                            itemCount: SKU.skuMachineDetails[skuName]!.length,
                             itemBuilder: (BuildContext context, int index) {
                               return ListTile(
-                                title: adminHeading(
-                                    Machine.packingMachinesList[index]),
+                                title: adminHeading(SKU
+                                        .skuMachineDetails[skuName]![index]
+                                        .name +
+                                    " : " +
+                                    SKU.skuMachineDetails[skuName]![index]
+                                        .pcsPerMin
+                                        .toString()),
+                                trailing: smallerHeading("L" +
+                                    SKU.skuMachineDetails[skuName]![index]
+                                        .line_index
+                                        .toString()),
                                 leading: IconButton(
                                   icon: const Icon(Icons.close),
                                   color: KelloggColors.cockRed,
                                   onPressed: () {
-                                    confirmDeleteMachineAlertDialog(context,
-                                        Machine.packingMachinesList[index]);
+                                    confirmDeleteMachineDetailAlertDialog(
+                                        context,
+                                        refNum,
+                                        skuName,
+                                        SKU.skuMachineDetails[skuName]![index]
+                                            .id);
                                   },
                                 ),
                               );

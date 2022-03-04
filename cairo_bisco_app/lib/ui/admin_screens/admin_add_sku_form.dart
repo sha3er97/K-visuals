@@ -39,7 +39,8 @@ class _AddSkuFormState extends State<AddSkuForm> {
       targetScrap = "",
       targetFilmWaste = "",
       rm_cost = "",
-      pm_cost = "";
+      pm_cost = "",
+      piece_weight = "";
 
   bool _skuName_validate = false,
       _cartonWeight_validate = false,
@@ -51,7 +52,8 @@ class _AddSkuFormState extends State<AddSkuForm> {
       _targetFilmWaste_validate = false,
       _targetScrap_validate = false,
       _rm_cost_validate = false,
-      _pm_cost_validate = false;
+      _pm_cost_validate = false,
+      _piece_weight_validate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -478,6 +480,41 @@ class _AddSkuFormState extends State<AddSkuForm> {
                           },
                         ),
                         SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////
+                        smallerHeading('وزن القطعة\nPiece Weight'),
+                        SizedBox(height: minimumPadding),
+                        TextField(
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            errorText: _piece_weight_validate
+                                ? missingValueErrorText
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            piece_weight = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
                         //////////////////////////////////////////////////////////////////
                         Padding(
                           padding: const EdgeInsets.all(minimumPadding),
@@ -507,6 +544,8 @@ class _AddSkuFormState extends State<AddSkuForm> {
                                       emptyField(boxesPerCarton);
                                   _rm_cost_validate = emptyField(rm_cost);
                                   _pm_cost_validate = emptyField(pm_cost);
+                                  _piece_weight_validate =
+                                      emptyField(piece_weight);
                                 });
                                 try {
                                   if (!_skuName_validate &&
@@ -519,7 +558,8 @@ class _AddSkuFormState extends State<AddSkuForm> {
                                       !_theoreticalShiftProd3_validate &&
                                       !_theoreticalShiftProd4_validate &&
                                       !_rm_cost_validate &&
-                                      !_pm_cost_validate) {
+                                      !_pm_cost_validate &&
+                                      !_piece_weight_validate) {
                                     SKU.addSKU(
                                       refNum,
                                       skuName,
@@ -533,6 +573,7 @@ class _AddSkuFormState extends State<AddSkuForm> {
                                       int.parse(boxesPerCarton),
                                       double.parse(rm_cost),
                                       double.parse(pm_cost),
+                                      double.parse(piece_weight),
                                     );
                                     Navigator.push(
                                         context,

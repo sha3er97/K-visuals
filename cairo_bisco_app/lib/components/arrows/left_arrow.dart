@@ -53,8 +53,8 @@ class LeftArrow extends CustomPainter {
       textDirection: TextDirection.ltr,
     );
     textPainter.layout(minWidth: size.width);
-    print("debug arrows :: left width =" + size.width.toString());
-    print("debug arrows :: left height =" + size.height.toString());
+    // print("debug arrows :: left width =" + size.width.toString());
+    // print("debug arrows :: left height =" + size.height.toString());
 
     textPainter.paint(canvas, Offset(size.width * -0.25, 0));
 
