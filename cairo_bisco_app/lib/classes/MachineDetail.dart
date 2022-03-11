@@ -1,13 +1,17 @@
 class MachineDetail {
   final String name;
   final int pcsPerMin, line_index;
-  late String id;
+  late final String id;
 
   MachineDetail({
     required this.name,
     required this.pcsPerMin,
     required this.line_index,
   });
+
+  void setID(String id) {
+    this.id = id;
+  }
 
   MachineDetail.fromJson(Map<String, Object?> json)
       : this(

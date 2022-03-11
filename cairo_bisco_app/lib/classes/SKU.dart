@@ -310,9 +310,12 @@ class SKU {
               )
               .get()
               .then((snapshot) => snapshot.docs);
+      skuMachineDetails[sku.data().name.toString()]!.clear();
       for (var machine in machineDetailList) {
-        machine.data().id = machine.id;
-        skuMachineDetails[sku.data().name.toString()]!.add(machine.data());
+        // machine.data().id = machine.id;
+        MachineDetail temp = machine.data();
+        temp.setID(machine.id);
+        skuMachineDetails[sku.data().name.toString()]!.add(temp);
       }
     }
   }
