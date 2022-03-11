@@ -24,6 +24,7 @@ class ProductionExcelUtilities {
   final int refNum;
   late dynamic areaName;
   late List<OverWeightReport> overweightList;
+  // List<List<dynamic>> csvData=[[]];
 
   ProductionExcelUtilities({required this.refNum}) {
     excel = Excel.createExcel(); // automatically creates 1 empty sheet: Sheet1
@@ -36,6 +37,32 @@ class ProductionExcelUtilities {
     this.overweightList = overweightList;
   }
 
+  // Future<void> saveCSVFile(
+  //   context,
+  //   dynamic from_day,
+  //   dynamic to_day,
+  //   dynamic from_month,
+  //   dynamic to_month,
+  // ) async {
+  //   String extension = "csv";
+  //   final format = 'text/csv';
+  //   dynamic fileName =
+  //       "$areaName report $from_day-$from_month to $to_day-$to_month.$extension";
+  //   List<List<String>> data = [
+  //     ["No.", "Name", "Roll No."],
+  //     ["1", "0", "3"],
+  //     ["2", "1", "4"],
+  //     ["3", "2", "5"]
+  //   ];
+  //   String csvData = ListToCsvConverter().convert(data);
+  //   // final String directory = (await getApplicationSupportDirectory()).path;
+  //   // final path = "$directory/$fileName";
+  //   // print(path);
+  //   XFile.fromData(csvData, mimeType: format, name: fileName).saveTo(fileName);
+  //   final File file = File(fileName);
+  //   await file.writeAsString(csvData);
+  // }
+
   Future<void> saveExcelFile(
     context,
     dynamic from_day,
@@ -43,8 +70,9 @@ class ProductionExcelUtilities {
     dynamic from_month,
     dynamic to_month,
   ) async {
+    String extension = "xlsx";
     dynamic fileName =
-        "$areaName report $from_day-$from_month to $to_day-$to_month.xlsx";
+        "$areaName report $from_day-$from_month to $to_day-$to_month.$extension";
     if (kIsWeb) {
       // running on the web!
       // io.File file;
