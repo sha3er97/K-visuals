@@ -1,8 +1,8 @@
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 
 /** version configs**/
-const versionNum = '3.1.0'; //edit also in pubspec.yaml
-const versionCode = 10; //edit also in pubspec.yaml
+const versionNum = '3.1.1'; //edit also in pubspec.yaml
+const versionCode = 11; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
 
@@ -117,6 +117,14 @@ const PEOPLE_REPORT = 6;
 const NRC_REPORT = 7;
 
 /** Constant Lists **/
+List<String> authorities = <String>[
+  '-',
+  'Production',
+  'Maintenance',
+  'Quality',
+  'Safety',
+  'Other',
+];
 List<OverWeightReport> overweightDummyList = [];
 List<String> prodType = <String>[
   'Biscuits',

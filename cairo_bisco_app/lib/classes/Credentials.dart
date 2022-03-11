@@ -3,6 +3,8 @@ import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'Owner.dart';
+
 final adminsRef = FirebaseFirestore.instance
     .collection(factory_name)
     .doc('credentials')
@@ -15,9 +17,9 @@ final ownersRef = FirebaseFirestore.instance
     .collection(factory_name)
     .doc('credentials')
     .collection("owners")
-    .withConverter<Admin>(
-      fromFirestore: (snapshot, _) => Admin.fromJson(snapshot.data()!),
-      toFirestore: (admin, _) => admin.toJson(),
+    .withConverter<Owner>(
+      fromFirestore: (snapshot, _) => Owner.fromJson(snapshot.data()!),
+      toFirestore: (owner, _) => owner.toJson(),
     );
 
 class Credentials {
@@ -42,6 +44,7 @@ class Credentials {
 
   static Map<String, String> adminDocumentNames = new Map<String, String>();
   static Map<String, String> ownerDocumentNames = new Map<String, String>();
+  static Map<String, String> adminsAuthorities = new Map<String, String>();
 
   static String getUserName() {
     String name = userEmail.split("@")[0];
@@ -68,7 +71,8 @@ class Credentials {
       for (var admin in adminDocsList) {
         if (!admin_emails.contains(admin.data().email)) {
           admin_emails.add(admin.data().email);
-          adminDocumentNames[admin.data().email.toString()] = admin.id;
+          adminDocumentNames[admin.data().email] = admin.id;
+          adminsAuthorities[admin.data().email] = admin.data().authority;
         }
       }
       admin_emails.sort();
@@ -94,10 +98,11 @@ class Credentials {
   static Future<void> addAdmin(
     context,
     String email,
+    String authority,
   ) async {
     if (!admin_emails.contains(email)) {
       await adminsRef
-          .add(Admin(email: email))
+          .add(Admin(email: email, authority: authority))
           .then((value) => {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text("Email Added"),
@@ -123,7 +128,7 @@ class Credentials {
   ) async {
     if (!owner_emails.contains(email)) {
       await ownersRef
-          .add(Admin(email: email))
+          .add(Owner(email: email))
           .then((value) => {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text("Email Added"),

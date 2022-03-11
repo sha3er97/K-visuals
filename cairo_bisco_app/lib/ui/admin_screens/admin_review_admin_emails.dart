@@ -18,7 +18,14 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
   bool _valid_email_validate = false;
   bool showSpinner = false;
 
-  String email = "";
+  String email = "", authority = authorities[0];
+
+  VoidCallback? onAuthorityChange(val) {
+    setState(() {
+      authority = val;
+    });
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +105,32 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
+                        adminHeading('Authority'),
+                        SizedBox(height: minimumPadding),
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPadding),
+                          child: DropdownButtonFormField<String>(
+                            // decoration: InputDecoration(labelText: 'اختر'),
+                            value: authority,
+                            isExpanded: true,
+                            items: authorities.map((String value) {
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style:
+                                      TextStyle(color: KelloggColors.darkRed),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: onAuthorityChange,
+                          ),
+                        ),
+                        SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////
                         Padding(
                           padding: const EdgeInsets.all(minimumPadding),
                           child: Center(
@@ -114,6 +147,7 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
                                     Credentials.addAdmin(
                                       context,
                                       email.trim().toLowerCase(),
+                                      authority,
                                     );
                                   } else {
                                     ScaffoldMessenger.of(context)
@@ -144,6 +178,11 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
                               return ListTile(
                                 title: adminHeading(
                                     Credentials.admin_emails[index]),
+                                trailing: smallerHeading('"' +
+                                    Credentials.adminsAuthorities[
+                                            Credentials.admin_emails[index]]
+                                        .toString() +
+                                    '"'),
                                 leading: IconButton(
                                   icon: const Icon(Icons.close),
                                   color: KelloggColors.cockRed,
