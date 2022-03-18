@@ -59,7 +59,7 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
               children: [
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: defaultPadding),
+                      const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
@@ -112,7 +112,7 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                          EdgeInsets.symmetric(vertical: minimumPadding),
+                              EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -125,7 +125,7 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
                                 child: Text(
                                   value,
                                   style:
-                                  TextStyle(color: KelloggColors.darkRed),
+                                      TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -183,7 +183,7 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
                                     Credentials.admin_emails[index]),
                                 trailing: smallerHeading('"' +
                                     Credentials.adminsAuthorities[
-                                    Credentials.admin_emails[index]]
+                                            Credentials.admin_emails[index]]
                                         .toString() +
                                     '"'),
                                 leading: IconButton(
