@@ -19,6 +19,9 @@ class deleteAdminBtn extends StatelessWidget {
       ),
       onPressed: () {
         Credentials.deleteAdmin(context, email);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Email Deleted"),
+        ));
         Navigator.of(context).pop();
       },
     );

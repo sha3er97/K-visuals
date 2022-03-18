@@ -19,6 +19,9 @@ class deleteMachineBtn extends StatelessWidget {
       ),
       onPressed: () {
         Machine.deleteMachine(context, name);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Name Deleted"),
+        ));
         Navigator.of(context).pop();
       },
     );

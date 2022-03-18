@@ -24,6 +24,9 @@ class deleteMachineDetailBtn extends StatelessWidget {
       ),
       onPressed: () {
         SKU.deleteMachineDetail(context, refNum, skuName, detailId);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Detail Deleted"),
+        ));
         Navigator.of(context).pop();
       },
     );

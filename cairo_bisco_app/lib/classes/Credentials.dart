@@ -3,7 +3,7 @@ import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'Owner.dart';
+import 'Admin.dart';
 
 final adminsRef = FirebaseFirestore.instance
     .collection(factory_name)
@@ -17,9 +17,9 @@ final ownersRef = FirebaseFirestore.instance
     .collection(factory_name)
     .doc('credentials')
     .collection("owners")
-    .withConverter<Owner>(
-      fromFirestore: (snapshot, _) => Owner.fromJson(snapshot.data()!),
-      toFirestore: (owner, _) => owner.toJson(),
+    .withConverter<Admin>(
+      fromFirestore: (snapshot, _) => Admin.fromJson(snapshot.data()!),
+      toFirestore: (Admin, _) => Admin.toJson(),
     );
 
 class Credentials {
@@ -128,7 +128,7 @@ class Credentials {
   ) async {
     if (!owner_emails.contains(email)) {
       await ownersRef
-          .add(Owner(email: email))
+          .add(Admin(email: email, authority: authorities[0]))
           .then((value) => {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text("Email Added"),

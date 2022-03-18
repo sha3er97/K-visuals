@@ -56,19 +56,19 @@ class Machine {
           .add(Machine(name: name))
           .then((value) => {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("Name Added"),
+                  content: Text("Machine Added"),
                 )),
                 getPackingMachines(),
                 // Navigator.pop(context),
               })
           .catchError((error) => {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("Failed to add Name: $error"),
+                  content: Text("Failed to add Machine: $error"),
                 ))
               });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Error :: Name Already exists"),
+        content: Text("Error :: Machine Already exists"),
       ));
     }
   }
@@ -82,7 +82,7 @@ class Machine {
         .delete()
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Name Deleted"),
+                content: Text("Machine Deleted"),
               )),
               packingMachinesList.clear(),
               getPackingMachines(),

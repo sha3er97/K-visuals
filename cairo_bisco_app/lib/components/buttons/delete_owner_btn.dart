@@ -19,6 +19,9 @@ class deleteOwnerBtn extends StatelessWidget {
       ),
       onPressed: () {
         Credentials.deleteOwner(context, email);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Email Deleted"),
+        ));
         Navigator.of(context).pop();
       },
     );

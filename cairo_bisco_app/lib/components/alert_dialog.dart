@@ -32,8 +32,8 @@ confirmDeleteAdminAlertDialog(BuildContext context, String email) {
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Admin Edit"),
-    content:
-        Text("Are you sure you want to remove \' $email \' from admins list"),
+    content: Text(
+        "Are you sure you want to remove \' $email \' from authorized list"),
     actions: [
       cancelDialogBtn(text: "Cancel"),
       deleteAdminBtn(email: email),

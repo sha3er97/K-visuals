@@ -1,7 +1,6 @@
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/general_error.dart';
-import 'package:cairo_bisco_app/ui/error_success_screens/loading_screen.dart';
 import 'package:cairo_bisco_app/ui/homePage.dart';
 import 'package:cairo_bisco_app/ui/login_screens/login.dart';
 import 'package:cairo_bisco_app/ui/splash.dart';
@@ -57,6 +56,7 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) {
           // Check for errors
           if (snapshot.hasError) {
+            print("INIT ERROR : " + snapshot.error.toString());
             return GeneralErrorScreen();
           }
           // Once complete, show your application
@@ -67,6 +67,7 @@ class MyApp extends StatelessWidget {
               builder: (context, snapshot) {
                 // Check for errors
                 if (snapshot.hasError) {
+                  print("LOAD ERROR : " + snapshot.error.toString());
                   return GeneralErrorScreen();
                 }
                 // Once complete, show your application

@@ -9,6 +9,8 @@ import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
 class ReviewAdminEmails extends StatefulWidget {
   @override
   _ReviewAdminEmailsState createState() => _ReviewAdminEmailsState();
@@ -33,6 +35,7 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
       inAsyncCall: showSpinner,
       child: SafeArea(
         child: Scaffold(
+          key: _scaffoldKey,
           backgroundColor: KelloggColors.white,
           resizeToAvoidBottomInset: true,
           appBar: new AppBar(
@@ -56,7 +59,7 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPadding),
+                  const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
@@ -109,7 +112,7 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
                         SizedBox(height: minimumPadding),
                         Container(
                           margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
@@ -122,7 +125,7 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
                                 child: Text(
                                   value,
                                   style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  TextStyle(color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
@@ -180,7 +183,7 @@ class _ReviewAdminEmailsState extends State<ReviewAdminEmails> {
                                     Credentials.admin_emails[index]),
                                 trailing: smallerHeading('"' +
                                     Credentials.adminsAuthorities[
-                                            Credentials.admin_emails[index]]
+                                    Credentials.admin_emails[index]]
                                         .toString() +
                                     '"'),
                                 leading: IconButton(
