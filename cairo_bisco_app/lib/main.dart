@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
                 // Once complete, show your application
                 if (snapshot.connectionState == ConnectionState.done) {
                   FirebaseAuth.instance.userChanges().listen(
-                        (User? user) {
+                    (User? user) {
                       if (Credentials.lastVersionCode > versionCode) {
                         //play store has a newer update
                         showForceUpdateAlertDialog(context);
