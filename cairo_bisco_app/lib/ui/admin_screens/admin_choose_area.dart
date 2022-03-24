@@ -11,7 +11,13 @@ import 'package:flutter/material.dart';
 
 import 'admin_add_sku_form.dart';
 
-class AdminAddSku extends StatelessWidget {
+class AdminChooseArea extends StatelessWidget {
+  AdminChooseArea({
+    Key? key,
+    required this.type,
+  }) : super(key: key);
+  final int type;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,14 +62,18 @@ class AdminAddSku extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddSkuForm(
-                              refNum: BISCUIT_AREA,
-                            ),
-                          ),
-                        );
+                        switch (type) {
+                          case ADMIN_ADD_SKU:
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddSkuForm(
+                                  refNum: BISCUIT_AREA,
+                                ),
+                              ),
+                            );
+                            break;
+                        }
                       },
                     ),
                   ),
@@ -97,14 +107,18 @@ class AdminAddSku extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddSkuForm(
-                              refNum: WAFER_AREA,
-                            ),
-                          ),
-                        );
+                        switch (type) {
+                          case ADMIN_ADD_SKU:
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddSkuForm(
+                                  refNum: WAFER_AREA,
+                                ),
+                              ),
+                            );
+                            break;
+                        }
                       },
                     ),
                   ),
@@ -141,14 +155,18 @@ class AdminAddSku extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddSkuForm(
-                              refNum: MAAMOUL_AREA,
-                            ),
-                          ),
-                        );
+                        switch (type) {
+                          case ADMIN_ADD_SKU:
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddSkuForm(
+                                  refNum: MAAMOUL_AREA,
+                                ),
+                              ),
+                            );
+                            break;
+                        }
                       },
                     ),
                   ),

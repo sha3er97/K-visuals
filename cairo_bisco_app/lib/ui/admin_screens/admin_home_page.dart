@@ -1,12 +1,14 @@
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/components/buttons/gradient_general_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/log_out_btn.dart';
+import 'package:cairo_bisco_app/ui/admin_screens/admin_choose_area.dart';
 import 'package:cairo_bisco_app/ui/admin_screens/admin_edit_targets.dart';
 import 'package:cairo_bisco_app/ui/admin_screens/admin_machines_list.dart';
-import 'package:cairo_bisco_app/ui/admin_screens/admin_main_add_sku.dart';
+import 'package:cairo_bisco_app/ui/admin_screens/admin_review_root_causes.dart';
 import 'package:cairo_bisco_app/ui/admin_screens/admin_show_all_skus.dart';
 import 'package:flutter/material.dart';
 
+import '../../classes/values/constants.dart';
 import 'admin_review_admin_emails.dart';
 import 'admin_review_owner_emails.dart';
 
@@ -38,7 +40,9 @@ class AdminHomePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AdminAddSku(),
+                      builder: (context) => AdminChooseArea(
+                        type: ADMIN_ADD_SKU,
+                      ),
                     ),
                   );
                 },
@@ -114,6 +118,21 @@ class AdminHomePage extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => MachinesList(),
+                    ),
+                  );
+                },
+              ),
+              GradientGeneralButton(
+                gradientColor1: KelloggColors.cockRed,
+                gradientColor2: KelloggColors.orange,
+                mainColor: KelloggColors.darkBlue.withOpacity(0.5),
+                btn_icon: Icons.error,
+                title: "DownTime Root Causes",
+                param_onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AdminReviewRootCauses(),
                     ),
                   );
                 },

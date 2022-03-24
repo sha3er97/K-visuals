@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'buttons/cancel_dialog_btn.dart';
 import 'buttons/delete_admin_btn.dart';
+import 'buttons/delete_cause_btn.dart';
 import 'buttons/delete_machine_btn.dart';
 import 'buttons/delete_machine_detail_btn.dart';
 import 'buttons/delete_owner_btn.dart';
@@ -16,6 +17,27 @@ showExcelAlertDialog(BuildContext context, bool success, String fileName) {
         Text(success ? excelSuccessMsg + " in  $fileName" : excelFailureMsg),
     actions: [
       cancelDialogBtn(text: "OK"),
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+confirmDeleteCauseAlertDialog(BuildContext context, String type, String cause) {
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Root Causes Edit"),
+    content:
+        Text("Are you sure you want to remove \' $cause \' from causes list"),
+    actions: [
+      cancelDialogBtn(text: "Cancel"),
+      deleteCauseBtn(type: type, cause: cause),
     ],
   );
 

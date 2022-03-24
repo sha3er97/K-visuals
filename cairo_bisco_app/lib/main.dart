@@ -1,3 +1,4 @@
+import 'package:cairo_bisco_app/classes/RootCause.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/general_error.dart';
@@ -28,6 +29,7 @@ Future<void> loadRules() async {
   SKU.getAllSku();
   Plans.getPlans();
   Machine.getPackingMachines();
+  RootCause.getCauses();
   await Credentials.getCredentials();
   await Credentials.getAdmins();
   await Credentials.getOwners();
@@ -73,7 +75,7 @@ class MyApp extends StatelessWidget {
                 // Once complete, show your application
                 if (snapshot.connectionState == ConnectionState.done) {
                   FirebaseAuth.instance.userChanges().listen(
-                    (User? user) {
+                        (User? user) {
                       if (Credentials.lastVersionCode > versionCode) {
                         //play store has a newer update
                         showForceUpdateAlertDialog(context);

@@ -1,8 +1,8 @@
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 
 /** version configs**/
-const versionNum = '3.1.1'; //edit also in pubspec.yaml
-const versionCode = 11; //edit also in pubspec.yaml
+const versionNum = '3.1.2'; //edit also in pubspec.yaml
+const versionCode = 12; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
 
@@ -116,7 +116,21 @@ const OVERWEIGHT_REPORT = 5;
 const PEOPLE_REPORT = 6;
 const NRC_REPORT = 7;
 
+const ADMIN_ADD_SKU = 0;
+//const ADMIN_ROOT_CAUSES_EDIT = 1;
+
 /** Constant Lists **/
+List<String> DownTimeTypes = <String>[
+  '-',
+  'اعطال صيانة',
+  'اعطال انتاج',
+  'اعطال تخطيط انتاج',
+  'اعطال جوده',
+  'اعطال سلامه',
+  'اعطال الادارة',
+  'اعطال القسم الهندسي',
+  'اعطال مخازن'
+];
 List<String> authorities = <String>[
   '-',
   'Production',
