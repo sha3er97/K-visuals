@@ -2,6 +2,7 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/classes/values/form_values.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_biscuits_production_form.dart';
+import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_choose_dt_type.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_ehs_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_maamoul_production_form.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_nrc_report.dart';
@@ -181,6 +182,19 @@ class ReportItem extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => SupervisorNRCReportForm(
+                            refNum: refNum,
+                            reportDetails: reportDetails,
+                            isEdit: true,
+                            reportID: reportID,
+                          ),
+                        ),
+                      );
+                      break;
+                    case DOWNTIME_REPORT:
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SupervisorChooseDtType(
                             refNum: refNum,
                             reportDetails: reportDetails,
                             isEdit: true,

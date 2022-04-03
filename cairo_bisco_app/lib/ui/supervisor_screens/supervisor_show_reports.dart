@@ -20,6 +20,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
+import '../../classes/DownTimeReport.dart';
+
 class SupervisorShowAllReports extends StatefulWidget {
   SupervisorShowAllReports({
     Key? key,
@@ -59,36 +61,42 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
     setState(() {
       _selectedYearFrom = val;
     });
+    return null;
   }
 
   VoidCallback? onFromMonthChange(val) {
     setState(() {
       _selectedMonthFrom = val;
     });
+    return null;
   }
 
   VoidCallback? onFromDayChange(val) {
     setState(() {
       _selectedDayFrom = val;
     });
+    return null;
   }
 
   VoidCallback? onToYearChange(val) {
     setState(() {
       _selectedYearTo = val;
     });
+    return null;
   }
 
   VoidCallback? onToMonthChange(val) {
     setState(() {
       _selectedMonthTo = val;
     });
+    return null;
   }
 
   VoidCallback? onToDayChange(val) {
     setState(() {
       _selectedDayTo = val;
     });
+    return null;
   }
 
   int validated_day_from = int.parse(getDay()),
@@ -171,6 +179,15 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
               OverWeightReport.fromJson(snapshot.data()!),
           toFirestore: (report, _) => report.toJson(),
         );
+    final downTimeReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('downtime_reports')
+        .collection(validated_year.toString())
+        .withConverter<DownTimeReport>(
+          fromFirestore: (snapshot, _) =>
+              DownTimeReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
     final allRefs = [
       biscuitsReportRef,
       waferReportRef,
@@ -179,7 +196,8 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
       ehsReportRef,
       overWeightReportRef,
       peopleReportRef,
-      nrcReportRef
+      nrcReportRef,
+      downTimeReportRef,
     ];
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
@@ -193,7 +211,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
             admin: false,
           ),
           title: Text(
-            "Edit reports",
+            "Edit Reports",
             style: TextStyle(
                 color: KelloggColors.darkRed,
                 fontWeight: FontWeight.w300,
@@ -612,6 +630,26 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                   reportsTitlesList =
                                       ReportTitle.missingLineReportToTitleList(
                                           nrcReportsList);
+                                  break;
+                                case DOWNTIME_REPORT:
+                                  List<QueryDocumentSnapshot<DownTimeReport>>
+                                      downTimeSnapshotReportsList =
+                                      snapshot.docs as List<
+                                          QueryDocumentSnapshot<
+                                              DownTimeReport>>;
+                                  HashMap<String, dynamic> downTimeReportsList =
+                                      DownTimeReport.getAllReportsOfInterval(
+                                    downTimeSnapshotReportsList,
+                                    validated_month_from,
+                                    validated_month_to,
+                                    validated_day_from,
+                                    validated_day_to,
+                                    validated_year,
+                                    refNum,
+                                  );
+                                  reportsTitlesList =
+                                      ReportTitle.fullReportToTitleList(
+                                          downTimeReportsList);
                                   break;
                               }
                             });

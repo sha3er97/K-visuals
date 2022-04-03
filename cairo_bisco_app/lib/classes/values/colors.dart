@@ -27,8 +27,11 @@ class KelloggColors {
         return grey;
       case NRC_REPORT:
         return grey;
+      case DOWNTIME_REPORT:
+        return darkBlue;
+      default:
+        return white;
     }
-    return white;
   }
 
   static Color getGradient2(int type) {
@@ -45,8 +48,11 @@ class KelloggColors {
         return orange;
       case NRC_REPORT:
         return white;
+      case DOWNTIME_REPORT:
+        return cockRed;
+      default:
+        return white;
     }
-    return white;
   }
 
   static Color getBaseColor(int type) {
@@ -63,7 +69,10 @@ class KelloggColors {
         return yellow.withOpacity(0.5);
       case NRC_REPORT:
         return darkBlue.withOpacity(0.5);
+      case DOWNTIME_REPORT:
+        return darkBlue.withOpacity(0.5);
+      default:
+        return white;
     }
-    return white;
   }
 }
