@@ -17,7 +17,7 @@ class AdminReviewRootCauses extends StatefulWidget {
 }
 
 class _AdminReviewRootCausesState extends State<AdminReviewRootCauses> {
-  String type = DownTimeTypes[0], cause = "";
+  String type = downTimeTypes[0], cause = "";
 
   bool _valid_cause_validate = false;
   bool showSpinner = false;
@@ -75,7 +75,7 @@ class _AdminReviewRootCausesState extends State<AdminReviewRootCauses> {
                             // decoration: InputDecoration(labelText: 'اختر'),
                             value: type,
                             isExpanded: true,
-                            items: DownTimeTypes.map((String value) {
+                            items: downTimeTypes.map((String value) {
                               return new DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(

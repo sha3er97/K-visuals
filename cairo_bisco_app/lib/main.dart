@@ -88,17 +88,8 @@ class MyApp extends StatelessWidget {
                                   builder: (BuildContext context) => Login()));
                         } else {
                           print('User is signed in!');
-                          if (Credentials.isAdmin(user.email.toString())) {
-                            Credentials.isUserAdmin = true;
-                          } else {
-                            Credentials.isUserAdmin = false;
-                          }
-                          if (Credentials.isOwner(user.email.toString())) {
-                            Credentials.isUserOwner = true;
-                          } else {
-                            Credentials.isUserOwner = false;
-                          }
-                          Credentials.userEmail = user.email.toString();
+                          Credentials.setCredentialsConfig(
+                              user.email.toString());
                           Navigator.push(
                               context,
                               MaterialPageRoute(

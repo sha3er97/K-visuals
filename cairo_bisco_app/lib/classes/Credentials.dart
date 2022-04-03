@@ -41,10 +41,27 @@ class Credentials {
   static bool isUserAdmin = false;
   static bool isUserOwner = false;
   static String userEmail = "";
+  static String userAuthority = "";
 
   static Map<String, String> adminDocumentNames = new Map<String, String>();
   static Map<String, String> ownerDocumentNames = new Map<String, String>();
   static Map<String, String> adminsAuthorities = new Map<String, String>();
+
+  static void setCredentialsConfig(String email) {
+    if (Credentials.isAdmin(email)) {
+      Credentials.isUserAdmin = true;
+      Credentials.userAuthority = adminsAuthorities[email]!;
+    } else {
+      Credentials.isUserAdmin = false;
+    }
+    if (Credentials.isOwner(email)) {
+      Credentials.isUserOwner = true;
+    } else {
+      Credentials.isUserOwner = false;
+    }
+    // in all cases
+    Credentials.userEmail = email;
+  }
 
   static String getUserName() {
     String name = userEmail.split("@")[0];

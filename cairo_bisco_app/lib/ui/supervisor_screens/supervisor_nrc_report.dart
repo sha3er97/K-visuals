@@ -64,24 +64,28 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
     setState(() {
       selectedShift = val;
     });
+    return null;
   }
 
   VoidCallback? onYearChange(val) {
     setState(() {
       selectedYear = val;
     });
+    return null;
   }
 
   VoidCallback? onMonthChange(val) {
     setState(() {
       selectedMonth = val;
     });
+    return null;
   }
 
   VoidCallback? onDayChange(val) {
     setState(() {
       selectedDay = val;
     });
+    return null;
   }
 
   @override

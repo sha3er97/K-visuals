@@ -101,16 +101,7 @@ class _HomeState extends State<HomePage> {
     super.initState();
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      if (Credentials.isAdmin(user.email.toString())) {
-        Credentials.isUserAdmin = true;
-      } else {
-        Credentials.isUserAdmin = false;
-      }
-      if (Credentials.isOwner(user.email.toString())) {
-        Credentials.isUserOwner = true;
-      } else {
-        Credentials.isUserOwner = false;
-      }
+      Credentials.setCredentialsConfig(user.email.toString());
     }
   }
 

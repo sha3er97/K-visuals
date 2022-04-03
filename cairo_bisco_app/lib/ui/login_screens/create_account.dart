@@ -213,17 +213,7 @@ class _CreateAccountState extends State<CreateAccount> {
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email.trim(), password: password.trim());
-      if (Credentials.isAdmin(email)) {
-        Credentials.isUserAdmin = true;
-      } else {
-        Credentials.isUserAdmin = false;
-      }
-      if (Credentials.isOwner(email)) {
-        Credentials.isUserOwner = true;
-      } else {
-        Credentials.isUserOwner = false;
-      }
-      Credentials.userEmail = email.toString();
+      Credentials.setCredentialsConfig(email.toString());
 
       Navigator.push(
           context,
