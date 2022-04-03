@@ -12,6 +12,8 @@ import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_home_page.dart'
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../ui/down_time_screens/dt_approve_reports.dart';
+
 class SideMenu extends StatelessWidget {
   const SideMenu({
     Key? key,
@@ -122,6 +124,22 @@ class SideMenu extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => SupervisorHomePage(),
+                      ),
+                    );
+                    // });
+                  },
+                )
+              : EmptyPlaceHolder(),
+          isAdmin
+              ? DrawerListTile(
+                  title: "Approve Pending Reports",
+                  image: "downtime",
+                  press: () {
+                    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ApproveReports(),
                       ),
                     );
                     // });
