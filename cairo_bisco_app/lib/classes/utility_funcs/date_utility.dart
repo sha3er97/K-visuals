@@ -12,7 +12,7 @@ String getMonth() {
 String getYear() {
   DateTime now = new DateTime.now();
   if (now.hour < 16) //before 4 pm we are still yesterday
-      {
+  {
     now = now.subtract(Duration(days: 1));
   }
   return now.year.toString();
@@ -41,13 +41,14 @@ String todayDateText() {
   return day.toString() + "/" + month.toString() + "/" + year.toString();
 }
 
-bool isDayInInterval(int check_day,
-    int check_month,
-    int month_from,
-    int month_to,
-    int day_from,
-    int day_to,
-    int year,
+bool isDayInInterval(
+  int check_day,
+  int check_month,
+  int month_from,
+  int month_to,
+  int day_from,
+  int day_to,
+  int year,
 ) {
   DateTime dateFrom = DateTime(year, month_from, day_from);
   DateTime dateAfter = DateTime(year, month_to, day_to);
@@ -109,8 +110,9 @@ double minutesToHours(double minutes) {
   return minutes / 60;
 }
 
-List<DateTime> getDaysInInterval(DateTime start,
-    DateTime end,
+List<DateTime> getDaysInInterval(
+  DateTime start,
+  DateTime end,
 ) {
   List<DateTime> out = [];
   DateTime tempDay = start;
