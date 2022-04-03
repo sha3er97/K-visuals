@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 String getMonth() {
   DateTime now = new DateTime.now();
   if (now.hour < 16) //before 4 pm we are still yesterday
@@ -10,7 +12,7 @@ String getMonth() {
 String getYear() {
   DateTime now = new DateTime.now();
   if (now.hour < 16) //before 4 pm we are still yesterday
-  {
+      {
     now = now.subtract(Duration(days: 1));
   }
   return now.year.toString();
@@ -20,7 +22,7 @@ String getDay() {
   DateTime now = new DateTime.now();
 
   if (now.hour < 16) //before 4 pm we are still yesterday
-  {
+      {
     now = now.subtract(Duration(days: 1));
   }
   return now.day.toString();
@@ -30,7 +32,7 @@ String todayDateText() {
   DateTime now = new DateTime.now();
 
   if (now.hour < 16) //before 4 pm we are still yesterday
-  {
+      {
     now = now.subtract(Duration(days: 1));
   }
   int day = now.day;
@@ -39,14 +41,13 @@ String todayDateText() {
   return day.toString() + "/" + month.toString() + "/" + year.toString();
 }
 
-bool isDayInInterval(
-  int check_day,
-  int check_month,
-  int month_from,
-  int month_to,
-  int day_from,
-  int day_to,
-  int year,
+bool isDayInInterval(int check_day,
+    int check_month,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
 ) {
   DateTime dateFrom = DateTime(year, month_from, day_from);
   DateTime dateAfter = DateTime(year, month_to, day_to);
@@ -59,6 +60,21 @@ bool isDayInInterval(
 
 String constructDateString(int day, int month, int year) {
   return day.toString() + "/" + month.toString() + "/" + year.toString();
+}
+
+String constructTimeString(context, int hour, int minute) {
+  return TimeOfDay(hour: hour, minute: minute).format(context);
+  //return hour.toString() + ":" + minute.toString();
+}
+
+int getTimeDifference(
+    int hour_from, int minute_from, int hour_to, int minute_to) {
+  final from = new DateTime(DateTime.now().year, DateTime.now().month,
+      DateTime.now().day, hour_from, minute_from);
+  final to = new DateTime(DateTime.now().year, DateTime.now().month,
+      DateTime.now().day, hour_to, minute_to);
+  final diff = to.difference(from);
+  return diff.inMinutes;
 }
 
 DateTime constructDateObject(int day, int month, int year) {
@@ -93,9 +109,8 @@ double minutesToHours(double minutes) {
   return minutes / 60;
 }
 
-List<DateTime> getDaysInInterval(
-  DateTime start,
-  DateTime end,
+List<DateTime> getDaysInInterval(DateTime start,
+    DateTime end,
 ) {
   List<DateTime> out = [];
   DateTime tempDay = start;
