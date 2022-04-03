@@ -5,6 +5,7 @@
     maamoul
  *********************************/
 import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
+import 'package:cairo_bisco_app/classes/DownTimeReport.dart';
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
 import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
 import 'package:cairo_bisco_app/classes/NRCReport.dart';
@@ -16,6 +17,7 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_biscuits_production_form.dart';
+import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_choose_dt_type.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_ehs_report.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_maamoul_production_form.dart';
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_nrc_report.dart';
@@ -171,6 +173,20 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                 ),
                               );
                               break;
+                            case DOWNTIME_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SupervisorChooseDtType(
+                                    refNum: BISCUIT_AREA,
+                                    reportDetails:
+                                        DownTimeReport.getEmptyReport(),
+                                    reportID: '',
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
                           }
                         }
                       },
@@ -296,6 +312,21 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                   ),
                                 ),
                               );
+                              break;
+                            case DOWNTIME_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SupervisorChooseDtType(
+                                    refNum: WAFER_AREA,
+                                    reportDetails:
+                                        DownTimeReport.getEmptyReport(),
+                                    reportID: '',
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
                           }
                         }
                       },
@@ -425,6 +456,21 @@ class SupervisorChooseAreaPage extends StatelessWidget {
                                   ),
                                 ),
                               );
+                              break;
+                            case DOWNTIME_REPORT:
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SupervisorChooseDtType(
+                                    refNum: MAAMOUL_AREA,
+                                    reportDetails:
+                                        DownTimeReport.getEmptyReport(),
+                                    reportID: '',
+                                    isEdit: false,
+                                  ),
+                                ),
+                              );
+                              break;
                           }
                         }
                       },

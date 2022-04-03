@@ -1,6 +1,7 @@
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:flutter/material.dart';
 
+import 'buttons/approve_report_btn.dart';
 import 'buttons/cancel_dialog_btn.dart';
 import 'buttons/delete_admin_btn.dart';
 import 'buttons/delete_cause_btn.dart';
@@ -17,6 +18,26 @@ showExcelAlertDialog(BuildContext context, bool success, String fileName) {
         Text(success ? excelSuccessMsg + " in  $fileName" : excelFailureMsg),
     actions: [
       cancelDialogBtn(text: "OK"),
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+confirmApproveReport(BuildContext context, String reportID) {
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Approve Report"),
+    content: Text("Are you sure you want to approve this report"),
+    actions: [
+      cancelDialogBtn(text: "Cancel"),
+      approveReportBtn(reportID: reportID),
     ],
   );
 

@@ -287,6 +287,67 @@ class SupervisorHomePage extends StatelessWidget {
                           end: Alignment(0.99, 0.0),
                           // 10% of the width, so there are ten blinds.
                           colors: const <Color>[
+                            KelloggColors.cockRed,
+                            KelloggColors.orange
+                          ],
+                          // red to yellow
+                          tileMode: TileMode
+                              .repeated, // repeats the gradient over the canvas
+                        ),
+                      ),
+                      child: ElevatedButton.icon(
+                        label: Text(
+                          'DownTime Report\nتقرير الاعطال',
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          textStyle: TextStyle(
+                              fontSize: largeFontSize, fontFamily: 'MyFont'),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: defaultPadding,
+                              vertical: minimumPadding),
+                          primary: KelloggColors.darkBlue.withOpacity(0.5),
+                        ),
+                        icon: ClipRRect(
+                          borderRadius: BorderRadius.circular(iconImageBorder),
+                          child: Container(
+                            height: mediumIconSize,
+                            width: mediumIconSize,
+                            padding: EdgeInsets.all(minimumPadding / 2),
+                            child: new Image.asset(
+                              'images/downtime.png',
+                              color: KelloggColors.white,
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChooseAddOrEditReport(
+                                      type: DOWNTIME_REPORT)));
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            /////////////////sixth button///////////////////
+            Padding(
+              padding: const EdgeInsets.all(minimumPadding),
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(BoxImageBorder),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(
+                        width: TightBoxWidth, height: LargeBoxHeight),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment(0.99, 0.0),
+                          // 10% of the width, so there are ten blinds.
+                          colors: const <Color>[
                             KelloggColors.grey,
                             KelloggColors.orange
                           ],
@@ -332,7 +393,7 @@ class SupervisorHomePage extends StatelessWidget {
                 ),
               ),
             ),
-            /////////////////sixth button///////////////////
+            /////////////////seventh button///////////////////
             Padding(
               padding: const EdgeInsets.all(minimumPadding),
               child: Center(
