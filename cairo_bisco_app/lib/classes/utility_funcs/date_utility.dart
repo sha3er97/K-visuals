@@ -32,7 +32,7 @@ String todayDateText() {
   DateTime now = new DateTime.now();
 
   if (now.hour < 16) //before 4 pm we are still yesterday
-      {
+  {
     now = now.subtract(Duration(days: 1));
   }
   int day = now.day;
