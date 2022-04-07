@@ -17,7 +17,7 @@ import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-// import 'package:dropdown_search/dropdown_search.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 
 class SupervisorDownTimeReportForm extends StatefulWidget {
   SupervisorDownTimeReportForm({
@@ -536,24 +536,78 @@ class _SupervisorDownTimeReportFormState
                               EdgeInsets.symmetric(vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
-                          child: DropdownButtonFormField<String>(
-                            // decoration: InputDecoration(labelText: 'اختر'),
-                            value: rootCauseDrop,
-                            isExpanded: true,
-                            items: RootCause.causesMap[dtType]!
-                                .map((String value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style:
-                                      TextStyle(color: KelloggColors.darkRed),
-                                ),
-                              );
-                            }).toList(),
+                          child: DropdownSearch<String>(
+                            mode: Mode.MENU,
+                            showSearchBox: true,
+                            selectedItem: rootCauseDrop,
+                            dropdownSearchDecoration: InputDecoration(
+                              prefixIcon: new Icon(Icons.search),
+                              iconColor: KelloggColors.darkRed,
+                              // labelText: "اختر السبب التفصيلي",
+                              // labelStyle:
+                              //     TextStyle(color: KelloggColors.darkRed),
+                            ),
+                            popupItemBuilder: (context, selected, bool dummy) {
+                              Widget item(String i) => Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: minimumPadding,
+                                        vertical: minimumPadding),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          i,
+                                          style: TextStyle(
+                                              color: KelloggColors.darkRed),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                              return item(selected);
+                            },
+                            dropdownBuilder: (context, selected) {
+                              Widget item(String i) => Container(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          i,
+                                          style: TextStyle(
+                                              color: KelloggColors.darkRed),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                              return item(selected!);
+                            },
+                            items: RootCause.causesMap[dtType],
+                            // popupItemDisabled: (String s) => s.startsWith('I'),
                             onChanged: onCauseChange,
                           ),
                         ),
+                        // Container(
+                        //   margin:
+                        //       EdgeInsets.symmetric(vertical: minimumPadding),
+                        //   padding: const EdgeInsets.symmetric(
+                        //       horizontal: defaultPadding),
+                        //   child: DropdownButtonFormField<String>(
+                        //     // decoration: InputDecoration(labelText: 'اختر'),
+                        //     value: rootCauseDrop,
+                        //     isExpanded: true,
+                        //     items: RootCause.causesMap[dtType]!
+                        //         .map((String value) {
+                        //       return new DropdownMenuItem<String>(
+                        //         value: value,
+                        //         child: Text(
+                        //           value,
+                        //           style:
+                        //               TextStyle(color: KelloggColors.darkRed),
+                        //         ),
+                        //       );
+                        //     }).toList(),
+                        //     onChanged: onCauseChange,
+                        //   ),
+                        // ),
                         SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////////
                         smallerHeading('تفاصيل اضافية عن العطل \nMore Details'),
