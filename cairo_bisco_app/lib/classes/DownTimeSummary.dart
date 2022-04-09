@@ -11,7 +11,8 @@ class DownTimeSummary {
       to_time,
       root_cause,
       type,
-      wastedMinutes;
+      wastedMinutes,
+      technicianName;
   final DownTimeReport reportDetails;
 
   DownTimeSummary({
@@ -24,6 +25,7 @@ class DownTimeSummary {
     required this.type,
     required this.reportDetails,
     required this.wastedMinutes,
+    required this.technicianName,
   });
 
   static List<DownTimeSummary> makeList(
@@ -44,6 +46,7 @@ class DownTimeSummary {
         wastedMinutes: getTimeDifference(e.value.hour_from, e.value.minute_from,
                 e.value.hour_to, e.value.minute_to)
             .toString(),
+        technicianName: e.value.technicianName,
       );
       tempList.add(tempTitle);
     });

@@ -99,6 +99,8 @@ class _ApproveReportsState extends State<ApproveReports> {
                       title: aboveMediumHeading(reportsTitlesList[index].date +
                           "\n By : " +
                           reportsTitlesList[index].supName +
+                          "\n Tech. : " +
+                          reportsTitlesList[index].technicianName +
                           '\n' +
                           reportsTitlesList[index].type +
                           '\n' +
@@ -112,7 +114,7 @@ class _ApproveReportsState extends State<ApproveReports> {
                           " Mins." +
                           "\n--------------------------------------\n"),
                       leading: IconButton(
-                        tooltip: "approve",
+                        tooltip: "Approve",
                         icon: const Icon(
                           Icons.mode_edit,
                         ),

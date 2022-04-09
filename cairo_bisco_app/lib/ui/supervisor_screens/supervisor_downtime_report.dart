@@ -14,6 +14,7 @@ import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -61,12 +62,7 @@ class _SupervisorDownTimeReportFormState
   final bool isEdit;
   final String dtType;
 
-  late String supName,
-      rootCauseDesc,
-      hour_from,
-      hour_to,
-      minute_from,
-      minute_to;
+  late String supName, rootCauseDesc, technicianName;
   late TimeOfDay fromTime, toTime;
 
   //drop down values
@@ -82,7 +78,7 @@ class _SupervisorDownTimeReportFormState
       selectedProdLine,
       rootCauseDrop,
       sku;
-  bool _sup_name_validate = false;
+  bool _sup_name_validate = false, _technicianName_validate = false;
   bool showSpinner = false;
 
   VoidCallback? onCauseChange(val) {
@@ -182,6 +178,7 @@ class _SupervisorDownTimeReportFormState
         ? TimeOfDay(
             hour: reportDetails.hour_to, minute: reportDetails.minute_to)
         : TimeOfDay.now();
+    technicianName = isEdit ? reportDetails.technicianName.toString() : '';
     ///////////////////////////////////////////////////////////////////////////////
     selectedShift = shifts[reportDetails.shift_index];
     selectedYear =
@@ -537,46 +534,36 @@ class _SupervisorDownTimeReportFormState
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownSearch<String>(
-                            mode: Mode.MENU,
+                            mode: Mode.DIALOG,
                             showSearchBox: true,
                             selectedItem: rootCauseDrop,
                             dropdownSearchDecoration: InputDecoration(
-                              prefixIcon: new Icon(Icons.search),
-                              iconColor: KelloggColors.darkRed,
+                              prefixIcon: new Icon(
+                                Icons.search,
+                                color: KelloggColors.darkRed,
+                              ),
                               // labelText: "اختر السبب التفصيلي",
                               // labelStyle:
                               //     TextStyle(color: KelloggColors.darkRed),
                             ),
                             popupItemBuilder: (context, selected, bool dummy) {
                               Widget item(String i) => Container(
-                                    padding: EdgeInsets.symmetric(
+                                margin: EdgeInsets.symmetric(
                                         horizontal: minimumPadding,
                                         vertical: minimumPadding),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          i,
-                                          style: TextStyle(
-                                              color: KelloggColors.darkRed),
-                                        ),
-                                      ],
+                                    child: Text(
+                                      i,
+                                      style: TextStyle(
+                                          color: KelloggColors.darkRed),
                                     ),
                                   );
                               return item(selected);
                             },
                             dropdownBuilder: (context, selected) {
-                              Widget item(String i) => Container(
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          i,
-                                          style: TextStyle(
-                                              color: KelloggColors.darkRed),
-                                        ),
-                                      ],
-                                    ),
+                              Widget item(String i) => Text(
+                                    i,
+                                    style:
+                                        TextStyle(color: KelloggColors.darkRed),
                                   );
                               return item(selected!);
                             },
@@ -672,44 +659,57 @@ class _SupervisorDownTimeReportFormState
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         //   children: [
-                        RoundedButton(
-                          onPressed: () async {
-                            final TimeOfDay? timeOfDay = await showTimePicker(
-                              context: context,
-                              initialTime: fromTime,
-                              initialEntryMode: TimePickerEntryMode.dial,
-                            );
-                            if (timeOfDay != null && timeOfDay != fromTime) {
-                              setState(() {
-                                fromTime = timeOfDay;
-                              });
-                            }
-                            //_selectTime(context);
-                          },
-                          btnText: "From ${fromTime.format(context)}",
-                          color: KelloggColors.darkBlue,
+                        Padding(
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                              onPressed: () async {
+                                final TimeOfDay? timeOfDay =
+                                    await showTimePicker(
+                                  context: context,
+                                  initialTime: fromTime,
+                                  initialEntryMode: TimePickerEntryMode.dial,
+                                );
+                                if (timeOfDay != null &&
+                                    timeOfDay != fromTime) {
+                                  setState(() {
+                                    fromTime = timeOfDay;
+                                  });
+                                }
+                                //_selectTime(context);
+                              },
+                              btnText: "From ${fromTime.format(context)}",
+                              color: KelloggColors.darkBlue,
+                            ),
+                          ),
                         ),
                         // SizedBox(
                         //   width: defaultPadding,
                         // ),
                         //smallerHeading("${fromTime.hour}:${fromTime.minute}"),
                         /////////////////////////////////////////////////////////////////////////////
-                        RoundedButton(
-                          onPressed: () async {
-                            final TimeOfDay? timeOfDay = await showTimePicker(
-                              context: context,
-                              initialTime: toTime,
-                              initialEntryMode: TimePickerEntryMode.dial,
-                            );
-                            if (timeOfDay != null && timeOfDay != toTime) {
-                              setState(() {
-                                toTime = timeOfDay;
-                              });
-                            }
-                            //_selectTime(context);
-                          },
-                          btnText: "To ${toTime.format(context)}",
-                          color: KelloggColors.darkBlue,
+                        Padding(
+                          padding: const EdgeInsets.all(minimumPadding),
+                          child: Center(
+                            child: RoundedButton(
+                              onPressed: () async {
+                                final TimeOfDay? timeOfDay =
+                                    await showTimePicker(
+                                  context: context,
+                                  initialTime: toTime,
+                                  initialEntryMode: TimePickerEntryMode.dial,
+                                );
+                                if (timeOfDay != null && timeOfDay != toTime) {
+                                  setState(() {
+                                    toTime = timeOfDay;
+                                  });
+                                }
+                                //_selectTime(context);
+                              },
+                              btnText: "To ${toTime.format(context)}",
+                              color: KelloggColors.darkBlue,
+                            ),
+                          ),
                         ),
                         //smallerHeading("${toTime.hour}:${toTime.minute}"),
                         //   ],
@@ -742,6 +742,42 @@ class _SupervisorDownTimeReportFormState
                         ),
                         SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////////
+                        smallerHeading(
+                            'اسم الفني او المسؤول عن حل المشكلة\nTechnician Name'),
+                        SizedBox(height: minimumPadding),
+                        TextFormField(
+                          initialValue: technicianName,
+                          style: (TextStyle(
+                              color: KelloggColors.darkRed,
+                              fontWeight: FontWeight.w400)),
+                          keyboardType: TextInputType.name,
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            errorText: _technicianName_validate
+                                ? missingValueErrorText
+                                : null,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.darkRed,
+                                  width: textFieldBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: KelloggColors.yellow,
+                                  width: textFieldFocusedBorderRadius),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(textFieldRadius)),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            technicianName = value;
+                          },
+                        ),
+                        SizedBox(height: defaultPadding),
+                        //////////////////////////////////////////////////////////////////////////
                         isEdit
                             ? EmptyPlaceHolder()
                             : Padding(
@@ -755,9 +791,13 @@ class _SupervisorDownTimeReportFormState
                                         showSpinner = true;
                                         _sup_name_validate =
                                             emptyField(supName);
+
+                                        _technicianName_validate =
+                                            emptyField(technicianName);
                                       });
                                       try {
-                                        if (!_sup_name_validate) {
+                                        if (!_sup_name_validate &&
+                                            !_technicianName_validate) {
                                           DownTimeReport.addReport(
                                             supName,
                                             sku,
@@ -781,6 +821,7 @@ class _SupervisorDownTimeReportFormState
                                             fromTime.minute,
                                             toTime.minute,
                                             y_nDesc.indexOf(isStopped),
+                                            technicianName,
                                           );
                                           Navigator.push(
                                               context,
@@ -822,9 +863,12 @@ class _SupervisorDownTimeReportFormState
                                           showSpinner = true;
                                           _sup_name_validate =
                                               emptyField(supName);
+                                          _technicianName_validate =
+                                              emptyField(technicianName);
                                         });
                                         try {
-                                          if (!_sup_name_validate) {
+                                          if (!_sup_name_validate &&
+                                              !_technicianName_validate) {
                                             if (canEditThisReport(
                                                 supName,
                                                 int.parse(selectedDay),
@@ -855,6 +899,7 @@ class _SupervisorDownTimeReportFormState
                                                 fromTime.minute,
                                                 toTime.minute,
                                                 y_nDesc.indexOf(isStopped),
+                                                technicianName,
                                               );
                                             } else {
                                               ScaffoldMessenger.of(context)

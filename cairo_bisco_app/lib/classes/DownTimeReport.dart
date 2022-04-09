@@ -16,7 +16,8 @@ class DownTimeReport {
       causeType,
       skuName,
       wfCategory,
-      approved_by;
+      approved_by,
+      technicianName;
   final int line_index,
       shift_index,
       area,
@@ -54,6 +55,7 @@ class DownTimeReport {
     required this.isApproved,
     required this.approved_by,
     required this.skuName,
+    required this.technicianName,
   });
 
   DownTimeReport.fromJson(Map<String, Object?> json)
@@ -80,6 +82,9 @@ class DownTimeReport {
           isApproved: json['isApproved']! as int,
           skuName: json['skuName']! as String,
           approved_by: json['approved_by']! as String,
+          technicianName: json['technicianName'] == null
+              ? ''
+              : json['technicianName']! as String,
         );
 
   Map<String, Object?> toJson() {
@@ -106,6 +111,7 @@ class DownTimeReport {
       'isApproved': isApproved,
       'approved_by': approved_by,
       'skuName': skuName,
+      'technicianName': technicianName,
     };
   }
 
@@ -130,6 +136,7 @@ class DownTimeReport {
     int minute_from,
     int minute_to,
     int isStopped_index,
+    String technicianName,
   ) async {
     final downTimeReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -164,6 +171,7 @@ class DownTimeReport {
         causeType: causeType,
         isApproved: NO,
         approved_by: '',
+        technicianName: technicianName,
       ),
     );
   }
@@ -191,6 +199,7 @@ class DownTimeReport {
     int minute_from,
     int minute_to,
     int isStopped_index,
+    String technicianName,
   ) async {
     final downTimeReportRef = FirebaseFirestore.instance
         .collection(factory_name)
@@ -224,6 +233,7 @@ class DownTimeReport {
           'rootCauseDesc': rootCauseDesc,
           'wfCategory': wfCategory,
           'causeType': causeType,
+          'technicianName': technicianName,
         })
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -373,6 +383,7 @@ class DownTimeReport {
       day: -1,
       isApproved: NO,
       approved_by: '',
+      technicianName: '',
     );
   }
 
@@ -400,6 +411,7 @@ class DownTimeReport {
       day: -1,
       isApproved: NO,
       approved_by: '',
+      technicianName: '',
     );
   }
 
