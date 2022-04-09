@@ -548,7 +548,7 @@ class _SupervisorDownTimeReportFormState
                             ),
                             popupItemBuilder: (context, selected, bool dummy) {
                               Widget item(String i) => Container(
-                                margin: EdgeInsets.symmetric(
+                                    margin: EdgeInsets.symmetric(
                                         horizontal: minimumPadding,
                                         vertical: minimumPadding),
                                     child: Text(
