@@ -6,6 +6,8 @@ import 'package:cairo_bisco_app/components/buttons/gradient_general_btn.dart';
 import 'package:cairo_bisco_app/ui/production_screens/choose_visuals_or_excel.dart';
 import 'package:flutter/material.dart';
 
+import '../../classes/values/form_values.dart';
+
 class HomeProductionIntervalPage extends StatefulWidget {
   @override
   _HomeProductionIntervalState createState() => _HomeProductionIntervalState();
@@ -23,36 +25,42 @@ class _HomeProductionIntervalState extends State<HomeProductionIntervalPage> {
     setState(() {
       _selectedYearFrom = val;
     });
+    return null;
   }
 
   VoidCallback? onFromMonthChange(val) {
     setState(() {
       _selectedMonthFrom = val;
     });
+    return null;
   }
 
   VoidCallback? onFromDayChange(val) {
     setState(() {
       _selectedDayFrom = val;
     });
+    return null;
   }
 
   VoidCallback? onToYearChange(val) {
     setState(() {
       _selectedYearTo = val;
     });
+    return null;
   }
 
   VoidCallback? onToMonthChange(val) {
     setState(() {
       _selectedMonthTo = val;
     });
+    return null;
   }
 
   VoidCallback? onToDayChange(val) {
     setState(() {
       _selectedDayTo = val;
     });
+    return null;
   }
 
   @override

@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import '../../classes/DownTimeReport.dart';
+import '../../classes/values/form_values.dart';
 
 class SupervisorShowAllReports extends StatefulWidget {
   SupervisorShowAllReports({
@@ -637,7 +638,8 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                       snapshot.docs as List<
                                           QueryDocumentSnapshot<
                                               DownTimeReport>>;
-                                  HashMap<String, dynamic> downTimeReportsList =
+                                  HashMap<String, DownTimeReport>
+                                      downTimeReportsList =
                                       DownTimeReport.getAllReportsOfInterval(
                                     downTimeSnapshotReportsList,
                                     validated_month_from,
@@ -648,7 +650,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                     refNum,
                                   );
                                   reportsTitlesList =
-                                      ReportTitle.fullReportToTitleList(
+                                      ReportTitle.downTimeReportToTitleList(
                                           downTimeReportsList);
                                   break;
                               }

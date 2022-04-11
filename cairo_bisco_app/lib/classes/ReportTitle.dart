@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:cairo_bisco_app/classes/DownTimeReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 
 class ReportTitle {
@@ -64,6 +65,27 @@ class ReportTitle {
     map.entries.forEach((e) {
       ReportTitle tempTitle = ReportTitle(
         date: constructDateString(e.value.day, e.value.month, e.value.year),
+        supName: e.value.supName,
+        shift: e.value.shift_index,
+        line: e.value.line_index - 1,
+        reportDetails: e.value,
+        reportID: e.key,
+      );
+      tempList.add(tempTitle);
+    });
+    return tempList;
+  }
+
+  /**
+   * for DownTime reports with all details
+   */
+  static List<ReportTitle> downTimeReportToTitleList(
+      HashMap<String, DownTimeReport> map) {
+    List<ReportTitle> tempList = [];
+    map.entries.forEach((e) {
+      ReportTitle tempTitle = ReportTitle(
+        date: constructDateString(
+            e.value.dayFrom, e.value.monthFrom, e.value.yearFrom),
         supName: e.value.supName,
         shift: e.value.shift_index,
         line: e.value.line_index - 1,
