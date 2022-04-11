@@ -17,14 +17,17 @@ class DownTimeReport {
       skuName,
       wfCategory,
       approved_by,
-      technicianName;
+      technicianName,
+      isPlanned;
   final int line_index,
       shift_index,
       area,
-      year,
-      month,
-      day,
-      planned_index,
+      yearFrom,
+      monthFrom,
+      dayFrom,
+      yearTo,
+      monthTo,
+      dayTo,
       hour_from,
       hour_to,
       minute_from,
@@ -39,7 +42,7 @@ class DownTimeReport {
     required this.rootCauseDesc,
     required this.wfCategory,
     required this.line_index,
-    required this.planned_index,
+    required this.isPlanned,
     required this.hour_from,
     required this.hour_to,
     required this.minute_from,
@@ -47,10 +50,13 @@ class DownTimeReport {
     required this.isStopped_index,
     required this.area,
     required this.supName,
-    required this.year,
     required this.shift_index,
-    required this.month,
-    required this.day,
+    required this.yearFrom,
+    required this.monthFrom,
+    required this.dayFrom,
+    required this.yearTo,
+    required this.monthTo,
+    required this.dayTo,
     required this.causeType,
     required this.isApproved,
     required this.approved_by,
@@ -60,13 +66,16 @@ class DownTimeReport {
 
   DownTimeReport.fromJson(Map<String, Object?> json)
       : this(
-          year: json['year']! as int,
-          month: json['month']! as int,
-          day: json['day']! as int,
+          yearFrom: json['yearFrom']! as int,
+          monthFrom: json['monthFrom']! as int,
+          dayFrom: json['dayFrom']! as int,
+          yearTo: json['yearTo']! as int,
+          monthTo: json['monthTo']! as int,
+          dayTo: json['dayTo']! as int,
           area: json['area']! as int,
           line_index: json['line_index']! as int,
           shift_index: json['shift_index']! as int,
-          planned_index: json['planned_index']! as int,
+          isPlanned: json['isPlanned']! as String,
           hour_from: json['hour_from']! as int,
           hour_to: json['hour_to']! as int,
           minute_from: json['minute_from']! as int,
@@ -82,21 +91,22 @@ class DownTimeReport {
           isApproved: json['isApproved']! as int,
           skuName: json['skuName']! as String,
           approved_by: json['approved_by']! as String,
-          technicianName: json['technicianName'] == null
-              ? ''
-              : json['technicianName']! as String,
+          technicianName: json['technicianName']! as String,
         );
 
   Map<String, Object?> toJson() {
     return {
-      'year': year,
-      'month': month,
-      'day': day,
+      'yearFrom': yearFrom,
+      'monthFrom': monthFrom,
+      'dayFrom': dayFrom,
+      'yearTo': yearTo,
+      'monthTo': monthTo,
+      'dayTo': dayTo,
       'area': area,
       'shift_index': shift_index,
       'supName': supName,
       'line_index': line_index,
-      'planned_index': planned_index,
+      'isPlanned': isPlanned,
       'hour_from': hour_from,
       'hour_to': hour_to,
       'minute_from': minute_from,
@@ -115,33 +125,34 @@ class DownTimeReport {
     };
   }
 
-  static void addReport(
-    String supName,
-    String skuName,
-    String machine,
-    String responsible,
-    String rootCauseDrop,
-    String rootCauseDesc,
-    String wfCategory,
-    String causeType,
-    int shift_index,
-    int area,
-    int year,
-    int month,
-    int day,
-    int line_index,
-    int planned_index,
-    int hour_from,
-    int hour_to,
-    int minute_from,
-    int minute_to,
-    int isStopped_index,
-    String technicianName,
-  ) async {
+  static void addReport(String supName,
+      String skuName,
+      String machine,
+      String responsible,
+      String rootCauseDrop,
+      String rootCauseDesc,
+      String wfCategory,
+      String causeType,
+      int shift_index,
+      int area,
+      int yearFrom,
+      int monthFrom,
+      int dayFrom,
+      int yearTo,
+      int monthTo,
+      int dayTo,
+      int line_index,
+      String isPlanned,
+      int hour_from,
+      int hour_to,
+      int minute_from,
+      int minute_to,
+      int isStopped_index,
+      String technicianName,) async {
     final downTimeReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('downtime_reports')
-        .collection(year.toString())
+        .collection(yearFrom.toString())
         .withConverter<DownTimeReport>(
           fromFirestore: (snapshot, _) =>
               DownTimeReport.fromJson(snapshot.data()!),
@@ -149,15 +160,18 @@ class DownTimeReport {
         );
     await downTimeReportRef.add(
       DownTimeReport(
-        year: year,
-        month: month,
-        day: day,
+        yearFrom: yearFrom,
+        monthFrom: monthFrom,
+        dayFrom: dayFrom,
+        yearTo: yearTo,
+        monthTo: monthTo,
+        dayTo: dayTo,
         area: area,
         shift_index: shift_index,
         supName: supName,
         skuName: skuName,
         line_index: line_index,
-        planned_index: planned_index,
+        isPlanned: isPlanned,
         hour_from: hour_from,
         hour_to: hour_to,
         minute_from: minute_from,
@@ -189,11 +203,14 @@ class DownTimeReport {
     String causeType,
     int shift_index,
     int area,
-    int year,
-    int month,
-    int day,
+    int yearFrom,
+    int monthFrom,
+    int dayFrom,
+    int yearTo,
+    int monthTo,
+    int dayTo,
     int line_index,
-    int planned_index,
+    String isPlanned,
     int hour_from,
     int hour_to,
     int minute_from,
@@ -204,7 +221,7 @@ class DownTimeReport {
     final downTimeReportRef = FirebaseFirestore.instance
         .collection(factory_name)
         .doc('downtime_reports')
-        .collection(year.toString())
+        .collection(yearFrom.toString())
         .withConverter<DownTimeReport>(
           fromFirestore: (snapshot, _) =>
               DownTimeReport.fromJson(snapshot.data()!),
@@ -213,15 +230,18 @@ class DownTimeReport {
     await downTimeReportRef
         .doc(id)
         .update({
-          'year': year,
-          'month': month,
-          'day': day,
+          'yearFrom': yearFrom,
+          'monthFrom': monthFrom,
+          'dayFrom': dayFrom,
+          'yearTo': yearTo,
+          'monthTo': monthTo,
+          'dayTo': dayTo,
           'area': area,
           'shift_index': shift_index,
           'supName': supName,
           'skuName': skuName,
           'line_index': line_index,
-          'planned_index': planned_index,
+          'isPlanned': isPlanned,
           'hour_from': hour_from,
           'hour_to': hour_to,
           'minute_from': minute_from,
@@ -290,7 +310,6 @@ class DownTimeReport {
                   0) &&
           report.data().isApproved == NO) hashMap[report.id] = report.data();
     }
-    print(hashMap.length);
     return hashMap as HashMap<String, DownTimeReport>;
   }
 
@@ -306,8 +325,8 @@ class DownTimeReport {
     HashMap hashMap = new HashMap<String, DownTimeReport>();
     for (var report in reportsList) {
       if (!isDayInInterval(
-        report.data().day,
-        report.data().month,
+        report.data().dayFrom,
+        report.data().monthFrom,
         month_from,
         month_to,
         day_from,
@@ -315,7 +334,7 @@ class DownTimeReport {
         year,
       )) {
         print('debug :: DownTimeReport filtered out due to its date --> ' +
-            report.data().day.toString());
+            report.data().dayFrom.toString());
         continue;
       }
       if (report.data().area == refNum) hashMap[report.id] = report.data();
@@ -334,8 +353,8 @@ class DownTimeReport {
   ) {
     for (var report in reportsList) {
       if (!isDayInInterval(
-        report.data().day,
-        report.data().month,
+        report.data().dayFrom,
+        report.data().monthFrom,
         month_from,
         month_to,
         day_from,
@@ -343,7 +362,7 @@ class DownTimeReport {
         year,
       )) {
         print('debug :: DownTimeReport filtered out due to its date --> ' +
-            report.data().day.toString());
+            report.data().dayFrom.toString());
         continue;
       }
 
@@ -365,7 +384,7 @@ class DownTimeReport {
       skuName: '',
       causeType: '',
       line_index: -1,
-      planned_index: -1,
+      isPlanned: '',
       hour_from: -1,
       hour_to: -1,
       minute_from: -1,
@@ -378,9 +397,12 @@ class DownTimeReport {
       wfCategory: '',
       shift_index: -1,
       area: areaRequired,
-      year: -1,
-      month: -1,
-      day: -1,
+      yearFrom: -1,
+      monthFrom: -1,
+      dayFrom: -1,
+      yearTo: -1,
+      monthTo: -1,
+      dayTo: -1,
       isApproved: NO,
       approved_by: '',
       technicianName: '',
@@ -393,7 +415,7 @@ class DownTimeReport {
       skuName: '',
       shift_index: 0,
       line_index: 1,
-      planned_index: 0,
+      isPlanned: '',
       hour_from: -1,
       hour_to: -1,
       minute_from: -1,
@@ -406,9 +428,12 @@ class DownTimeReport {
       rootCauseDesc: '',
       wfCategory: '',
       area: -1,
-      year: -1,
-      month: -1,
-      day: -1,
+      yearFrom: -1,
+      monthFrom: -1,
+      dayFrom: -1,
+      yearTo: -1,
+      monthTo: -1,
+      dayTo: -1,
       isApproved: NO,
       approved_by: '',
       technicianName: '',

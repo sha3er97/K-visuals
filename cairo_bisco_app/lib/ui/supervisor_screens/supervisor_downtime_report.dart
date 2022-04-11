@@ -57,7 +57,7 @@ class _SupervisorDownTimeReportFormState
   });
 
   final String reportID;
-  final dynamic reportDetails;
+  final DownTimeReport reportDetails;
   final int refNum;
   final bool isEdit;
   final String dtType;
@@ -67,18 +67,26 @@ class _SupervisorDownTimeReportFormState
 
   //drop down values
   late String selectedShift,
-      selectedYear,
-      selectedMonth,
-      selectedDay,
+      selectedYearFrom,
+      selectedMonthFrom,
+      selectedDayFrom,
+      selectedYearTo,
+      selectedMonthTo,
+      selectedDayTo,
       isPlanned,
       isStopped,
       wfCategory,
       machine,
-      responsible,
+      //responsible,
       selectedProdLine,
       rootCauseDrop,
       sku;
-  bool _sup_name_validate = false, _technicianName_validate = false;
+  bool _sup_name_validate = false,
+      _technicianName_validate = false,
+      _isPlanned_validate = false,
+      _isStopped_validate = false,
+      _machine_validate = false,
+      _wfCategory_validate = false;
   bool showSpinner = false;
 
   VoidCallback? onCauseChange(val) {
@@ -116,12 +124,12 @@ class _SupervisorDownTimeReportFormState
     return null;
   }
 
-  VoidCallback? onResponsibleChange(val) {
-    setState(() {
-      responsible = val;
-    });
-    return null;
-  }
+  // VoidCallback? onResponsibleChange(val) {
+  //   setState(() {
+  //     responsible = val;
+  //   });
+  //   return null;
+  // }
 
   VoidCallback? onSKUChange(val) {
     setState(() {
@@ -144,23 +152,44 @@ class _SupervisorDownTimeReportFormState
     return null;
   }
 
-  VoidCallback? onYearChange(val) {
+  VoidCallback? onFromYearChange(val) {
     setState(() {
-      selectedYear = val;
+      selectedYearFrom = val;
     });
     return null;
   }
 
-  VoidCallback? onMonthChange(val) {
+  VoidCallback? onFromMonthChange(val) {
     setState(() {
-      selectedMonth = val;
+      selectedMonthFrom = val;
     });
     return null;
   }
 
-  VoidCallback? onDayChange(val) {
+  VoidCallback? onFromDayChange(val) {
     setState(() {
-      selectedDay = val;
+      selectedDayFrom = val;
+    });
+    return null;
+  }
+
+  VoidCallback? onToYearChange(val) {
+    setState(() {
+      selectedYearTo = val;
+    });
+    return null;
+  }
+
+  VoidCallback? onToMonthChange(val) {
+    setState(() {
+      selectedMonthTo = val;
+    });
+    return null;
+  }
+
+  VoidCallback? onToDayChange(val) {
+    setState(() {
+      selectedDayTo = val;
     });
     return null;
   }
@@ -181,19 +210,25 @@ class _SupervisorDownTimeReportFormState
     technicianName = isEdit ? reportDetails.technicianName.toString() : '';
     ///////////////////////////////////////////////////////////////////////////////
     selectedShift = shifts[reportDetails.shift_index];
-    selectedYear =
-        years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
-    selectedMonth =
-        months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
-    selectedDay =
-        days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
+    selectedYearFrom = years[
+        (isEdit ? reportDetails.yearFrom : (int.parse(getYear()))) - 2020];
+    selectedYearTo =
+        years[(isEdit ? reportDetails.yearTo : (int.parse(getYear()))) - 2020];
+    selectedMonthFrom = months[
+        (isEdit ? reportDetails.monthFrom : (int.parse(getMonth()))) - 1];
+    selectedMonthTo =
+        months[(isEdit ? reportDetails.monthTo : (int.parse(getMonth()))) - 1];
+    selectedDayFrom =
+        days[(isEdit ? reportDetails.dayFrom : (int.parse(getDay()))) - 1];
+    selectedDayTo =
+        days[(isEdit ? reportDetails.dayTo : (int.parse(getDay()))) - 1];
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
     sku = isEdit ? reportDetails.skuName : SKU.allSkus[refNum][0];
-    isPlanned = plannedTypes[reportDetails.planned_index];
+    isPlanned = isEdit ? reportDetails.isPlanned : plannedTypes[0];
     isStopped = y_nDesc[reportDetails.isStopped_index];
     wfCategory = isEdit ? reportDetails.wfCategory : wfCategories[0];
     machine = isEdit ? reportDetails.machine : allMachines[refNum][0];
-    responsible = isEdit ? reportDetails.responsible : authorities[0];
+    //responsible = isEdit ? reportDetails.responsible : authorities[0];
     rootCauseDrop =
         isEdit ? reportDetails.rootCauseDrop : RootCause.causesMap[dtType]![0];
   }
@@ -270,21 +305,38 @@ class _SupervisorDownTimeReportFormState
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        smallerHeading('تاريخ اليوم\nToday Date'),
+                        smallerHeading('تاريخ العطل\nToday Date'),
                         SizedBox(height: minimumPadding),
                         Row(
                           children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: mediumPadding),
+                              child: Container(
+                                margin: EdgeInsets.symmetric(
+                                    vertical: minimumPadding),
+                                child: Text(
+                                  "From : ",
+                                  style: TextStyle(
+                                      color: KelloggColors.darkRed,
+                                      fontSize: aboveMediumFontSize,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 1.2),
+                                ),
+                              ),
+                            ),
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: mediumPadding),
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(vertical: 10),
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: minimumPadding),
                                   child: Column(
                                     children: [
                                       DropdownButton<String>(
                                         hint: Text("day"),
-                                        value: selectedDay,
+                                        value: selectedDayFrom,
                                         isExpanded: true,
                                         items: days.map((String value) {
                                           return new DropdownMenuItem<String>(
@@ -296,7 +348,7 @@ class _SupervisorDownTimeReportFormState
                                             ),
                                           );
                                         }).toList(),
-                                        onChanged: onDayChange,
+                                        onChanged: onFromDayChange,
                                       ),
                                     ],
                                   ),
@@ -314,7 +366,7 @@ class _SupervisorDownTimeReportFormState
                                     children: [
                                       DropdownButton<String>(
                                         hint: Text("month"),
-                                        value: selectedMonth,
+                                        value: selectedMonthFrom,
                                         isExpanded: true,
                                         items: months.map((String value) {
                                           return new DropdownMenuItem<String>(
@@ -326,7 +378,7 @@ class _SupervisorDownTimeReportFormState
                                             ),
                                           );
                                         }).toList(),
-                                        onChanged: onMonthChange,
+                                        onChanged: onFromMonthChange,
                                       ),
                                     ],
                                   ),
@@ -345,7 +397,7 @@ class _SupervisorDownTimeReportFormState
                                     children: [
                                       DropdownButton<String>(
                                         hint: Text("year"),
-                                        value: selectedYear,
+                                        value: selectedYearFrom,
                                         isExpanded: true,
                                         items: years.map((String value) {
                                           return new DropdownMenuItem<String>(
@@ -357,7 +409,118 @@ class _SupervisorDownTimeReportFormState
                                             ),
                                           );
                                         }).toList(),
-                                        onChanged: onYearChange,
+                                        onChanged: onFromYearChange,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: mediumPadding),
+                              child: Container(
+                                margin: EdgeInsets.symmetric(
+                                    vertical: minimumPadding),
+                                child: Text(
+                                  "To :     ",
+                                  style: TextStyle(
+                                      color: KelloggColors.darkRed,
+                                      fontSize: aboveMediumFontSize,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 1.2),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: mediumPadding),
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: minimumPadding),
+                                  child: Column(
+                                    children: [
+                                      DropdownButton<String>(
+                                        hint: Text("day"),
+                                        value: selectedDayTo,
+                                        isExpanded: true,
+                                        items: days.map((String value) {
+                                          return new DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: TextStyle(
+                                                  color: KelloggColors.darkRed),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged: onToDayChange,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: mediumPadding),
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: minimumPadding),
+                                  child: Column(
+                                    children: [
+                                      DropdownButton<String>(
+                                        hint: Text("month"),
+                                        value: selectedMonthTo,
+                                        isExpanded: true,
+                                        items: months.map((String value) {
+                                          return new DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: TextStyle(
+                                                  color: KelloggColors.darkRed),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged: onToMonthChange,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: mediumPadding),
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: minimumPadding),
+                                  child: Column(
+                                    children: [
+                                      DropdownButton<String>(
+                                        hint: Text("year"),
+                                        value: selectedYearTo,
+                                        isExpanded: true,
+                                        items: years.map((String value) {
+                                          return new DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: TextStyle(
+                                                  color: KelloggColors.darkRed),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged: onToYearChange,
                                       ),
                                     ],
                                   ),
@@ -500,31 +663,31 @@ class _SupervisorDownTimeReportFormState
                         ),
                         SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////////
-                        smallerHeading('القسم المسؤول\nResponsible'),
-                        SizedBox(height: minimumPadding),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPadding),
-                          child: DropdownButtonFormField<String>(
-                            // decoration: InputDecoration(labelText: 'اختر'),
-                            value: responsible,
-                            isExpanded: true,
-                            items: authorities.map((String value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style:
-                                      TextStyle(color: KelloggColors.darkRed),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: onResponsibleChange,
-                          ),
-                        ),
-                        SizedBox(height: defaultPadding),
+                        // smallerHeading('القسم المسؤول\nResponsible'),
+                        // SizedBox(height: minimumPadding),
+                        // Container(
+                        //   margin:
+                        //       EdgeInsets.symmetric(vertical: minimumPadding),
+                        //   padding: const EdgeInsets.symmetric(
+                        //       horizontal: defaultPadding),
+                        //   child: DropdownButtonFormField<String>(
+                        //     // decoration: InputDecoration(labelText: 'اختر'),
+                        //     value: responsible,
+                        //     isExpanded: true,
+                        //     items: authorities.map((String value) {
+                        //       return new DropdownMenuItem<String>(
+                        //         value: value,
+                        //         child: Text(
+                        //           value,
+                        //           style:
+                        //               TextStyle(color: KelloggColors.darkRed),
+                        //         ),
+                        //       );
+                        //     }).toList(),
+                        //     onChanged: onResponsibleChange,
+                        //   ),
+                        // ),
+                        // SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////////
                         smallerHeading('اختر تفاصيل سبب العطل\nRoot Cause'),
                         SizedBox(height: minimumPadding),
@@ -791,7 +954,6 @@ class _SupervisorDownTimeReportFormState
                                         showSpinner = true;
                                         _sup_name_validate =
                                             emptyField(supName);
-
                                         _technicianName_validate =
                                             emptyField(technicianName);
                                       });
@@ -802,20 +964,25 @@ class _SupervisorDownTimeReportFormState
                                             supName,
                                             sku,
                                             machine,
-                                            responsible,
+                                            downTimeAuthoritiesMap[dtType]
+                                                .toString(),
+                                            //responsible,
                                             rootCauseDrop,
                                             rootCauseDesc,
                                             wfCategory,
                                             dtType,
                                             shifts.indexOf(selectedShift),
                                             refNum,
-                                            int.parse(selectedYear),
-                                            int.parse(selectedMonth),
-                                            int.parse(selectedDay),
+                                            int.parse(selectedYearFrom),
+                                            int.parse(selectedMonthFrom),
+                                            int.parse(selectedDayFrom),
+                                            int.parse(selectedYearTo),
+                                            int.parse(selectedMonthTo),
+                                            int.parse(selectedDayTo),
                                             prod_lines4
                                                     .indexOf(selectedProdLine) +
                                                 1,
-                                            plannedTypes.indexOf(isPlanned),
+                                            isPlanned,
                                             fromTime.hour,
                                             toTime.hour,
                                             fromTime.minute,
@@ -871,29 +1038,34 @@ class _SupervisorDownTimeReportFormState
                                               !_technicianName_validate) {
                                             if (canEditThisReport(
                                                 supName,
-                                                int.parse(selectedDay),
-                                                int.parse(selectedMonth),
-                                                int.parse(selectedYear))) {
+                                                int.parse(selectedDayFrom),
+                                                int.parse(selectedMonthFrom),
+                                                int.parse(selectedYearFrom))) {
                                               DownTimeReport.editReport(
                                                 context,
                                                 reportID,
                                                 supName,
                                                 sku,
                                                 machine,
-                                                responsible,
+                                                downTimeAuthoritiesMap[dtType]
+                                                    .toString(),
+                                                //responsible,
                                                 rootCauseDrop,
                                                 rootCauseDesc,
                                                 wfCategory,
                                                 dtType,
                                                 shifts.indexOf(selectedShift),
                                                 refNum,
-                                                int.parse(selectedYear),
-                                                int.parse(selectedMonth),
-                                                int.parse(selectedDay),
+                                                int.parse(selectedYearFrom),
+                                                int.parse(selectedMonthFrom),
+                                                int.parse(selectedDayFrom),
+                                                int.parse(selectedYearTo),
+                                                int.parse(selectedMonthTo),
+                                                int.parse(selectedDayTo),
                                                 prod_lines4.indexOf(
                                                         selectedProdLine) +
                                                     1,
-                                                plannedTypes.indexOf(isPlanned),
+                                                isPlanned,
                                                 fromTime.hour,
                                                 toTime.hour,
                                                 fromTime.minute,
@@ -942,13 +1114,13 @@ class _SupervisorDownTimeReportFormState
                                       try {
                                         if (canEditThisReport(
                                             supName,
-                                            int.parse(selectedDay),
-                                            int.parse(selectedMonth),
-                                            int.parse(selectedYear))) {
+                                            int.parse(selectedDayFrom),
+                                            int.parse(selectedMonthFrom),
+                                            int.parse(selectedYearFrom))) {
                                           DownTimeReport.deleteReport(
                                             context,
                                             reportID,
-                                            int.parse(selectedYear),
+                                            int.parse(selectedYearFrom),
                                           );
                                         } else {
                                           ScaffoldMessenger.of(context)

@@ -96,23 +96,28 @@ class _ApproveReportsState extends State<ApproveReports> {
                   itemCount: reportsTitlesList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return ListTile(
-                      title: aboveMediumHeading(reportsTitlesList[index].date +
-                          "\n By : " +
+                      title: aboveMediumHeading("By : " +
                           reportsTitlesList[index].supName +
-                          "\n Tech. : " +
+                          "\nTech. : " +
                           reportsTitlesList[index].technicianName +
                           '\n' +
                           reportsTitlesList[index].type +
+                          " --> " +
+                          reportsTitlesList[index].responsible +
                           '\n' +
                           reportsTitlesList[index].root_cause +
                           "\nFrom : " +
+                          reportsTitlesList[index].dateFrom +
+                          " at " +
                           reportsTitlesList[index].from_time +
                           "\nTo : " +
+                          reportsTitlesList[index].dateTo +
+                          " at " +
                           reportsTitlesList[index].to_time +
                           "\nTotal Time : " +
                           reportsTitlesList[index].wastedMinutes +
                           " Mins." +
-                          "\n--------------------------------------\n"),
+                          "\n-----------------------------\n"),
                       leading: IconButton(
                         tooltip: "Approve",
                         icon: const Icon(

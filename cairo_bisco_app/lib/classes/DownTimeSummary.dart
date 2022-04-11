@@ -4,7 +4,8 @@ import 'package:cairo_bisco_app/classes/DownTimeReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 
 class DownTimeSummary {
-  final String date,
+  final String dateFrom,
+      dateTo,
       supName,
       reportID,
       from_time,
@@ -12,11 +13,13 @@ class DownTimeSummary {
       root_cause,
       type,
       wastedMinutes,
-      technicianName;
+      technicianName,
+      responsible;
   final DownTimeReport reportDetails;
 
   DownTimeSummary({
-    required this.date,
+    required this.dateFrom,
+    required this.dateTo,
     required this.supName,
     required this.reportID,
     required this.from_time,
@@ -26,6 +29,7 @@ class DownTimeSummary {
     required this.reportDetails,
     required this.wastedMinutes,
     required this.technicianName,
+    required this.responsible,
   });
 
   static List<DownTimeSummary> makeList(
@@ -33,7 +37,10 @@ class DownTimeSummary {
     List<DownTimeSummary> tempList = [];
     map.entries.forEach((e) {
       DownTimeSummary tempTitle = DownTimeSummary(
-        date: constructDateString(e.value.day, e.value.month, e.value.year),
+        dateFrom: constructDateString(
+            e.value.dayFrom, e.value.monthFrom, e.value.yearFrom),
+        dateTo:
+            constructDateString(e.value.dayTo, e.value.monthTo, e.value.yearTo),
         supName: e.value.supName,
         reportDetails: e.value,
         reportID: e.key,
@@ -43,10 +50,20 @@ class DownTimeSummary {
         from_time: constructTimeString(
             context, e.value.hour_from, e.value.minute_from),
         root_cause: e.value.rootCauseDrop,
-        wastedMinutes: getTimeDifference(e.value.hour_from, e.value.minute_from,
-                e.value.hour_to, e.value.minute_to)
+        wastedMinutes: getTimeDifference(
+                e.value.yearFrom,
+                e.value.monthFrom,
+                e.value.dayFrom,
+                e.value.yearTo,
+                e.value.monthTo,
+                e.value.dayTo,
+                e.value.hour_from,
+                e.value.minute_from,
+                e.value.hour_to,
+                e.value.minute_to)
             .toString(),
         technicianName: e.value.technicianName,
+        responsible: e.value.responsible,
       );
       tempList.add(tempTitle);
     });

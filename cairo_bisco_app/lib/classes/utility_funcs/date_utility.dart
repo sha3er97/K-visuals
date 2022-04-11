@@ -69,11 +69,19 @@ String constructTimeString(context, int hour, int minute) {
 }
 
 int getTimeDifference(
-    int hour_from, int minute_from, int hour_to, int minute_to) {
-  final from = new DateTime(DateTime.now().year, DateTime.now().month,
-      DateTime.now().day, hour_from, minute_from);
-  final to = new DateTime(DateTime.now().year, DateTime.now().month,
-      DateTime.now().day, hour_to, minute_to);
+    int yearFrom,
+    int monthFrom,
+    int dayFrom,
+    int yearTo,
+    int monthTo,
+    int dayTo,
+    int hour_from,
+    int minute_from,
+    int hour_to,
+    int minute_to) {
+  final from =
+      new DateTime(yearFrom, monthFrom, dayFrom, hour_from, minute_from);
+  final to = new DateTime(yearTo, monthTo, dayTo, hour_to, minute_to);
   final diff = to.difference(from);
   return diff.inMinutes;
 }
