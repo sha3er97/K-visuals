@@ -45,6 +45,8 @@ class _SupervisorChooseDtTypeState extends State<SupervisorChooseDtType> {
   final String reportID;
   late String dtType;
 
+  final _formKey = GlobalKey<FormState>();
+
   VoidCallback? onDtTypeChange(val) {
     if (isEdit) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -82,71 +84,89 @@ class _SupervisorChooseDtTypeState extends State<SupervisorChooseDtType> {
               fontSize: largeFontSize),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: minimumPadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    smallerHeading('اختر سبب العطل\nDown Time Type'),
-                    SizedBox(height: minimumPadding),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPadding),
-                      child: DropdownButtonFormField<String>(
-                        // decoration: InputDecoration(labelText: 'اختر'),
-                        value: dtType,
-                        isExpanded: true,
-                        items: downTimeTypes.map((String value) {
-                          return new DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: TextStyle(color: KelloggColors.darkRed),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: onDtTypeChange,
-                      ),
-                    ),
-                    SizedBox(height: defaultPadding),
-                    /////////////////////////////////////////////////////////////////////////////
-                    Padding(
-                      padding: const EdgeInsets.all(minimumPadding),
-                      child: Center(
-                        child: RoundedButton(
-                          btnText: 'Next',
-                          color: KelloggColors.darkRed,
-                          onPressed: () async {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        SupervisorDownTimeReportForm(
-                                          refNum: refNum,
-                                          reportDetails: reportDetails,
-                                          reportID: reportID,
-                                          dtType: isEdit
-                                              ? reportDetails.causeType
-                                              : dtType,
-                                          isEdit: isEdit,
-                                        )));
-                          },
+      body: Form(
+        key: _formKey,
+        autovalidateMode: AutovalidateMode.always,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      smallerHeading('اختر سبب العطل\nDown Time Type'),
+                      SizedBox(height: minimumPadding),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: defaultPadding),
+                        child: DropdownButtonFormField<String>(
+                          // decoration: InputDecoration(labelText: 'اختر'),
+                          value: dtType,
+                          isExpanded: true,
+                          validator: (value) =>
+                              value == downTimeTypes[0] || value == null
+                                  ? missingValueErrorText
+                                  : null,
+                          items: downTimeTypes.map((String value) {
+                            return new DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: TextStyle(color: KelloggColors.darkRed),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: onDtTypeChange,
                         ),
                       ),
-                    ),
-                    //////////////////////////////////////////////////////////////////
-                  ],
+                      SizedBox(height: defaultPadding),
+                      /////////////////////////////////////////////////////////////////////////////
+                      Padding(
+                        padding: const EdgeInsets.all(minimumPadding),
+                        child: Center(
+                          child: RoundedButton(
+                            btnText: 'Next',
+                            color: KelloggColors.darkRed,
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                //form is valid, proceed further
+                                _formKey.currentState!
+                                    .save(); //save once fields are valid, onSaved method invoked for every form fields
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            SupervisorDownTimeReportForm(
+                                              refNum: refNum,
+                                              reportDetails: reportDetails,
+                                              reportID: reportID,
+                                              dtType: isEdit
+                                                  ? reportDetails.causeType
+                                                  : dtType,
+                                              isEdit: isEdit,
+                                            )));
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(dropDownSelectionErrorText),
+                                ));
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                      //////////////////////////////////////////////////////////////////
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

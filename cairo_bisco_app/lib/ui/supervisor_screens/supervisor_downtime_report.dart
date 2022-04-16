@@ -81,13 +81,9 @@ class _SupervisorDownTimeReportFormState
       selectedProdLine,
       rootCauseDrop,
       sku;
-  bool _sup_name_validate = false,
-      _technicianName_validate = false,
-      _isPlanned_validate = false,
-      _isStopped_validate = false,
-      _machine_validate = false,
-      _wfCategory_validate = false;
+  bool _sup_name_validate = false, _technicianName_validate = false;
   bool showSpinner = false;
+  final _formKey = GlobalKey<FormState>();
 
   VoidCallback? onCauseChange(val) {
     setState(() {
@@ -255,777 +251,727 @@ class _SupervisorDownTimeReportFormState
                   fontSize: largeFontSize),
             ),
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPadding),
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: minimumPadding),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        reportDetails.isApproved == YES
-                            ? NormalMessageHeading("Approved Report by : " +
-                                reportDetails.approved_by)
-                            : EmptyPlaceHolder(),
-                        smallerHeading('اسم المسؤول\nResponsible Name'),
-                        SizedBox(height: minimumPadding),
-                        TextFormField(
-                          initialValue: supName,
-                          readOnly: true,
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.name,
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelText: uneditableLabelText,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            supName = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////
-                        smallerHeading('تاريخ العطل\nToday Date'),
-                        SizedBox(height: minimumPadding),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: mediumPadding),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: minimumPadding),
-                                child: Text(
-                                  "From : ",
-                                  style: TextStyle(
-                                      color: KelloggColors.darkRed,
-                                      fontSize: aboveMediumFontSize,
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: 1.2),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: mediumPadding),
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                      vertical: minimumPadding),
-                                  child: Column(
-                                    children: [
-                                      DropdownButton<String>(
-                                        hint: Text("day"),
-                                        value: selectedDayFrom,
-                                        isExpanded: true,
-                                        items: days.map((String value) {
-                                          return new DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value,
-                                              style: TextStyle(
-                                                  color: KelloggColors.darkRed),
-                                            ),
-                                          );
-                                        }).toList(),
-                                        onChanged: onFromDayChange,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: mediumPadding),
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                      vertical: minimumPadding),
-                                  child: Column(
-                                    children: [
-                                      DropdownButton<String>(
-                                        hint: Text("month"),
-                                        value: selectedMonthFrom,
-                                        isExpanded: true,
-                                        items: months.map((String value) {
-                                          return new DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value,
-                                              style: TextStyle(
-                                                  color: KelloggColors.darkRed),
-                                            ),
-                                          );
-                                        }).toList(),
-                                        onChanged: onFromMonthChange,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: mediumPadding),
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                      vertical: minimumPadding),
-                                  child: Column(
-                                    children: [
-                                      DropdownButton<String>(
-                                        hint: Text("year"),
-                                        value: selectedYearFrom,
-                                        isExpanded: true,
-                                        items: years.map((String value) {
-                                          return new DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value,
-                                              style: TextStyle(
-                                                  color: KelloggColors.darkRed),
-                                            ),
-                                          );
-                                        }).toList(),
-                                        onChanged: onFromYearChange,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: mediumPadding),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: minimumPadding),
-                                child: Text(
-                                  "To :     ",
-                                  style: TextStyle(
-                                      color: KelloggColors.darkRed,
-                                      fontSize: aboveMediumFontSize,
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: 1.2),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: mediumPadding),
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                      vertical: minimumPadding),
-                                  child: Column(
-                                    children: [
-                                      DropdownButton<String>(
-                                        hint: Text("day"),
-                                        value: selectedDayTo,
-                                        isExpanded: true,
-                                        items: days.map((String value) {
-                                          return new DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value,
-                                              style: TextStyle(
-                                                  color: KelloggColors.darkRed),
-                                            ),
-                                          );
-                                        }).toList(),
-                                        onChanged: onToDayChange,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: mediumPadding),
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                      vertical: minimumPadding),
-                                  child: Column(
-                                    children: [
-                                      DropdownButton<String>(
-                                        hint: Text("month"),
-                                        value: selectedMonthTo,
-                                        isExpanded: true,
-                                        items: months.map((String value) {
-                                          return new DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value,
-                                              style: TextStyle(
-                                                  color: KelloggColors.darkRed),
-                                            ),
-                                          );
-                                        }).toList(),
-                                        onChanged: onToMonthChange,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: mediumPadding),
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                      vertical: minimumPadding),
-                                  child: Column(
-                                    children: [
-                                      DropdownButton<String>(
-                                        hint: Text("year"),
-                                        value: selectedYearTo,
-                                        isExpanded: true,
-                                        items: years.map((String value) {
-                                          return new DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value,
-                                              style: TextStyle(
-                                                  color: KelloggColors.darkRed),
-                                            ),
-                                          );
-                                        }).toList(),
-                                        onChanged: onToYearChange,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////
-                        smallerHeading('اختر الوردية\nWork Shift'),
-                        SizedBox(height: minimumPadding),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPadding),
-                          child: DropdownButtonFormField<String>(
-                            value: selectedShift,
-                            isExpanded: true,
-                            items: shifts.map((String value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style:
-                                      TextStyle(color: KelloggColors.darkRed),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: onShiftChange,
-                          ),
-                        ),
-                        SizedBox(height: defaultPadding),
-                        /////////////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اختر الخط\nProduction Line'),
-                        SizedBox(height: minimumPadding),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPadding),
-                          child: DropdownButtonFormField<String>(
-                            // decoration: InputDecoration(labelText: 'اختر'),
-                            value: selectedProdLine,
-                            isExpanded: true,
-                            items: prod_lines4.map((String value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style:
-                                      TextStyle(color: KelloggColors.darkRed),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: onLineChange,
-                          ),
-                        ),
-                        SizedBox(height: defaultPadding),
-                        /////////////////////////////////////////////////////////////
-                        smallerHeading('اختر نوع المنتج SKU'),
-                        SizedBox(height: minimumPadding),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPadding),
-                          child: DropdownButtonFormField<String>(
-                            // decoration: InputDecoration(labelText: 'اختر'),
-                            value: sku,
-                            isExpanded: true,
-                            items: SKU.allSkus[refNum].map((String value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style:
-                                      TextStyle(color: KelloggColors.darkRed),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: onSKUChange,
-                          ),
-                        ),
-                        SizedBox(height: defaultPadding),
-                        /////////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اختر الماكينة Machine'),
-                        SizedBox(height: minimumPadding),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPadding),
-                          child: DropdownButtonFormField<String>(
-                            // decoration: InputDecoration(labelText: 'اختر'),
-                            value: machine,
-                            isExpanded: true,
-                            items: allMachines[refNum]
-                                .followedBy(Machine.packingMachinesList)
-                                .map((String value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style:
-                                      TextStyle(color: KelloggColors.darkRed),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: onMachineChange,
-                          ),
-                        ),
-                        SizedBox(height: defaultPadding),
-                        /////////////////////////////////////////////////////////////////////////////
-                        smallerHeading(
-                            'هل العطل مخطط/غير مخطط\nPlanned/Unplanned'),
-                        SizedBox(height: minimumPadding),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPadding),
-                          child: DropdownButtonFormField<String>(
-                            // decoration: InputDecoration(labelText: 'اختر'),
-                            value: isPlanned,
-                            isExpanded: true,
-                            items: plannedTypes.map((String value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style:
-                                      TextStyle(color: KelloggColors.darkRed),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: onPlannedChange,
-                          ),
-                        ),
-                        SizedBox(height: defaultPadding),
-                        /////////////////////////////////////////////////////////////////////////////
-                        // smallerHeading('القسم المسؤول\nResponsible'),
-                        // SizedBox(height: minimumPadding),
-                        // Container(
-                        //   margin:
-                        //       EdgeInsets.symmetric(vertical: minimumPadding),
-                        //   padding: const EdgeInsets.symmetric(
-                        //       horizontal: defaultPadding),
-                        //   child: DropdownButtonFormField<String>(
-                        //     // decoration: InputDecoration(labelText: 'اختر'),
-                        //     value: responsible,
-                        //     isExpanded: true,
-                        //     items: authorities.map((String value) {
-                        //       return new DropdownMenuItem<String>(
-                        //         value: value,
-                        //         child: Text(
-                        //           value,
-                        //           style:
-                        //               TextStyle(color: KelloggColors.darkRed),
-                        //         ),
-                        //       );
-                        //     }).toList(),
-                        //     onChanged: onResponsibleChange,
-                        //   ),
-                        // ),
-                        // SizedBox(height: defaultPadding),
-                        /////////////////////////////////////////////////////////////////////////////
-                        smallerHeading('اختر تفاصيل سبب العطل\nRoot Cause'),
-                        SizedBox(height: minimumPadding),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPadding),
-                          child: DropdownSearch<String>(
-                            mode: Mode.DIALOG,
-                            showSearchBox: true,
-                            selectedItem: rootCauseDrop,
-                            dropdownSearchDecoration: InputDecoration(
-                              prefixIcon: new Icon(
-                                Icons.search,
+          body: Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.always,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: defaultPadding),
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          reportDetails.isApproved == YES
+                              ? NormalMessageHeading("Approved Report by : " +
+                                  reportDetails.approved_by)
+                              : EmptyPlaceHolder(),
+                          smallerHeading('اسم المسؤول\nResponsible Name'),
+                          SizedBox(height: minimumPadding),
+                          TextFormField(
+                            initialValue: supName,
+                            readOnly: true,
+                            style: (TextStyle(
                                 color: KelloggColors.darkRed,
+                                fontWeight: FontWeight.w400)),
+                            keyboardType: TextInputType.name,
+                            cursorColor: Colors.white,
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              labelText: uneditableLabelText,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: KelloggColors.darkRed,
+                                    width: textFieldBorderRadius),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(textFieldRadius)),
                               ),
-                              // labelText: "اختر السبب التفصيلي",
-                              // labelStyle:
-                              //     TextStyle(color: KelloggColors.darkRed),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: KelloggColors.yellow,
+                                    width: textFieldFocusedBorderRadius),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(textFieldRadius)),
+                              ),
                             ),
-                            popupItemBuilder: (context, selected, bool dummy) {
-                              Widget item(String i) => Container(
+                            onChanged: (value) {
+                              supName = value;
+                            },
+                          ),
+                          SizedBox(height: defaultPadding),
+                          ///////////////////////////////////////////////////////////////
+                          smallerHeading('تاريخ العطل\nToday Date'),
+                          SizedBox(height: minimumPadding),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: mediumPadding),
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: minimumPadding),
+                                  child: Text(
+                                    "From : ",
+                                    style: TextStyle(
+                                        color: KelloggColors.darkRed,
+                                        fontSize: aboveMediumFontSize,
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 1.2),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: mediumPadding),
+                                  child: Container(
                                     margin: EdgeInsets.symmetric(
-                                        horizontal: minimumPadding,
                                         vertical: minimumPadding),
-                                    child: Text(
+                                    child: Column(
+                                      children: [
+                                        DropdownButton<String>(
+                                          hint: Text("day"),
+                                          value: selectedDayFrom,
+                                          isExpanded: true,
+                                          items: days.map((String value) {
+                                            return new DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(
+                                                    color:
+                                                        KelloggColors.darkRed),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: onFromDayChange,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: mediumPadding),
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: minimumPadding),
+                                    child: Column(
+                                      children: [
+                                        DropdownButton<String>(
+                                          hint: Text("month"),
+                                          value: selectedMonthFrom,
+                                          isExpanded: true,
+                                          items: months.map((String value) {
+                                            return new DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(
+                                                    color:
+                                                        KelloggColors.darkRed),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: onFromMonthChange,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: mediumPadding),
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: minimumPadding),
+                                    child: Column(
+                                      children: [
+                                        DropdownButton<String>(
+                                          hint: Text("year"),
+                                          value: selectedYearFrom,
+                                          isExpanded: true,
+                                          items: years.map((String value) {
+                                            return new DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(
+                                                    color:
+                                                        KelloggColors.darkRed),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: onFromYearChange,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: mediumPadding),
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: minimumPadding),
+                                  child: Text(
+                                    "To :     ",
+                                    style: TextStyle(
+                                        color: KelloggColors.darkRed,
+                                        fontSize: aboveMediumFontSize,
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 1.2),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: mediumPadding),
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: minimumPadding),
+                                    child: Column(
+                                      children: [
+                                        DropdownButton<String>(
+                                          hint: Text("day"),
+                                          value: selectedDayTo,
+                                          isExpanded: true,
+                                          items: days.map((String value) {
+                                            return new DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(
+                                                    color:
+                                                        KelloggColors.darkRed),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: onToDayChange,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: mediumPadding),
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: minimumPadding),
+                                    child: Column(
+                                      children: [
+                                        DropdownButton<String>(
+                                          hint: Text("month"),
+                                          value: selectedMonthTo,
+                                          isExpanded: true,
+                                          items: months.map((String value) {
+                                            return new DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(
+                                                    color:
+                                                        KelloggColors.darkRed),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: onToMonthChange,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: mediumPadding),
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: minimumPadding),
+                                    child: Column(
+                                      children: [
+                                        DropdownButton<String>(
+                                          hint: Text("year"),
+                                          value: selectedYearTo,
+                                          isExpanded: true,
+                                          items: years.map((String value) {
+                                            return new DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(
+                                                    color:
+                                                        KelloggColors.darkRed),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: onToYearChange,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: defaultPadding),
+                          ///////////////////////////////////////////////////////////////
+                          smallerHeading('اختر الوردية\nWork Shift'),
+                          SizedBox(height: minimumPadding),
+                          Container(
+                            margin:
+                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: defaultPadding),
+                            child: DropdownButtonFormField<String>(
+                              value: selectedShift,
+                              isExpanded: true,
+                              items: shifts.map((String value) {
+                                return new DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style:
+                                        TextStyle(color: KelloggColors.darkRed),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: onShiftChange,
+                            ),
+                          ),
+                          SizedBox(height: defaultPadding),
+                          /////////////////////////////////////////////////////////////////////////////////
+                          smallerHeading('اختر الخط\nProduction Line'),
+                          SizedBox(height: minimumPadding),
+                          Container(
+                            margin:
+                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: defaultPadding),
+                            child: DropdownButtonFormField<String>(
+                              // decoration: InputDecoration(labelText: 'اختر'),
+                              value: selectedProdLine,
+                              isExpanded: true,
+                              items: prod_lines4.map((String value) {
+                                return new DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style:
+                                        TextStyle(color: KelloggColors.darkRed),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: onLineChange,
+                            ),
+                          ),
+                          SizedBox(height: defaultPadding),
+                          /////////////////////////////////////////////////////////////
+                          smallerHeading('اختر نوع المنتج SKU'),
+                          SizedBox(height: minimumPadding),
+                          Container(
+                            margin:
+                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: defaultPadding),
+                            child: DropdownButtonFormField<String>(
+                              // decoration: InputDecoration(labelText: 'اختر'),
+                              value: sku,
+                              isExpanded: true,
+                              items: SKU.allSkus[refNum].map((String value) {
+                                return new DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style:
+                                        TextStyle(color: KelloggColors.darkRed),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: onSKUChange,
+                            ),
+                          ),
+                          SizedBox(height: defaultPadding),
+                          /////////////////////////////////////////////////////////////////////////////
+                          smallerHeading('اختر الماكينة Machine'),
+                          SizedBox(height: minimumPadding),
+                          Container(
+                            margin:
+                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: defaultPadding),
+                            child: DropdownButtonFormField<String>(
+                              // decoration: InputDecoration(labelText: 'اختر'),
+                              value: machine,
+                              isExpanded: true,
+                              validator: (value) =>
+                                  value == allMachines[refNum][0]
+                                      ? missingValueErrorText
+                                      : null,
+                              items: allMachines[refNum]
+                                  .followedBy(Machine.packingMachinesList)
+                                  .map((String value) {
+                                return new DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style:
+                                        TextStyle(color: KelloggColors.darkRed),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: onMachineChange,
+                            ),
+                          ),
+                          SizedBox(height: defaultPadding),
+                          /////////////////////////////////////////////////////////////////////////////
+                          smallerHeading(
+                              'هل العطل مخطط/غير مخطط\nPlanned/Unplanned'),
+                          SizedBox(height: minimumPadding),
+                          Container(
+                            margin:
+                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: defaultPadding),
+                            child: DropdownButtonFormField<String>(
+                              // decoration: InputDecoration(labelText: 'اختر'),
+                              value: isPlanned,
+                              isExpanded: true,
+                              validator: (value) => value == plannedTypes[0]
+                                  ? missingValueErrorText
+                                  : null,
+                              items: plannedTypes.map((String value) {
+                                return new DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style:
+                                        TextStyle(color: KelloggColors.darkRed),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: onPlannedChange,
+                            ),
+                          ),
+                          SizedBox(height: defaultPadding),
+                          /////////////////////////////////////////////////////////////////////////////
+                          // smallerHeading('القسم المسؤول\nResponsible'),
+                          // SizedBox(height: minimumPadding),
+                          // Container(
+                          //   margin:
+                          //       EdgeInsets.symmetric(vertical: minimumPadding),
+                          //   padding: const EdgeInsets.symmetric(
+                          //       horizontal: defaultPadding),
+                          //   child: DropdownButtonFormField<String>(
+                          //     // decoration: InputDecoration(labelText: 'اختر'),
+                          //     value: responsible,
+                          //     isExpanded: true,
+                          //     items: authorities.map((String value) {
+                          //       return new DropdownMenuItem<String>(
+                          //         value: value,
+                          //         child: Text(
+                          //           value,
+                          //           style:
+                          //               TextStyle(color: KelloggColors.darkRed),
+                          //         ),
+                          //       );
+                          //     }).toList(),
+                          //     onChanged: onResponsibleChange,
+                          //   ),
+                          // ),
+                          // SizedBox(height: defaultPadding),
+                          /////////////////////////////////////////////////////////////////////////////
+                          smallerHeading('اختر تفاصيل سبب العطل\nRoot Cause'),
+                          SizedBox(height: minimumPadding),
+                          Container(
+                            margin:
+                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: defaultPadding),
+                            child: DropdownSearch<String>(
+                              mode: Mode.DIALOG,
+                              showSearchBox: true,
+                              selectedItem: rootCauseDrop,
+                              dropdownSearchDecoration: InputDecoration(
+                                prefixIcon: new Icon(
+                                  Icons.search,
+                                  color: KelloggColors.darkRed,
+                                ),
+                                // labelText: "اختر السبب التفصيلي",
+                                // labelStyle:
+                                //     TextStyle(color: KelloggColors.darkRed),
+                              ),
+                              popupItemBuilder:
+                                  (context, selected, bool dummy) {
+                                Widget item(String i) => Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: minimumPadding,
+                                          vertical: minimumPadding),
+                                      child: Text(
+                                        i,
+                                        style: TextStyle(
+                                            color: KelloggColors.darkRed),
+                                      ),
+                                    );
+                                return item(selected);
+                              },
+                              dropdownBuilder: (context, selected) {
+                                Widget item(String i) => Text(
                                       i,
                                       style: TextStyle(
                                           color: KelloggColors.darkRed),
-                                    ),
-                                  );
-                              return item(selected);
+                                    );
+                                return item(selected!);
+                              },
+                              items: RootCause.causesMap[dtType],
+                              // popupItemDisabled: (String s) => s.startsWith('I'),
+                              onChanged: onCauseChange,
+                            ),
+                          ),
+                          // Container(
+                          //   margin:
+                          //       EdgeInsets.symmetric(vertical: minimumPadding),
+                          //   padding: const EdgeInsets.symmetric(
+                          //       horizontal: defaultPadding),
+                          //   child: DropdownButtonFormField<String>(
+                          //     // decoration: InputDecoration(labelText: 'اختر'),
+                          //     value: rootCauseDrop,
+                          //     isExpanded: true,
+                          //     items: RootCause.causesMap[dtType]!
+                          //         .map((String value) {
+                          //       return new DropdownMenuItem<String>(
+                          //         value: value,
+                          //         child: Text(
+                          //           value,
+                          //           style:
+                          //               TextStyle(color: KelloggColors.darkRed),
+                          //         ),
+                          //       );
+                          //     }).toList(),
+                          //     onChanged: onCauseChange,
+                          //   ),
+                          // ),
+                          SizedBox(height: defaultPadding),
+                          /////////////////////////////////////////////////////////////////////////////
+                          smallerHeading(
+                              'تفاصيل اضافية عن العطل \nMore Details'),
+                          SizedBox(height: minimumPadding),
+                          TextFormField(
+                            initialValue: rootCauseDesc,
+                            style: (TextStyle(
+                                color: KelloggColors.darkRed,
+                                fontWeight: FontWeight.w400)),
+                            keyboardType: TextInputType.multiline,
+                            cursorColor: Colors.white,
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: KelloggColors.darkRed,
+                                    width: textFieldBorderRadius),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(textFieldRadius)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: KelloggColors.yellow,
+                                    width: textFieldFocusedBorderRadius),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(textFieldRadius)),
+                              ),
+                            ),
+                            onChanged: (value) {
+                              rootCauseDesc = value;
                             },
-                            dropdownBuilder: (context, selected) {
-                              Widget item(String i) => Text(
-                                    i,
+                          ),
+                          SizedBox(height: defaultPadding),
+                          ///////////////////////////////////////////////////////////////
+                          smallerHeading('اختر تصنيف العطل\nWF Category'),
+                          SizedBox(height: minimumPadding),
+                          Container(
+                            margin:
+                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: defaultPadding),
+                            child: DropdownButtonFormField<String>(
+                              // decoration: InputDecoration(labelText: 'اختر'),
+                              value: wfCategory,
+                              isExpanded: true,
+                              validator: (value) => value == wfCategories[0]
+                                  ? missingValueErrorText
+                                  : null,
+                              items: wfCategories.map((String value) {
+                                return new DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
                                     style:
                                         TextStyle(color: KelloggColors.darkRed),
-                                  );
-                              return item(selected!);
-                            },
-                            items: RootCause.causesMap[dtType],
-                            // popupItemDisabled: (String s) => s.startsWith('I'),
-                            onChanged: onCauseChange,
-                          ),
-                        ),
-                        // Container(
-                        //   margin:
-                        //       EdgeInsets.symmetric(vertical: minimumPadding),
-                        //   padding: const EdgeInsets.symmetric(
-                        //       horizontal: defaultPadding),
-                        //   child: DropdownButtonFormField<String>(
-                        //     // decoration: InputDecoration(labelText: 'اختر'),
-                        //     value: rootCauseDrop,
-                        //     isExpanded: true,
-                        //     items: RootCause.causesMap[dtType]!
-                        //         .map((String value) {
-                        //       return new DropdownMenuItem<String>(
-                        //         value: value,
-                        //         child: Text(
-                        //           value,
-                        //           style:
-                        //               TextStyle(color: KelloggColors.darkRed),
-                        //         ),
-                        //       );
-                        //     }).toList(),
-                        //     onChanged: onCauseChange,
-                        //   ),
-                        // ),
-                        SizedBox(height: defaultPadding),
-                        /////////////////////////////////////////////////////////////////////////////
-                        smallerHeading('تفاصيل اضافية عن العطل \nMore Details'),
-                        SizedBox(height: minimumPadding),
-                        TextFormField(
-                          initialValue: rootCauseDesc,
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.multiline,
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            rootCauseDesc = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////
-                        smallerHeading('اختر تصنيف العطل\nWF Category'),
-                        SizedBox(height: minimumPadding),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPadding),
-                          child: DropdownButtonFormField<String>(
-                            // decoration: InputDecoration(labelText: 'اختر'),
-                            value: wfCategory,
-                            isExpanded: true,
-                            items: wfCategories.map((String value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style:
-                                      TextStyle(color: KelloggColors.darkRed),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: onWfCategoryChange,
-                          ),
-                        ),
-                        SizedBox(height: defaultPadding),
-                        /////////////////////////////////////////////////////////////////////////////
-                        smallerHeading('توقيت و مدة العطل\nDown Time Duration'),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        //   children: [
-                        Padding(
-                          padding: const EdgeInsets.all(minimumPadding),
-                          child: Center(
-                            child: RoundedButton(
-                              onPressed: () async {
-                                final TimeOfDay? timeOfDay =
-                                    await showTimePicker(
-                                  context: context,
-                                  initialTime: fromTime,
-                                  initialEntryMode: TimePickerEntryMode.dial,
-                                );
-                                if (timeOfDay != null &&
-                                    timeOfDay != fromTime) {
-                                  setState(() {
-                                    fromTime = timeOfDay;
-                                  });
-                                }
-                                //_selectTime(context);
-                              },
-                              btnText: "From ${fromTime.format(context)}",
-                              color: KelloggColors.darkBlue,
-                            ),
-                          ),
-                        ),
-                        // SizedBox(
-                        //   width: defaultPadding,
-                        // ),
-                        //smallerHeading("${fromTime.hour}:${fromTime.minute}"),
-                        /////////////////////////////////////////////////////////////////////////////
-                        Padding(
-                          padding: const EdgeInsets.all(minimumPadding),
-                          child: Center(
-                            child: RoundedButton(
-                              onPressed: () async {
-                                final TimeOfDay? timeOfDay =
-                                    await showTimePicker(
-                                  context: context,
-                                  initialTime: toTime,
-                                  initialEntryMode: TimePickerEntryMode.dial,
-                                );
-                                if (timeOfDay != null && timeOfDay != toTime) {
-                                  setState(() {
-                                    toTime = timeOfDay;
-                                  });
-                                }
-                                //_selectTime(context);
-                              },
-                              btnText: "To ${toTime.format(context)}",
-                              color: KelloggColors.darkBlue,
-                            ),
-                          ),
-                        ),
-                        //smallerHeading("${toTime.hour}:${toTime.minute}"),
-                        //   ],
-                        // ),
-                        /////////////////////////////////////////////////////////////////////////////
-                        smallerHeading(
-                            'هل يخرج اى منتج نهائى من اى ماكينة تغليف اثناء العطل؟\nIs there final product'),
-                        SizedBox(height: minimumPadding),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPadding),
-                          child: DropdownButtonFormField<String>(
-                            // decoration: InputDecoration(labelText: 'اختر'),
-                            value: isStopped,
-                            isExpanded: true,
-                            items: y_nDesc.map((String value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style:
-                                      TextStyle(color: KelloggColors.darkRed),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: onStoppedChange,
-                          ),
-                        ),
-                        SizedBox(height: defaultPadding),
-                        /////////////////////////////////////////////////////////////////////////////
-                        smallerHeading(
-                            'اسم الفني او المسؤول عن حل المشكلة\nTechnician Name'),
-                        SizedBox(height: minimumPadding),
-                        TextFormField(
-                          initialValue: technicianName,
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.name,
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            errorText: _technicianName_validate
-                                ? missingValueErrorText
-                                : null,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            technicianName = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
-                        //////////////////////////////////////////////////////////////////////////
-                        isEdit
-                            ? EmptyPlaceHolder()
-                            : Padding(
-                                padding: const EdgeInsets.all(minimumPadding),
-                                child: Center(
-                                  child: RoundedButton(
-                                    btnText: 'تسليم التقرير',
-                                    color: KelloggColors.darkRed,
-                                    onPressed: () async {
-                                      setState(() {
-                                        showSpinner = true;
-                                        _sup_name_validate =
-                                            emptyField(supName);
-                                        _technicianName_validate =
-                                            emptyField(technicianName);
-                                      });
-                                      try {
-                                        if (!_sup_name_validate &&
-                                            !_technicianName_validate) {
-                                          DownTimeReport.addReport(
-                                            supName,
-                                            sku,
-                                            machine,
-                                            downTimeAuthoritiesMap[dtType]
-                                                .toString(),
-                                            //responsible,
-                                            rootCauseDrop,
-                                            rootCauseDesc,
-                                            wfCategory,
-                                            dtType,
-                                            shifts.indexOf(selectedShift),
-                                            refNum,
-                                            int.parse(selectedYearFrom),
-                                            int.parse(selectedMonthFrom),
-                                            int.parse(selectedDayFrom),
-                                            int.parse(selectedYearTo),
-                                            int.parse(selectedMonthTo),
-                                            int.parse(selectedDayTo),
-                                            prod_lines4
-                                                    .indexOf(selectedProdLine) +
-                                                1,
-                                            isPlanned,
-                                            fromTime.hour,
-                                            toTime.hour,
-                                            fromTime.minute,
-                                            toTime.minute,
-                                            y_nDesc.indexOf(isStopped),
-                                            technicianName,
-                                          );
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      SuccessScreen()));
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text(submissionErrorText),
-                                          ));
-                                        }
-                                        setState(() {
-                                          showSpinner = false;
-                                        });
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                    },
                                   ),
-                                ),
+                                );
+                              }).toList(),
+                              onChanged: onWfCategoryChange,
+                            ),
+                          ),
+                          SizedBox(height: defaultPadding),
+                          /////////////////////////////////////////////////////////////////////////////
+                          smallerHeading(
+                              'توقيت و مدة العطل\nDown Time Duration'),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          //   children: [
+                          Padding(
+                            padding: const EdgeInsets.all(minimumPadding),
+                            child: Center(
+                              child: RoundedButton(
+                                onPressed: () async {
+                                  final TimeOfDay? timeOfDay =
+                                      await showTimePicker(
+                                    context: context,
+                                    initialTime: fromTime,
+                                    initialEntryMode: TimePickerEntryMode.dial,
+                                  );
+                                  if (timeOfDay != null &&
+                                      timeOfDay != fromTime) {
+                                    setState(() {
+                                      fromTime = timeOfDay;
+                                    });
+                                  }
+                                  //_selectTime(context);
+                                },
+                                btnText: "From ${fromTime.format(context)}",
+                                color: KelloggColors.darkBlue,
                               ),
-                        //////////////////////////////////////////////////////////////////
-                        !isEdit
-                            ? EmptyPlaceHolder()
-                            : Padding(
-                                padding: const EdgeInsets.all(minimumPadding),
-                                child: Center(
-                                  child: RoundedButton(
-                                    btnText: reportDetails.isApproved == YES
-                                        ? "Edit Disabled"
-                                        : 'Edit Report',
-                                    color: reportDetails.isApproved == YES
-                                        ? KelloggColors.grey
-                                        : KelloggColors.darkBlue,
-                                    onPressed: () {
-                                      if (reportDetails.isApproved == NO) {
+                            ),
+                          ),
+                          // SizedBox(
+                          //   width: defaultPadding,
+                          // ),
+                          //smallerHeading("${fromTime.hour}:${fromTime.minute}"),
+                          /////////////////////////////////////////////////////////////////////////////
+                          Padding(
+                            padding: const EdgeInsets.all(minimumPadding),
+                            child: Center(
+                              child: RoundedButton(
+                                onPressed: () async {
+                                  final TimeOfDay? timeOfDay =
+                                      await showTimePicker(
+                                    context: context,
+                                    initialTime: toTime,
+                                    initialEntryMode: TimePickerEntryMode.dial,
+                                  );
+                                  if (timeOfDay != null &&
+                                      timeOfDay != toTime) {
+                                    setState(() {
+                                      toTime = timeOfDay;
+                                    });
+                                  }
+                                  //_selectTime(context);
+                                },
+                                btnText: "To ${toTime.format(context)}",
+                                color: KelloggColors.darkBlue,
+                              ),
+                            ),
+                          ),
+                          //smallerHeading("${toTime.hour}:${toTime.minute}"),
+                          //   ],
+                          // ),
+                          /////////////////////////////////////////////////////////////////////////////
+                          smallerHeading(
+                              'هل يخرج اى منتج نهائى من اى ماكينة تغليف اثناء العطل؟\nIs there final product'),
+                          SizedBox(height: minimumPadding),
+                          Container(
+                            margin:
+                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: defaultPadding),
+                            child: DropdownButtonFormField<String>(
+                              // decoration: InputDecoration(labelText: 'اختر'),
+                              value: isStopped,
+                              isExpanded: true,
+                              validator: (value) => value == y_nDesc[0]
+                                  ? missingValueErrorText
+                                  : null,
+                              items: y_nDesc.map((String value) {
+                                return new DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style:
+                                        TextStyle(color: KelloggColors.darkRed),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: onStoppedChange,
+                            ),
+                          ),
+                          SizedBox(height: defaultPadding),
+                          /////////////////////////////////////////////////////////////////////////////
+                          smallerHeading(
+                              'اسم الفني او المسؤول عن حل المشكلة\nTechnician Name'),
+                          SizedBox(height: minimumPadding),
+                          TextFormField(
+                            initialValue: technicianName,
+                            style: (TextStyle(
+                                color: KelloggColors.darkRed,
+                                fontWeight: FontWeight.w400)),
+                            keyboardType: TextInputType.name,
+                            cursorColor: Colors.white,
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              errorText: _technicianName_validate
+                                  ? missingValueErrorText
+                                  : null,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: KelloggColors.darkRed,
+                                    width: textFieldBorderRadius),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(textFieldRadius)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: KelloggColors.yellow,
+                                    width: textFieldFocusedBorderRadius),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(textFieldRadius)),
+                              ),
+                            ),
+                            onChanged: (value) {
+                              technicianName = value;
+                            },
+                          ),
+                          SizedBox(height: defaultPadding),
+                          //////////////////////////////////////////////////////////////////////////
+                          isEdit
+                              ? EmptyPlaceHolder()
+                              : Padding(
+                                  padding: const EdgeInsets.all(minimumPadding),
+                                  child: Center(
+                                    child: RoundedButton(
+                                      btnText: 'تسليم التقرير',
+                                      color: KelloggColors.darkRed,
+                                      onPressed: () async {
                                         setState(() {
                                           showSpinner = true;
                                           _sup_name_validate =
@@ -1034,16 +980,13 @@ class _SupervisorDownTimeReportFormState
                                               emptyField(technicianName);
                                         });
                                         try {
-                                          if (!_sup_name_validate &&
-                                              !_technicianName_validate) {
-                                            if (canEditThisReport(
-                                                supName,
-                                                int.parse(selectedDayFrom),
-                                                int.parse(selectedMonthFrom),
-                                                int.parse(selectedYearFrom))) {
-                                              DownTimeReport.editReport(
-                                                context,
-                                                reportID,
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            //form is valid, proceed further
+                                            _formKey.currentState!.save();
+                                            if (!_sup_name_validate &&
+                                                !_technicianName_validate) {
+                                              DownTimeReport.addReport(
                                                 supName,
                                                 sku,
                                                 machine,
@@ -1073,18 +1016,23 @@ class _SupervisorDownTimeReportFormState
                                                 y_nDesc.indexOf(isStopped),
                                                 technicianName,
                                               );
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SuccessScreen()));
                                             } else {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(SnackBar(
                                                 content:
-                                                    Text(unauthorizedEditMsg),
+                                                    Text(submissionErrorText),
                                               ));
                                             }
                                           } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(SnackBar(
-                                              content:
-                                                  Text(submissionErrorText),
+                                              content: Text(
+                                                  dropDownSelectionErrorText),
                                             ));
                                           }
                                           setState(() {
@@ -1093,57 +1041,165 @@ class _SupervisorDownTimeReportFormState
                                         } catch (e) {
                                           print(e);
                                         }
-                                      }
-                                    },
+                                      },
+                                    ),
                                   ),
                                 ),
-                              ),
-                        //////////////////////////////////////////////////////////////////
-                        !isEdit
-                            ? EmptyPlaceHolder()
-                            : Padding(
-                                padding: const EdgeInsets.all(minimumPadding),
-                                child: Center(
-                                  child: RoundedButton(
-                                    btnText: 'Delete Report',
-                                    color: KelloggColors.cockRed,
-                                    onPressed: () {
-                                      setState(() {
-                                        showSpinner = true;
-                                      });
-                                      try {
-                                        if (canEditThisReport(
-                                            supName,
-                                            int.parse(selectedDayFrom),
-                                            int.parse(selectedMonthFrom),
-                                            int.parse(selectedYearFrom))) {
-                                          DownTimeReport.deleteReport(
-                                            context,
-                                            reportID,
-                                            int.parse(selectedYearFrom),
-                                          );
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text(unauthorizedEditMsg),
-                                          ));
+                          //////////////////////////////////////////////////////////////////
+                          !isEdit
+                              ? EmptyPlaceHolder()
+                              : Padding(
+                                  padding: const EdgeInsets.all(minimumPadding),
+                                  child: Center(
+                                    child: RoundedButton(
+                                      btnText:
+                                          reportDetails.isApproved == YES &&
+                                                  !Credentials.isUserOwner
+                                              ? "Edit Disabled"
+                                              : 'Edit Report',
+                                      color: reportDetails.isApproved == YES &&
+                                              !Credentials.isUserOwner
+                                          ? KelloggColors.grey
+                                          : KelloggColors.darkBlue,
+                                      onPressed: () {
+                                        if (reportDetails.isApproved == NO &&
+                                            !Credentials.isUserOwner) {
+                                          setState(() {
+                                            showSpinner = true;
+                                            _sup_name_validate =
+                                                emptyField(supName);
+                                            _technicianName_validate =
+                                                emptyField(technicianName);
+                                          });
+                                          try {
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              //form is valid, proceed further
+                                              _formKey.currentState!.save();
+                                              if (!_sup_name_validate &&
+                                                  !_technicianName_validate) {
+                                                if (canEditThisReport(
+                                                    supName,
+                                                    int.parse(selectedDayFrom),
+                                                    int.parse(
+                                                        selectedMonthFrom),
+                                                    int.parse(
+                                                        selectedYearFrom))) {
+                                                  DownTimeReport.editReport(
+                                                    context,
+                                                    reportID,
+                                                    supName,
+                                                    sku,
+                                                    machine,
+                                                    downTimeAuthoritiesMap[
+                                                            dtType]
+                                                        .toString(),
+                                                    //responsible,
+                                                    rootCauseDrop,
+                                                    rootCauseDesc,
+                                                    wfCategory,
+                                                    dtType,
+                                                    shifts
+                                                        .indexOf(selectedShift),
+                                                    refNum,
+                                                    int.parse(selectedYearFrom),
+                                                    int.parse(
+                                                        selectedMonthFrom),
+                                                    int.parse(selectedDayFrom),
+                                                    int.parse(selectedYearTo),
+                                                    int.parse(selectedMonthTo),
+                                                    int.parse(selectedDayTo),
+                                                    prod_lines4.indexOf(
+                                                            selectedProdLine) +
+                                                        1,
+                                                    isPlanned,
+                                                    fromTime.hour,
+                                                    toTime.hour,
+                                                    fromTime.minute,
+                                                    toTime.minute,
+                                                    y_nDesc.indexOf(isStopped),
+                                                    technicianName,
+                                                  );
+                                                } else {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        unauthorizedEditMsg),
+                                                  ));
+                                                }
+                                              } else {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(SnackBar(
+                                                  content:
+                                                      Text(submissionErrorText),
+                                                ));
+                                              }
+                                            } else {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    dropDownSelectionErrorText),
+                                              ));
+                                            }
+                                            setState(() {
+                                              showSpinner = false;
+                                            });
+                                          } catch (e) {
+                                            print(e);
+                                          }
                                         }
-                                        setState(() {
-                                          showSpinner = false;
-                                        });
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                    },
+                                      },
+                                    ),
                                   ),
                                 ),
-                              ),
-                        //////////////////////////////////////////////////////////////////
-                      ],
+                          //////////////////////////////////////////////////////////////////
+                          !isEdit
+                              ? EmptyPlaceHolder()
+                              : Padding(
+                                  padding: const EdgeInsets.all(minimumPadding),
+                                  child: Center(
+                                    child: RoundedButton(
+                                      btnText: 'Delete Report',
+                                      color: KelloggColors.cockRed,
+                                      onPressed: () {
+                                        setState(() {
+                                          showSpinner = true;
+                                        });
+                                        try {
+                                          if (canEditThisReport(
+                                              supName,
+                                              int.parse(selectedDayFrom),
+                                              int.parse(selectedMonthFrom),
+                                              int.parse(selectedYearFrom))) {
+                                            DownTimeReport.deleteReport(
+                                              context,
+                                              reportID,
+                                              int.parse(selectedYearFrom),
+                                            );
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content:
+                                                  Text(unauthorizedEditMsg),
+                                            ));
+                                          }
+                                          setState(() {
+                                            showSpinner = false;
+                                          });
+                                        } catch (e) {
+                                          print(e);
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                          //////////////////////////////////////////////////////////////////
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
