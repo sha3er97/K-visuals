@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:cairo_bisco_app/classes/DownTimeReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
+import 'package:cairo_bisco_app/classes/values/form_values.dart';
 
 class DownTimeSummary {
   final String dateFrom,
@@ -14,7 +15,8 @@ class DownTimeSummary {
       type,
       wastedMinutes,
       technicianName,
-      responsible;
+      responsible,
+      lineName;
   final DownTimeReport reportDetails;
 
   DownTimeSummary({
@@ -30,6 +32,7 @@ class DownTimeSummary {
     required this.wastedMinutes,
     required this.technicianName,
     required this.responsible,
+    required this.lineName,
   });
 
   static List<DownTimeSummary> makeList(
@@ -64,6 +67,7 @@ class DownTimeSummary {
             .toString(),
         technicianName: e.value.technicianName,
         responsible: e.value.responsible,
+        lineName: prod_lines4[e.value.line_index - 1],
       );
       tempList.add(tempTitle);
     });

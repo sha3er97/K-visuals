@@ -21,9 +21,10 @@ class HorizontalBarChart extends StatelessWidget {
   }
 
   /// Creates a [BarChart] with real data.
-  factory HorizontalBarChart.withTop10Causes(List<CauseCount> causesList) {
+  factory HorizontalBarChart.withTop10Causes(
+      List<CauseCount> causesList, int chartLimit) {
     return new HorizontalBarChart(
-      _getTop10Data(causesList),
+      _getTop10Data(causesList, chartLimit),
       animate: true,
     );
   }
@@ -42,15 +43,16 @@ class HorizontalBarChart extends StatelessWidget {
       //          outsideLabelStyleSpec: new charts.TextStyleSpec(...)),
       barRendererDecorator: new charts.BarLabelDecorator<String>(),
       // Hide domain axis.
-      domainAxis:
-          new charts.OrdinalAxisSpec(renderSpec: new charts.NoneRenderSpec()),
+      // domainAxis:
+      //     new charts.OrdinalAxisSpec(renderSpec: new charts.NoneRenderSpec()),
     );
   }
 
   static List<charts.Series<CauseCount, String>> _getTop10Data(
-      List<CauseCount> causesList) {
+      List<CauseCount> causesList, int chartLimit) {
     causesList.sort((b, a) => a.count.compareTo(b.count));
-    if (causesList.length > 10) causesList.removeRange(10, causesList.length);
+    if (causesList.length > chartLimit)
+      causesList.removeRange(chartLimit, causesList.length);
 
     return [
       new charts.Series<CauseCount, String>(
@@ -58,9 +60,11 @@ class HorizontalBarChart extends StatelessWidget {
         domainFn: (CauseCount cause, _) => cause.causeName,
         measureFn: (CauseCount cause, _) => cause.count,
         data: causesList,
+        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
+        fillColorFn: (_, __) => charts.MaterialPalette.red.shadeDefault.darker,
         // Set a label accessor to control the text of the bar label.
         labelAccessorFn: (CauseCount cause, _) =>
-            '${cause.causeName}: ${cause.count.toString()}',
+            '${cause.count.toString()} Mins.',
       )
     ];
   }

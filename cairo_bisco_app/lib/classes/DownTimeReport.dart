@@ -357,6 +357,11 @@ class DownTimeReport {
   ) {
     HashMap<String, CauseCount> tempMap = new HashMap<String, CauseCount>();
     for (var report in reportsList) {
+      if (report.data().isApproved == NO) {
+        print('debug :: DownTimeReport filtered out due to its approval --> ' +
+            report.data().isApproved.toString());
+        continue;
+      }
       if (!isDayInInterval(
         report.data().dayFrom,
         report.data().monthFrom,
@@ -418,6 +423,11 @@ class DownTimeReport {
   ) {
     HashMap<String, CauseCount> tempMap = new HashMap<String, CauseCount>();
     for (var report in reportsList) {
+      if (report.data().isApproved == NO) {
+        print('debug :: DownTimeReport filtered out due to its approval --> ' +
+            report.data().isApproved.toString());
+        continue;
+      }
       if (!isDayInInterval(
         report.data().dayFrom,
         report.data().monthFrom,
@@ -468,7 +478,7 @@ class DownTimeReport {
     return tempMap.values.toList();
   }
 
-  static DownTimeReport getFilteredReportOfInterval(
+  static List<CauseCount> getLineDistributionOfInterval(
     List<QueryDocumentSnapshot<DownTimeReport>> reportsList,
     int month_from,
     int month_to,
@@ -477,7 +487,13 @@ class DownTimeReport {
     int year,
     int areaRequired,
   ) {
+    HashMap<String, CauseCount> tempMap = new HashMap<String, CauseCount>();
     for (var report in reportsList) {
+      if (report.data().isApproved == NO) {
+        print('debug :: DownTimeReport filtered out due to its approval --> ' +
+            report.data().isApproved.toString());
+        continue;
+      }
       if (!isDayInInterval(
         report.data().dayFrom,
         report.data().monthFrom,
@@ -491,48 +507,41 @@ class DownTimeReport {
             report.data().dayFrom.toString());
         continue;
       }
-
-      if (areaRequired != TOTAL_PLANT && report.data().area == areaRequired) {
-        // all shifts all lines in one area
-
-        // print('debug :: DownTimeReport chosen in second if');
-      } else if (areaRequired == TOTAL_PLANT) {
-        // all shifts all lines all areas
-
-        // print('debug :: DownTimeReport chosen in third if');
+      if ((areaRequired != TOTAL_PLANT && report.data().area == areaRequired) ||
+          areaRequired == TOTAL_PLANT) {
+        if (tempMap[report.data().line_index.toString()] == null) {
+          tempMap[report.data().line_index.toString()] = new CauseCount(
+              prod_lines4[report.data().line_index - 1],
+              getTimeDifference(
+                  report.data().yearFrom,
+                  report.data().monthFrom,
+                  report.data().dayFrom,
+                  report.data().yearTo,
+                  report.data().monthTo,
+                  report.data().dayTo,
+                  report.data().hour_from,
+                  report.data().minute_from,
+                  report.data().hour_to,
+                  report.data().minute_to));
+        } else {
+          tempMap[report.data().line_index.toString()]!.incrementCount(
+              getTimeDifference(
+                  report.data().yearFrom,
+                  report.data().monthFrom,
+                  report.data().dayFrom,
+                  report.data().yearTo,
+                  report.data().monthTo,
+                  report.data().dayTo,
+                  report.data().hour_from,
+                  report.data().minute_from,
+                  report.data().hour_to,
+                  report.data().minute_to));
+        }
       } else {
-        // print('debug :: DownTimeReport filtered out due to conditions');
+        print('debug :: DownTimeReport filtered out due to conditions');
       }
     }
-    //return the total in capsulized form
-    return DownTimeReport(
-      supName: '',
-      skuName: '',
-      causeType: '',
-      line_index: -1,
-      isPlanned: '',
-      hour_from: -1,
-      hour_to: -1,
-      minute_from: -1,
-      minute_to: -1,
-      isStopped_index: -1,
-      machine: '',
-      responsible: '',
-      rootCauseDrop: '',
-      rootCauseDesc: '',
-      wfCategory: '',
-      shift_index: -1,
-      area: areaRequired,
-      yearFrom: -1,
-      monthFrom: -1,
-      dayFrom: -1,
-      yearTo: -1,
-      monthTo: -1,
-      dayTo: -1,
-      isApproved: NO,
-      approved_by: '',
-      technicianName: '',
-    );
+    return tempMap.values.toList();
   }
 
   static DownTimeReport getEmptyReport() {

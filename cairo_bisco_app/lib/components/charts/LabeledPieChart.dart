@@ -19,9 +19,18 @@ class PieOutsideLabelChart extends StatelessWidget {
   }
 
   /// Creates a [PieChart] with real data.
-  factory PieOutsideLabelChart.withRealData(List<CauseCount> causesList) {
+  factory PieOutsideLabelChart.withYNClassificationData(
+      List<CauseCount> causesList) {
     return new PieOutsideLabelChart(
       _get_YN_ClassificationData(causesList),
+      animate: true,
+    );
+  }
+
+  factory PieOutsideLabelChart.withLineDistributionData(
+      List<CauseCount> causesList) {
+    return new PieOutsideLabelChart(
+      _getLineDistributionData(causesList),
       animate: true,
     );
   }
@@ -46,6 +55,23 @@ class PieOutsideLabelChart extends StatelessWidget {
         ]));
   }
 
+  static List<charts.Series<CauseCount, String>> _getLineDistributionData(
+      List<CauseCount> causesList) {
+    return [
+      new charts.Series<CauseCount, String>(
+        id: 'Line Distribution',
+        domainFn: (CauseCount cause, _) => cause.causeName,
+        measureFn: (CauseCount cause, _) => cause.count,
+        data: causesList,
+        colorFn: (_, i) => charts.MaterialPalette.red.makeShades(5)[i!],
+        fillColorFn: (_, __) => charts.MaterialPalette.red.shadeDefault.darker,
+        // Set a label accessor to control the text of the arc label.
+        labelAccessorFn: (CauseCount row, _) =>
+            '${row.causeName}: ${row.count}',
+      )
+    ];
+  }
+
   static List<charts.Series<CauseCount, String>> _get_YN_ClassificationData(
       List<CauseCount> causesList) {
     return [
@@ -54,6 +80,8 @@ class PieOutsideLabelChart extends StatelessWidget {
         domainFn: (CauseCount cause, _) => cause.causeName,
         measureFn: (CauseCount cause, _) => cause.count,
         data: causesList,
+        colorFn: (_, i) => charts.MaterialPalette.red.makeShades(3)[i!],
+        fillColorFn: (_, __) => charts.MaterialPalette.red.shadeDefault.lighter,
         // Set a label accessor to control the text of the arc label.
         labelAccessorFn: (CauseCount row, _) =>
             '${row.causeName}: ${row.count}',

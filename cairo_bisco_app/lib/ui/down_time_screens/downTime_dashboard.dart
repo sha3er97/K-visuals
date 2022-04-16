@@ -2,23 +2,20 @@ import 'dart:math';
 
 import 'package:cairo_bisco_app/classes/CauseCount.dart';
 import 'package:cairo_bisco_app/classes/DownTimeReport.dart';
-import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
-import 'package:cairo_bisco_app/classes/QfsReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/other_excel_utilities.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/classes/values/form_values.dart';
-import 'package:cairo_bisco_app/components/alert_dialog.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
-import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/1kpi_good_bad_indicator.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/loading_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
+import '../../classes/utility_funcs/text_utilities.dart';
 import '../../components/charts/HorizontalBarChart.dart';
 import '../../components/charts/LabeledPieChart.dart';
 
@@ -34,8 +31,10 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
   String _selectedYearTo = years[(int.parse(getYear())) - 2020];
   String _selectedMonthTo = months[(int.parse(getMonth())) - 1];
   String _selectedDayTo = days[(int.parse(getDay())) - 1];
+  String chartLimit = causesDisplayDefaultLimit.toString();
 
   bool showSpinner = false;
+  bool _chartLimitValidate = false;
 
   VoidCallback? onFromYearChange(val) {
     setState(() {
@@ -104,6 +103,7 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
   //DownTimeReport temp_downTime = DownTimeReport.getEmptyReport();
   List<CauseCount> tempCausesList = [];
   List<CauseCount> tempYNList = [];
+  List<CauseCount> tempLineDistributionList = [];
   List<QueryDocumentSnapshot<DownTimeReport>> downTimeReportReportsList = [];
 
   @override
@@ -378,6 +378,10 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                             dateFrom.isAtSameMomentAs(dateAfter)) {
                           calculateInterval();
                           setState(() {
+                            _chartLimitValidate = emptyField(chartLimit);
+                            if (_chartLimitValidate)
+                              chartLimit = causesDisplayDefaultLimit.toString();
+
                             tempCausesList =
                                 DownTimeReport.getCausesCountsOfInterval(
                               downTimeReportReportsList,
@@ -390,6 +394,17 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                             );
                             tempYNList =
                                 DownTimeReport.getYNClassificationOfInterval(
+                              downTimeReportReportsList,
+                              validated_month_from,
+                              validated_month_to,
+                              validated_day_from,
+                              validated_day_to,
+                              validated_year,
+                              TOTAL_PLANT,
+                            );
+
+                            tempLineDistributionList =
+                                DownTimeReport.getLineDistributionOfInterval(
                               downTimeReportReportsList,
                               validated_month_from,
                               validated_month_to,
@@ -430,7 +445,10 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                           child: Column(
                             children: [
                               Container(
-                                height: 400,
+                                height: 50.0 *
+                                        min(max(tempCausesList.length, 2),
+                                            int.parse(chartLimit)) +
+                                    100,
                                 padding: EdgeInsets.all(defaultPadding),
                                 child: Card(
                                   child: Padding(
@@ -438,10 +456,130 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                                         const EdgeInsets.all(minimumPadding),
                                     child: Column(
                                       children: [
-                                        subHeading("Top 10 Root Causes"),
+                                        subHeading("Top Root Causes"),
                                         Expanded(
                                           child: HorizontalBarChart
-                                              .withTop10Causes(tempCausesList),
+                                              .withTop10Causes(
+                                            tempCausesList,
+                                            int.parse(chartLimit),
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal:
+                                                          defaultPadding),
+                                              child: Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    vertical: minimumPadding),
+                                                child: Text(
+                                                  "Chart Limit Of Causes",
+                                                  style: TextStyle(
+                                                    color:
+                                                        KelloggColors.darkRed,
+                                                    fontSize: mediumFontSize,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal:
+                                                            mediumPadding),
+                                                child: Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: minimumPadding),
+                                                  child: Column(
+                                                    children: [
+                                                      TextFormField(
+                                                        initialValue:
+                                                            chartLimit,
+                                                        style: TextStyle(
+                                                            color: KelloggColors
+                                                                .darkRed,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        inputFormatters: <
+                                                            TextInputFormatter>[
+                                                          FilteringTextInputFormatter
+                                                              .digitsOnly
+                                                        ],
+                                                        cursorColor:
+                                                            Colors.white,
+                                                        obscureText: false,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          border:
+                                                              OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                color:
+                                                                    KelloggColors
+                                                                        .darkRed,
+                                                                width:
+                                                                    textFieldBorderRadius),
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        textFieldRadius)),
+                                                          ),
+                                                          errorText:
+                                                              _chartLimitValidate
+                                                                  ? missingValueErrorText
+                                                                  : null,
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                color:
+                                                                    KelloggColors
+                                                                        .yellow,
+                                                                width:
+                                                                    textFieldFocusedBorderRadius),
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        textFieldRadius)),
+                                                          ),
+                                                        ),
+                                                        onChanged: (value) {
+                                                          chartLimit = value;
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: defaultChartHeight,
+                                padding: EdgeInsets.all(defaultPadding),
+                                child: Card(
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.all(minimumPadding),
+                                    child: Column(
+                                      children: [
+                                        aboveMediumHeading(
+                                            "Down Time Line Distribution"),
+                                        Expanded(
+                                          child: PieOutsideLabelChart
+                                              .withLineDistributionData(
+                                                  tempLineDistributionList),
                                         )
                                       ],
                                     ),
@@ -449,7 +587,7 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                                 ),
                               ),
                               Container(
-                                height: 400,
+                                height: defaultChartHeight,
                                 padding: EdgeInsets.all(defaultPadding),
                                 child: Card(
                                   child: Padding(
@@ -457,11 +595,11 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                                         const EdgeInsets.all(minimumPadding),
                                     child: Column(
                                       children: [
-                                        subHeading(
+                                        aboveMediumHeading(
                                             "How Much Did The line Stop"),
                                         Expanded(
-                                          child:
-                                              PieOutsideLabelChart.withRealData(
+                                          child: PieOutsideLabelChart
+                                              .withYNClassificationData(
                                                   tempYNList),
                                         )
                                       ],

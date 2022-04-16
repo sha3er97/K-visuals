@@ -13,6 +13,8 @@ const playStoreLink =
 const dummyChartExtra = 1.0;
 const oeeMargin = 1;
 const misleadingResolvingOpacity = 0.75;
+const causesDisplayDefaultLimit = 10;
+const defaultChartHeight = 350.0;
 
 //padding
 const defaultPadding = 16.0;
@@ -92,6 +94,7 @@ const factory_name = "bisco_cairo";
 const appName = 'K Visuals';
 
 /** string constants **/
+const dropDownSelectionErrorText = "Please select all fields";
 const submissionErrorText = "Error in submission .. incomplete report";
 const notPercentErrorText = "النسبة لا يمكن ان تتخطي ال100%";
 const missingValueErrorText = 'هذه الخانة ضرورية';

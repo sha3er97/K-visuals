@@ -105,6 +105,8 @@ class _ApproveReportsState extends State<ApproveReports> {
                           " --> " +
                           reportsTitlesList[index].responsible +
                           '\n' +
+                          reportsTitlesList[index].lineName +
+                          '\n' +
                           reportsTitlesList[index].root_cause +
                           "\nFrom : " +
                           reportsTitlesList[index].dateFrom +
