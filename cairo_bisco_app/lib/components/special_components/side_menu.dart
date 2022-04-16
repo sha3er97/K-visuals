@@ -3,6 +3,7 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:cairo_bisco_app/ui/admin_screens/admin_home_page.dart';
+import 'package:cairo_bisco_app/ui/down_time_screens/downTime_dashboard.dart';
 import 'package:cairo_bisco_app/ui/login_screens/login.dart';
 import 'package:cairo_bisco_app/ui/production_screens/home_production.dart';
 import 'package:cairo_bisco_app/ui/production_screens/home_production_interval.dart';
@@ -140,6 +141,22 @@ class SideMenu extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ApproveReports(),
+                      ),
+                    );
+                    // });
+                  },
+                )
+              : EmptyPlaceHolder(),
+          isAdmin
+              ? DrawerListTile(
+                  title: "DownTime Dashboard",
+                  image: "pie_chart",
+                  press: () {
+                    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DownTimeDashboard(),
                       ),
                     );
                     // });

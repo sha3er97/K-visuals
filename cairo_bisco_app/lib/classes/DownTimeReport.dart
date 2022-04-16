@@ -1,8 +1,10 @@
 import 'dart:collection';
 
+import 'package:cairo_bisco_app/classes/CauseCount.dart';
 import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/classes/values/form_values.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -342,6 +344,128 @@ class DownTimeReport {
       if (report.data().area == refNum) hashMap[report.id] = report.data();
     }
     return hashMap as HashMap<String, DownTimeReport>;
+  }
+
+  static List<CauseCount> getCausesCountsOfInterval(
+    List<QueryDocumentSnapshot<DownTimeReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+    int areaRequired,
+  ) {
+    HashMap<String, CauseCount> tempMap = new HashMap<String, CauseCount>();
+    for (var report in reportsList) {
+      if (!isDayInInterval(
+        report.data().dayFrom,
+        report.data().monthFrom,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+        year,
+      )) {
+        print('debug :: DownTimeReport filtered out due to its date --> ' +
+            report.data().dayFrom.toString());
+        continue;
+      }
+      if ((areaRequired != TOTAL_PLANT && report.data().area == areaRequired) ||
+          areaRequired == TOTAL_PLANT) {
+        if (tempMap[report.data().rootCauseDrop] == null) {
+          tempMap[report.data().rootCauseDrop] = new CauseCount(
+              report.data().rootCauseDrop,
+              getTimeDifference(
+                  report.data().yearFrom,
+                  report.data().monthFrom,
+                  report.data().dayFrom,
+                  report.data().yearTo,
+                  report.data().monthTo,
+                  report.data().dayTo,
+                  report.data().hour_from,
+                  report.data().minute_from,
+                  report.data().hour_to,
+                  report.data().minute_to));
+        } else {
+          tempMap[report.data().rootCauseDrop]!.incrementCount(
+              getTimeDifference(
+                  report.data().yearFrom,
+                  report.data().monthFrom,
+                  report.data().dayFrom,
+                  report.data().yearTo,
+                  report.data().monthTo,
+                  report.data().dayTo,
+                  report.data().hour_from,
+                  report.data().minute_from,
+                  report.data().hour_to,
+                  report.data().minute_to));
+        }
+      } else {
+        print('debug :: DownTimeReport filtered out due to conditions');
+      }
+    }
+    return tempMap.values.toList();
+  }
+
+  static List<CauseCount> getYNClassificationOfInterval(
+    List<QueryDocumentSnapshot<DownTimeReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+    int areaRequired,
+  ) {
+    HashMap<String, CauseCount> tempMap = new HashMap<String, CauseCount>();
+    for (var report in reportsList) {
+      if (!isDayInInterval(
+        report.data().dayFrom,
+        report.data().monthFrom,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+        year,
+      )) {
+        print('debug :: DownTimeReport filtered out due to its date --> ' +
+            report.data().dayFrom.toString());
+        continue;
+      }
+      if ((areaRequired != TOTAL_PLANT && report.data().area == areaRequired) ||
+          areaRequired == TOTAL_PLANT) {
+        if (tempMap[report.data().isStopped_index.toString()] == null) {
+          tempMap[report.data().isStopped_index.toString()] = new CauseCount(
+              y_nDesc[report.data().isStopped_index],
+              getTimeDifference(
+                  report.data().yearFrom,
+                  report.data().monthFrom,
+                  report.data().dayFrom,
+                  report.data().yearTo,
+                  report.data().monthTo,
+                  report.data().dayTo,
+                  report.data().hour_from,
+                  report.data().minute_from,
+                  report.data().hour_to,
+                  report.data().minute_to));
+        } else {
+          tempMap[report.data().isStopped_index.toString()]!.incrementCount(
+              getTimeDifference(
+                  report.data().yearFrom,
+                  report.data().monthFrom,
+                  report.data().dayFrom,
+                  report.data().yearTo,
+                  report.data().monthTo,
+                  report.data().dayTo,
+                  report.data().hour_from,
+                  report.data().minute_from,
+                  report.data().hour_to,
+                  report.data().minute_to));
+        }
+      } else {
+        print('debug :: DownTimeReport filtered out due to conditions');
+      }
+    }
+    return tempMap.values.toList();
   }
 
   static DownTimeReport getFilteredReportOfInterval(
