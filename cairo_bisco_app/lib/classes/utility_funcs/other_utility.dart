@@ -88,3 +88,21 @@ bool doesMiniReportHaveCorrespondingOverweight(
   }
   return false;
 }
+
+bool intFilterCheck(
+  int reportValue,
+  int valueToCheck,
+  int totalCode,
+) {
+  return (valueToCheck != totalCode && reportValue == valueToCheck) ||
+      valueToCheck == totalCode;
+}
+
+bool stringFilterCheck(
+  String reportValue,
+  String valueToCheck,
+  String totalCode,
+) {
+  bool isTotal = valueToCheck.compareTo(totalCode) == 0;
+  return (!isTotal && reportValue.compareTo(valueToCheck) == 0) || isTotal;
+}

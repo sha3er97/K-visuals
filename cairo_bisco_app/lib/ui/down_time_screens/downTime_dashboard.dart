@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
+import '../../classes/Machine.dart';
 import '../../classes/utility_funcs/text_utilities.dart';
 import '../../components/charts/HorizontalBarChart.dart';
 import '../../components/charts/LabeledPieChart.dart';
@@ -25,16 +26,69 @@ class DownTimeDashboard extends StatefulWidget {
 }
 
 class _DownTimeDashboardState extends State<DownTimeDashboard> {
-  String _selectedYearFrom = years[(int.parse(getYear())) - 2020];
-  String _selectedMonthFrom = months[(int.parse(getMonth())) - 1];
-  String _selectedDayFrom = days[(int.parse(getDay())) - 1];
-  String _selectedYearTo = years[(int.parse(getYear())) - 2020];
-  String _selectedMonthTo = months[(int.parse(getMonth())) - 1];
-  String _selectedDayTo = days[(int.parse(getDay())) - 1];
-  String chartLimit = causesDisplayDefaultLimit.toString();
+  String _selectedYearFrom = years[(int.parse(getYear())) - 2020],
+      _selectedMonthFrom = months[(int.parse(getMonth())) - 1],
+      _selectedDayFrom = days[(int.parse(getDay())) - 1],
+      _selectedYearTo = years[(int.parse(getYear())) - 2020],
+      _selectedMonthTo = months[(int.parse(getMonth())) - 1],
+      _selectedDayTo = days[(int.parse(getDay())) - 1],
+      chartLimit = causesDisplayDefaultLimit.toString();
+  late int refNum = 3;
+
+  late String isPlanned = plannedTypes[0],
+      isStopped = y_nDesc[0],
+      wfCategory = wfCategories[0],
+      machine = allMachines[refNum][0],
+      area = prodType[3],
+      selectedProdLine = correspondingLines[refNum][0];
 
   bool showSpinner = false;
   bool _chartLimitValidate = false;
+
+  VoidCallback? onAreaChange(val) {
+    setState(() {
+      area = val;
+      refNum = prodType.indexOf(val);
+      selectedProdLine = correspondingLines[refNum][0];
+      machine = allMachines[refNum][0];
+    });
+    return null;
+  }
+
+  VoidCallback? onLineChange(val) {
+    setState(() {
+      selectedProdLine = val;
+    });
+    return null;
+  }
+
+  VoidCallback? onPlannedChange(val) {
+    setState(() {
+      isPlanned = val;
+    });
+    return null;
+  }
+
+  VoidCallback? onStoppedChange(val) {
+    setState(() {
+      isStopped = val;
+    });
+    return null;
+  }
+
+  VoidCallback? onWfCategoryChange(val) {
+    setState(() {
+      wfCategory = val;
+    });
+    return null;
+  }
+
+  VoidCallback? onMachineChange(val) {
+    setState(() {
+      machine = val;
+    });
+    return null;
+  }
 
   VoidCallback? onFromYearChange(val) {
     setState(() {
@@ -78,7 +132,7 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
     return null;
   }
 
-  int days_in_interval = 0;
+  // int days_in_interval = 0;
   int validated_day_from = int.parse(getDay()),
       validated_day_to = int.parse(getDay()),
       validated_month_from = int.parse(getMonth()),
@@ -86,12 +140,12 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
       validated_year = int.parse(getYear());
 
   void calculateInterval() {
-    DateTime dateFrom = DateTime(int.parse(_selectedYearTo),
-        int.parse(_selectedMonthFrom), int.parse(_selectedDayFrom));
-    DateTime dateAfter = DateTime(int.parse(_selectedYearTo),
-        int.parse(_selectedMonthTo), int.parse(_selectedDayTo));
+    // DateTime dateFrom = DateTime(int.parse(_selectedYearTo),
+    //     int.parse(_selectedMonthFrom), int.parse(_selectedDayFrom));
+    // DateTime dateAfter = DateTime(int.parse(_selectedYearTo),
+    //     int.parse(_selectedMonthTo), int.parse(_selectedDayTo));
 
-    days_in_interval = dateFrom.difference(dateAfter).inDays.abs();
+    // days_in_interval = dateFrom.difference(dateAfter).inDays.abs();
     validated_day_from = int.parse(_selectedDayFrom);
     validated_day_to = int.parse(_selectedDayTo);
     validated_month_from = int.parse(_selectedMonthFrom);
@@ -351,6 +405,297 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                   ),
                 ],
               ),
+              Row(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: mediumPadding),
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                      child: Text(
+                        "Area : ",
+                        style: TextStyle(
+                          color: KelloggColors.darkRed,
+                          fontSize: aboveMediumFontSize,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                        child: Column(
+                          children: [
+                            DropdownButtonFormField<String>(
+                              // decoration: InputDecoration(labelText: 'اختر'),
+                              value: area,
+                              isExpanded: true,
+                              items: prodType.map((String value) {
+                                return new DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style:
+                                        TextStyle(color: KelloggColors.darkRed),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: onAreaChange,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: mediumPadding),
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                      child: Text(
+                        "Line : ",
+                        style: TextStyle(
+                          color: KelloggColors.darkRed,
+                          fontSize: aboveMediumFontSize,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                        child: Column(
+                          children: [
+                            DropdownButtonFormField<String>(
+                              // decoration: InputDecoration(labelText: 'اختر'),
+                              value: selectedProdLine,
+                              isExpanded: true,
+                              items: correspondingLines[refNum]
+                                  .map((String value) {
+                                return new DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style:
+                                        TextStyle(color: KelloggColors.darkRed),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: onLineChange,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: mediumPadding),
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                      child: Text(
+                        "Machine : ",
+                        style: TextStyle(
+                          color: KelloggColors.darkRed,
+                          fontSize: aboveMediumFontSize,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                        child: Column(
+                          children: [
+                            DropdownButtonFormField<String>(
+                              // decoration: InputDecoration(labelText: 'اختر'),
+                              value: machine,
+                              isExpanded: true,
+                              items: allMachines[refNum]
+                                  .followedBy(Machine.packingMachinesList)
+                                  .map((String value) {
+                                return new DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style:
+                                        TextStyle(color: KelloggColors.darkRed),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: onMachineChange,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: mediumPadding),
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                      child: Text(
+                        "is Scheduled ? : ",
+                        style: TextStyle(
+                          color: KelloggColors.darkRed,
+                          fontSize: aboveMediumFontSize,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                        child: Column(
+                          children: [
+                            DropdownButtonFormField<String>(
+                              // decoration: InputDecoration(labelText: 'اختر'),
+                              value: isPlanned,
+                              isExpanded: true,
+                              items: plannedTypes.map((String value) {
+                                return new DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style:
+                                        TextStyle(color: KelloggColors.darkRed),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: onPlannedChange,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: mediumPadding),
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                      child: Text(
+                        "WF Category : ",
+                        style: TextStyle(
+                          color: KelloggColors.darkRed,
+                          fontSize: aboveMediumFontSize,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                        child: Column(
+                          children: [
+                            DropdownButtonFormField<String>(
+                              // decoration: InputDecoration(labelText: 'اختر'),
+                              value: wfCategory,
+                              isExpanded: true,
+                              items: wfCategories.map((String value) {
+                                return new DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style:
+                                        TextStyle(color: KelloggColors.darkRed),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: onWfCategoryChange,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: mediumPadding),
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                      child: Text(
+                        "is Stopped ? : ",
+                        style: TextStyle(
+                          color: KelloggColors.darkRed,
+                          fontSize: aboveMediumFontSize,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: mediumPadding),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                        child: Column(
+                          children: [
+                            DropdownButtonFormField<String>(
+                              // decoration: InputDecoration(labelText: 'اختر'),
+                              value: isStopped,
+                              isExpanded: true,
+                              items: y_nDesc.map((String value) {
+                                return new DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style:
+                                        TextStyle(color: KelloggColors.darkRed),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: onStoppedChange,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               SizedBox(height: defaultPadding),
               Padding(
                 padding: const EdgeInsets.all(minimumPadding),
@@ -384,35 +729,50 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
 
                             tempCausesList =
                                 DownTimeReport.getCausesCountsOfInterval(
-                              downTimeReportReportsList,
-                              validated_month_from,
-                              validated_month_to,
-                              validated_day_from,
-                              validated_day_to,
-                              validated_year,
-                              TOTAL_PLANT,
-                            );
+                                    downTimeReportReportsList,
+                                    validated_month_from,
+                                    validated_month_to,
+                                    validated_day_from,
+                                    validated_day_to,
+                                    validated_year,
+                                    refNum,
+                                    isPlanned,
+                                    machine,
+                                    wfCategory,
+                                    y_nDesc.indexOf(isStopped),
+                                    correspondingLines[refNum]
+                                        .indexOf(selectedProdLine));
                             tempYNList =
                                 DownTimeReport.getYNClassificationOfInterval(
-                              downTimeReportReportsList,
-                              validated_month_from,
-                              validated_month_to,
-                              validated_day_from,
-                              validated_day_to,
-                              validated_year,
-                              TOTAL_PLANT,
-                            );
+                                    downTimeReportReportsList,
+                                    validated_month_from,
+                                    validated_month_to,
+                                    validated_day_from,
+                                    validated_day_to,
+                                    validated_year,
+                                    refNum,
+                                    isPlanned,
+                                    machine,
+                                    wfCategory,
+                                    y_nDesc.indexOf(isStopped),
+                                    correspondingLines[refNum]
+                                        .indexOf(selectedProdLine));
 
                             tempLineDistributionList =
                                 DownTimeReport.getLineDistributionOfInterval(
-                              downTimeReportReportsList,
-                              validated_month_from,
-                              validated_month_to,
-                              validated_day_from,
-                              validated_day_to,
-                              validated_year,
-                              TOTAL_PLANT,
-                            );
+                                    downTimeReportReportsList,
+                                    validated_month_from,
+                                    validated_month_to,
+                                    validated_day_from,
+                                    validated_day_to,
+                                    validated_year,
+                                    refNum,
+                                    isPlanned,
+                                    machine,
+                                    wfCategory,
+                                    y_nDesc.indexOf(isStopped),
+                                    correspondingLines[refNum]
+                                        .indexOf(selectedProdLine));
                           });
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text("Report refreshed"),

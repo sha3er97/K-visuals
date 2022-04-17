@@ -133,6 +133,13 @@ List<String> prodType = <String>[
   'Biscuits',
   'Wafer',
   'Maamoul',
+  'Total Plant',
+];
+List<List<String>> correspondingLines = [
+  ['-'].followedBy(prod_lines4).toList(), //biscuits
+  ['-'].followedBy(prod_lines4).toList(), //wafer
+  ['-'].followedBy(prod_lines2).toList(), //maamoul
+  ['-'], //total plant
 ];
 List<String> reportTypeNames = <String>[
   'Production',

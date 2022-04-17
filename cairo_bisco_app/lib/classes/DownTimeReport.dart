@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:cairo_bisco_app/classes/CauseCount.dart';
 import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/other_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/classes/values/form_values.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
@@ -354,6 +355,11 @@ class DownTimeReport {
     int day_to,
     int year,
     int areaRequired,
+    String isPlanned,
+    String machine,
+    String wfCategory,
+    int indexOfIsStopped,
+    int line_index,
   ) {
     HashMap<String, CauseCount> tempMap = new HashMap<String, CauseCount>();
     for (var report in reportsList) {
@@ -375,8 +381,15 @@ class DownTimeReport {
             report.data().dayFrom.toString());
         continue;
       }
-      if ((areaRequired != TOTAL_PLANT && report.data().area == areaRequired) ||
-          areaRequired == TOTAL_PLANT) {
+      if (intFilterCheck(report.data().area, areaRequired, 3) &&
+          stringFilterCheck(
+              report.data().isPlanned, isPlanned, plannedTypes[0]) &&
+          stringFilterCheck(report.data().machine, machine,
+              allMachines[report.data().area][0]) &&
+          stringFilterCheck(
+              report.data().wfCategory, wfCategory, wfCategories[0]) &&
+          intFilterCheck(report.data().isStopped_index, indexOfIsStopped, 0) &&
+          intFilterCheck(report.data().line_index, line_index, 0)) {
         if (tempMap[report.data().rootCauseDrop] == null) {
           tempMap[report.data().rootCauseDrop] = new CauseCount(
               report.data().rootCauseDrop,
@@ -420,6 +433,11 @@ class DownTimeReport {
     int day_to,
     int year,
     int areaRequired,
+    String isPlanned,
+    String machine,
+    String wfCategory,
+    int indexOfIsStopped,
+    int line_index,
   ) {
     HashMap<String, CauseCount> tempMap = new HashMap<String, CauseCount>();
     for (var report in reportsList) {
@@ -441,8 +459,15 @@ class DownTimeReport {
             report.data().dayFrom.toString());
         continue;
       }
-      if ((areaRequired != TOTAL_PLANT && report.data().area == areaRequired) ||
-          areaRequired == TOTAL_PLANT) {
+      if (intFilterCheck(report.data().area, areaRequired, 3) &&
+          stringFilterCheck(
+              report.data().isPlanned, isPlanned, plannedTypes[0]) &&
+          stringFilterCheck(report.data().machine, machine,
+              allMachines[report.data().area][0]) &&
+          stringFilterCheck(
+              report.data().wfCategory, wfCategory, wfCategories[0]) &&
+          intFilterCheck(report.data().isStopped_index, indexOfIsStopped, 0) &&
+          intFilterCheck(report.data().line_index, line_index, 0)) {
         if (tempMap[report.data().isStopped_index.toString()] == null) {
           tempMap[report.data().isStopped_index.toString()] = new CauseCount(
               y_nDesc[report.data().isStopped_index],
@@ -486,6 +511,11 @@ class DownTimeReport {
     int day_to,
     int year,
     int areaRequired,
+    String isPlanned,
+    String machine,
+    String wfCategory,
+    int indexOfIsStopped,
+    int line_index,
   ) {
     HashMap<String, CauseCount> tempMap = new HashMap<String, CauseCount>();
     for (var report in reportsList) {
@@ -507,8 +537,15 @@ class DownTimeReport {
             report.data().dayFrom.toString());
         continue;
       }
-      if ((areaRequired != TOTAL_PLANT && report.data().area == areaRequired) ||
-          areaRequired == TOTAL_PLANT) {
+      if (intFilterCheck(report.data().area, areaRequired, 3) &&
+          stringFilterCheck(
+              report.data().isPlanned, isPlanned, plannedTypes[0]) &&
+          stringFilterCheck(report.data().machine, machine,
+              allMachines[report.data().area][0]) &&
+          stringFilterCheck(
+              report.data().wfCategory, wfCategory, wfCategories[0]) &&
+          intFilterCheck(report.data().isStopped_index, indexOfIsStopped, 0) &&
+          intFilterCheck(report.data().line_index, line_index, 0)) {
         if (tempMap[report.data().line_index.toString()] == null) {
           tempMap[report.data().line_index.toString()] = new CauseCount(
               prod_lines4[report.data().line_index - 1],

@@ -22,6 +22,7 @@ List<String> biscuitsMachines = <String>[
   'Packaging Metal Detector جهاز كشف المعادن التغليف',
   'Conveyor السير',
   'ماكينة الصلاحية Date Coding Machine',
+  'الخط بالكامل ALL Line',
 ];
 List<String> waferMachines = <String>[
   '-',
@@ -39,6 +40,7 @@ List<String> waferMachines = <String>[
   'Cutter السكينة',
   'Packaging Metal Detector جهاز كشف المعادن التغليف',
   'ماكينة الصلاحية Date Coding Machine',
+  'الخط بالكامل ALL Line',
 ];
 List<String> maamoulMachines = <String>[
   '-',
@@ -51,11 +53,13 @@ List<String> maamoulMachines = <String>[
   'Processing Metal Detector جهاز كشف المعادن التصنيع',
   'Packaging Metal Detector جهاز كشف المعادن التغليف',
   'ماكينة الصلاحية Date Coding Machine',
+  'الخط بالكامل ALL Line',
 ];
 List<List<String>> allMachines = [
   biscuitsMachines,
   waferMachines,
-  maamoulMachines
+  maamoulMachines,
+  ['-'],
 ];
 
 List<String> wfCategories = <String>[
