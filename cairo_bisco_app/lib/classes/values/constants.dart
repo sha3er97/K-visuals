@@ -15,7 +15,7 @@ const oeeMargin = 1;
 const misleadingResolvingOpacity = 0.75;
 const causesDisplayDefaultLimit = 10;
 const defaultChartHeight = 350.0;
-
+const defaultChartWidth = defaultChartHeight * 1.75;
 //padding
 const defaultPadding = 16.0;
 const mediumPadding = 12.0;
@@ -126,8 +126,8 @@ const ADMIN_ADD_SKU = 0;
 //const ADMIN_ROOT_CAUSES_EDIT = 1;
 const NO = 0;
 const YES = 1;
-/** Constant Lists **/
 
+/** Constant Lists **/
 List<OverWeightReport> overweightDummyList = [];
 List<String> prodType = <String>[
   'Biscuits',
@@ -153,9 +153,9 @@ Map<String, String> downTimeAuthoritiesMap = {
   downTimeTypes[0]: authorities[0], //-
   downTimeTypes[1]: authorities[2], //maintenance
   downTimeTypes[2]: authorities[1], //production
-  downTimeTypes[3]: authorities[1], //production
-  downTimeTypes[4]: authorities[3], //quality
-  downTimeTypes[5]: authorities[4], //safety
+  downTimeTypes[3]: authorities[3], //quality
+  downTimeTypes[4]: authorities[4], //safety
+  downTimeTypes[5]: authorities[5], //other
   downTimeTypes[6]: authorities[5], //other
   downTimeTypes[7]: authorities[5], //other
   downTimeTypes[8]: authorities[5], //other

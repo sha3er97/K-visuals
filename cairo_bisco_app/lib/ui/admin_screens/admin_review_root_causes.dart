@@ -11,6 +11,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import '../../classes/RootCause.dart';
 import '../../classes/values/form_values.dart';
+import '../../components/special_components/place_holders.dart';
 
 class AdminReviewRootCauses extends StatefulWidget {
   @override
@@ -178,25 +179,34 @@ class _AdminReviewRootCausesState extends State<AdminReviewRootCauses> {
                             // padding: const EdgeInsets.all(minimumPadding),
                             itemCount: RootCause.allCauses.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return ListTile(
-                                title: adminHeading(RootCause.reversedCausesMap[
-                                            RootCause.allCauses[index]]
-                                        .toString() +
-                                    " : " +
-                                    RootCause.allCauses[index]),
-                                leading: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  color: KelloggColors.cockRed,
-                                  onPressed: () {
-                                    confirmDeleteCauseAlertDialog(
-                                        context,
-                                        RootCause.reversedCausesMap[
-                                                RootCause.allCauses[index]]
-                                            .toString(),
-                                        RootCause.allCauses[index]);
-                                  },
-                                ),
-                              );
+                              if (RootCause.reversedCausesMap[
+                                              RootCause.allCauses[index]]!
+                                          .compareTo(type) ==
+                                      0 ||
+                                  type.compareTo(downTimeTypes[0]) == 0) {
+                                return ListTile(
+                                  title: adminHeading(RootCause
+                                          .reversedCausesMap[
+                                              RootCause.allCauses[index]]
+                                          .toString() +
+                                      " : " +
+                                      RootCause.allCauses[index]),
+                                  leading: IconButton(
+                                    icon: const Icon(Icons.close),
+                                    color: KelloggColors.cockRed,
+                                    onPressed: () {
+                                      confirmDeleteCauseAlertDialog(
+                                          context,
+                                          RootCause.reversedCausesMap[
+                                                  RootCause.allCauses[index]]
+                                              .toString(),
+                                          RootCause.allCauses[index]);
+                                    },
+                                  ),
+                                );
+                              } else {
+                                return EmptyPlaceHolder();
+                              }
                             }),
                       ],
                     ),
