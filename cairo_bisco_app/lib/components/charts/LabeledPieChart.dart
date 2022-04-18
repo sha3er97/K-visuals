@@ -2,6 +2,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 import '../../classes/CauseCount.dart';
+import '../../classes/values/constants.dart';
 import '../../classes/values/form_values.dart';
 
 class PieOutsideLabelChart extends StatelessWidget {
@@ -51,7 +52,13 @@ class PieOutsideLabelChart extends StatelessWidget {
         //          outsideLabelStyleSpec: new charts.TextStyleSpec(...)),
         defaultRenderer: new charts.ArcRendererConfig(arcRendererDecorators: [
           new charts.ArcLabelDecorator(
-              labelPosition: charts.ArcLabelPosition.outside)
+            labelPosition: charts.ArcLabelPosition.outside,
+            outsideLabelStyleSpec: new charts.TextStyleSpec(
+              color: charts.Color.black,
+              fontSize: aboveMediumFontSize.toInt(),
+              fontFamily: 'MyFont',
+            ),
+          )
         ]));
   }
 

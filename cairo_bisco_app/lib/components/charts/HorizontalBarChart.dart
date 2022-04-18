@@ -1,4 +1,5 @@
 import 'package:cairo_bisco_app/classes/RootCause.dart';
+import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -41,10 +42,26 @@ class HorizontalBarChart extends StatelessWidget {
       //       barRendererDecorator: new charts.BarLabelDecorator(
       //          insideLabelStyleSpec: new charts.TextStyleSpec(...),
       //          outsideLabelStyleSpec: new charts.TextStyleSpec(...)),
-      barRendererDecorator: new charts.BarLabelDecorator<String>(),
+      barRendererDecorator: new charts.BarLabelDecorator<String>(
+        outsideLabelStyleSpec: new charts.TextStyleSpec(
+          color: charts.Color.black,
+          fontSize: aboveMediumFontSize.toInt(),
+          fontFamily: 'MyFont',
+        ),
+        insideLabelStyleSpec: new charts.TextStyleSpec(
+            color: charts.Color.white,
+            fontSize: aboveMediumFontSize.toInt(),
+            fontFamily: 'MyFont'),
+      ),
       // Hide domain axis.
-      // domainAxis:
-      //     new charts.OrdinalAxisSpec(renderSpec: new charts.NoneRenderSpec()),
+      domainAxis: new charts.OrdinalAxisSpec(
+          renderSpec: new charts.SmallTickRendererSpec(
+        labelStyle: new charts.TextStyleSpec(
+          color: charts.Color.black,
+          fontSize: aboveMediumFontSize.toInt(),
+          fontFamily: 'MyFont',
+        ),
+      )),
     );
   }
 
@@ -65,6 +82,11 @@ class HorizontalBarChart extends StatelessWidget {
         // Set a label accessor to control the text of the bar label.
         labelAccessorFn: (CauseCount cause, _) =>
             '${cause.count.toString()} Mins.',
+        // outsideLabelStyleAccessorFn: (CauseCount cause, _) {
+        //   final color = charts.MaterialPalette.yellow.shadeDefault;
+        //   return new charts.TextStyleSpec(
+        //       color: color, fontSize: largeFontSize.toInt());
+        // },
       )
     ];
   }

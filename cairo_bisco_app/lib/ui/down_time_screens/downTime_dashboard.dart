@@ -723,7 +723,8 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                             dateFrom.isAtSameMomentAs(dateAfter)) {
                           calculateInterval();
                           setState(() {
-                            _chartLimitValidate = emptyField(chartLimit);
+                            _chartLimitValidate = emptyField(chartLimit) &&
+                                int.parse(chartLimit) > 0;
                             if (_chartLimitValidate)
                               chartLimit = causesDisplayDefaultLimit.toString();
 
@@ -804,6 +805,86 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                         return SingleChildScrollView(
                           child: Column(
                             children: [
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: defaultPadding),
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: minimumPadding),
+                                      child: Text(
+                                        "Chart Limit Of Causes",
+                                        style: TextStyle(
+                                          color: KelloggColors.darkRed,
+                                          fontSize: mediumFontSize,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: mediumPadding),
+                                      child: Container(
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: minimumPadding),
+                                        child: Column(
+                                          children: [
+                                            TextFormField(
+                                              initialValue: chartLimit,
+                                              style: TextStyle(
+                                                  color: KelloggColors.darkRed,
+                                                  fontWeight: FontWeight.w400),
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: <
+                                                  TextInputFormatter>[
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly
+                                              ],
+                                              cursorColor: Colors.white,
+                                              obscureText: false,
+                                              decoration: InputDecoration(
+                                                border: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color:
+                                                          KelloggColors.darkRed,
+                                                      width:
+                                                          textFieldBorderRadius),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              textFieldRadius)),
+                                                ),
+                                                errorText: _chartLimitValidate
+                                                    ? missingValueErrorText
+                                                    : null,
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color:
+                                                          KelloggColors.yellow,
+                                                      width:
+                                                          textFieldFocusedBorderRadius),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              textFieldRadius)),
+                                                ),
+                                              ),
+                                              onChanged: (value) {
+                                                chartLimit = value;
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                               Container(
                                 height: 50.0 *
                                         min(max(tempCausesList.length, 2),
@@ -824,148 +905,76 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                                             int.parse(chartLimit),
                                           ),
                                         ),
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal:
-                                                          defaultPadding),
-                                              child: Container(
-                                                margin: EdgeInsets.symmetric(
-                                                    vertical: minimumPadding),
-                                                child: Text(
-                                                  "Chart Limit Of Causes",
-                                                  style: TextStyle(
-                                                    color:
-                                                        KelloggColors.darkRed,
-                                                    fontSize: mediumFontSize,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: defaultChartHeight,
+                                        width: defaultChartWidth,
+                                        padding: EdgeInsets.all(defaultPadding),
+                                        child: Card(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(
+                                                minimumPadding),
+                                            child: Column(
+                                              children: [
+                                                aboveMediumHeading(
+                                                    "Down Time Line Distribution"),
+                                                SizedBox(
+                                                  height: minimumPadding,
                                                 ),
-                                              ),
+                                                Expanded(
+                                                  child: PieOutsideLabelChart
+                                                      .withLineDistributionData(
+                                                          tempLineDistributionList),
+                                                )
+                                              ],
                                             ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal:
-                                                            mediumPadding),
-                                                child: Container(
-                                                  margin: EdgeInsets.symmetric(
-                                                      vertical: minimumPadding),
-                                                  child: Column(
-                                                    children: [
-                                                      TextFormField(
-                                                        initialValue:
-                                                            chartLimit,
-                                                        style: TextStyle(
-                                                            color: KelloggColors
-                                                                .darkRed,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400),
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        inputFormatters: <
-                                                            TextInputFormatter>[
-                                                          FilteringTextInputFormatter
-                                                              .digitsOnly
-                                                        ],
-                                                        cursorColor:
-                                                            Colors.white,
-                                                        obscureText: false,
-                                                        decoration:
-                                                            InputDecoration(
-                                                          border:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color:
-                                                                    KelloggColors
-                                                                        .darkRed,
-                                                                width:
-                                                                    textFieldBorderRadius),
-                                                            borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius.circular(
-                                                                        textFieldRadius)),
-                                                          ),
-                                                          errorText:
-                                                              _chartLimitValidate
-                                                                  ? missingValueErrorText
-                                                                  : null,
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color:
-                                                                    KelloggColors
-                                                                        .yellow,
-                                                                width:
-                                                                    textFieldFocusedBorderRadius),
-                                                            borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius.circular(
-                                                                        textFieldRadius)),
-                                                          ),
-                                                        ),
-                                                        onChanged: (value) {
-                                                          chartLimit = value;
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                          ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ),
-                              Container(
-                                height: defaultChartHeight,
-                                padding: EdgeInsets.all(defaultPadding),
-                                child: Card(
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.all(minimumPadding),
-                                    child: Column(
-                                      children: [
-                                        aboveMediumHeading(
-                                            "Down Time Line Distribution"),
-                                        Expanded(
-                                          child: PieOutsideLabelChart
-                                              .withLineDistributionData(
-                                                  tempLineDistributionList),
-                                        )
-                                      ],
-                                    ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        height: defaultChartHeight,
+                                        width: defaultChartWidth,
+                                        padding: EdgeInsets.all(defaultPadding),
+                                        child: Card(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(
+                                                minimumPadding),
+                                            child: Column(
+                                              children: [
+                                                aboveMediumHeading(
+                                                    "How Much Did The line Stop"),
+                                                SizedBox(
+                                                  height: minimumPadding,
+                                                ),
+                                                Expanded(
+                                                  child: PieOutsideLabelChart
+                                                      .withYNClassificationData(
+                                                          tempYNList),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ),
-                              Container(
-                                height: defaultChartHeight,
-                                padding: EdgeInsets.all(defaultPadding),
-                                child: Card(
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.all(minimumPadding),
-                                    child: Column(
-                                      children: [
-                                        aboveMediumHeading(
-                                            "How Much Did The line Stop"),
-                                        Expanded(
-                                          child: PieOutsideLabelChart
-                                              .withYNClassificationData(
-                                                  tempYNList),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                ],
                               ),
                             ],
                           ),
