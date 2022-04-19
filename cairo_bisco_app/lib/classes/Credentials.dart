@@ -22,6 +22,14 @@ final ownersRef = FirebaseFirestore.instance
       fromFirestore: (snapshot, _) => Admin.fromJson(snapshot.data()!),
       toFirestore: (Admin, _) => Admin.toJson(),
     );
+final kwsRef = FirebaseFirestore.instance
+    .collection(factory_name)
+    .doc('credentials')
+    .collection("kws")
+    .withConverter<Admin>(
+      fromFirestore: (snapshot, _) => Admin.fromJson(snapshot.data()!),
+      toFirestore: (Admin, _) => Admin.toJson(),
+    );
 
 class Credentials {
   /** rules **/
@@ -37,15 +45,19 @@ class Credentials {
   /**contain list of emails of authorized and special users*/
   static List<String> admin_emails = [];
   static List<String> owner_emails = [];
+  static List<String> kws_emails = [];
 
   /** mark special and authorized users**/
   static bool isUserAdmin = false;
   static bool isUserOwner = false;
+  static bool isUserKws = false;
   static String userEmail = "";
   static String userAuthority = "";
 
   static Map<String, String> adminDocumentNames = new Map<String, String>();
   static Map<String, String> ownerDocumentNames = new Map<String, String>();
+  static Map<String, String> kwsDocumentNames = new Map<String, String>();
+
   static Map<String, String> adminsAuthorities = new Map<String, String>();
 
   static void setCredentialsConfig(String email) {
@@ -55,10 +67,17 @@ class Credentials {
     } else {
       Credentials.isUserAdmin = false;
     }
+
     if (Credentials.isOwner(email)) {
       Credentials.isUserOwner = true;
     } else {
       Credentials.isUserOwner = false;
+    }
+
+    if (Credentials.isKws(email)) {
+      Credentials.isUserKws = true;
+    } else {
+      Credentials.isUserKws = false;
     }
     // in all cases
     Credentials.userEmail = email;
@@ -80,6 +99,10 @@ class Credentials {
 
   static bool isOwner(String email) {
     return owner_emails.contains(email.trim());
+  }
+
+  static bool isKws(String email) {
+    return kws_emails.contains(email.trim());
   }
 
   static Future<void> getAdmins() async {
@@ -110,6 +133,21 @@ class Credentials {
       }
       owner_emails.sort();
       print("owners fetched");
+    });
+  }
+
+  static Future<void> getKwsUsers() async {
+    await kwsRef.get().then((QuerySnapshot snapshot) {
+      List<QueryDocumentSnapshot<Admin>> adminDocsList =
+          snapshot.docs as List<QueryDocumentSnapshot<Admin>>;
+      for (var admin in adminDocsList) {
+        if (!kws_emails.contains(admin.data().email)) {
+          kws_emails.add(admin.data().email);
+          kwsDocumentNames[admin.data().email.toString()] = admin.id;
+        }
+      }
+      kws_emails.sort();
+      print("kws users fetched");
     });
   }
 
@@ -166,6 +204,32 @@ class Credentials {
     }
   }
 
+  static Future<void> addKws(
+    context,
+    String email,
+  ) async {
+    if (!kws_emails.contains(email)) {
+      await kwsRef
+          .add(Admin(email: email, authority: authorities[0]))
+          .then((value) => {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Email Added"),
+                )),
+                getKwsUsers(),
+                // Navigator.pop(context),
+              })
+          .catchError((error) => {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Failed to add Email: $error"),
+                ))
+              });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Error :: Email Already exists"),
+      ));
+    }
+  }
+
   static Future<void> deleteAdmin(
     context,
     String email,
@@ -201,6 +265,28 @@ class Credentials {
               )),
               owner_emails.clear(),
               getOwners(),
+              // Navigator.pop(context),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to delete Email: $error"),
+              ))
+            });
+  }
+
+  static Future<void> deleteKws(
+    context,
+    String email,
+  ) {
+    return adminsRef
+        .doc(kwsDocumentNames[email])
+        .delete()
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Email Deleted"),
+              )),
+              kws_emails.clear(),
+              getKwsUsers(),
               // Navigator.pop(context),
             })
         .catchError((error) => {

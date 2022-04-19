@@ -33,6 +33,7 @@ Future<void> loadRules() async {
   await Credentials.getCredentials();
   await Credentials.getAdmins();
   await Credentials.getOwners();
+  await Credentials.getKwsUsers();
 }
 
 class MyApp extends StatelessWidget {

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 
 import '../../classes/values/constants.dart';
 import 'admin_review_admin_emails.dart';
+import 'admin_review_kws_emails.dart';
 import 'admin_review_owner_emails.dart';
 
 class AdminHomePage extends StatelessWidget {
@@ -103,6 +104,21 @@ class AdminHomePage extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ReviewOwnerEmails(),
+                    ),
+                  );
+                },
+              ),
+              GradientGeneralButton(
+                gradientColor1: KelloggColors.white,
+                gradientColor2: KelloggColors.cockRed,
+                mainColor: KelloggColors.darkBlue.withOpacity(0.5),
+                btn_icon: Icons.supervisor_account,
+                title: "Edit Kws Users",
+                param_onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ReviewKwsEmails(),
                     ),
                   );
                 },

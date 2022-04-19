@@ -5,6 +5,7 @@ import 'buttons/approve_report_btn.dart';
 import 'buttons/cancel_dialog_btn.dart';
 import 'buttons/delete_admin_btn.dart';
 import 'buttons/delete_cause_btn.dart';
+import 'buttons/delete_kws_btn.dart';
 import 'buttons/delete_machine_btn.dart';
 import 'buttons/delete_machine_detail_btn.dart';
 import 'buttons/delete_owner_btn.dart';
@@ -152,6 +153,27 @@ confirmDeleteOwnerAlertDialog(BuildContext context, String email) {
     actions: [
       cancelDialogBtn(text: "Cancel"),
       deleteOwnerBtn(email: email),
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+confirmDeleteKwsAlertDialog(BuildContext context, String email) {
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Kws User Edit"),
+    content: Text(
+        "Are you sure you want to remove \' $email \' from Kws Users list"),
+    actions: [
+      cancelDialogBtn(text: "Cancel"),
+      deleteKwsBtn(email: email),
     ],
   );
 

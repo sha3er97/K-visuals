@@ -24,6 +24,7 @@ class SideMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isAdmin = Credentials.isUserAdmin;
     bool isOwner = Credentials.isUserOwner;
+    bool isKws = Credentials.isUserKws;
     return Drawer(
       child: ListView(
         children: [
@@ -163,9 +164,9 @@ class SideMenu extends StatelessWidget {
                   },
                 )
               : EmptyPlaceHolder(),
-          isOwner && isAdmin
+          isKws && isAdmin
               ? DrawerListTile(
-                  title: "Owner View",
+            title: "KWS View",
                   image: "vip",
                   press: () {
                     // WidgetsBinding.instance!.addPostFrameCallback((_) {

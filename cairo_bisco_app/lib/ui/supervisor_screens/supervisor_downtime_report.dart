@@ -1054,16 +1054,16 @@ class _SupervisorDownTimeReportFormState
                                     child: RoundedButton(
                                       btnText:
                                           reportDetails.isApproved == YES &&
-                                                  !Credentials.isUserOwner
+                                                  !Credentials.isUserKws
                                               ? "Edit Disabled"
                                               : 'Edit Report',
                                       color: reportDetails.isApproved == YES &&
-                                              !Credentials.isUserOwner
+                                          !Credentials.isUserKws
                                           ? KelloggColors.grey
                                           : KelloggColors.darkBlue,
                                       onPressed: () {
                                         if (reportDetails.isApproved == NO &&
-                                            !Credentials.isUserOwner) {
+                                            !Credentials.isUserKws) {
                                           setState(() {
                                             showSpinner = true;
                                             _sup_name_validate =

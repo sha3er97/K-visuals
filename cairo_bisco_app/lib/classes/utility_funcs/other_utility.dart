@@ -17,7 +17,9 @@ int getRefIdx(int type, int refNum) {
 }
 
 bool canEditThisReport(String supName, int day, int month, int year) {
-  if (Credentials.isUserOwner)
+  if (Credentials.isUserKws)
+    return true;
+  else if (Credentials.isUserOwner && inEditPeriod(day, month, year))
     return true;
   else {
     if (supName.compareTo(Credentials.getUserName()) == 0 &&

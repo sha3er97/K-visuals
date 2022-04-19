@@ -310,7 +310,7 @@ class DownTimeReport {
   ) {
     HashMap hashMap = new HashMap<String, DownTimeReport>();
     for (var report in reportsList) {
-      if ((Credentials.isUserOwner ||
+      if ((Credentials.isUserKws ||
               Credentials.userAuthority.compareTo(report.data().responsible) ==
                   0) &&
           report.data().isApproved == NO) hashMap[report.id] = report.data();
