@@ -887,9 +887,9 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                               ),
                               Container(
                                 height: 50.0 *
-                                        min(max(tempCausesList.length, 2),
+                                        min(tempCausesList.length,
                                             int.parse(chartLimit)) +
-                                    100,
+                                    125,
                                 padding: EdgeInsets.all(defaultPadding),
                                 child: Card(
                                   child: Padding(
