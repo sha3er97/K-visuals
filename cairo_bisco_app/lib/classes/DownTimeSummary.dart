@@ -18,7 +18,8 @@ class DownTimeSummary {
       technicianName,
       responsible,
       lineName,
-      areaName;
+      areaName,
+      stoppedStatus;
   final DownTimeReport reportDetails;
 
   DownTimeSummary({
@@ -36,6 +37,7 @@ class DownTimeSummary {
     required this.responsible,
     required this.lineName,
     required this.areaName,
+    required this.stoppedStatus,
   });
 
   static List<DownTimeSummary> makeList(
@@ -72,6 +74,9 @@ class DownTimeSummary {
         responsible: e.value.responsible,
         lineName: prod_lines4[e.value.line_index - 1],
         areaName: prodType[e.value.area],
+        stoppedStatus: e.value.isStopped_index == YES //= there is product
+            ? "Line Didn't Stop"
+            : "Line Stopped",
       );
       tempList.add(tempTitle);
     });

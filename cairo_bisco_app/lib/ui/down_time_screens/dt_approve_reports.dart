@@ -102,7 +102,7 @@ class _ApproveReportsState extends State<ApproveReports> {
                           reportsTitlesList[index].technicianName +
                           '\n' +
                           reportsTitlesList[index].type +
-                          " --> " +
+                          " = " +
                           reportsTitlesList[index].responsible +
                           '\n' +
                           reportsTitlesList[index].areaName +
@@ -121,6 +121,8 @@ class _ApproveReportsState extends State<ApproveReports> {
                           "\nTotal Time : " +
                           reportsTitlesList[index].wastedMinutes +
                           " Mins." +
+                          '\n' +
+                          reportsTitlesList[index].stoppedStatus +
                           "\n-----------------------------\n"),
                       leading: IconButton(
                         tooltip: "Approve",

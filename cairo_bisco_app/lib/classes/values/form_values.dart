@@ -101,9 +101,9 @@ List<String> authorities = <String>[
   'Other',
 ];
 List<String> y_nDesc = <String>[
-  '-',
-  'Yes نعم',
-  'No لا',
+  '-', //0
+  'Yes نعم', //1
+  'No لا', //2
 ];
 List<String> months = <String>[
   '1',
