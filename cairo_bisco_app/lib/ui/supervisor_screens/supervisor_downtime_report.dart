@@ -1058,7 +1058,7 @@ class _SupervisorDownTimeReportFormState
                                               ? "Edit Disabled"
                                               : 'Edit Report',
                                       color: reportDetails.isApproved == YES &&
-                                          !Credentials.isUserKws
+                                              !Credentials.isUserKws
                                           ? KelloggColors.grey
                                           : KelloggColors.darkBlue,
                                       onPressed: () {
