@@ -3,8 +3,8 @@ import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'form_values.dart';
 
 /** version configs**/
-const versionNum = '4.0.0'; //edit also in pubspec.yaml
-const versionCode = 14; //edit also in pubspec.yaml
+const versionNum = '4.0.1'; //edit also in pubspec.yaml
+const versionCode = 15; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
 
@@ -47,6 +47,7 @@ const sectionedCircleRadiusMobile = 150.0;
 const sectionedCircleRadiusScreen = 250.0;
 const roundedButtonCurvature = 50.0;
 const kpiCircleRadius = 50.0;
+const alertDialogRadius = 15.0;
 
 //line widths
 const borderWidth = 2.0;
