@@ -21,7 +21,9 @@ class DownTimeReport {
       wfCategory,
       approved_by,
       technicianName,
-      isPlanned;
+      isPlanned,
+      rejected_by,
+      rejectComment;
   final int line_index,
       shift_index,
       area,
@@ -36,7 +38,8 @@ class DownTimeReport {
       minute_from,
       minute_to,
       isStopped_index,
-      isApproved;
+      isApproved,
+      isRejected;
 
   DownTimeReport({
     required this.machine,
@@ -65,6 +68,10 @@ class DownTimeReport {
     required this.approved_by,
     required this.skuName,
     required this.technicianName,
+    //4.0.1 additions
+    required this.rejected_by,
+    required this.isRejected,
+    required this.rejectComment,
   });
 
   DownTimeReport.fromJson(Map<String, Object?> json)
@@ -95,6 +102,14 @@ class DownTimeReport {
           skuName: json['skuName']! as String,
           approved_by: json['approved_by']! as String,
           technicianName: json['technicianName']! as String,
+          //4.0.1 additions
+          rejectComment: json['rejectComment'] == null
+              ? ''
+              : json['rejectComment']! as String,
+          rejected_by:
+              json['rejected_by'] == null ? '' : json['rejected_by']! as String,
+          isRejected:
+              json['isRejected'] == null ? NO : json['isRejected']! as int,
         );
 
   Map<String, Object?> toJson() {
@@ -125,6 +140,10 @@ class DownTimeReport {
       'approved_by': approved_by,
       'skuName': skuName,
       'technicianName': technicianName,
+      //4.0.1 additions
+      'rejected_by': rejected_by,
+      'rejectComment': rejectComment,
+      'isRejected': isRejected,
     };
   }
 
@@ -191,6 +210,10 @@ class DownTimeReport {
         isApproved: NO,
         approved_by: '',
         technicianName: technicianName,
+        //4.0.1 additions
+        rejected_by: '',
+        rejectComment: '',
+        isRejected: NO,
       ),
     );
   }
@@ -609,6 +632,10 @@ class DownTimeReport {
       isApproved: NO,
       approved_by: '',
       technicianName: '',
+      //4.0.1 additions
+      rejected_by: '',
+      rejectComment: '',
+      isRejected: NO,
     );
   }
 
@@ -627,10 +654,45 @@ class DownTimeReport {
         .update({
           'approved_by': Credentials.getUserName(),
           'isApproved': YES,
+          'rejected_by': '',
+          'isRejected': NO,
+          'rejectComment': '',
         })
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text("Report Approved"),
+              )),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SuccessScreen())),
+            })
+        .catchError((error) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Failed to update Report: $error"),
+              ))
+            });
+  }
+
+  static Future<void> rejectReport(
+      context, String reportID, String rejectComment) async {
+    final downTimeReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('downtime_reports')
+        .collection(getYear().toString())
+        .withConverter<DownTimeReport>(
+          fromFirestore: (snapshot, _) =>
+              DownTimeReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    await downTimeReportRef
+        .doc(reportID)
+        .update({
+          'rejected_by': Credentials.getUserName(),
+          'isRejected': YES,
+          'rejectComment': rejectComment,
+        })
+        .then((value) => {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Report Rejected"),
               )),
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => SuccessScreen())),

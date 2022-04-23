@@ -269,7 +269,13 @@ class _SupervisorDownTimeReportFormState
                           reportDetails.isApproved == YES
                               ? NormalMessageHeading("Approved Report by : " +
                                   reportDetails.approved_by)
-                              : EmptyPlaceHolder(),
+                              : reportDetails.isRejected == YES
+                                  ? ErrorMessageHeading(
+                                      "Rejected Report by : " +
+                                          reportDetails.rejected_by +
+                                          "Because :\n" +
+                                          reportDetails.rejectComment)
+                                  : EmptyPlaceHolder(),
                           smallerHeading('اسم المسؤول\nResponsible Name'),
                           SizedBox(height: minimumPadding),
                           TextFormField(

@@ -19,8 +19,12 @@ class DownTimeSummary {
       responsible,
       lineName,
       areaName,
-      stoppedStatus;
+      stoppedStatus,
+      //4.0.1 additions
+      rejected_by,
+      rejectComment;
   final DownTimeReport reportDetails;
+  final int is_rejected;
 
   DownTimeSummary({
     required this.dateFrom,
@@ -38,6 +42,10 @@ class DownTimeSummary {
     required this.lineName,
     required this.areaName,
     required this.stoppedStatus,
+    //4.0.1 additions
+    required this.rejectComment,
+    required this.rejected_by,
+    required this.is_rejected,
   });
 
   static List<DownTimeSummary> makeList(
@@ -77,6 +85,10 @@ class DownTimeSummary {
         stoppedStatus: e.value.isStopped_index == YES //= there is product
             ? "Line Didn't Stop"
             : "Line Stopped",
+        //4.0.1 additions
+        rejectComment: e.value.rejectComment,
+        rejected_by: e.value.rejected_by,
+        is_rejected: e.value.isRejected,
       );
       tempList.add(tempTitle);
     });

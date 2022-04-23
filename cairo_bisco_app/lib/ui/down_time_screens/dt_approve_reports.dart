@@ -5,10 +5,13 @@ import 'package:cairo_bisco_app/classes/ReportTitle.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/ui/down_time_screens/rejectDownTimeReportAlert.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/components/list_items/report_item.dart';
+import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
@@ -95,40 +98,48 @@ class _ApproveReportsState extends State<ApproveReports> {
                   padding: const EdgeInsets.all(minimumPadding),
                   itemCount: reportsTitlesList.length,
                   itemBuilder: (BuildContext context, int index) {
+                    String reportSummary = "By : " +
+                        reportsTitlesList[index].supName +
+                        "\nTech. : " +
+                        reportsTitlesList[index].technicianName +
+                        '\n' +
+                        reportsTitlesList[index].type +
+                        " = " +
+                        reportsTitlesList[index].responsible +
+                        '\n' +
+                        reportsTitlesList[index].areaName +
+                        " " +
+                        reportsTitlesList[index].lineName +
+                        '\n' +
+                        reportsTitlesList[index].root_cause +
+                        "\nFrom : " +
+                        reportsTitlesList[index].dateFrom +
+                        " at " +
+                        reportsTitlesList[index].from_time +
+                        "\nTo : " +
+                        reportsTitlesList[index].dateTo +
+                        " at " +
+                        reportsTitlesList[index].to_time +
+                        "\nTotal Time : " +
+                        reportsTitlesList[index].wastedMinutes +
+                        " Mins." +
+                        '\n' +
+                        reportsTitlesList[index].stoppedStatus +
+                        "\n-----------------------------\n";
                     return ListTile(
-                      title: aboveMediumHeading("By : " +
-                          reportsTitlesList[index].supName +
-                          "\nTech. : " +
-                          reportsTitlesList[index].technicianName +
-                          '\n' +
-                          reportsTitlesList[index].type +
-                          " = " +
-                          reportsTitlesList[index].responsible +
-                          '\n' +
-                          reportsTitlesList[index].areaName +
-                          " " +
-                          reportsTitlesList[index].lineName +
-                          '\n' +
-                          reportsTitlesList[index].root_cause +
-                          "\nFrom : " +
-                          reportsTitlesList[index].dateFrom +
-                          " at " +
-                          reportsTitlesList[index].from_time +
-                          "\nTo : " +
-                          reportsTitlesList[index].dateTo +
-                          " at " +
-                          reportsTitlesList[index].to_time +
-                          "\nTotal Time : " +
-                          reportsTitlesList[index].wastedMinutes +
-                          " Mins." +
-                          '\n' +
-                          reportsTitlesList[index].stoppedStatus +
-                          "\n-----------------------------\n"),
+                      title: reportsTitlesList[index].is_rejected == YES
+                          ? aboveMediumHeading(reportSummary)
+                          : adminHeading(reportSummary),
+                      subtitle: reportsTitlesList[index].is_rejected == YES
+                          ? aboveMediumHeading("Rejected By : " +
+                              reportsTitlesList[index].rejected_by +
+                              " Because :\n" +
+                              reportsTitlesList[index].rejectComment +
+                              "\n-----------------------------\n")
+                          : EmptyPlaceHolder(),
                       leading: IconButton(
                         tooltip: "Approve",
-                        icon: const Icon(
-                          Icons.mode_edit,
-                        ),
+                        icon: const Icon(Icons.mode_edit),
                         color: KelloggColors.green,
                         onPressed: () {
                           confirmApproveReport(
@@ -136,19 +147,20 @@ class _ApproveReportsState extends State<ApproveReports> {
                         },
                       ),
                       trailing: IconButton(
+                        tooltip: "Reject",
                         icon: const Icon(Icons.close),
                         color: KelloggColors.cockRed,
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("Feature not available yet"),
-                          ));
-                          //todo :: delete report
-                          // confirmDeleteMachineDetailAlertDialog(
-                          //     context,
-                          //     refNum,
-                          //     skuName,
-                          //     SKU.skuMachineDetails[skuName]![index]
-                          //         .id);
+                          // confirmRejectReport(
+                          //     context, reportsTitlesList[index].reportID);
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    RejectReportAlert(
+                                        reportID:
+                                            reportsTitlesList[index].reportID),
+                              ));
                         },
                       ),
                     );

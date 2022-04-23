@@ -15,6 +15,8 @@ showExcelAlertDialog(BuildContext context, bool success, String fileName) {
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Excel Reports"),
+    shape: RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(alertDialogRadius)),
     content:
         Text(success ? excelSuccessMsg + " in  $fileName" : excelFailureMsg),
     actions: [
@@ -35,6 +37,8 @@ confirmApproveReport(BuildContext context, String reportID) {
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Approve Report"),
+    shape: RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(alertDialogRadius)),
     content: Text("Are you sure you want to approve this report"),
     actions: [
       cancelDialogBtn(text: "Cancel"),
@@ -55,6 +59,8 @@ confirmDeleteCauseAlertDialog(BuildContext context, String type, String cause) {
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Root Causes Edit"),
+    shape: RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(alertDialogRadius)),
     content:
         Text("Are you sure you want to remove \' $cause \' from causes list"),
     actions: [
@@ -76,6 +82,8 @@ confirmDeleteAdminAlertDialog(BuildContext context, String email) {
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Admin Edit"),
+    shape: RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(alertDialogRadius)),
     content: Text(
         "Are you sure you want to remove \' $email \' from authorized list"),
     actions: [
@@ -97,6 +105,8 @@ confirmDeleteMachineAlertDialog(BuildContext context, String name) {
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Machine Edit"),
+    shape: RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(alertDialogRadius)),
     content:
         Text("Are you sure you want to remove \' $name \' from Machines list"),
     actions: [
@@ -123,6 +133,8 @@ confirmDeleteMachineDetailAlertDialog(
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Machine Detail Edit"),
+    shape: RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(alertDialogRadius)),
     content: Text(
         "Are you sure you want to remove this Detail from \' $skuName \' Machine Detail list"),
     actions: [
@@ -148,6 +160,8 @@ confirmDeleteOwnerAlertDialog(BuildContext context, String email) {
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Owner Edit"),
+    shape: RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(alertDialogRadius)),
     content:
         Text("Are you sure you want to remove \' $email \' from owners list"),
     actions: [
@@ -169,6 +183,8 @@ confirmDeleteKwsAlertDialog(BuildContext context, String email) {
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Kws User Edit"),
+    shape: RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(alertDialogRadius)),
     content: Text(
         "Are you sure you want to remove \' $email \' from Kws Users list"),
     actions: [
@@ -190,6 +206,8 @@ showForceUpdateAlertDialog(BuildContext context) {
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("New Update Available"),
+    shape: RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(alertDialogRadius)),
     content:
         Text("your version is outdated please update to the latest version"),
     actions: [
