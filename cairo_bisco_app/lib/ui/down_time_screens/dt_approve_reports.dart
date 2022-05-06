@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:cairo_bisco_app/classes/DownTimeSummary.dart';
 import 'package:cairo_bisco_app/classes/ReportTitle.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/date_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/date_time_utility.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/ui/down_time_screens/rejectDownTimeReportAlert.dart';

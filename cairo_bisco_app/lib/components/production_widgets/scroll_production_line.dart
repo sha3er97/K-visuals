@@ -17,11 +17,13 @@ class ProductionLine extends StatelessWidget {
     required this.overweight,
     required this.report,
     required this.isWebView,
+    required this.wastedMinutes,
   }) : super(key: key);
   final MiniProductionReport report;
 
   final double overweight;
   final bool isWebView;
+  final int wastedMinutes;
 
   @override
   Widget build(BuildContext context) {
@@ -247,7 +249,8 @@ class ProductionLine extends StatelessWidget {
                 child: ElevatedButton(
                   child: Text(
                     "Stopped Time : " +
-                        report.wastedMinutes.round().toString() +
+                        wastedMinutes.toString() +
+                        //report.wastedMinutes.round().toString() +
                         " Mins.",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

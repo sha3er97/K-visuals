@@ -128,6 +128,8 @@ const ADMIN_ADD_SKU = 0;
 const NO = 0;
 const YES = 1;
 
+const FROM = 0;
+const TO = 1;
 /** Constant Lists **/
 List<OverWeightReport> overweightDummyList = [];
 List<String> prodType = <String>[
