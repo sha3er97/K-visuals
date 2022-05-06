@@ -6,8 +6,6 @@ import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/arrows/down_arrow.dart';
 import 'package:cairo_bisco_app/components/arrows/left_arrow.dart';
 import 'package:cairo_bisco_app/components/arrows/right_arrow.dart';
-import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/1kpi_good_bad_indicator.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 
 class OeeDiagram extends StatelessWidget {
@@ -33,8 +31,8 @@ class OeeDiagram extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: webFactor * mediumIconSize,
-            width: webFactor * mediumIconSize,
+            height: webFactor * aboveMediumIconSize,
+            width: webFactor * aboveMediumIconSize,
             decoration: BoxDecoration(
                 color: KelloggColors.yellow
                     .withOpacity(misleadingResolvingOpacity),

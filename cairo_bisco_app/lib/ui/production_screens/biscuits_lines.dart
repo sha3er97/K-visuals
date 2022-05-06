@@ -7,8 +7,10 @@ import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/production_widgets/scroll_production_line.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/loading_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
+
+import '../../classes/DownTimeReport.dart';
 
 class BiscuitLines extends StatefulWidget {
   BiscuitLines({
@@ -60,6 +62,15 @@ class _BiscuitLinesState extends State<BiscuitLines> {
         .withConverter<OverWeightReport>(
           fromFirestore: (snapshot, _) =>
               OverWeightReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+    final downTimeReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('downtime_reports')
+        .collection(chosenYear)
+        .withConverter<DownTimeReport>(
+          fromFirestore: (snapshot, _) =>
+              DownTimeReport.fromJson(snapshot.data()!),
           toFirestore: (report, _) => report.toJson(),
         );
     return DefaultTabController(
@@ -118,51 +129,41 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                             ConnectionState.waiting) {
                           return ColorLoader();
                         } else {
-                          List<QueryDocumentSnapshot<OverWeightReport>>
-                              reportsList = overweightSnapshot.data!.docs
-                                  as List<
-                                      QueryDocumentSnapshot<OverWeightReport>>;
-                          OverWeightReport temp_overweight_report =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                            1,
-                          );
-                          List<OverWeightReport> overweightTempList =
-                              OverWeightReport.getAllReportsOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
-                            future: biscuitsReportRef.get(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<QuerySnapshot>
-                                    productionSnapshot) {
-                              if (productionSnapshot.hasError) {
-                                return ErrorMessageHeading(
-                                    'Something went wrong');
-                              } else if (productionSnapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return ColorLoader();
-                              } else {
-                                try {
-                                  List<QueryDocumentSnapshot<BiscuitsReport>>
-                                      reportsList =
-                                      productionSnapshot.data!.docs as List<
+                              future: downTimeReportRef.get(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot>
+                                      downTimeSnapshot) {
+                                if (downTimeSnapshot.hasError) {
+                                  return ErrorMessageHeading(
+                                      'Something went wrong');
+                                } else if (downTimeSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return ColorLoader();
+                                } else {
+                                  List<QueryDocumentSnapshot<DownTimeReport>>
+                                      dtReportsList =
+                                      downTimeSnapshot.data!.docs as List<
                                           QueryDocumentSnapshot<
-                                              BiscuitsReport>>;
-                                  MiniProductionReport temp_report =
-                                      BiscuitsReport
+                                              DownTimeReport>>;
+                                  int temp_wasted_minutes =
+                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    BISCUIT_AREA,
+                                    1,
+                                  );
+                                  List<QueryDocumentSnapshot<OverWeightReport>>
+                                      reportsList =
+                                      overweightSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<
+                                              OverWeightReport>>;
+                                  OverWeightReport temp_overweight_report =
+                                      OverWeightReport
                                           .getFilteredReportOfInterval(
                                     reportsList,
                                     int.parse(from_month),
@@ -170,25 +171,73 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
+                                    BISCUIT_AREA,
                                     1,
-                                    overweightTempList,
                                   );
-                                  return Center(
-                                    child: ProductionLine(
-                                      report: temp_report,
-                                      overweight:
-                                          temp_overweight_report.percent,
-                                      isWebView: false,
-                                    ),
+                                  List<OverWeightReport> overweightTempList =
+                                      OverWeightReport.getAllReportsOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    BISCUIT_AREA,
+                                  ).values.toList();
+                                  return FutureBuilder<QuerySnapshot>(
+                                    future: biscuitsReportRef.get(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot>
+                                            productionSnapshot) {
+                                      if (productionSnapshot.hasError) {
+                                        return ErrorMessageHeading(
+                                            'Something went wrong');
+                                      } else if (productionSnapshot
+                                              .connectionState ==
+                                          ConnectionState.waiting) {
+                                        return ColorLoader();
+                                      } else {
+                                        try {
+                                          List<
+                                                  QueryDocumentSnapshot<
+                                                      BiscuitsReport>>
+                                              reportsList =
+                                              productionSnapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          BiscuitsReport>>;
+                                          MiniProductionReport temp_report =
+                                              BiscuitsReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            1,
+                                            overweightTempList,
+                                          );
+                                          return Center(
+                                            child: ProductionLine(
+                                              report: temp_report,
+                                              overweight: temp_overweight_report
+                                                  .percent,
+                                              isWebView: false,
+                                              wastedMinutes:
+                                                  temp_wasted_minutes,
+                                            ),
+                                          );
+                                        } catch (e) {
+                                          print(e);
+                                          return ErrorMessageHeading(
+                                              'Something went wrong');
+                                        }
+                                      }
+                                    },
                                   );
-                                } catch (e) {
-                                  print(e);
-                                  return ErrorMessageHeading(
-                                      'Something went wrong');
                                 }
-                              }
-                            },
-                          );
+                              });
                         }
                       }),
                 ],
@@ -210,51 +259,41 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                             ConnectionState.waiting) {
                           return ColorLoader();
                         } else {
-                          List<QueryDocumentSnapshot<OverWeightReport>>
-                              reportsList = overweightSnapshot.data!.docs
-                                  as List<
-                                      QueryDocumentSnapshot<OverWeightReport>>;
-                          OverWeightReport temp_overweight_report =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                            2,
-                          );
-                          List<OverWeightReport> overweightTempList =
-                              OverWeightReport.getAllReportsOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
-                            future: biscuitsReportRef.get(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<QuerySnapshot>
-                                    productionSnapshot) {
-                              if (productionSnapshot.hasError) {
-                                return ErrorMessageHeading(
-                                    'Something went wrong');
-                              } else if (productionSnapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return ColorLoader();
-                              } else {
-                                try {
-                                  List<QueryDocumentSnapshot<BiscuitsReport>>
-                                      reportsList =
-                                      productionSnapshot.data!.docs as List<
+                              future: downTimeReportRef.get(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot>
+                                      downTimeSnapshot) {
+                                if (downTimeSnapshot.hasError) {
+                                  return ErrorMessageHeading(
+                                      'Something went wrong');
+                                } else if (downTimeSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return ColorLoader();
+                                } else {
+                                  List<QueryDocumentSnapshot<DownTimeReport>>
+                                      dtReportsList =
+                                      downTimeSnapshot.data!.docs as List<
                                           QueryDocumentSnapshot<
-                                              BiscuitsReport>>;
-                                  MiniProductionReport temp_report =
-                                      BiscuitsReport
+                                              DownTimeReport>>;
+                                  int temp_wasted_minutes =
+                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    BISCUIT_AREA,
+                                    2,
+                                  );
+                                  List<QueryDocumentSnapshot<OverWeightReport>>
+                                      reportsList =
+                                      overweightSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<
+                                              OverWeightReport>>;
+                                  OverWeightReport temp_overweight_report =
+                                      OverWeightReport
                                           .getFilteredReportOfInterval(
                                     reportsList,
                                     int.parse(from_month),
@@ -262,25 +301,73 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
+                                    BISCUIT_AREA,
                                     2,
-                                    overweightTempList,
                                   );
-                                  return Center(
-                                    child: ProductionLine(
-                                      report: temp_report,
-                                      overweight:
-                                          temp_overweight_report.percent,
-                                      isWebView: false,
-                                    ),
+                                  List<OverWeightReport> overweightTempList =
+                                      OverWeightReport.getAllReportsOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    BISCUIT_AREA,
+                                  ).values.toList();
+                                  return FutureBuilder<QuerySnapshot>(
+                                    future: biscuitsReportRef.get(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot>
+                                            productionSnapshot) {
+                                      if (productionSnapshot.hasError) {
+                                        return ErrorMessageHeading(
+                                            'Something went wrong');
+                                      } else if (productionSnapshot
+                                              .connectionState ==
+                                          ConnectionState.waiting) {
+                                        return ColorLoader();
+                                      } else {
+                                        try {
+                                          List<
+                                                  QueryDocumentSnapshot<
+                                                      BiscuitsReport>>
+                                              reportsList =
+                                              productionSnapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          BiscuitsReport>>;
+                                          MiniProductionReport temp_report =
+                                              BiscuitsReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            2,
+                                            overweightTempList,
+                                          );
+                                          return Center(
+                                            child: ProductionLine(
+                                              report: temp_report,
+                                              overweight: temp_overweight_report
+                                                  .percent,
+                                              isWebView: false,
+                                              wastedMinutes:
+                                                  temp_wasted_minutes,
+                                            ),
+                                          );
+                                        } catch (e) {
+                                          print(e);
+                                          return ErrorMessageHeading(
+                                              'Something went wrong');
+                                        }
+                                      }
+                                    },
                                   );
-                                } catch (e) {
-                                  print(e);
-                                  return ErrorMessageHeading(
-                                      'Something went wrong');
                                 }
-                              }
-                            },
-                          );
+                              });
                         }
                       }),
                 ],
@@ -302,51 +389,41 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                             ConnectionState.waiting) {
                           return ColorLoader();
                         } else {
-                          List<QueryDocumentSnapshot<OverWeightReport>>
-                              reportsList = overweightSnapshot.data!.docs
-                                  as List<
-                                      QueryDocumentSnapshot<OverWeightReport>>;
-                          OverWeightReport temp_overweight_report =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                            3,
-                          );
-                          List<OverWeightReport> overweightTempList =
-                              OverWeightReport.getAllReportsOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
-                            future: biscuitsReportRef.get(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<QuerySnapshot>
-                                    productionSnapshot) {
-                              if (productionSnapshot.hasError) {
-                                return ErrorMessageHeading(
-                                    'Something went wrong');
-                              } else if (productionSnapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return ColorLoader();
-                              } else {
-                                try {
-                                  List<QueryDocumentSnapshot<BiscuitsReport>>
-                                      reportsList =
-                                      productionSnapshot.data!.docs as List<
+                              future: downTimeReportRef.get(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot>
+                                      downTimeSnapshot) {
+                                if (downTimeSnapshot.hasError) {
+                                  return ErrorMessageHeading(
+                                      'Something went wrong');
+                                } else if (downTimeSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return ColorLoader();
+                                } else {
+                                  List<QueryDocumentSnapshot<DownTimeReport>>
+                                      dtReportsList =
+                                      downTimeSnapshot.data!.docs as List<
                                           QueryDocumentSnapshot<
-                                              BiscuitsReport>>;
-                                  MiniProductionReport temp_report =
-                                      BiscuitsReport
+                                              DownTimeReport>>;
+                                  int temp_wasted_minutes =
+                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    BISCUIT_AREA,
+                                    3,
+                                  );
+                                  List<QueryDocumentSnapshot<OverWeightReport>>
+                                      reportsList =
+                                      overweightSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<
+                                              OverWeightReport>>;
+                                  OverWeightReport temp_overweight_report =
+                                      OverWeightReport
                                           .getFilteredReportOfInterval(
                                     reportsList,
                                     int.parse(from_month),
@@ -354,25 +431,73 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
+                                    BISCUIT_AREA,
                                     3,
-                                    overweightTempList,
                                   );
-                                  return Center(
-                                    child: ProductionLine(
-                                      report: temp_report,
-                                      overweight:
-                                          temp_overweight_report.percent,
-                                      isWebView: false,
-                                    ),
+                                  List<OverWeightReport> overweightTempList =
+                                      OverWeightReport.getAllReportsOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    BISCUIT_AREA,
+                                  ).values.toList();
+                                  return FutureBuilder<QuerySnapshot>(
+                                    future: biscuitsReportRef.get(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot>
+                                            productionSnapshot) {
+                                      if (productionSnapshot.hasError) {
+                                        return ErrorMessageHeading(
+                                            'Something went wrong');
+                                      } else if (productionSnapshot
+                                              .connectionState ==
+                                          ConnectionState.waiting) {
+                                        return ColorLoader();
+                                      } else {
+                                        try {
+                                          List<
+                                                  QueryDocumentSnapshot<
+                                                      BiscuitsReport>>
+                                              reportsList =
+                                              productionSnapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          BiscuitsReport>>;
+                                          MiniProductionReport temp_report =
+                                              BiscuitsReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            3,
+                                            overweightTempList,
+                                          );
+                                          return Center(
+                                            child: ProductionLine(
+                                              report: temp_report,
+                                              overweight: temp_overweight_report
+                                                  .percent,
+                                              isWebView: false,
+                                              wastedMinutes:
+                                                  temp_wasted_minutes,
+                                            ),
+                                          );
+                                        } catch (e) {
+                                          print(e);
+                                          return ErrorMessageHeading(
+                                              'Something went wrong');
+                                        }
+                                      }
+                                    },
                                   );
-                                } catch (e) {
-                                  print(e);
-                                  return ErrorMessageHeading(
-                                      'Something went wrong');
                                 }
-                              }
-                            },
-                          );
+                              });
                         }
                       }),
                 ],
@@ -394,51 +519,41 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                             ConnectionState.waiting) {
                           return ColorLoader();
                         } else {
-                          List<QueryDocumentSnapshot<OverWeightReport>>
-                              reportsList = overweightSnapshot.data!.docs
-                                  as List<
-                                      QueryDocumentSnapshot<OverWeightReport>>;
-                          OverWeightReport temp_overweight_report =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                            4,
-                          );
-                          List<OverWeightReport> overweightTempList =
-                              OverWeightReport.getAllReportsOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
-                            future: biscuitsReportRef.get(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<QuerySnapshot>
-                                    productionSnapshot) {
-                              if (productionSnapshot.hasError) {
-                                return ErrorMessageHeading(
-                                    'Something went wrong');
-                              } else if (productionSnapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return ColorLoader();
-                              } else {
-                                try {
-                                  List<QueryDocumentSnapshot<BiscuitsReport>>
-                                      reportsList =
-                                      productionSnapshot.data!.docs as List<
+                              future: downTimeReportRef.get(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot>
+                                      downTimeSnapshot) {
+                                if (downTimeSnapshot.hasError) {
+                                  return ErrorMessageHeading(
+                                      'Something went wrong');
+                                } else if (downTimeSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return ColorLoader();
+                                } else {
+                                  List<QueryDocumentSnapshot<DownTimeReport>>
+                                      dtReportsList =
+                                      downTimeSnapshot.data!.docs as List<
                                           QueryDocumentSnapshot<
-                                              BiscuitsReport>>;
-                                  MiniProductionReport temp_report =
-                                      BiscuitsReport
+                                              DownTimeReport>>;
+                                  int temp_wasted_minutes =
+                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    BISCUIT_AREA,
+                                    4,
+                                  );
+                                  List<QueryDocumentSnapshot<OverWeightReport>>
+                                      reportsList =
+                                      overweightSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<
+                                              OverWeightReport>>;
+                                  OverWeightReport temp_overweight_report =
+                                      OverWeightReport
                                           .getFilteredReportOfInterval(
                                     reportsList,
                                     int.parse(from_month),
@@ -446,25 +561,73 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
+                                    BISCUIT_AREA,
                                     4,
-                                    overweightTempList,
                                   );
-                                  return Center(
-                                    child: ProductionLine(
-                                      report: temp_report,
-                                      overweight:
-                                          temp_overweight_report.percent,
-                                      isWebView: false,
-                                    ),
+                                  List<OverWeightReport> overweightTempList =
+                                      OverWeightReport.getAllReportsOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    BISCUIT_AREA,
+                                  ).values.toList();
+                                  return FutureBuilder<QuerySnapshot>(
+                                    future: biscuitsReportRef.get(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot>
+                                            productionSnapshot) {
+                                      if (productionSnapshot.hasError) {
+                                        return ErrorMessageHeading(
+                                            'Something went wrong');
+                                      } else if (productionSnapshot
+                                              .connectionState ==
+                                          ConnectionState.waiting) {
+                                        return ColorLoader();
+                                      } else {
+                                        try {
+                                          List<
+                                                  QueryDocumentSnapshot<
+                                                      BiscuitsReport>>
+                                              reportsList =
+                                              productionSnapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          BiscuitsReport>>;
+                                          MiniProductionReport temp_report =
+                                              BiscuitsReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            4,
+                                            overweightTempList,
+                                          );
+                                          return Center(
+                                            child: ProductionLine(
+                                              report: temp_report,
+                                              overweight: temp_overweight_report
+                                                  .percent,
+                                              isWebView: false,
+                                              wastedMinutes:
+                                                  temp_wasted_minutes,
+                                            ),
+                                          );
+                                        } catch (e) {
+                                          print(e);
+                                          return ErrorMessageHeading(
+                                              'Something went wrong');
+                                        }
+                                      }
+                                    },
                                   );
-                                } catch (e) {
-                                  print(e);
-                                  return ErrorMessageHeading(
-                                      'Something went wrong');
                                 }
-                              }
-                            },
-                          );
+                              });
                         }
                       }),
                 ],
@@ -486,51 +649,41 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                             ConnectionState.waiting) {
                           return ColorLoader();
                         } else {
-                          List<QueryDocumentSnapshot<OverWeightReport>>
-                              reportsList = overweightSnapshot.data!.docs
-                                  as List<
-                                      QueryDocumentSnapshot<OverWeightReport>>;
-                          OverWeightReport temp_overweight_report =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                            ALL_LINES,
-                          );
-                          List<OverWeightReport> overweightTempList =
-                              OverWeightReport.getAllReportsOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
-                            future: biscuitsReportRef.get(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<QuerySnapshot>
-                                    productionSnapshot) {
-                              if (productionSnapshot.hasError) {
-                                return ErrorMessageHeading(
-                                    'Something went wrong');
-                              } else if (productionSnapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return ColorLoader();
-                              } else {
-                                try {
-                                  List<QueryDocumentSnapshot<BiscuitsReport>>
-                                      reportsList =
-                                      productionSnapshot.data!.docs as List<
+                              future: downTimeReportRef.get(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot>
+                                      downTimeSnapshot) {
+                                if (downTimeSnapshot.hasError) {
+                                  return ErrorMessageHeading(
+                                      'Something went wrong');
+                                } else if (downTimeSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return ColorLoader();
+                                } else {
+                                  List<QueryDocumentSnapshot<DownTimeReport>>
+                                      dtReportsList =
+                                      downTimeSnapshot.data!.docs as List<
                                           QueryDocumentSnapshot<
-                                              BiscuitsReport>>;
-                                  MiniProductionReport temp_report =
-                                      BiscuitsReport
+                                              DownTimeReport>>;
+                                  int temp_wasted_minutes =
+                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    BISCUIT_AREA,
+                                    ALL_LINES,
+                                  );
+                                  List<QueryDocumentSnapshot<OverWeightReport>>
+                                      reportsList =
+                                      overweightSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<
+                                              OverWeightReport>>;
+                                  OverWeightReport temp_overweight_report =
+                                      OverWeightReport
                                           .getFilteredReportOfInterval(
                                     reportsList,
                                     int.parse(from_month),
@@ -538,25 +691,73 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
+                                    BISCUIT_AREA,
                                     ALL_LINES,
-                                    overweightTempList,
                                   );
-                                  return Center(
-                                    child: ProductionLine(
-                                      report: temp_report,
-                                      overweight:
-                                          temp_overweight_report.percent,
-                                      isWebView: false,
-                                    ),
+                                  List<OverWeightReport> overweightTempList =
+                                      OverWeightReport.getAllReportsOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    BISCUIT_AREA,
+                                  ).values.toList();
+                                  return FutureBuilder<QuerySnapshot>(
+                                    future: biscuitsReportRef.get(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot>
+                                            productionSnapshot) {
+                                      if (productionSnapshot.hasError) {
+                                        return ErrorMessageHeading(
+                                            'Something went wrong');
+                                      } else if (productionSnapshot
+                                              .connectionState ==
+                                          ConnectionState.waiting) {
+                                        return ColorLoader();
+                                      } else {
+                                        try {
+                                          List<
+                                                  QueryDocumentSnapshot<
+                                                      BiscuitsReport>>
+                                              reportsList =
+                                              productionSnapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          BiscuitsReport>>;
+                                          MiniProductionReport temp_report =
+                                              BiscuitsReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            ALL_LINES,
+                                            overweightTempList,
+                                          );
+                                          return Center(
+                                            child: ProductionLine(
+                                              report: temp_report,
+                                              overweight: temp_overweight_report
+                                                  .percent,
+                                              isWebView: false,
+                                              wastedMinutes:
+                                                  temp_wasted_minutes,
+                                            ),
+                                          );
+                                        } catch (e) {
+                                          print(e);
+                                          return ErrorMessageHeading(
+                                              'Something went wrong');
+                                        }
+                                      }
+                                    },
                                   );
-                                } catch (e) {
-                                  print(e);
-                                  return ErrorMessageHeading(
-                                      'Something went wrong');
                                 }
-                              }
-                            },
-                          );
+                              });
                         }
                       }),
                 ],
@@ -578,301 +779,415 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                             ConnectionState.waiting) {
                           return ColorLoader();
                         } else {
-                          List<QueryDocumentSnapshot<OverWeightReport>>
-                              reportsList = overweightSnapshot.data!.docs
-                                  as List<
-                                      QueryDocumentSnapshot<OverWeightReport>>;
-                          OverWeightReport overWeight1 =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                            1,
-                          );
-                          OverWeightReport overWeight2 =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                            2,
-                          );
-                          OverWeightReport overWeight3 =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                            3,
-                          );
-                          OverWeightReport overWeight4 =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                            4,
-                          );
-                          OverWeightReport overWeightAll =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                            ALL_LINES,
-                          );
-                          List<OverWeightReport> overweightTempList =
-                              OverWeightReport.getAllReportsOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            BISCUIT_AREA,
-                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
-                            future: biscuitsReportRef.get(),
+                            future: downTimeReportRef.get(),
                             builder: (BuildContext context,
-                                AsyncSnapshot<QuerySnapshot>
-                                    productionSnapshot) {
-                              if (productionSnapshot.hasError) {
+                                AsyncSnapshot<QuerySnapshot> downTimeSnapshot) {
+                              if (downTimeSnapshot.hasError) {
                                 return ErrorMessageHeading(
                                     'Something went wrong');
-                              } else if (productionSnapshot.connectionState ==
+                              } else if (downTimeSnapshot.connectionState ==
                                   ConnectionState.waiting) {
                                 return ColorLoader();
                               } else {
-                                try {
-                                  List<QueryDocumentSnapshot<BiscuitsReport>>
-                                      reportsList =
-                                      productionSnapshot.data!.docs as List<
-                                          QueryDocumentSnapshot<
-                                              BiscuitsReport>>;
-                                  MiniProductionReport temp_report1 =
-                                      BiscuitsReport
-                                          .getFilteredReportOfInterval(
-                                    reportsList,
-                                    int.parse(from_month),
-                                    int.parse(to_month),
-                                    int.parse(from_day),
-                                    int.parse(to_day),
-                                    int.parse(chosenYear),
-                                    1,
-                                    overweightTempList,
-                                  );
-                                  MiniProductionReport temp_report2 =
-                                      BiscuitsReport
-                                          .getFilteredReportOfInterval(
-                                    reportsList,
-                                    int.parse(from_month),
-                                    int.parse(to_month),
-                                    int.parse(from_day),
-                                    int.parse(to_day),
-                                    int.parse(chosenYear),
-                                    2,
-                                    overweightTempList,
-                                  );
-                                  MiniProductionReport temp_report3 =
-                                      BiscuitsReport
-                                          .getFilteredReportOfInterval(
-                                    reportsList,
-                                    int.parse(from_month),
-                                    int.parse(to_month),
-                                    int.parse(from_day),
-                                    int.parse(to_day),
-                                    int.parse(chosenYear),
-                                    3,
-                                    overweightTempList,
-                                  );
-                                  MiniProductionReport temp_report4 =
-                                      BiscuitsReport
-                                          .getFilteredReportOfInterval(
-                                    reportsList,
-                                    int.parse(from_month),
-                                    int.parse(to_month),
-                                    int.parse(from_day),
-                                    int.parse(to_day),
-                                    int.parse(chosenYear),
-                                    4,
-                                    overweightTempList,
-                                  );
-                                  MiniProductionReport temp_reportAll =
-                                      BiscuitsReport
-                                          .getFilteredReportOfInterval(
-                                    reportsList,
-                                    int.parse(from_month),
-                                    int.parse(to_month),
-                                    int.parse(from_day),
-                                    int.parse(to_day),
-                                    int.parse(chosenYear),
-                                    ALL_LINES,
-                                    overweightTempList,
-                                  );
-                                  return !kIsWeb
-                                      ? Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: defaultPadding),
-                                          child: ErrorMessageHeading(
-                                              "This View is Available for Web only"),
-                                        )
-                                      : IntrinsicHeight(
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
+                                List<QueryDocumentSnapshot<OverWeightReport>>
+                                    reportsList = overweightSnapshot.data!.docs
+                                        as List<
+                                            QueryDocumentSnapshot<
+                                                OverWeightReport>>;
+                                OverWeightReport overWeight1 = OverWeightReport
+                                    .getFilteredReportOfInterval(
+                                  reportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  1,
+                                );
+                                OverWeightReport overWeight2 = OverWeightReport
+                                    .getFilteredReportOfInterval(
+                                  reportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  2,
+                                );
+                                OverWeightReport overWeight3 = OverWeightReport
+                                    .getFilteredReportOfInterval(
+                                  reportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  3,
+                                );
+                                OverWeightReport overWeight4 = OverWeightReport
+                                    .getFilteredReportOfInterval(
+                                  reportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  4,
+                                );
+                                OverWeightReport overWeightAll =
+                                    OverWeightReport
+                                        .getFilteredReportOfInterval(
+                                  reportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  ALL_LINES,
+                                );
+                                List<OverWeightReport> overweightTempList =
+                                    OverWeightReport.getAllReportsOfInterval(
+                                  reportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                ).values.toList();
+                                List<QueryDocumentSnapshot<DownTimeReport>>
+                                    dtReportsList =
+                                    downTimeSnapshot.data!.docs as List<
+                                        QueryDocumentSnapshot<DownTimeReport>>;
+                                int temp_wasted_minutes1 =
+                                    DownTimeReport.getWastedMinutesOfCriteria(
+                                  dtReportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  1,
+                                );
+                                int temp_wasted_minutes2 =
+                                    DownTimeReport.getWastedMinutesOfCriteria(
+                                  dtReportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  2,
+                                );
+                                int temp_wasted_minutes3 =
+                                    DownTimeReport.getWastedMinutesOfCriteria(
+                                  dtReportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  3,
+                                );
+                                int temp_wasted_minutes4 =
+                                    DownTimeReport.getWastedMinutesOfCriteria(
+                                  dtReportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  4,
+                                );
+                                int temp_wasted_minutesAll =
+                                    DownTimeReport.getWastedMinutesOfCriteria(
+                                  dtReportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  ALL_LINES,
+                                );
+                                return FutureBuilder<QuerySnapshot>(
+                                    future: biscuitsReportRef.get(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot>
+                                            productionSnapshot) {
+                                      if (productionSnapshot.hasError) {
+                                        return ErrorMessageHeading(
+                                            'Something went wrong');
+                                      } else if (productionSnapshot
+                                              .connectionState ==
+                                          ConnectionState.waiting) {
+                                        return ColorLoader();
+                                      } else {
+                                        try {
+                                          List<
+                                                  QueryDocumentSnapshot<
+                                                      BiscuitsReport>>
+                                              reportsList =
+                                              productionSnapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          BiscuitsReport>>;
+                                          MiniProductionReport temp_report1 =
+                                              BiscuitsReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            1,
+                                            overweightTempList,
+                                          );
+                                          MiniProductionReport temp_report2 =
+                                              BiscuitsReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            2,
+                                            overweightTempList,
+                                          );
+                                          MiniProductionReport temp_report3 =
+                                              BiscuitsReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            3,
+                                            overweightTempList,
+                                          );
+                                          MiniProductionReport temp_report4 =
+                                              BiscuitsReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            4,
+                                            overweightTempList,
+                                          );
+                                          MiniProductionReport temp_reportAll =
+                                              BiscuitsReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            ALL_LINES,
+                                            overweightTempList,
+                                          );
+                                          return !kIsWeb
+                                              ? Padding(
                                                   padding: const EdgeInsets
                                                           .symmetric(
                                                       horizontal:
-                                                          minimumPadding),
-                                                  child: Column(
+                                                          defaultPadding),
+                                                  child: ErrorMessageHeading(
+                                                      "This View is Available for Web only"),
+                                                )
+                                              : IntrinsicHeight(
+                                                  child: Row(
                                                     children: [
-                                                      SizedBox(
-                                                        height: minimumPadding,
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets
+                                                                  .symmetric(
+                                                              horizontal:
+                                                                  minimumPadding),
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                height:
+                                                                    minimumPadding,
+                                                              ),
+                                                              adminHeading(
+                                                                  "Line 1"),
+                                                              Center(
+                                                                child:
+                                                                    ProductionLine(
+                                                                  report:
+                                                                      temp_report1,
+                                                                  overweight:
+                                                                      overWeight1
+                                                                          .percent,
+                                                                  isWebView:
+                                                                      true,
+                                                                  wastedMinutes:
+                                                                      temp_wasted_minutes1,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
                                                       ),
-                                                      adminHeading("Line 1"),
-                                                      Center(
-                                                        child: ProductionLine(
-                                                          report: temp_report1,
-                                                          overweight:
-                                                              overWeight1
-                                                                  .percent,
-                                                          isWebView: true,
+                                                      myVerticalDivider(),
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets
+                                                                  .symmetric(
+                                                              horizontal:
+                                                                  minimumPadding),
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                height:
+                                                                    minimumPadding,
+                                                              ),
+                                                              adminHeading(
+                                                                  "Line 2"),
+                                                              Center(
+                                                                child:
+                                                                    ProductionLine(
+                                                                  report:
+                                                                      temp_report2,
+                                                                  overweight:
+                                                                      overWeight2
+                                                                          .percent,
+                                                                  isWebView:
+                                                                      true,
+                                                                  wastedMinutes:
+                                                                      temp_wasted_minutes2,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      myVerticalDivider(),
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets
+                                                                  .symmetric(
+                                                              horizontal:
+                                                                  minimumPadding),
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                height:
+                                                                    minimumPadding,
+                                                              ),
+                                                              adminHeading(
+                                                                  "Line 3"),
+                                                              Center(
+                                                                child:
+                                                                    ProductionLine(
+                                                                  report:
+                                                                      temp_report3,
+                                                                  overweight:
+                                                                      overWeight3
+                                                                          .percent,
+                                                                  isWebView:
+                                                                      true,
+                                                                  wastedMinutes:
+                                                                      temp_wasted_minutes3,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      myVerticalDivider(),
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets
+                                                                  .symmetric(
+                                                              horizontal:
+                                                                  minimumPadding),
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                height:
+                                                                    minimumPadding,
+                                                              ),
+                                                              adminHeading(
+                                                                  "Line 4"),
+                                                              Center(
+                                                                child:
+                                                                    ProductionLine(
+                                                                  report:
+                                                                      temp_report4,
+                                                                  overweight:
+                                                                      overWeight4
+                                                                          .percent,
+                                                                  isWebView:
+                                                                      true,
+                                                                  wastedMinutes:
+                                                                      temp_wasted_minutes4,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      myVerticalDivider(),
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets
+                                                                  .symmetric(
+                                                              horizontal:
+                                                                  minimumPadding),
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                height:
+                                                                    minimumPadding,
+                                                              ),
+                                                              adminHeading(
+                                                                  "Total"),
+                                                              Center(
+                                                                child:
+                                                                    ProductionLine(
+                                                                  report:
+                                                                      temp_reportAll,
+                                                                  overweight:
+                                                                      overWeightAll
+                                                                          .percent,
+                                                                  isWebView:
+                                                                      true,
+                                                                  wastedMinutes:
+                                                                      temp_wasted_minutesAll,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
                                                       ),
                                                     ],
                                                   ),
-                                                ),
-                                              ),
-                                              myVerticalDivider(),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal:
-                                                          minimumPadding),
-                                                  child: Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        height: minimumPadding,
-                                                      ),
-                                                      adminHeading("Line 2"),
-                                                      Center(
-                                                        child: ProductionLine(
-                                                          report: temp_report2,
-                                                          overweight:
-                                                              overWeight2
-                                                                  .percent,
-                                                          isWebView: true,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              myVerticalDivider(),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal:
-                                                          minimumPadding),
-                                                  child: Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        height: minimumPadding,
-                                                      ),
-                                                      adminHeading("Line 3"),
-                                                      Center(
-                                                        child: ProductionLine(
-                                                          report: temp_report3,
-                                                          overweight:
-                                                              overWeight3
-                                                                  .percent,
-                                                          isWebView: true,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              myVerticalDivider(),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal:
-                                                          minimumPadding),
-                                                  child: Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        height: minimumPadding,
-                                                      ),
-                                                      adminHeading("Line 4"),
-                                                      Center(
-                                                        child: ProductionLine(
-                                                          report: temp_report4,
-                                                          overweight:
-                                                              overWeight4
-                                                                  .percent,
-                                                          isWebView: true,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              myVerticalDivider(),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal:
-                                                          minimumPadding),
-                                                  child: Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        height: minimumPadding,
-                                                      ),
-                                                      adminHeading("Total"),
-                                                      Center(
-                                                        child: ProductionLine(
-                                                          report:
-                                                              temp_reportAll,
-                                                          overweight:
-                                                              overWeightAll
-                                                                  .percent,
-                                                          isWebView: true,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                } catch (e) {
-                                  print(e);
-                                  return ErrorMessageHeading(
-                                      'Something went wrong');
-                                }
+                                                );
+                                        } catch (e) {
+                                          print(e);
+                                          return ErrorMessageHeading(
+                                              'Something went wrong');
+                                        }
+                                      }
+                                    });
                               }
                             },
                           );

@@ -10,6 +10,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+import '../../classes/DownTimeReport.dart';
+
 class MaamoulLines extends StatefulWidget {
   MaamoulLines({
     Key? key,
@@ -62,6 +64,15 @@ class _MaamoulLinesState extends State<MaamoulLines> {
               OverWeightReport.fromJson(snapshot.data()!),
           toFirestore: (report, _) => report.toJson(),
         );
+    final downTimeReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('downtime_reports')
+        .collection(chosenYear)
+        .withConverter<DownTimeReport>(
+          fromFirestore: (snapshot, _) =>
+              DownTimeReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
     return DefaultTabController(
       // The number of tabs / content sections to display.
       length: 4,
@@ -110,75 +121,119 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                             ConnectionState.waiting) {
                           return ColorLoader();
                         } else {
-                          List<QueryDocumentSnapshot<OverWeightReport>>
-                              reportsList = overweightSnapshot.data!.docs
-                                  as List<
-                                      QueryDocumentSnapshot<OverWeightReport>>;
-                          OverWeightReport temp_overweight_report =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            MAAMOUL_AREA,
-                            1,
-                          );
-                          List<OverWeightReport> overweightTempList =
-                              OverWeightReport.getAllReportsOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            MAAMOUL_AREA,
-                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
-                            future: maamoulReportRef.get(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<QuerySnapshot>
-                                    productionSnapshot) {
-                              if (productionSnapshot.hasError) {
-                                return ErrorMessageHeading(
-                                    'Something went wrong');
-                              } else if (productionSnapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return ColorLoader();
-                              } else {
-                                try {
-                                  List<QueryDocumentSnapshot<MaamoulReport>>
+                              future: downTimeReportRef.get(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot>
+                                      downTimeSnapshot) {
+                                if (downTimeSnapshot.hasError) {
+                                  return ErrorMessageHeading(
+                                      'Something went wrong');
+                                } else if (downTimeSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return ColorLoader();
+                                } else {
+                                  List<QueryDocumentSnapshot<OverWeightReport>>
                                       reportsList =
-                                      productionSnapshot.data!.docs as List<
-                                          QueryDocumentSnapshot<MaamoulReport>>;
-                                  MiniProductionReport temp_report =
-                                      MaamoulReport.getFilteredReportOfInterval(
+                                      overweightSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<
+                                              OverWeightReport>>;
+                                  OverWeightReport temp_overweight_report =
+                                      OverWeightReport
+                                          .getFilteredReportOfInterval(
                                     reportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
+                                    MAAMOUL_AREA,
                                     1,
-                                    overweightTempList,
                                   );
-                                  return Center(
-                                    child: ProductionLine(
-                                      report: temp_report,
-                                      overweight:
-                                          temp_overweight_report.percent,
-                                      isWebView: false,
-                                    ),
+                                  List<OverWeightReport> overweightTempList =
+                                      OverWeightReport.getAllReportsOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                  ).values.toList();
+                                  return FutureBuilder<QuerySnapshot>(
+                                    future: maamoulReportRef.get(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot>
+                                            productionSnapshot) {
+                                      if (productionSnapshot.hasError) {
+                                        return ErrorMessageHeading(
+                                            'Something went wrong');
+                                      } else if (productionSnapshot
+                                              .connectionState ==
+                                          ConnectionState.waiting) {
+                                        return ColorLoader();
+                                      } else {
+                                        try {
+                                          List<
+                                                  QueryDocumentSnapshot<
+                                                      DownTimeReport>>
+                                              dtReportsList =
+                                              downTimeSnapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          DownTimeReport>>;
+                                          int temp_wasted_minutes =
+                                              DownTimeReport
+                                                  .getWastedMinutesOfCriteria(
+                                            dtReportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            MAAMOUL_AREA,
+                                            1,
+                                          );
+                                          List<
+                                                  QueryDocumentSnapshot<
+                                                      MaamoulReport>>
+                                              reportsList =
+                                              productionSnapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          MaamoulReport>>;
+                                          MiniProductionReport temp_report =
+                                              MaamoulReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            1,
+                                            overweightTempList,
+                                          );
+                                          return Center(
+                                            child: ProductionLine(
+                                              report: temp_report,
+                                              overweight: temp_overweight_report
+                                                  .percent,
+                                              isWebView: false,
+                                              wastedMinutes:
+                                                  temp_wasted_minutes,
+                                            ),
+                                          );
+                                        } catch (e) {
+                                          print(e);
+                                          return ErrorMessageHeading(
+                                              'Something went wrong');
+                                        }
+                                      }
+                                    },
                                   );
-                                } catch (e) {
-                                  print(e);
-                                  return ErrorMessageHeading(
-                                      'Something went wrong');
                                 }
-                              }
-                            },
-                          );
+                              });
                         }
                       }),
                 ],
@@ -199,75 +254,115 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                             ConnectionState.waiting) {
                           return ColorLoader();
                         } else {
-                          List<QueryDocumentSnapshot<OverWeightReport>>
-                              reportsList = overweightSnapshot.data!.docs
-                                  as List<
-                                      QueryDocumentSnapshot<OverWeightReport>>;
-                          OverWeightReport temp_overweight_report =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            MAAMOUL_AREA,
-                            2,
-                          );
-                          List<OverWeightReport> overweightTempList =
-                              OverWeightReport.getAllReportsOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            MAAMOUL_AREA,
-                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
-                            future: maamoulReportRef.get(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<QuerySnapshot>
-                                    productionSnapshot) {
-                              if (productionSnapshot.hasError) {
-                                return ErrorMessageHeading(
-                                    'Something went wrong');
-                              } else if (productionSnapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return ColorLoader();
-                              } else {
-                                try {
-                                  List<QueryDocumentSnapshot<MaamoulReport>>
-                                      reportsList =
-                                      productionSnapshot.data!.docs as List<
-                                          QueryDocumentSnapshot<MaamoulReport>>;
-                                  MiniProductionReport temp_report =
-                                      MaamoulReport.getFilteredReportOfInterval(
-                                    reportsList,
+                              future: downTimeReportRef.get(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot>
+                                      downTimeSnapshot) {
+                                if (downTimeSnapshot.hasError) {
+                                  return ErrorMessageHeading(
+                                      'Something went wrong');
+                                } else if (downTimeSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return ColorLoader();
+                                } else {
+                                  List<QueryDocumentSnapshot<DownTimeReport>>
+                                      dtReportsList =
+                                      downTimeSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<
+                                              DownTimeReport>>;
+                                  int temp_wasted_minutes =
+                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                    dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
+                                    MAAMOUL_AREA,
                                     2,
-                                    overweightTempList,
                                   );
-                                  return Center(
-                                    child: ProductionLine(
-                                      report: temp_report,
-                                      overweight:
-                                          temp_overweight_report.percent,
-                                      isWebView: false,
-                                    ),
+                                  List<QueryDocumentSnapshot<OverWeightReport>>
+                                      reportsList =
+                                      overweightSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<
+                                              OverWeightReport>>;
+                                  OverWeightReport temp_overweight_report =
+                                      OverWeightReport
+                                          .getFilteredReportOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                    2,
                                   );
-                                } catch (e) {
-                                  print(e);
-                                  return ErrorMessageHeading(
-                                      'Something went wrong');
+                                  List<OverWeightReport> overweightTempList =
+                                      OverWeightReport.getAllReportsOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                  ).values.toList();
+                                  return FutureBuilder<QuerySnapshot>(
+                                    future: maamoulReportRef.get(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot>
+                                            productionSnapshot) {
+                                      if (productionSnapshot.hasError) {
+                                        return ErrorMessageHeading(
+                                            'Something went wrong');
+                                      } else if (productionSnapshot
+                                              .connectionState ==
+                                          ConnectionState.waiting) {
+                                        return ColorLoader();
+                                      } else {
+                                        try {
+                                          List<
+                                                  QueryDocumentSnapshot<
+                                                      MaamoulReport>>
+                                              reportsList =
+                                              productionSnapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          MaamoulReport>>;
+                                          MiniProductionReport temp_report =
+                                              MaamoulReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            2,
+                                            overweightTempList,
+                                          );
+                                          return Center(
+                                            child: ProductionLine(
+                                              report: temp_report,
+                                              overweight: temp_overweight_report
+                                                  .percent,
+                                              isWebView: false,
+                                              wastedMinutes:
+                                                  temp_wasted_minutes,
+                                            ),
+                                          );
+                                        } catch (e) {
+                                          print(e);
+                                          return ErrorMessageHeading(
+                                              'Something went wrong');
+                                        }
+                                      }
+                                    },
+                                  );
                                 }
-                              }
-                            },
-                          );
+                              });
                         }
                       }),
                 ],
@@ -288,75 +383,115 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                             ConnectionState.waiting) {
                           return ColorLoader();
                         } else {
-                          List<QueryDocumentSnapshot<OverWeightReport>>
-                              reportsList = overweightSnapshot.data!.docs
-                                  as List<
-                                      QueryDocumentSnapshot<OverWeightReport>>;
-                          OverWeightReport temp_overweight_report =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            MAAMOUL_AREA,
-                            ALL_LINES,
-                          );
-                          List<OverWeightReport> overweightTempList =
-                              OverWeightReport.getAllReportsOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            MAAMOUL_AREA,
-                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
-                            future: maamoulReportRef.get(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<QuerySnapshot>
-                                    productionSnapshot) {
-                              if (productionSnapshot.hasError) {
-                                return ErrorMessageHeading(
-                                    'Something went wrong');
-                              } else if (productionSnapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return ColorLoader();
-                              } else {
-                                try {
-                                  List<QueryDocumentSnapshot<MaamoulReport>>
+                              future: downTimeReportRef.get(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot>
+                                      downTimeSnapshot) {
+                                if (downTimeSnapshot.hasError) {
+                                  return ErrorMessageHeading(
+                                      'Something went wrong');
+                                } else if (downTimeSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return ColorLoader();
+                                } else {
+                                  List<QueryDocumentSnapshot<DownTimeReport>>
+                                      dtReportsList =
+                                      downTimeSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<
+                                              DownTimeReport>>;
+                                  int temp_wasted_minutes =
+                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                    ALL_LINES,
+                                  );
+                                  List<QueryDocumentSnapshot<OverWeightReport>>
                                       reportsList =
-                                      productionSnapshot.data!.docs as List<
-                                          QueryDocumentSnapshot<MaamoulReport>>;
-                                  MiniProductionReport temp_report =
-                                      MaamoulReport.getFilteredReportOfInterval(
+                                      overweightSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<
+                                              OverWeightReport>>;
+                                  OverWeightReport temp_overweight_report =
+                                      OverWeightReport
+                                          .getFilteredReportOfInterval(
                                     reportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
                                     int.parse(to_day),
                                     int.parse(chosenYear),
+                                    MAAMOUL_AREA,
                                     ALL_LINES,
-                                    overweightTempList,
                                   );
-                                  return Center(
-                                    child: ProductionLine(
-                                      report: temp_report,
-                                      overweight:
-                                          temp_overweight_report.percent,
-                                      isWebView: false,
-                                    ),
+                                  List<OverWeightReport> overweightTempList =
+                                      OverWeightReport.getAllReportsOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                  ).values.toList();
+                                  return FutureBuilder<QuerySnapshot>(
+                                    future: maamoulReportRef.get(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot>
+                                            productionSnapshot) {
+                                      if (productionSnapshot.hasError) {
+                                        return ErrorMessageHeading(
+                                            'Something went wrong');
+                                      } else if (productionSnapshot
+                                              .connectionState ==
+                                          ConnectionState.waiting) {
+                                        return ColorLoader();
+                                      } else {
+                                        try {
+                                          List<
+                                                  QueryDocumentSnapshot<
+                                                      MaamoulReport>>
+                                              reportsList =
+                                              productionSnapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          MaamoulReport>>;
+                                          MiniProductionReport temp_report =
+                                              MaamoulReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            ALL_LINES,
+                                            overweightTempList,
+                                          );
+                                          return Center(
+                                            child: ProductionLine(
+                                              report: temp_report,
+                                              overweight: temp_overweight_report
+                                                  .percent,
+                                              isWebView: false,
+                                              wastedMinutes:
+                                                  temp_wasted_minutes,
+                                            ),
+                                          );
+                                        } catch (e) {
+                                          print(e);
+                                          return ErrorMessageHeading(
+                                              'Something went wrong');
+                                        }
+                                      }
+                                    },
                                   );
-                                } catch (e) {
-                                  print(e);
-                                  return ErrorMessageHeading(
-                                      'Something went wrong');
                                 }
-                              }
-                            },
-                          );
+                              });
                         }
                       }),
                 ],
@@ -378,202 +513,288 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                             ConnectionState.waiting) {
                           return ColorLoader();
                         } else {
-                          List<QueryDocumentSnapshot<OverWeightReport>>
-                              reportsList = overweightSnapshot.data!.docs
-                                  as List<
-                                      QueryDocumentSnapshot<OverWeightReport>>;
-                          OverWeightReport overWeight1 =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            MAAMOUL_AREA,
-                            1,
-                          );
-                          OverWeightReport overWeight2 =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            MAAMOUL_AREA,
-                            2,
-                          );
-                          OverWeightReport overWeightAll =
-                              OverWeightReport.getFilteredReportOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            MAAMOUL_AREA,
-                            ALL_LINES,
-                          );
-                          List<OverWeightReport> overweightTempList =
-                              OverWeightReport.getAllReportsOfInterval(
-                            reportsList,
-                            int.parse(from_month),
-                            int.parse(to_month),
-                            int.parse(from_day),
-                            int.parse(to_day),
-                            int.parse(chosenYear),
-                            MAAMOUL_AREA,
-                          ).values.toList();
                           return FutureBuilder<QuerySnapshot>(
-                            future: maamoulReportRef.get(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<QuerySnapshot>
-                                    productionSnapshot) {
-                              if (productionSnapshot.hasError) {
-                                return ErrorMessageHeading(
-                                    'Something went wrong');
-                              } else if (productionSnapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return ColorLoader();
-                              } else {
-                                try {
-                                  List<QueryDocumentSnapshot<MaamoulReport>>
-                                      reportsList =
-                                      productionSnapshot.data!.docs as List<
-                                          QueryDocumentSnapshot<MaamoulReport>>;
-                                  MiniProductionReport temp_report1 =
-                                      MaamoulReport.getFilteredReportOfInterval(
-                                    reportsList,
-                                    int.parse(from_month),
-                                    int.parse(to_month),
-                                    int.parse(from_day),
-                                    int.parse(to_day),
-                                    int.parse(chosenYear),
-                                    1,
-                                    overweightTempList,
-                                  );
-                                  MiniProductionReport temp_report2 =
-                                      MaamoulReport.getFilteredReportOfInterval(
-                                    reportsList,
-                                    int.parse(from_month),
-                                    int.parse(to_month),
-                                    int.parse(from_day),
-                                    int.parse(to_day),
-                                    int.parse(chosenYear),
-                                    2,
-                                    overweightTempList,
-                                  );
-                                  MiniProductionReport temp_reportAll =
-                                      MaamoulReport.getFilteredReportOfInterval(
-                                    reportsList,
-                                    int.parse(from_month),
-                                    int.parse(to_month),
-                                    int.parse(from_day),
-                                    int.parse(to_day),
-                                    int.parse(chosenYear),
-                                    ALL_LINES,
-                                    overweightTempList,
-                                  );
-                                  return !kIsWeb
-                                      ? Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: defaultPadding),
-                                          child: ErrorMessageHeading(
-                                              "This View is Available for Web only"),
-                                        )
-                                      : IntrinsicHeight(
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal:
-                                                          minimumPadding),
-                                                  child: Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        height: minimumPadding,
-                                                      ),
-                                                      adminHeading("Line 1"),
-                                                      Center(
-                                                        child: ProductionLine(
-                                                          report: temp_report1,
-                                                          overweight:
-                                                              overWeight1
-                                                                  .percent,
-                                                          isWebView: true,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              myVerticalDivider(),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal:
-                                                          minimumPadding),
-                                                  child: Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        height: minimumPadding,
-                                                      ),
-                                                      adminHeading("Line 2"),
-                                                      Center(
-                                                        child: ProductionLine(
-                                                          report: temp_report2,
-                                                          overweight:
-                                                              overWeight2
-                                                                  .percent,
-                                                          isWebView: true,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              myVerticalDivider(),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal:
-                                                          minimumPadding),
-                                                  child: Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        height: minimumPadding,
-                                                      ),
-                                                      adminHeading("Total"),
-                                                      Center(
-                                                        child: ProductionLine(
-                                                          report:
-                                                              temp_reportAll,
-                                                          overweight:
-                                                              overWeightAll
-                                                                  .percent,
-                                                          isWebView: true,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                } catch (e) {
-                                  print(e);
+                              future: downTimeReportRef.get(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot>
+                                      downTimeSnapshot) {
+                                if (downTimeSnapshot.hasError) {
                                   return ErrorMessageHeading(
                                       'Something went wrong');
+                                } else if (downTimeSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return ColorLoader();
+                                } else {
+                                  List<QueryDocumentSnapshot<DownTimeReport>>
+                                      dtReportsList =
+                                      downTimeSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<
+                                              DownTimeReport>>;
+                                  int temp_wasted_minutes1 =
+                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                    1,
+                                  );
+                                  int temp_wasted_minutes2 =
+                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                    2,
+                                  );
+                                  int temp_wasted_minutesAll =
+                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                    ALL_LINES,
+                                  );
+                                  List<QueryDocumentSnapshot<OverWeightReport>>
+                                      reportsList =
+                                      overweightSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<
+                                              OverWeightReport>>;
+                                  OverWeightReport overWeight1 =
+                                      OverWeightReport
+                                          .getFilteredReportOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                    1,
+                                  );
+                                  OverWeightReport overWeight2 =
+                                      OverWeightReport
+                                          .getFilteredReportOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                    2,
+                                  );
+                                  OverWeightReport overWeightAll =
+                                      OverWeightReport
+                                          .getFilteredReportOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                    ALL_LINES,
+                                  );
+                                  List<OverWeightReport> overweightTempList =
+                                      OverWeightReport.getAllReportsOfInterval(
+                                    reportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                  ).values.toList();
+                                  return FutureBuilder<QuerySnapshot>(
+                                    future: maamoulReportRef.get(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot>
+                                            productionSnapshot) {
+                                      if (productionSnapshot.hasError) {
+                                        return ErrorMessageHeading(
+                                            'Something went wrong');
+                                      } else if (productionSnapshot
+                                              .connectionState ==
+                                          ConnectionState.waiting) {
+                                        return ColorLoader();
+                                      } else {
+                                        try {
+                                          List<
+                                                  QueryDocumentSnapshot<
+                                                      MaamoulReport>>
+                                              reportsList =
+                                              productionSnapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          MaamoulReport>>;
+                                          MiniProductionReport temp_report1 =
+                                              MaamoulReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            1,
+                                            overweightTempList,
+                                          );
+                                          MiniProductionReport temp_report2 =
+                                              MaamoulReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            2,
+                                            overweightTempList,
+                                          );
+                                          MiniProductionReport temp_reportAll =
+                                              MaamoulReport
+                                                  .getFilteredReportOfInterval(
+                                            reportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            ALL_LINES,
+                                            overweightTempList,
+                                          );
+                                          return !kIsWeb
+                                              ? Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal:
+                                                          defaultPadding),
+                                                  child: ErrorMessageHeading(
+                                                      "This View is Available for Web only"),
+                                                )
+                                              : IntrinsicHeight(
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets
+                                                                  .symmetric(
+                                                              horizontal:
+                                                                  minimumPadding),
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                height:
+                                                                    minimumPadding,
+                                                              ),
+                                                              adminHeading(
+                                                                  "Line 1"),
+                                                              Center(
+                                                                child:
+                                                                    ProductionLine(
+                                                                  report:
+                                                                      temp_report1,
+                                                                  overweight:
+                                                                      overWeight1
+                                                                          .percent,
+                                                                  isWebView:
+                                                                      true,
+                                                                  wastedMinutes:
+                                                                      temp_wasted_minutes1,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      myVerticalDivider(),
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets
+                                                                  .symmetric(
+                                                              horizontal:
+                                                                  minimumPadding),
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                height:
+                                                                    minimumPadding,
+                                                              ),
+                                                              adminHeading(
+                                                                  "Line 2"),
+                                                              Center(
+                                                                child:
+                                                                    ProductionLine(
+                                                                  report:
+                                                                      temp_report2,
+                                                                  overweight:
+                                                                      overWeight2
+                                                                          .percent,
+                                                                  isWebView:
+                                                                      true,
+                                                                  wastedMinutes:
+                                                                      temp_wasted_minutes2,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      myVerticalDivider(),
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets
+                                                                  .symmetric(
+                                                              horizontal:
+                                                                  minimumPadding),
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                height:
+                                                                    minimumPadding,
+                                                              ),
+                                                              adminHeading(
+                                                                  "Total"),
+                                                              Center(
+                                                                child:
+                                                                    ProductionLine(
+                                                                  report:
+                                                                      temp_reportAll,
+                                                                  overweight:
+                                                                      overWeightAll
+                                                                          .percent,
+                                                                  isWebView:
+                                                                      true,
+                                                                  wastedMinutes:
+                                                                      temp_wasted_minutesAll,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                        } catch (e) {
+                                          print(e);
+                                          return ErrorMessageHeading(
+                                              'Something went wrong');
+                                        }
+                                      }
+                                    },
+                                  );
                                 }
-                              }
-                            },
-                          );
+                              });
                         }
                       }),
                 ],

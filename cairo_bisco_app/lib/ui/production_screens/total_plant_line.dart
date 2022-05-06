@@ -11,6 +11,8 @@ import 'package:cairo_bisco_app/ui/error_success_screens/loading_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../../classes/DownTimeReport.dart';
+
 class TotalPlantLine extends StatefulWidget {
   TotalPlantLine({
     Key? key,
@@ -79,6 +81,16 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
         .withConverter<OverWeightReport>(
           fromFirestore: (snapshot, _) =>
               OverWeightReport.fromJson(snapshot.data()!),
+          toFirestore: (report, _) => report.toJson(),
+        );
+
+    final downTimeReportRef = FirebaseFirestore.instance
+        .collection(factory_name)
+        .doc('downtime_reports')
+        .collection(chosenYear)
+        .withConverter<DownTimeReport>(
+          fromFirestore: (snapshot, _) =>
+              DownTimeReport.fromJson(snapshot.data()!),
           toFirestore: (report, _) => report.toJson(),
         );
     return DefaultTabController(
@@ -155,119 +167,182 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                     ConnectionState.waiting) {
                                                   return ColorLoader();
                                                 } else {
-                                                  List<
-                                                          QueryDocumentSnapshot<
-                                                              OverWeightReport>>
-                                                      overReportsList =
-                                                      overweightSnapshot
-                                                              .data!.docs
-                                                          as List<
-                                                              QueryDocumentSnapshot<
-                                                                  OverWeightReport>>;
-                                                  OverWeightReport
-                                                      temp_overweight_report =
-                                                      OverWeightReport
-                                                          .getFilteredReportOfInterval(
-                                                    overReportsList,
-                                                    int.parse(from_month),
-                                                    int.parse(to_month),
-                                                    int.parse(from_day),
-                                                    int.parse(to_day),
-                                                    int.parse(chosenYear),
-                                                    TOTAL_PLANT,
-                                                    ALL_LINES,
-                                                  );
-                                                  List<OverWeightReport>
-                                                      overweightTempList =
-                                                      OverWeightReport
-                                                          .getAllReportsOfInterval(
-                                                    overReportsList,
-                                                    int.parse(from_month),
-                                                    int.parse(to_month),
-                                                    int.parse(from_day),
-                                                    int.parse(to_day),
-                                                    int.parse(chosenYear),
-                                                    WAFER_AREA,
-                                                  ).values.toList();
-                                                  List<
-                                                          QueryDocumentSnapshot<
-                                                              BiscuitsReport>>
-                                                      biscuitsReportsList =
-                                                      biscuitsSnapshot
-                                                              .data!.docs
-                                                          as List<
-                                                              QueryDocumentSnapshot<
-                                                                  BiscuitsReport>>;
-                                                  MiniProductionReport
-                                                      temp_biscuit_report =
-                                                      BiscuitsReport
-                                                          .getFilteredReportOfInterval(
-                                                    biscuitsReportsList,
-                                                    int.parse(from_month),
-                                                    int.parse(to_month),
-                                                    int.parse(from_day),
-                                                    int.parse(to_day),
-                                                    int.parse(chosenYear),
-                                                    ALL_LINES,
-                                                    overweightTempList,
-                                                  );
-                                                  List<
-                                                          QueryDocumentSnapshot<
-                                                              WaferReport>>
-                                                      waferReportsList =
-                                                      waferSnapshot.data!.docs
-                                                          as List<
-                                                              QueryDocumentSnapshot<
-                                                                  WaferReport>>;
-                                                  MiniProductionReport
-                                                      temp_wafer_report =
-                                                      WaferReport
-                                                          .getFilteredReportOfInterval(
-                                                    waferReportsList,
-                                                    int.parse(from_month),
-                                                    int.parse(to_month),
-                                                    int.parse(from_day),
-                                                    int.parse(to_day),
-                                                    int.parse(chosenYear),
-                                                    ALL_LINES,
-                                                    overweightTempList,
-                                                  );
-                                                  List<
-                                                          QueryDocumentSnapshot<
-                                                              MaamoulReport>>
-                                                      maamoulReportsList =
-                                                      maamoulSnapshot.data!.docs
-                                                          as List<
-                                                              QueryDocumentSnapshot<
-                                                                  MaamoulReport>>;
-                                                  MiniProductionReport
-                                                      temp_maamoul_report =
-                                                      MaamoulReport
-                                                          .getFilteredReportOfInterval(
-                                                    maamoulReportsList,
-                                                    int.parse(from_month),
-                                                    int.parse(to_month),
-                                                    int.parse(from_day),
-                                                    int.parse(to_day),
-                                                    int.parse(chosenYear),
-                                                    ALL_LINES,
-                                                    overweightTempList,
-                                                  );
-                                                  return Center(
-                                                    child: ProductionLine(
-                                                      report:
+                                                  return FutureBuilder<
+                                                          QuerySnapshot>(
+                                                      future: downTimeReportRef
+                                                          .get(),
+                                                      builder: (BuildContext
+                                                              context,
+                                                          AsyncSnapshot<
+                                                                  QuerySnapshot>
+                                                              downTimeSnapshot) {
+                                                        if (downTimeSnapshot
+                                                            .hasError) {
+                                                          return ErrorMessageHeading(
+                                                              'Something went wrong');
+                                                        } else if (downTimeSnapshot
+                                                                .connectionState ==
+                                                            ConnectionState
+                                                                .waiting) {
+                                                          return ColorLoader();
+                                                        } else {
+                                                          List<
+                                                                  QueryDocumentSnapshot<
+                                                                      OverWeightReport>>
+                                                              overReportsList =
+                                                              overweightSnapshot
+                                                                      .data!
+                                                                      .docs
+                                                                  as List<
+                                                                      QueryDocumentSnapshot<
+                                                                          OverWeightReport>>;
+                                                          OverWeightReport
+                                                              temp_overweight_report =
+                                                              OverWeightReport
+                                                                  .getFilteredReportOfInterval(
+                                                            overReportsList,
+                                                            int.parse(
+                                                                from_month),
+                                                            int.parse(to_month),
+                                                            int.parse(from_day),
+                                                            int.parse(to_day),
+                                                            int.parse(
+                                                                chosenYear),
+                                                            TOTAL_PLANT,
+                                                            ALL_LINES,
+                                                          );
+                                                          List<OverWeightReport>
+                                                              overweightTempList =
+                                                              OverWeightReport
+                                                                  .getAllReportsOfInterval(
+                                                            overReportsList,
+                                                            int.parse(
+                                                                from_month),
+                                                            int.parse(to_month),
+                                                            int.parse(from_day),
+                                                            int.parse(to_day),
+                                                            int.parse(
+                                                                chosenYear),
+                                                            WAFER_AREA,
+                                                          ).values.toList();
+                                                          List<
+                                                                  QueryDocumentSnapshot<
+                                                                      BiscuitsReport>>
+                                                              biscuitsReportsList =
+                                                              biscuitsSnapshot
+                                                                      .data!
+                                                                      .docs
+                                                                  as List<
+                                                                      QueryDocumentSnapshot<
+                                                                          BiscuitsReport>>;
                                                           MiniProductionReport
-                                                              .mergeReports([
-                                                        temp_biscuit_report,
-                                                        temp_wafer_report,
-                                                        temp_maamoul_report
-                                                      ]),
-                                                      overweight:
-                                                          temp_overweight_report
-                                                              .percent,
-                                                      isWebView: false,
-                                                    ),
-                                                  );
+                                                              temp_biscuit_report =
+                                                              BiscuitsReport
+                                                                  .getFilteredReportOfInterval(
+                                                            biscuitsReportsList,
+                                                            int.parse(
+                                                                from_month),
+                                                            int.parse(to_month),
+                                                            int.parse(from_day),
+                                                            int.parse(to_day),
+                                                            int.parse(
+                                                                chosenYear),
+                                                            ALL_LINES,
+                                                            overweightTempList,
+                                                          );
+                                                          List<
+                                                                  QueryDocumentSnapshot<
+                                                                      WaferReport>>
+                                                              waferReportsList =
+                                                              waferSnapshot
+                                                                      .data!
+                                                                      .docs
+                                                                  as List<
+                                                                      QueryDocumentSnapshot<
+                                                                          WaferReport>>;
+                                                          MiniProductionReport
+                                                              temp_wafer_report =
+                                                              WaferReport
+                                                                  .getFilteredReportOfInterval(
+                                                            waferReportsList,
+                                                            int.parse(
+                                                                from_month),
+                                                            int.parse(to_month),
+                                                            int.parse(from_day),
+                                                            int.parse(to_day),
+                                                            int.parse(
+                                                                chosenYear),
+                                                            ALL_LINES,
+                                                            overweightTempList,
+                                                          );
+                                                          List<
+                                                                  QueryDocumentSnapshot<
+                                                                      MaamoulReport>>
+                                                              maamoulReportsList =
+                                                              maamoulSnapshot
+                                                                      .data!
+                                                                      .docs
+                                                                  as List<
+                                                                      QueryDocumentSnapshot<
+                                                                          MaamoulReport>>;
+                                                          MiniProductionReport
+                                                              temp_maamoul_report =
+                                                              MaamoulReport
+                                                                  .getFilteredReportOfInterval(
+                                                            maamoulReportsList,
+                                                            int.parse(
+                                                                from_month),
+                                                            int.parse(to_month),
+                                                            int.parse(from_day),
+                                                            int.parse(to_day),
+                                                            int.parse(
+                                                                chosenYear),
+                                                            ALL_LINES,
+                                                            overweightTempList,
+                                                          );
+                                                          List<
+                                                                  QueryDocumentSnapshot<
+                                                                      DownTimeReport>>
+                                                              dtReportsList =
+                                                              downTimeSnapshot
+                                                                      .data!
+                                                                      .docs
+                                                                  as List<
+                                                                      QueryDocumentSnapshot<
+                                                                          DownTimeReport>>;
+                                                          int temp_wasted_minutes =
+                                                              DownTimeReport
+                                                                  .getWastedMinutesOfCriteria(
+                                                            dtReportsList,
+                                                            int.parse(
+                                                                from_month),
+                                                            int.parse(to_month),
+                                                            int.parse(from_day),
+                                                            int.parse(to_day),
+                                                            int.parse(
+                                                                chosenYear),
+                                                            TOTAL_PLANT,
+                                                            ALL_LINES,
+                                                          );
+                                                          return Center(
+                                                            child:
+                                                                ProductionLine(
+                                                              report: MiniProductionReport
+                                                                  .mergeReports([
+                                                                temp_biscuit_report,
+                                                                temp_wafer_report,
+                                                                temp_maamoul_report
+                                                              ]),
+                                                              overweight:
+                                                                  temp_overweight_report
+                                                                      .percent,
+                                                              isWebView: false,
+                                                              wastedMinutes:
+                                                                  temp_wasted_minutes,
+                                                            ),
+                                                          );
+                                                        }
+                                                      });
                                                 }
                                               });
                                         }
