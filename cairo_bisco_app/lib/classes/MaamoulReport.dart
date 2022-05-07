@@ -266,7 +266,7 @@ class MaamoulReport {
     int month,
     int day,
     double shiftHours,
-      // double wastedMinutes,
+    // double wastedMinutes,
     //3.0.8 additions
     String mixerScrapReason,
     String ovenScrapReason,

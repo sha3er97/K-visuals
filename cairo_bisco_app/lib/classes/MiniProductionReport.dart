@@ -83,7 +83,7 @@ class MiniProductionReport {
         temp_theoreticalPlan = 0.0,
         temp_rm_muv = 0.0,
         temp_pm_muv = 0.0,
-    // temp_wasted_minutes = 0.0,
+        // temp_wasted_minutes = 0.0,
         temp_all_shift_hours = 0.0;
     int temp_productionInCartons = 0, temp_productionPlan = 0;
     int temp_month = -1, temp_day = -1, temp_year = -1;

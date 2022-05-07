@@ -118,7 +118,6 @@ class _BiscuitsProductionFormState extends State<BiscuitsProductionForm> {
       _mc3WasteKg_validate = false,
       _mc4WasteKg_validate = false,
       _shiftHours_validate = false;
-
   // _wastedMinutes_validate = false;
 
   //drop down values
