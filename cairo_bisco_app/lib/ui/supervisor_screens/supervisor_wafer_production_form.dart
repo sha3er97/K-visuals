@@ -79,7 +79,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
       mc1WasteKg,
       mc2WasteKg,
       shiftHours,
-      wastedMinutes,
+      // wastedMinutes,
       //3.0.9 additions
       mc1Type,
       mc2Type,
@@ -117,8 +117,9 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
       _mc2WasteKg_validate = false,
       _mc3WasteKg_validate = false,
       _mc4WasteKg_validate = false,
-      _shiftHours_validate = false,
-      _wastedMinutes_validate = false;
+      _shiftHours_validate = false;
+
+  // _wastedMinutes_validate = false;
 
   //drop down values
   late String selectedShift,
@@ -216,7 +217,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
     shiftHours = isEdit
         ? reportDetails.shiftHours.toString()
         : standardShiftHours.toString();
-    wastedMinutes = isEdit ? reportDetails.wastedMinutes.toString() : '';
+    // wastedMinutes = isEdit ? reportDetails.wastedMinutes.toString() : '';
     //3.0.8 additions
     coolerScrapReason =
         isEdit ? reportDetails.coolerScrapReason.toString() : '';
@@ -580,44 +581,44 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                         ),
                         SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        smallerHeading(
-                            'اجمالي توقفات الخط بالدقيقة\nTotal line stops in Minutes'),
-                        SizedBox(height: minimumPadding),
-                        TextFormField(
-                          initialValue: wastedMinutes,
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _wastedMinutes_validate
-                                ? missingValueErrorText
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            wastedMinutes = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
+                        // smallerHeading(
+                        //     'اجمالي توقفات الخط بالدقيقة\nTotal line stops in Minutes'),
+                        // SizedBox(height: minimumPadding),
+                        // TextFormField(
+                        //   initialValue: wastedMinutes,
+                        //   style: (TextStyle(
+                        //       color: KelloggColors.darkRed,
+                        //       fontWeight: FontWeight.w400)),
+                        //   keyboardType: TextInputType.number,
+                        //   inputFormatters: <TextInputFormatter>[
+                        //     FilteringTextInputFormatter.digitsOnly
+                        //   ],
+                        //   cursorColor: Colors.white,
+                        //   obscureText: false,
+                        //   decoration: InputDecoration(
+                        //     border: OutlineInputBorder(
+                        //       borderSide: BorderSide(
+                        //           color: KelloggColors.darkRed,
+                        //           width: textFieldBorderRadius),
+                        //       borderRadius: BorderRadius.all(
+                        //           Radius.circular(textFieldRadius)),
+                        //     ),
+                        //     errorText: _wastedMinutes_validate
+                        //         ? missingValueErrorText
+                        //         : null,
+                        //     focusedBorder: OutlineInputBorder(
+                        //       borderSide: BorderSide(
+                        //           color: KelloggColors.yellow,
+                        //           width: textFieldFocusedBorderRadius),
+                        //       borderRadius: BorderRadius.all(
+                        //           Radius.circular(textFieldRadius)),
+                        //     ),
+                        //   ),
+                        //   onChanged: (value) {
+                        //     wastedMinutes = value;
+                        //   },
+                        // ),
+                        // SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
                         smallerHeading('الانتاج الفعلي بالكراتين\nProduction'),
                         SizedBox(height: minimumPadding),
@@ -1849,8 +1850,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             emptyField(mc2WasteKg);
                                         _shiftHours_validate =
                                             emptyField(shiftHours);
-                                        _wastedMinutes_validate =
-                                            emptyField(wastedMinutes);
+                                        // _wastedMinutes_validate =
+                                        //     emptyField(wastedMinutes);
                                         //3.0.9 additions
                                         _mc3Speed_validate =
                                             emptyField(mc3Speed);
@@ -1888,7 +1889,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             !_mc1WasteKg_validate &&
                                             !_mc2WasteKg_validate &&
                                             !_shiftHours_validate &&
-                                            !_wastedMinutes_validate &&
+                                            // !_wastedMinutes_validate &&
                                             //3.0.9 additions
                                             !_mc3Speed_validate &&
                                             !_mc4Speed_validate &&
@@ -1932,7 +1933,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             int.parse(selectedMonth),
                                             int.parse(selectedDay),
                                             double.parse(shiftHours),
-                                            double.parse(wastedMinutes),
+                                            // double.parse(wastedMinutes),
                                             //3.0.8 additions
                                             creamScrapReason,
                                             ovenScrapReason,
@@ -2025,8 +2026,8 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             emptyField(mc2WasteKg);
                                         _shiftHours_validate =
                                             emptyField(shiftHours);
-                                        _wastedMinutes_validate =
-                                            emptyField(wastedMinutes);
+                                        // _wastedMinutes_validate =
+                                        //     emptyField(wastedMinutes);
                                         //3.0.9 additions
                                         _mc3Speed_validate =
                                             emptyField(mc3Speed);
@@ -2064,7 +2065,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                             !_mc1WasteKg_validate &&
                                             !_mc2WasteKg_validate &&
                                             !_shiftHours_validate &&
-                                            !_wastedMinutes_validate &&
+                                            // !_wastedMinutes_validate &&
                                             //3.0.9 additions
                                             !_mc3Speed_validate &&
                                             !_mc4Speed_validate &&
@@ -2115,7 +2116,7 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
                                               int.parse(selectedMonth),
                                               int.parse(selectedDay),
                                               double.parse(shiftHours),
-                                              double.parse(wastedMinutes),
+                                              // double.parse(wastedMinutes),
                                               //3.0.8 additions
                                               creamScrapReason,
                                               ovenScrapReason,

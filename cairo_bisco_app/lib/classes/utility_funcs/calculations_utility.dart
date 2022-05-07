@@ -305,17 +305,18 @@ double calculateQualityFromOriginalReport(
 double calculateOeeFromMiniReport(
   MiniProductionReport report,
   double matchedOverWeight,
+  int wastedMinutes,
 ) {
   // return (report.productionInKg.toDouble() / report.theoreticalAverage) * 100;
   double res = calculateRate(report, matchedOverWeight) *
       calculateQuality(report, matchedOverWeight) *
-      calculateAvailability(report) *
+      calculateAvailability(report, wastedMinutes) *
       100;
   return double.parse(res.toStringAsFixed(1));
 }
 
-double calculateAvailability(MiniProductionReport report) {
-  double res = (report.plannedHours - minutesToHours(report.wastedMinutes)) /
+double calculateAvailability(MiniProductionReport report, int wastedMinutes) {
+  double res = (report.plannedHours - minutesToHours(wastedMinutes * 1.0)) /
       report.plannedHours;
   return report.plannedHours == 0.0
       ? 0.0
@@ -355,16 +356,15 @@ bool BadEHSDriver(EhsReport report) {
 }
 
 bool BadProductionDriver(
-  MiniProductionReport report,
-  double matchedOverWeight,
-) {
+    MiniProductionReport report, double matchedOverWeight, int wastedMinutes) {
   bool noWork = report.productionInCartons == 0;
   if (noWork)
     return false;
   else
     return calculateMPSA(report.planInKg, report.productionInKg) <
             Plans.mpsaTarget ||
-        calculateOeeFromMiniReport(report, matchedOverWeight) < Plans.targetOEE;
+        calculateOeeFromMiniReport(report, matchedOverWeight, wastedMinutes) <
+            Plans.targetOEE;
 }
 
 bool BadPeopleDriver(PeopleReport report) {

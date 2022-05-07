@@ -14,10 +14,11 @@ class ProductionColScreen extends StatelessWidget {
     required this.report,
     required this.prodType,
     required this.overweight,
+    required this.wastedMinutes,
   }) : super(key: key);
   final MiniProductionReport report;
 
-  final int lineNum;
+  final int lineNum, wastedMinutes;
   final String prodType;
   final double overweight;
 
@@ -246,7 +247,8 @@ class ProductionColScreen extends StatelessWidget {
             axes: <RadialAxis>[
               RadialAxis(minimum: 0, maximum: 100, pointers: <GaugePointer>[
                 NeedlePointer(
-                    value: calculateOeeFromMiniReport(report, overweight),
+                    value: calculateOeeFromMiniReport(
+                        report, overweight, wastedMinutes),
                     enableAnimation: true)
               ], ranges: <GaugeRange>[
                 GaugeRange(
@@ -258,7 +260,8 @@ class ProductionColScreen extends StatelessWidget {
               ], annotations: <GaugeAnnotation>[
                 GaugeAnnotation(
                     widget: Text(
-                      calculateOeeFromMiniReport(report, overweight)
+                      calculateOeeFromMiniReport(
+                                  report, overweight, wastedMinutes)
                               .toStringAsFixed(1) +
                           ' %',
                       style: TextStyle(

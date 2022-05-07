@@ -19,8 +19,9 @@ class MiniProductionReport {
       theoreticalAverage,
       rmMUV,
       pmMUV,
-      plannedHours,
-      wastedMinutes;
+      plannedHours;
+
+  // wastedMinutes;
 
   MiniProductionReport({
     required this.area,
@@ -42,7 +43,7 @@ class MiniProductionReport {
     required this.rmMUV,
     required this.pmMUV,
     required this.plannedHours,
-    required this.wastedMinutes,
+    // required this.wastedMinutes,
   });
 
   static MiniProductionReport getEmptyReport() {
@@ -65,7 +66,7 @@ class MiniProductionReport {
       theoreticalAverage: 0.0,
       rmMUV: 0.0,
       pmMUV: 0.0,
-      wastedMinutes: 0.0,
+      // wastedMinutes: 0.0,
       plannedHours: 0.0,
     );
   }
@@ -82,7 +83,7 @@ class MiniProductionReport {
         temp_theoreticalPlan = 0.0,
         temp_rm_muv = 0.0,
         temp_pm_muv = 0.0,
-        temp_wasted_minutes = 0.0,
+    // temp_wasted_minutes = 0.0,
         temp_all_shift_hours = 0.0;
     int temp_productionInCartons = 0, temp_productionPlan = 0;
     int temp_month = -1, temp_day = -1, temp_year = -1;
@@ -98,7 +99,7 @@ class MiniProductionReport {
       temp_used_film += report.totalFilmUsed;
       temp_rm_muv += report.rmMUV;
       temp_pm_muv += report.pmMUV;
-      temp_wasted_minutes += report.wastedMinutes;
+      // temp_wasted_minutes += report.wastedMinutes;
       temp_all_shift_hours += report.plannedHours;
       temp_month = report.month;
       temp_day = report.day;
@@ -127,7 +128,7 @@ class MiniProductionReport {
       theoreticalAverage: temp_theoreticalPlan,
       pmMUV: temp_pm_muv,
       rmMUV: temp_rm_muv,
-      wastedMinutes: temp_wasted_minutes,
+      // wastedMinutes: temp_wasted_minutes,
       plannedHours: temp_all_shift_hours,
     );
   }

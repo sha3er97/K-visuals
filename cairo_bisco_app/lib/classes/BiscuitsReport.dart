@@ -57,7 +57,7 @@ class BiscuitsReport {
       mc3WasteKg,
       mc4WasteKg,
       shiftHours,
-      wastedMinutes,
+      // wastedMinutes,
       mc1Speed,
       mc2Speed,
       //3.0.9 additions
@@ -94,7 +94,7 @@ class BiscuitsReport {
     required this.month,
     required this.day,
     required this.shiftHours,
-    required this.wastedMinutes,
+    // required this.wastedMinutes,
     //3.0.8 additions
     required this.extrusionScrapReason,
     required this.ovenScrapReason,
@@ -146,9 +146,9 @@ class BiscuitsReport {
           mc2WasteKg: parseJsonToDouble(json['mc2WasteKg']!),
           shiftHours: parseJsonToDouble(json['shiftHours']!),
           //for backward compatibility
-          wastedMinutes: json['wastedMinutes'] == null
-              ? 0
-              : parseJsonToDouble(json['wastedMinutes']!),
+          // wastedMinutes: json['wastedMinutes'] == null
+          //     ? 0
+          //     : parseJsonToDouble(json['wastedMinutes']!),
           //3.0.8 additions
           conveyorScrapReason: json['conveyorScrapReason'] == null
               ? ''
@@ -229,7 +229,7 @@ class BiscuitsReport {
       'mc1WasteKg': mc1WasteKg,
       'mc2WasteKg': mc2WasteKg,
       'shiftHours': shiftHours,
-      'wastedMinutes': wastedMinutes,
+      // 'wastedMinutes': wastedMinutes,
       //3.0.8 additions
       'extrusionScrapReason': extrusionScrapReason,
       'packingScrapReason': packingScrapReason,
@@ -284,7 +284,7 @@ class BiscuitsReport {
     int month,
     int day,
     double shiftHours,
-    double wastedMinutes,
+      // double wastedMinutes,
     //3.0.8 additions
     String extrusionScrapReason,
     String ovenScrapReason,
@@ -339,7 +339,7 @@ class BiscuitsReport {
         mc1WasteKg: mc1WasteKg,
         mc2WasteKg: mc2WasteKg,
         shiftHours: shiftHours,
-        wastedMinutes: wastedMinutes,
+        // wastedMinutes: wastedMinutes,
         //3.0.8 additions
         extrusionScrapReason: extrusionScrapReason,
         packingScrapReason: packingScrapReason,
@@ -397,7 +397,7 @@ class BiscuitsReport {
     int month,
     int day,
     double shiftHours,
-    double wastedMinutes,
+      // double wastedMinutes,
     //3.0.8 additions
     String extrusionScrapReason,
     String ovenScrapReason,
@@ -453,7 +453,7 @@ class BiscuitsReport {
           'mc1WasteKg': mc1WasteKg,
           'mc2WasteKg': mc2WasteKg,
           'shiftHours': shiftHours,
-          'wastedMinutes': wastedMinutes,
+      // 'wastedMinutes': wastedMinutes,
           //3.0.8 additions
           'extrusionScrapReason': extrusionScrapReason,
           'packingScrapReason': packingScrapReason,
@@ -564,7 +564,7 @@ class BiscuitsReport {
         temp_theoreticalPlan = 0.0,
         temp_rm_muv = 0.0,
         temp_pm_muv = 0.0,
-        temp_wasted_minutes = 0.0,
+    // temp_wasted_minutes = 0.0,
         temp_all_shift_hours = 0.0;
     int temp_productionInCartons = 0, temp_productionPlan = 0;
     String lastSkuName = '-';
@@ -620,7 +620,7 @@ class BiscuitsReport {
             calculateRmMUV(BISCUIT_AREA, report.data(), matchedOverWeight);
         temp_pm_muv += calculatePmMUV(BISCUIT_AREA, report.data());
         temp_all_shift_hours += report.data().shiftHours;
-        temp_wasted_minutes += report.data().wastedMinutes;
+        // temp_wasted_minutes += report.data().wastedMinutes;
         temp_month = report.data().month;
         temp_day = report.data().day;
         temp_year = report.data().year;
@@ -654,7 +654,7 @@ class BiscuitsReport {
       theoreticalAverage: temp_theoreticalPlan,
       pmMUV: temp_pm_muv,
       rmMUV: temp_rm_muv,
-      wastedMinutes: temp_wasted_minutes,
+      // wastedMinutes: temp_wasted_minutes,
       plannedHours: temp_all_shift_hours,
     );
   }
@@ -690,7 +690,7 @@ class BiscuitsReport {
       extrusionRework: 0.0,
       skuName: '',
       shiftHours: standardShiftHours,
-      wastedMinutes: 0.0,
+      // wastedMinutes: 0.0,
       //3.0.8 additions
       extrusionScrapReason: '',
       ovenScrapReason: '',

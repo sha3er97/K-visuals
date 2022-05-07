@@ -15,12 +15,14 @@ class OeeDiagram extends StatelessWidget {
     required this.report,
     required this.isWebView,
     required this.circleColor,
+    required this.wastedMinutes,
   }) : super(key: key);
   final MiniProductionReport report;
   final Color circleColor;
 
   final double overweight;
   final bool isWebView;
+  final int wastedMinutes;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +84,7 @@ class OeeDiagram extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       WebCustomizedHeading(
-                          (calculateAvailability(report) * 100)
+                          (calculateAvailability(report, wastedMinutes) * 100)
                                   .toStringAsFixed(1) +
                               " %",
                           webFactor),
@@ -113,7 +115,8 @@ class OeeDiagram extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       WebCustomizedHeading(
-                          calculateOeeFromMiniReport(report, overweight)
+                          calculateOeeFromMiniReport(
+                                      report, overweight, wastedMinutes)
                                   .toStringAsFixed(1) +
                               " %",
                           webFactor),

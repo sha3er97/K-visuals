@@ -53,7 +53,7 @@ class MaamoulReport {
       mc3WasteKg,
       mc4WasteKg,
       shiftHours,
-      wastedMinutes,
+      // wastedMinutes,
       mc1Speed,
       mc2Speed,
       //3.0.9 additions
@@ -88,7 +88,7 @@ class MaamoulReport {
     required this.month,
     required this.day,
     required this.shiftHours,
-    required this.wastedMinutes,
+    // required this.wastedMinutes,
     //3.0.8 additions
     required this.mixerScrapReason,
     required this.ovenScrapReason,
@@ -136,9 +136,9 @@ class MaamoulReport {
           mc1WasteKg: parseJsonToDouble(json['mc1WasteKg']!),
           mc2WasteKg: parseJsonToDouble(json['mc2WasteKg']!),
           shiftHours: parseJsonToDouble(json['shiftHours']!),
-          wastedMinutes: json['wastedMinutes'] == null
-              ? 0
-              : parseJsonToDouble(json['wastedMinutes']!),
+          // wastedMinutes: json['wastedMinutes'] == null
+          //     ? 0
+          //     : parseJsonToDouble(json['wastedMinutes']!),
           //3.0.8 additions
           mixerScrapReason: json['mixerScrapReason'] == null
               ? ''
@@ -214,7 +214,7 @@ class MaamoulReport {
       'mc1WasteKg': mc1WasteKg,
       'mc2WasteKg': mc2WasteKg,
       'shiftHours': shiftHours,
-      'wastedMinutes': wastedMinutes,
+      // 'wastedMinutes': wastedMinutes,
       //3.0.8 additions
       'mixerScrapReason': mixerScrapReason,
       'ovenScrapReason': ovenScrapReason,
@@ -266,7 +266,7 @@ class MaamoulReport {
     int month,
     int day,
     double shiftHours,
-    double wastedMinutes,
+      // double wastedMinutes,
     //3.0.8 additions
     String mixerScrapReason,
     String ovenScrapReason,
@@ -318,7 +318,7 @@ class MaamoulReport {
         mc1WasteKg: mc1WasteKg,
         mc2WasteKg: mc2WasteKg,
         shiftHours: shiftHours,
-        wastedMinutes: wastedMinutes,
+        // wastedMinutes: wastedMinutes,
         //3.0.8 additions
         mixerScrapReason: mixerScrapReason,
         ovenScrapReason: ovenScrapReason,
@@ -373,7 +373,7 @@ class MaamoulReport {
     int month,
     int day,
     double shiftHours,
-    double wastedMinutes,
+      // double wastedMinutes,
     //3.0.8 additions
     String mixerScrapReason,
     String ovenScrapReason,
@@ -425,7 +425,7 @@ class MaamoulReport {
           'mc1WasteKg': mc1WasteKg,
           'mc2WasteKg': mc2WasteKg,
           'shiftHours': shiftHours,
-          'wastedMinutes': wastedMinutes,
+      // 'wastedMinutes': wastedMinutes,
           //3.0.8 additions
           'mixerScrapReason': mixerScrapReason,
           'ovenScrapReason': ovenScrapReason,
@@ -534,7 +534,7 @@ class MaamoulReport {
         temp_theoreticalPlan = 0.0,
         temp_rm_muv = 0.0,
         temp_pm_muv = 0.0,
-        temp_wasted_minutes = 0.0,
+    // temp_wasted_minutes = 0.0,
         temp_all_shift_hours = 0.0;
     int temp_productionInCartons = 0, temp_productionPlan = 0;
     String lastSkuName = '-';
@@ -590,7 +590,7 @@ class MaamoulReport {
             calculateRmMUV(MAAMOUL_AREA, report.data(), matchedOverWeight);
         temp_pm_muv += calculatePmMUV(MAAMOUL_AREA, report.data());
         temp_all_shift_hours += report.data().shiftHours;
-        temp_wasted_minutes += report.data().wastedMinutes;
+        // temp_wasted_minutes += report.data().wastedMinutes;
         temp_month = report.data().month;
         temp_day = report.data().day;
         temp_year = report.data().year;
@@ -624,7 +624,7 @@ class MaamoulReport {
       theoreticalAverage: temp_theoreticalPlan,
       pmMUV: temp_pm_muv,
       rmMUV: temp_rm_muv,
-      wastedMinutes: temp_wasted_minutes,
+      // wastedMinutes: temp_wasted_minutes,
       plannedHours: temp_all_shift_hours,
     );
   }
@@ -658,7 +658,7 @@ class MaamoulReport {
       stampingRework: 0.0,
       stampingScrap: 0.0,
       shiftHours: standardShiftHours,
-      wastedMinutes: 0.0,
+      // wastedMinutes: 0.0,
       //3.0.8 additions
       stampingScrapReason: '',
       ovenScrapReason: '',

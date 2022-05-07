@@ -284,8 +284,10 @@ class ProductionLine extends StatelessWidget {
             report: report,
             overweight: overweight,
             isWebView: isWebView,
+            wastedMinutes: wastedMinutes,
             circleColor:
-                calculateOeeFromMiniReport(report, overweight) < Plans.targetOEE
+                calculateOeeFromMiniReport(report, overweight, wastedMinutes) <
+                        Plans.targetOEE
                     ? KelloggColors.cockRed
                     : KelloggColors.green,
           ),

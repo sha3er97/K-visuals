@@ -56,7 +56,7 @@ class WaferReport {
       mc3WasteKg,
       mc4WasteKg,
       shiftHours,
-      wastedMinutes,
+      // wastedMinutes,
       mc1Speed,
       mc2Speed,
       //3.0.9 additions
@@ -93,7 +93,7 @@ class WaferReport {
     required this.month,
     required this.day,
     required this.shiftHours,
-    required this.wastedMinutes,
+    // required this.wastedMinutes,
     //3.0.8 additions
     required this.creamScrapReason,
     required this.ovenScrapReason,
@@ -144,9 +144,9 @@ class WaferReport {
           mc1WasteKg: parseJsonToDouble(json['mc1WasteKg']!),
           mc2WasteKg: parseJsonToDouble(json['mc2WasteKg']!),
           shiftHours: parseJsonToDouble(json['shiftHours']!),
-          wastedMinutes: json['wastedMinutes'] == null
-              ? 0
-              : parseJsonToDouble(json['wastedMinutes']!),
+          // wastedMinutes: json['wastedMinutes'] == null
+          //     ? 0
+          //     : parseJsonToDouble(json['wastedMinutes']!),
           //3.0.8 additions
           creamScrapReason: json['creamScrapReason'] == null
               ? ''
@@ -227,7 +227,7 @@ class WaferReport {
       'mc1WasteKg': mc1WasteKg,
       'mc2WasteKg': mc2WasteKg,
       'shiftHours': shiftHours,
-      'wastedMinutes': wastedMinutes,
+      // 'wastedMinutes': wastedMinutes,
       //3.0.8 additions
       'creamScrapReason': creamScrapReason,
       'ovenScrapReason': ovenScrapReason,
@@ -282,7 +282,7 @@ class WaferReport {
     int month,
     int day,
     double shiftHours,
-    double wastedMinutes,
+      // double wastedMinutes,
     //3.0.8 additions
     String creamScrapReason,
     String ovenScrapReason,
@@ -337,7 +337,7 @@ class WaferReport {
         mc1WasteKg: mc1WasteKg,
         mc2WasteKg: mc2WasteKg,
         shiftHours: shiftHours,
-        wastedMinutes: wastedMinutes,
+        // wastedMinutes: wastedMinutes,
         //3.0.8 additions
         creamScrapReason: creamScrapReason,
         ovenScrapReason: ovenScrapReason,
@@ -395,7 +395,7 @@ class WaferReport {
     int month,
     int day,
     double shiftHours,
-    double wastedMinutes,
+      // double wastedMinutes,
     //3.0.8 additions
     String creamScrapReason,
     String ovenScrapReason,
@@ -451,7 +451,7 @@ class WaferReport {
           'mc1WasteKg': mc1WasteKg,
           'mc2WasteKg': mc2WasteKg,
           'shiftHours': shiftHours,
-          'wastedMinutes': wastedMinutes,
+      // 'wastedMinutes': wastedMinutes,
           //3.0.8 additions
           'creamScrapReason': creamScrapReason,
           'ovenScrapReason': ovenScrapReason,
@@ -562,7 +562,7 @@ class WaferReport {
         temp_theoreticalPlan = 0.0,
         temp_rm_muv = 0.0,
         temp_pm_muv = 0.0,
-        temp_wasted_minutes = 0.0,
+    // temp_wasted_minutes = 0.0,
         temp_all_shift_hours = 0.0;
     int temp_productionInCartons = 0, temp_productionPlan = 0;
     String lastSkuName = '-';
@@ -618,7 +618,7 @@ class WaferReport {
             calculateRmMUV(WAFER_AREA, report.data(), matchedOverWeight);
         temp_pm_muv += calculatePmMUV(WAFER_AREA, report.data());
         temp_all_shift_hours += report.data().shiftHours;
-        temp_wasted_minutes += report.data().wastedMinutes;
+        // temp_wasted_minutes += report.data().wastedMinutes;
         temp_month = report.data().month;
         temp_day = report.data().day;
         temp_year = report.data().year;
@@ -652,7 +652,7 @@ class WaferReport {
       theoreticalAverage: temp_theoreticalPlan,
       pmMUV: temp_pm_muv,
       rmMUV: temp_rm_muv,
-      wastedMinutes: temp_wasted_minutes,
+      // wastedMinutes: temp_wasted_minutes,
       plannedHours: temp_all_shift_hours,
     );
   }
@@ -688,7 +688,7 @@ class WaferReport {
       coolerRework: 0.0,
       creamScrap: 0.0,
       shiftHours: standardShiftHours,
-      wastedMinutes: 0.0,
+      // wastedMinutes: 0.0,
       //3.0.8 additions
       creamScrapReason: '',
       ovenScrapReason: '',

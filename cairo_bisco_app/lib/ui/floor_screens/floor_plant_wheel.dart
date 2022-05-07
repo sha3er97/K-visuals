@@ -20,6 +20,8 @@ import 'package:cairo_bisco_app/ui/floor_screens/floor_dashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../../classes/DownTimeReport.dart';
+
 class FloorPlantWheel extends StatefulWidget {
   FloorPlantWheel({
     Key? key,
@@ -107,6 +109,16 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
       .collection(getYear())
       .withConverter<PeopleReport>(
         fromFirestore: (snapshot, _) => PeopleReport.fromJson(snapshot.data()!),
+        toFirestore: (report, _) => report.toJson(),
+      );
+
+  final downTimeReportRef = FirebaseFirestore.instance
+      .collection(factory_name)
+      .doc('downtime_reports')
+      .collection(getYear())
+      .withConverter<DownTimeReport>(
+        fromFirestore: (snapshot, _) =>
+            DownTimeReport.fromJson(snapshot.data()!),
         toFirestore: (report, _) => report.toJson(),
       );
 
@@ -373,39 +385,101 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
                                                   int.parse(getYear()),
                                                   prodType.indexOf(type),
                                                 );
-                                                //plant wheel body
-                                                return KPI6GoodBadIndicator(
-                                                  color1: BadQFSDriver(temp_qfs)
-                                                      ? KelloggColors.cockRed
-                                                      : KelloggColors.green,
-                                                  title1:
-                                                      'الجودة و\nسلامة الغذاء',
-                                                  color2: BadEHSDriver(temp_ehs)
-                                                      ? KelloggColors.cockRed
-                                                      : KelloggColors.green,
-                                                  title2: 'سلامة العاملين',
-                                                  color3: BadProductionDriver(
-                                                          temp_report,
-                                                          temp_overweight
-                                                              .percent)
-                                                      ? KelloggColors.cockRed
-                                                      : KelloggColors.green,
-                                                  title3: 'الانتاج',
-                                                  color4: BadPeopleDriver(
-                                                          temp_people)
-                                                      ? KelloggColors.cockRed
-                                                      : KelloggColors.green,
-                                                  title4: 'العمالة',
-                                                  color5: BadNRCDriver(temp_nrc)
-                                                      ? KelloggColors.cockRed
-                                                      : KelloggColors.green,
-                                                  title5: 'الموارد الطبيعية',
-                                                  color6: BadFinanceDriver(
-                                                          temp_report)
-                                                      ? KelloggColors.cockRed
-                                                      : KelloggColors.green,
-                                                  title6: 'الاداء المالي',
-                                                  isScreenOnly: true,
+                                                return FutureBuilder<
+                                                    QuerySnapshot>(
+                                                  future:
+                                                      downTimeReportRef.get(),
+                                                  builder: (BuildContext
+                                                          context,
+                                                      AsyncSnapshot<
+                                                              QuerySnapshot>
+                                                          downTimeSnapshot) {
+                                                    if (downTimeSnapshot
+                                                        .hasError) {
+                                                      return ErrorMessageHeading(
+                                                          'Something went wrong');
+                                                    } else if (downTimeSnapshot
+                                                            .connectionState ==
+                                                        ConnectionState
+                                                            .waiting) {
+                                                      return ColorLoader();
+                                                    } else {
+                                                      List<
+                                                              QueryDocumentSnapshot<
+                                                                  DownTimeReport>>
+                                                          dtReportsList =
+                                                          downTimeSnapshot
+                                                                  .data!.docs
+                                                              as List<
+                                                                  QueryDocumentSnapshot<
+                                                                      DownTimeReport>>;
+                                                      int temp_wasted_minutes =
+                                                          DownTimeReport
+                                                              .getWastedMinutesOfCriteria(
+                                                        dtReportsList,
+                                                        int.parse(getMonth()),
+                                                        int.parse(getMonth()),
+                                                        int.parse(getDay()),
+                                                        int.parse(getDay()),
+                                                        int.parse(getYear()),
+                                                        prodType.indexOf(type),
+                                                        lineNum,
+                                                      );
+                                                      //plant wheel body
+                                                      return KPI6GoodBadIndicator(
+                                                        color1: BadQFSDriver(
+                                                                temp_qfs)
+                                                            ? KelloggColors
+                                                                .cockRed
+                                                            : KelloggColors
+                                                                .green,
+                                                        title1:
+                                                            'الجودة و\nسلامة الغذاء',
+                                                        color2: BadEHSDriver(
+                                                                temp_ehs)
+                                                            ? KelloggColors
+                                                                .cockRed
+                                                            : KelloggColors
+                                                                .green,
+                                                        title2:
+                                                            'سلامة العاملين',
+                                                        color3: BadProductionDriver(
+                                                                temp_report,
+                                                                temp_overweight
+                                                                    .percent,
+                                                                temp_wasted_minutes)
+                                                            ? KelloggColors
+                                                                .cockRed
+                                                            : KelloggColors
+                                                                .green,
+                                                        title3: 'الانتاج',
+                                                        color4: BadPeopleDriver(
+                                                                temp_people)
+                                                            ? KelloggColors
+                                                                .cockRed
+                                                            : KelloggColors
+                                                                .green,
+                                                        title4: 'العمالة',
+                                                        color5: BadNRCDriver(
+                                                                temp_nrc)
+                                                            ? KelloggColors
+                                                                .cockRed
+                                                            : KelloggColors
+                                                                .green,
+                                                        title5:
+                                                            'الموارد الطبيعية',
+                                                        color6:
+                                                            BadFinanceDriver(
+                                                                    temp_report)
+                                                                ? KelloggColors
+                                                                    .cockRed
+                                                                : KelloggColors
+                                                                    .green,
+                                                        title6: 'الاداء المالي',
+                                                        isScreenOnly: true,
+                                                      );
+                                                    }
+                                                  },
                                                 );
                                               }
                                             },
