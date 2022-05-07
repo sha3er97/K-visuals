@@ -453,7 +453,7 @@ class BiscuitsReport {
           'mc1WasteKg': mc1WasteKg,
           'mc2WasteKg': mc2WasteKg,
           'shiftHours': shiftHours,
-      // 'wastedMinutes': wastedMinutes,
+          // 'wastedMinutes': wastedMinutes,
           //3.0.8 additions
           'extrusionScrapReason': extrusionScrapReason,
           'packingScrapReason': packingScrapReason,
