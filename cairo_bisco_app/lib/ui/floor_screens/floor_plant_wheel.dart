@@ -188,108 +188,47 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
                   return ColorLoader();
                 } else {
                   return FutureBuilder<QuerySnapshot>(
-                    future: overWeightReportRef.get(),
+                    future: downTimeReportRef.get(),
                     builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
-                      if (overweightSnapshot.hasError) {
+                        AsyncSnapshot<QuerySnapshot> downTimeSnapshot) {
+                      if (downTimeSnapshot.hasError) {
                         return ErrorMessageHeading('Something went wrong');
-                      } else if (overweightSnapshot.connectionState ==
+                      } else if (downTimeSnapshot.connectionState ==
                           ConnectionState.waiting) {
                         return ColorLoader();
                       } else {
-                        List<QueryDocumentSnapshot<OverWeightReport>>
-                            reportsList = overweightSnapshot.data!.docs as List<
-                                QueryDocumentSnapshot<OverWeightReport>>;
-                        OverWeightReport temp_overweight =
-                            OverWeightReport.getFilteredReportOfInterval(
-                                reportsList,
-                                int.parse(getMonth()),
-                                int.parse(getMonth()),
-                                int.parse(getDay()),
-                                int.parse(getDay()),
-                                int.parse(getYear()),
-                                prodType.indexOf(type),
-                                lineNum);
-                        List<OverWeightReport> overweightTempList =
-                            OverWeightReport.getAllReportsOfInterval(
-                          reportsList,
+                        List<QueryDocumentSnapshot<DownTimeReport>>
+                            dtReportsList = downTimeSnapshot.data!.docs
+                                as List<QueryDocumentSnapshot<DownTimeReport>>;
+                        int temp_wasted_minutes =
+                            DownTimeReport.getWastedMinutesOfCriteria(
+                          dtReportsList,
                           int.parse(getMonth()),
                           int.parse(getMonth()),
                           int.parse(getDay()),
                           int.parse(getDay()),
                           int.parse(getYear()),
-                          refNum,
-                        ).values.toList();
-
-                        MiniProductionReport temp_report;
-                        switch (refNum) {
-                          case BISCUIT_AREA:
-                            List<QueryDocumentSnapshot<BiscuitsReport>>
-                                biscuitsReportsList =
-                                productionSnapshot.data!.docs as List<
-                                    QueryDocumentSnapshot<BiscuitsReport>>;
-                            temp_report =
-                                BiscuitsReport.getFilteredReportOfInterval(
-                              biscuitsReportsList,
-                              int.parse(getMonth()),
-                              int.parse(getMonth()),
-                              int.parse(getDay()),
-                              int.parse(getDay()),
-                              int.parse(getYear()),
-                              lineNum,
-                              overweightTempList,
-                            );
-                            break;
-                          case WAFER_AREA:
-                            List<QueryDocumentSnapshot<WaferReport>>
-                                waferReportsList = productionSnapshot.data!.docs
-                                    as List<QueryDocumentSnapshot<WaferReport>>;
-                            temp_report =
-                                WaferReport.getFilteredReportOfInterval(
-                              waferReportsList,
-                              int.parse(getMonth()),
-                              int.parse(getMonth()),
-                              int.parse(getDay()),
-                              int.parse(getDay()),
-                              int.parse(getYear()),
-                              lineNum,
-                              overweightTempList,
-                            );
-                            break;
-                          default: //case MAAMOUL_AREA :
-                            List<QueryDocumentSnapshot<MaamoulReport>>
-                                maamoulReportsList =
-                                productionSnapshot.data!.docs as List<
-                                    QueryDocumentSnapshot<MaamoulReport>>;
-                            temp_report =
-                                MaamoulReport.getFilteredReportOfInterval(
-                              maamoulReportsList,
-                              int.parse(getMonth()),
-                              int.parse(getMonth()),
-                              int.parse(getDay()),
-                              int.parse(getDay()),
-                              int.parse(getYear()),
-                              lineNum,
-                              overweightTempList,
-                            );
-                            break;
-                        }
+                          prodType.indexOf(type),
+                          lineNum,
+                          ALL_SHIFTS,
+                        );
                         return FutureBuilder<QuerySnapshot>(
-                          future: qualityReportRef.get(),
+                          future: overWeightReportRef.get(),
                           builder: (BuildContext context,
-                              AsyncSnapshot<QuerySnapshot> qualitySnapshot) {
-                            if (qualitySnapshot.hasError) {
+                              AsyncSnapshot<QuerySnapshot> overweightSnapshot) {
+                            if (overweightSnapshot.hasError) {
                               return ErrorMessageHeading(
                                   'Something went wrong');
-                            } else if (qualitySnapshot.connectionState ==
+                            } else if (overweightSnapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return ColorLoader();
                             } else {
-                              List<QueryDocumentSnapshot<QfsReport>>
-                                  reportsList = qualitySnapshot.data!.docs
-                                      as List<QueryDocumentSnapshot<QfsReport>>;
-                              QfsReport temp_qfs =
-                                  QfsReport.getFilteredReportOfInterval(
+                              List<QueryDocumentSnapshot<OverWeightReport>>
+                                  reportsList =
+                                  overweightSnapshot.data!.docs as List<
+                                      QueryDocumentSnapshot<OverWeightReport>>;
+                              OverWeightReport temp_overweight =
+                                  OverWeightReport.getFilteredReportOfInterval(
                                       reportsList,
                                       int.parse(getMonth()),
                                       int.parse(getMonth()),
@@ -298,23 +237,93 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
                                       int.parse(getYear()),
                                       prodType.indexOf(type),
                                       lineNum);
+                              List<OverWeightReport> overweightTempList =
+                                  OverWeightReport.getAllReportsOfInterval(
+                                reportsList,
+                                int.parse(getMonth()),
+                                int.parse(getMonth()),
+                                int.parse(getDay()),
+                                int.parse(getDay()),
+                                int.parse(getYear()),
+                                refNum,
+                              ).values.toList();
+
+                              MiniProductionReport temp_report;
+                              switch (refNum) {
+                                case BISCUIT_AREA:
+                                  List<QueryDocumentSnapshot<BiscuitsReport>>
+                                      biscuitsReportsList =
+                                      productionSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<
+                                              BiscuitsReport>>;
+                                  temp_report = BiscuitsReport
+                                      .getFilteredReportOfInterval(
+                                    biscuitsReportsList,
+                                    int.parse(getMonth()),
+                                    int.parse(getMonth()),
+                                    int.parse(getDay()),
+                                    int.parse(getDay()),
+                                    int.parse(getYear()),
+                                    lineNum,
+                                    overweightTempList,
+                                    dtReportsList,
+                                  );
+                                  break;
+                                case WAFER_AREA:
+                                  List<QueryDocumentSnapshot<WaferReport>>
+                                      waferReportsList =
+                                      productionSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<WaferReport>>;
+                                  temp_report =
+                                      WaferReport.getFilteredReportOfInterval(
+                                    waferReportsList,
+                                    int.parse(getMonth()),
+                                    int.parse(getMonth()),
+                                    int.parse(getDay()),
+                                    int.parse(getDay()),
+                                    int.parse(getYear()),
+                                    lineNum,
+                                    overweightTempList,
+                                    dtReportsList,
+                                  );
+                                  break;
+                                default: //case MAAMOUL_AREA :
+                                  List<QueryDocumentSnapshot<MaamoulReport>>
+                                      maamoulReportsList =
+                                      productionSnapshot.data!.docs as List<
+                                          QueryDocumentSnapshot<MaamoulReport>>;
+                                  temp_report =
+                                      MaamoulReport.getFilteredReportOfInterval(
+                                    maamoulReportsList,
+                                    int.parse(getMonth()),
+                                    int.parse(getMonth()),
+                                    int.parse(getDay()),
+                                    int.parse(getDay()),
+                                    int.parse(getYear()),
+                                    lineNum,
+                                    overweightTempList,
+                                    dtReportsList,
+                                  );
+                                  break;
+                              }
                               return FutureBuilder<QuerySnapshot>(
-                                future: ehsReportRef.get(),
+                                future: qualityReportRef.get(),
                                 builder: (BuildContext context,
-                                    AsyncSnapshot<QuerySnapshot> ehsSnapshot) {
-                                  if (ehsSnapshot.hasError) {
+                                    AsyncSnapshot<QuerySnapshot>
+                                        qualitySnapshot) {
+                                  if (qualitySnapshot.hasError) {
                                     return ErrorMessageHeading(
                                         'Something went wrong');
-                                  } else if (ehsSnapshot.connectionState ==
+                                  } else if (qualitySnapshot.connectionState ==
                                       ConnectionState.waiting) {
                                     return ColorLoader();
                                   } else {
-                                    List<QueryDocumentSnapshot<EhsReport>>
+                                    List<QueryDocumentSnapshot<QfsReport>>
                                         reportsList =
-                                        ehsSnapshot.data!.docs as List<
-                                            QueryDocumentSnapshot<EhsReport>>;
-                                    EhsReport temp_ehs =
-                                        EhsReport.getFilteredReportOfInterval(
+                                        qualitySnapshot.data!.docs as List<
+                                            QueryDocumentSnapshot<QfsReport>>;
+                                    QfsReport temp_qfs =
+                                        QfsReport.getFilteredReportOfInterval(
                                             reportsList,
                                             int.parse(getMonth()),
                                             int.parse(getMonth()),
@@ -324,60 +333,58 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
                                             prodType.indexOf(type),
                                             lineNum);
                                     return FutureBuilder<QuerySnapshot>(
-                                      future: peopleReportRef.get(),
+                                      future: ehsReportRef.get(),
                                       builder: (BuildContext context,
                                           AsyncSnapshot<QuerySnapshot>
-                                              peopleSnapshot) {
-                                        if (peopleSnapshot.hasError) {
+                                              ehsSnapshot) {
+                                        if (ehsSnapshot.hasError) {
                                           return ErrorMessageHeading(
                                               'Something went wrong');
-                                        } else if (peopleSnapshot
+                                        } else if (ehsSnapshot
                                                 .connectionState ==
                                             ConnectionState.waiting) {
                                           return ColorLoader();
                                         } else {
-                                          List<
-                                                  QueryDocumentSnapshot<
-                                                      PeopleReport>>
+                                          List<QueryDocumentSnapshot<EhsReport>>
                                               reportsList =
-                                              peopleSnapshot.data!.docs as List<
+                                              ehsSnapshot.data!.docs as List<
                                                   QueryDocumentSnapshot<
-                                                      PeopleReport>>;
-                                          PeopleReport temp_people =
-                                              PeopleReport
-                                                  .getFilteredReportOfInterval(
-                                            reportsList,
-                                            int.parse(getMonth()),
-                                            int.parse(getMonth()),
-                                            int.parse(getDay()),
-                                            int.parse(getDay()),
-                                            int.parse(getYear()),
-                                            prodType.indexOf(type),
-                                          );
+                                                      EhsReport>>;
+                                          EhsReport temp_ehs = EhsReport
+                                              .getFilteredReportOfInterval(
+                                                  reportsList,
+                                                  int.parse(getMonth()),
+                                                  int.parse(getMonth()),
+                                                  int.parse(getDay()),
+                                                  int.parse(getDay()),
+                                                  int.parse(getYear()),
+                                                  prodType.indexOf(type),
+                                                  lineNum);
                                           return FutureBuilder<QuerySnapshot>(
-                                            future: nrcReportRef.get(),
+                                            future: peopleReportRef.get(),
                                             builder: (BuildContext context,
                                                 AsyncSnapshot<QuerySnapshot>
-                                                    nrcSnapshot) {
-                                              if (nrcSnapshot.hasError) {
+                                                    peopleSnapshot) {
+                                              if (peopleSnapshot.hasError) {
                                                 return ErrorMessageHeading(
                                                     'Something went wrong');
-                                              } else if (nrcSnapshot
+                                              } else if (peopleSnapshot
                                                       .connectionState ==
                                                   ConnectionState.waiting) {
                                                 return ColorLoader();
                                               } else {
                                                 List<
                                                         QueryDocumentSnapshot<
-                                                            NRCReport>>
-                                                    nrcReportsList =
-                                                    nrcSnapshot.data!.docs
+                                                            PeopleReport>>
+                                                    reportsList =
+                                                    peopleSnapshot.data!.docs
                                                         as List<
                                                             QueryDocumentSnapshot<
-                                                                NRCReport>>;
-                                                NRCReport temp_nrc = NRCReport
-                                                    .getFilteredReportOfInterval(
-                                                  nrcReportsList,
+                                                                PeopleReport>>;
+                                                PeopleReport temp_people =
+                                                    PeopleReport
+                                                        .getFilteredReportOfInterval(
+                                                  reportsList,
                                                   int.parse(getMonth()),
                                                   int.parse(getMonth()),
                                                   int.parse(getDay()),
@@ -387,18 +394,16 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
                                                 );
                                                 return FutureBuilder<
                                                     QuerySnapshot>(
-                                                  future:
-                                                      downTimeReportRef.get(),
-                                                  builder: (BuildContext
-                                                          context,
-                                                      AsyncSnapshot<
-                                                              QuerySnapshot>
-                                                          downTimeSnapshot) {
-                                                    if (downTimeSnapshot
-                                                        .hasError) {
+                                                  future: nrcReportRef.get(),
+                                                  builder:
+                                                      (BuildContext context,
+                                                          AsyncSnapshot<
+                                                                  QuerySnapshot>
+                                                              nrcSnapshot) {
+                                                    if (nrcSnapshot.hasError) {
                                                       return ErrorMessageHeading(
                                                           'Something went wrong');
-                                                    } else if (downTimeSnapshot
+                                                    } else if (nrcSnapshot
                                                             .connectionState ==
                                                         ConnectionState
                                                             .waiting) {
@@ -406,25 +411,23 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
                                                     } else {
                                                       List<
                                                               QueryDocumentSnapshot<
-                                                                  DownTimeReport>>
-                                                          dtReportsList =
-                                                          downTimeSnapshot
-                                                                  .data!.docs
+                                                                  NRCReport>>
+                                                          nrcReportsList =
+                                                          nrcSnapshot.data!.docs
                                                               as List<
                                                                   QueryDocumentSnapshot<
-                                                                      DownTimeReport>>;
-                                                      int temp_wasted_minutes =
-                                                          DownTimeReport
-                                                              .getWastedMinutesOfCriteria(
-                                                        dtReportsList,
+                                                                      NRCReport>>;
+                                                      NRCReport temp_nrc = NRCReport
+                                                          .getFilteredReportOfInterval(
+                                                        nrcReportsList,
                                                         int.parse(getMonth()),
                                                         int.parse(getMonth()),
                                                         int.parse(getDay()),
                                                         int.parse(getDay()),
                                                         int.parse(getYear()),
                                                         prodType.indexOf(type),
-                                                        lineNum,
                                                       );
+
                                                       //plant wheel body
                                                       return KPI6GoodBadIndicator(
                                                         color1: BadQFSDriver(

@@ -715,6 +715,7 @@ class DownTimeReport {
     int year,
     int areaRequired,
     int line_index,
+    int shift_index,
   ) {
     List<DownTimeReport> filteredList = [];
     int temp_wastedMinutes = 0;
@@ -740,84 +741,85 @@ class DownTimeReport {
       }
       if (intFilterCheck(report.data().area, areaRequired, TOTAL_PLANT) &&
           intFilterCheck(report.data().line_index, line_index, ALL_LINES) &&
+          intFilterCheck(report.data().shift_index, shift_index, ALL_SHIFTS) &&
           report.data().isStopped_index != YES) {
         filteredList.add(report.data());
       }
     }
     //remove overlapping
-    bool repeat = false;
-    do {
-      for (int main_i = 0; main_i < filteredList.length; main_i++) {
-        for (int other_i = main_i + 1;
-            other_i < filteredList.length;
-            other_i++) {
-          if (isOverlappingInterval(
-            filteredList[main_i].yearFrom,
-            filteredList[main_i].monthFrom,
-            filteredList[main_i].dayFrom,
-            filteredList[main_i].yearTo,
-            filteredList[main_i].monthTo,
-            filteredList[main_i].dayTo,
-            filteredList[main_i].hour_from,
-            filteredList[main_i].minute_from,
-            filteredList[main_i].hour_to,
-            filteredList[main_i].minute_to,
-            filteredList[other_i].yearFrom,
-            filteredList[other_i].monthFrom,
-            filteredList[other_i].dayFrom,
-            filteredList[other_i].yearTo,
-            filteredList[other_i].monthTo,
-            filteredList[other_i].dayTo,
-            filteredList[other_i].hour_from,
-            filteredList[other_i].minute_from,
-            filteredList[other_i].hour_to,
-            filteredList[other_i].minute_to,
-          )) {
-            DownTimeReport tempReport = filteredList[main_i];
-            List<DateTime> tempOverList = getOverlappingInterval(
-              filteredList[main_i].yearFrom,
-              filteredList[main_i].monthFrom,
-              filteredList[main_i].dayFrom,
-              filteredList[main_i].yearTo,
-              filteredList[main_i].monthTo,
-              filteredList[main_i].dayTo,
-              filteredList[main_i].hour_from,
-              filteredList[main_i].minute_from,
-              filteredList[main_i].hour_to,
-              filteredList[main_i].minute_to,
-              filteredList[other_i].yearFrom,
-              filteredList[other_i].monthFrom,
-              filteredList[other_i].dayFrom,
-              filteredList[other_i].yearTo,
-              filteredList[other_i].monthTo,
-              filteredList[other_i].dayTo,
-              filteredList[other_i].hour_from,
-              filteredList[other_i].minute_from,
-              filteredList[other_i].hour_to,
-              filteredList[other_i].minute_to,
-            );
-            //set from
-            tempReport.yearFrom = tempOverList[FROM].year;
-            tempReport.monthFrom = tempOverList[FROM].month;
-            tempReport.dayFrom = tempOverList[FROM].day;
-            tempReport.hour_from = tempOverList[FROM].hour;
-            tempReport.minute_from = tempOverList[FROM].minute;
-            //set to
-            tempReport.yearTo = tempOverList[TO].year;
-            tempReport.monthTo = tempOverList[TO].month;
-            tempReport.dayTo = tempOverList[TO].day;
-            tempReport.hour_to = tempOverList[TO].hour;
-            tempReport.minute_to = tempOverList[TO].minute;
-
-            filteredList.removeAt(main_i);
-            filteredList.removeAt(other_i);
-            filteredList.add(tempReport);
-            repeat = true;
-            break;
-          }
-        }
-      }
-    } while (repeat);
+    // bool repeat = false;
+    // do {
+    //   for (int main_i = 0; main_i < filteredList.length - 1; main_i++) {
+    //     for (int other_i = main_i + 1;
+    //         other_i < filteredList.length;
+    //         other_i++) {
+    //       if (isOverlappingInterval(
+    //         filteredList[main_i].yearFrom,
+    //         filteredList[main_i].monthFrom,
+    //         filteredList[main_i].dayFrom,
+    //         filteredList[main_i].yearTo,
+    //         filteredList[main_i].monthTo,
+    //         filteredList[main_i].dayTo,
+    //         filteredList[main_i].hour_from,
+    //         filteredList[main_i].minute_from,
+    //         filteredList[main_i].hour_to,
+    //         filteredList[main_i].minute_to,
+    //         filteredList[other_i].yearFrom,
+    //         filteredList[other_i].monthFrom,
+    //         filteredList[other_i].dayFrom,
+    //         filteredList[other_i].yearTo,
+    //         filteredList[other_i].monthTo,
+    //         filteredList[other_i].dayTo,
+    //         filteredList[other_i].hour_from,
+    //         filteredList[other_i].minute_from,
+    //         filteredList[other_i].hour_to,
+    //         filteredList[other_i].minute_to,
+    //       )) {
+    //         DownTimeReport tempReport = filteredList[main_i];
+    //         List<DateTime> tempOverList = getOverlappingInterval(
+    //           filteredList[main_i].yearFrom,
+    //           filteredList[main_i].monthFrom,
+    //           filteredList[main_i].dayFrom,
+    //           filteredList[main_i].yearTo,
+    //           filteredList[main_i].monthTo,
+    //           filteredList[main_i].dayTo,
+    //           filteredList[main_i].hour_from,
+    //           filteredList[main_i].minute_from,
+    //           filteredList[main_i].hour_to,
+    //           filteredList[main_i].minute_to,
+    //           filteredList[other_i].yearFrom,
+    //           filteredList[other_i].monthFrom,
+    //           filteredList[other_i].dayFrom,
+    //           filteredList[other_i].yearTo,
+    //           filteredList[other_i].monthTo,
+    //           filteredList[other_i].dayTo,
+    //           filteredList[other_i].hour_from,
+    //           filteredList[other_i].minute_from,
+    //           filteredList[other_i].hour_to,
+    //           filteredList[other_i].minute_to,
+    //         );
+    //         //set from
+    //         tempReport.yearFrom = tempOverList[FROM].year;
+    //         tempReport.monthFrom = tempOverList[FROM].month;
+    //         tempReport.dayFrom = tempOverList[FROM].day;
+    //         tempReport.hour_from = tempOverList[FROM].hour;
+    //         tempReport.minute_from = tempOverList[FROM].minute;
+    //         //set to
+    //         tempReport.yearTo = tempOverList[TO].year;
+    //         tempReport.monthTo = tempOverList[TO].month;
+    //         tempReport.dayTo = tempOverList[TO].day;
+    //         tempReport.hour_to = tempOverList[TO].hour;
+    //         tempReport.minute_to = tempOverList[TO].minute;
+    //
+    //         filteredList.removeAt(main_i);
+    //         filteredList.removeAt(other_i);
+    //         filteredList.add(tempReport);
+    //         repeat = true;
+    //         break;
+    //       }
+    //     }
+    //   }
+    // } while (repeat);
     for (DownTimeReport report in filteredList) {
       temp_wastedMinutes += getTimeDifference(
           report.yearFrom,

@@ -182,6 +182,13 @@ class _WaferLinesState extends State<WaferLines> {
                                           ConnectionState.waiting) {
                                         return ColorLoader();
                                       } else {
+                                        List<
+                                                QueryDocumentSnapshot<
+                                                    DownTimeReport>>
+                                            dtReportsList =
+                                            downTimeSnapshot.data!.docs as List<
+                                                QueryDocumentSnapshot<
+                                                    DownTimeReport>>;
                                         try {
                                           List<
                                                   QueryDocumentSnapshot<
@@ -193,7 +200,7 @@ class _WaferLinesState extends State<WaferLines> {
                                                           WaferReport>>;
                                           MiniProductionReport temp_report =
                                               WaferReport
-                                                  .getFilteredReportOfInterval(
+                                              .getFilteredReportOfInterval(
                                             reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -202,18 +209,12 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             1,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
-                                          List<
-                                                  QueryDocumentSnapshot<
-                                                      DownTimeReport>>
-                                              dtReportsList =
-                                              downTimeSnapshot.data!.docs
-                                                  as List<
-                                                      QueryDocumentSnapshot<
-                                                          DownTimeReport>>;
+
                                           int temp_wasted_minutes =
-                                              DownTimeReport
-                                                  .getWastedMinutesOfCriteria(
+                                          DownTimeReport
+                                              .getWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -222,6 +223,7 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             WAFER_AREA,
                                             1,
+                                            ALL_SHIFTS,
                                           );
                                           return Center(
                                             child: ProductionLine(
@@ -230,7 +232,7 @@ class _WaferLinesState extends State<WaferLines> {
                                                   .percent,
                                               isWebView: false,
                                               wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              temp_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -318,6 +320,14 @@ class _WaferLinesState extends State<WaferLines> {
                                         try {
                                           List<
                                                   QueryDocumentSnapshot<
+                                                      DownTimeReport>>
+                                              dtReportsList =
+                                              downTimeSnapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          DownTimeReport>>;
+                                          List<
+                                                  QueryDocumentSnapshot<
                                                       WaferReport>>
                                               reportsList =
                                               productionSnapshot.data!.docs
@@ -335,19 +345,12 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             2,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
-                                          List<
-                                                  QueryDocumentSnapshot<
-                                                      DownTimeReport>>
-                                              dtReportsList =
-                                              downTimeSnapshot.data!.docs
-                                                  as List<
-                                                      QueryDocumentSnapshot<
-                                                          DownTimeReport>>;
                                           int temp_wasted_minutes =
                                               DownTimeReport
                                                   .getWastedMinutesOfCriteria(
-                                            dtReportsList,
+                                                dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -355,6 +358,7 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             WAFER_AREA,
                                             2,
+                                            ALL_SHIFTS,
                                           );
                                           return Center(
                                             child: ProductionLine(
@@ -451,6 +455,14 @@ class _WaferLinesState extends State<WaferLines> {
                                         try {
                                           List<
                                                   QueryDocumentSnapshot<
+                                                      DownTimeReport>>
+                                              dtReportsList =
+                                              downTimeSnapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          DownTimeReport>>;
+                                          List<
+                                                  QueryDocumentSnapshot<
                                                       WaferReport>>
                                               reportsList =
                                               productionSnapshot.data!.docs
@@ -468,18 +480,11 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             3,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
-                                          List<
-                                                  QueryDocumentSnapshot<
-                                                      DownTimeReport>>
-                                              dtReportsList =
-                                              downTimeSnapshot.data!.docs
-                                                  as List<
-                                                      QueryDocumentSnapshot<
-                                                          DownTimeReport>>;
                                           int temp_wasted_minutes =
-                                              DownTimeReport
-                                                  .getWastedMinutesOfCriteria(
+                                          DownTimeReport
+                                              .getWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -488,6 +493,7 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             WAFER_AREA,
                                             3,
+                                            ALL_SHIFTS,
                                           );
                                           return Center(
                                             child: ProductionLine(
@@ -496,7 +502,7 @@ class _WaferLinesState extends State<WaferLines> {
                                                   .percent,
                                               isWebView: false,
                                               wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              temp_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -584,6 +590,14 @@ class _WaferLinesState extends State<WaferLines> {
                                         try {
                                           List<
                                                   QueryDocumentSnapshot<
+                                                      DownTimeReport>>
+                                              dtReportsList =
+                                              downTimeSnapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          DownTimeReport>>;
+                                          List<
+                                                  QueryDocumentSnapshot<
                                                       WaferReport>>
                                               reportsList =
                                               productionSnapshot.data!.docs
@@ -601,18 +615,11 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             4,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
-                                          List<
-                                                  QueryDocumentSnapshot<
-                                                      DownTimeReport>>
-                                              dtReportsList =
-                                              downTimeSnapshot.data!.docs
-                                                  as List<
-                                                      QueryDocumentSnapshot<
-                                                          DownTimeReport>>;
                                           int temp_wasted_minutes =
-                                              DownTimeReport
-                                                  .getWastedMinutesOfCriteria(
+                                          DownTimeReport
+                                              .getWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -621,6 +628,7 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             WAFER_AREA,
                                             4,
+                                            ALL_SHIFTS,
                                           );
                                           return Center(
                                             child: ProductionLine(
@@ -629,7 +637,7 @@ class _WaferLinesState extends State<WaferLines> {
                                                   .percent,
                                               isWebView: false,
                                               wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              temp_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -708,7 +716,7 @@ class _WaferLinesState extends State<WaferLines> {
                                               DownTimeReport>>;
                                   int temp_wasted_minutes =
                                       DownTimeReport.getWastedMinutesOfCriteria(
-                                    dtReportsList,
+                                        dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
@@ -716,6 +724,7 @@ class _WaferLinesState extends State<WaferLines> {
                                     int.parse(chosenYear),
                                     WAFER_AREA,
                                     ALL_LINES,
+                                    ALL_SHIFTS,
                                   );
                                   return FutureBuilder<QuerySnapshot>(
                                     future: waferReportRef.get(),
@@ -742,7 +751,7 @@ class _WaferLinesState extends State<WaferLines> {
                                           MiniProductionReport temp_report =
                                               WaferReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -750,6 +759,7 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             ALL_LINES,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           return Center(
                                             child: ProductionLine(
@@ -895,6 +905,14 @@ class _WaferLinesState extends State<WaferLines> {
                                         try {
                                           List<
                                                   QueryDocumentSnapshot<
+                                                      DownTimeReport>>
+                                              dtReportsList =
+                                              downTimeSnapshot.data!.docs
+                                                  as List<
+                                                      QueryDocumentSnapshot<
+                                                          DownTimeReport>>;
+                                          List<
+                                                  QueryDocumentSnapshot<
                                                       WaferReport>>
                                               reportsList =
                                               productionSnapshot.data!.docs
@@ -912,11 +930,12 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             1,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           MiniProductionReport temp_report2 =
                                               WaferReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -924,11 +943,12 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             2,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           MiniProductionReport temp_report3 =
                                               WaferReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -936,11 +956,12 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             3,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           MiniProductionReport temp_report4 =
                                               WaferReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -948,11 +969,12 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             4,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           MiniProductionReport temp_reportAll =
                                               WaferReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -960,19 +982,13 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             ALL_LINES,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
-                                          List<
-                                                  QueryDocumentSnapshot<
-                                                      DownTimeReport>>
-                                              dtReportsList =
-                                              downTimeSnapshot.data!.docs
-                                                  as List<
-                                                      QueryDocumentSnapshot<
-                                                          DownTimeReport>>;
+
                                           int temp_wasted_minutes1 =
                                               DownTimeReport
                                                   .getWastedMinutesOfCriteria(
-                                            dtReportsList,
+                                                dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -980,11 +996,12 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             WAFER_AREA,
                                             1,
+                                            ALL_SHIFTS,
                                           );
                                           int temp_wasted_minutes2 =
                                               DownTimeReport
                                                   .getWastedMinutesOfCriteria(
-                                            dtReportsList,
+                                                dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -992,11 +1009,12 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             WAFER_AREA,
                                             2,
+                                            ALL_SHIFTS,
                                           );
                                           int temp_wasted_minutes3 =
                                               DownTimeReport
                                                   .getWastedMinutesOfCriteria(
-                                            dtReportsList,
+                                                dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -1004,11 +1022,12 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             WAFER_AREA,
                                             3,
+                                            ALL_SHIFTS,
                                           );
                                           int temp_wasted_minutes4 =
                                               DownTimeReport
                                                   .getWastedMinutesOfCriteria(
-                                            dtReportsList,
+                                                dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -1016,11 +1035,12 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             WAFER_AREA,
                                             4,
+                                            ALL_SHIFTS,
                                           );
                                           int temp_wasted_minutesAll =
                                               DownTimeReport
                                                   .getWastedMinutesOfCriteria(
-                                            dtReportsList,
+                                                dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -1028,6 +1048,7 @@ class _WaferLinesState extends State<WaferLines> {
                                             int.parse(chosenYear),
                                             WAFER_AREA,
                                             ALL_LINES,
+                                            ALL_SHIFTS,
                                           );
                                           return !kIsWeb
                                               ? Padding(

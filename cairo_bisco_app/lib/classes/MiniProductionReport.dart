@@ -108,8 +108,8 @@ class MiniProductionReport {
     //return the total in capsulized form
     return MiniProductionReport(
       skuName: 'total',
-      shift_index: -1,
-      line_index: -1,
+      shift_index: ALL_SHIFTS,
+      line_index: ALL_LINES,
       area: TOTAL_PLANT,
       year: temp_year,
       month: temp_month,

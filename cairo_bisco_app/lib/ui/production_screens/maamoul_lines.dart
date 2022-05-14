@@ -193,6 +193,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                             int.parse(chosenYear),
                                             MAAMOUL_AREA,
                                             1,
+                                            ALL_SHIFTS,
                                           );
                                           List<
                                                   QueryDocumentSnapshot<
@@ -205,7 +206,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                           MiniProductionReport temp_report =
                                               MaamoulReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -213,6 +214,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                             int.parse(chosenYear),
                                             1,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           return Center(
                                             child: ProductionLine(
@@ -273,7 +275,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                               DownTimeReport>>;
                                   int temp_wasted_minutes =
                                       DownTimeReport.getWastedMinutesOfCriteria(
-                                    dtReportsList,
+                                        dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
@@ -281,6 +283,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                     int.parse(chosenYear),
                                     MAAMOUL_AREA,
                                     2,
+                                    ALL_SHIFTS,
                                   );
                                   List<QueryDocumentSnapshot<OverWeightReport>>
                                       reportsList =
@@ -334,7 +337,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                           MiniProductionReport temp_report =
                                               MaamoulReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -342,6 +345,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                             int.parse(chosenYear),
                                             2,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           return Center(
                                             child: ProductionLine(
@@ -402,7 +406,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                               DownTimeReport>>;
                                   int temp_wasted_minutes =
                                       DownTimeReport.getWastedMinutesOfCriteria(
-                                    dtReportsList,
+                                        dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
@@ -410,6 +414,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                     int.parse(chosenYear),
                                     MAAMOUL_AREA,
                                     ALL_LINES,
+                                    ALL_SHIFTS,
                                   );
                                   List<QueryDocumentSnapshot<OverWeightReport>>
                                       reportsList =
@@ -463,7 +468,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                           MiniProductionReport temp_report =
                                               MaamoulReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -471,6 +476,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                             int.parse(chosenYear),
                                             ALL_LINES,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           return Center(
                                             child: ProductionLine(
@@ -532,7 +538,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                               DownTimeReport>>;
                                   int temp_wasted_minutes1 =
                                       DownTimeReport.getWastedMinutesOfCriteria(
-                                    dtReportsList,
+                                        dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
@@ -540,10 +546,11 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                     int.parse(chosenYear),
                                     MAAMOUL_AREA,
                                     1,
+                                    ALL_SHIFTS,
                                   );
                                   int temp_wasted_minutes2 =
                                       DownTimeReport.getWastedMinutesOfCriteria(
-                                    dtReportsList,
+                                        dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
@@ -551,10 +558,11 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                     int.parse(chosenYear),
                                     MAAMOUL_AREA,
                                     2,
+                                    ALL_SHIFTS,
                                   );
                                   int temp_wasted_minutesAll =
                                       DownTimeReport.getWastedMinutesOfCriteria(
-                                    dtReportsList,
+                                        dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
@@ -562,6 +570,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                     int.parse(chosenYear),
                                     MAAMOUL_AREA,
                                     ALL_LINES,
+                                    ALL_SHIFTS,
                                   );
                                   List<QueryDocumentSnapshot<OverWeightReport>>
                                       reportsList =
@@ -639,7 +648,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                           MiniProductionReport temp_report1 =
                                               MaamoulReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -647,11 +656,12 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                             int.parse(chosenYear),
                                             1,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           MiniProductionReport temp_report2 =
                                               MaamoulReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -659,11 +669,12 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                             int.parse(chosenYear),
                                             2,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           MiniProductionReport temp_reportAll =
                                               MaamoulReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -671,6 +682,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                             int.parse(chosenYear),
                                             ALL_LINES,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           return !kIsWeb
                                               ? Padding(

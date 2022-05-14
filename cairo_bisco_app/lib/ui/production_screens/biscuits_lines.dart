@@ -156,6 +156,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                     int.parse(chosenYear),
                                     BISCUIT_AREA,
                                     1,
+                                    ALL_SHIFTS,
                                   );
                                   List<QueryDocumentSnapshot<OverWeightReport>>
                                       reportsList =
@@ -209,7 +210,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                           MiniProductionReport temp_report =
                                               BiscuitsReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -217,6 +218,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                             int.parse(chosenYear),
                                             1,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           return Center(
                                             child: ProductionLine(
@@ -278,7 +280,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                               DownTimeReport>>;
                                   int temp_wasted_minutes =
                                       DownTimeReport.getWastedMinutesOfCriteria(
-                                    dtReportsList,
+                                        dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
@@ -286,6 +288,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                     int.parse(chosenYear),
                                     BISCUIT_AREA,
                                     2,
+                                    ALL_SHIFTS,
                                   );
                                   List<QueryDocumentSnapshot<OverWeightReport>>
                                       reportsList =
@@ -339,7 +342,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                           MiniProductionReport temp_report =
                                               BiscuitsReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -347,6 +350,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                             int.parse(chosenYear),
                                             2,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           return Center(
                                             child: ProductionLine(
@@ -408,7 +412,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                               DownTimeReport>>;
                                   int temp_wasted_minutes =
                                       DownTimeReport.getWastedMinutesOfCriteria(
-                                    dtReportsList,
+                                        dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
@@ -416,6 +420,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                     int.parse(chosenYear),
                                     BISCUIT_AREA,
                                     3,
+                                    ALL_SHIFTS,
                                   );
                                   List<QueryDocumentSnapshot<OverWeightReport>>
                                       reportsList =
@@ -469,7 +474,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                           MiniProductionReport temp_report =
                                               BiscuitsReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -477,6 +482,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                             int.parse(chosenYear),
                                             3,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           return Center(
                                             child: ProductionLine(
@@ -538,7 +544,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                               DownTimeReport>>;
                                   int temp_wasted_minutes =
                                       DownTimeReport.getWastedMinutesOfCriteria(
-                                    dtReportsList,
+                                        dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
@@ -546,6 +552,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                     int.parse(chosenYear),
                                     BISCUIT_AREA,
                                     4,
+                                    ALL_SHIFTS,
                                   );
                                   List<QueryDocumentSnapshot<OverWeightReport>>
                                       reportsList =
@@ -599,7 +606,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                           MiniProductionReport temp_report =
                                               BiscuitsReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -607,6 +614,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                             int.parse(chosenYear),
                                             4,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           return Center(
                                             child: ProductionLine(
@@ -668,7 +676,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                               DownTimeReport>>;
                                   int temp_wasted_minutes =
                                       DownTimeReport.getWastedMinutesOfCriteria(
-                                    dtReportsList,
+                                        dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),
@@ -676,6 +684,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                     int.parse(chosenYear),
                                     BISCUIT_AREA,
                                     ALL_LINES,
+                                    ALL_SHIFTS,
                                   );
                                   List<QueryDocumentSnapshot<OverWeightReport>>
                                       reportsList =
@@ -729,7 +738,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                           MiniProductionReport temp_report =
                                               BiscuitsReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -737,6 +746,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                             int.parse(chosenYear),
                                             ALL_LINES,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           return Center(
                                             child: ProductionLine(
@@ -867,7 +877,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                         QueryDocumentSnapshot<DownTimeReport>>;
                                 int temp_wasted_minutes1 =
                                     DownTimeReport.getWastedMinutesOfCriteria(
-                                  dtReportsList,
+                                      dtReportsList,
                                   int.parse(from_month),
                                   int.parse(to_month),
                                   int.parse(from_day),
@@ -875,10 +885,11 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                   int.parse(chosenYear),
                                   BISCUIT_AREA,
                                   1,
+                                  ALL_SHIFTS,
                                 );
                                 int temp_wasted_minutes2 =
                                     DownTimeReport.getWastedMinutesOfCriteria(
-                                  dtReportsList,
+                                      dtReportsList,
                                   int.parse(from_month),
                                   int.parse(to_month),
                                   int.parse(from_day),
@@ -886,10 +897,11 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                   int.parse(chosenYear),
                                   BISCUIT_AREA,
                                   2,
+                                  ALL_SHIFTS,
                                 );
                                 int temp_wasted_minutes3 =
                                     DownTimeReport.getWastedMinutesOfCriteria(
-                                  dtReportsList,
+                                      dtReportsList,
                                   int.parse(from_month),
                                   int.parse(to_month),
                                   int.parse(from_day),
@@ -897,10 +909,11 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                   int.parse(chosenYear),
                                   BISCUIT_AREA,
                                   3,
+                                  ALL_SHIFTS,
                                 );
                                 int temp_wasted_minutes4 =
                                     DownTimeReport.getWastedMinutesOfCriteria(
-                                  dtReportsList,
+                                      dtReportsList,
                                   int.parse(from_month),
                                   int.parse(to_month),
                                   int.parse(from_day),
@@ -908,10 +921,11 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                   int.parse(chosenYear),
                                   BISCUIT_AREA,
                                   4,
+                                  ALL_SHIFTS,
                                 );
                                 int temp_wasted_minutesAll =
                                     DownTimeReport.getWastedMinutesOfCriteria(
-                                  dtReportsList,
+                                      dtReportsList,
                                   int.parse(from_month),
                                   int.parse(to_month),
                                   int.parse(from_day),
@@ -919,6 +933,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                   int.parse(chosenYear),
                                   BISCUIT_AREA,
                                   ALL_LINES,
+                                  ALL_SHIFTS,
                                 );
                                 return FutureBuilder<QuerySnapshot>(
                                     future: biscuitsReportRef.get(),
@@ -945,7 +960,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                           MiniProductionReport temp_report1 =
                                               BiscuitsReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -953,11 +968,12 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                             int.parse(chosenYear),
                                             1,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           MiniProductionReport temp_report2 =
                                               BiscuitsReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -965,11 +981,12 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                             int.parse(chosenYear),
                                             2,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           MiniProductionReport temp_report3 =
                                               BiscuitsReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -977,11 +994,12 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                             int.parse(chosenYear),
                                             3,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           MiniProductionReport temp_report4 =
                                               BiscuitsReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -989,11 +1007,12 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                             int.parse(chosenYear),
                                             4,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           MiniProductionReport temp_reportAll =
                                               BiscuitsReport
                                                   .getFilteredReportOfInterval(
-                                            reportsList,
+                                                reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -1001,6 +1020,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                             int.parse(chosenYear),
                                             ALL_LINES,
                                             overweightTempList,
+                                            dtReportsList,
                                           );
                                           return !kIsWeb
                                               ? Padding(

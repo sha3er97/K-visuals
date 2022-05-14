@@ -188,6 +188,16 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                         } else {
                                                           List<
                                                                   QueryDocumentSnapshot<
+                                                                      DownTimeReport>>
+                                                              dtReportsList =
+                                                              downTimeSnapshot
+                                                                      .data!
+                                                                      .docs
+                                                                  as List<
+                                                                      QueryDocumentSnapshot<
+                                                                          DownTimeReport>>;
+                                                          List<
+                                                                  QueryDocumentSnapshot<
                                                                       OverWeightReport>>
                                                               overReportsList =
                                                               overweightSnapshot
@@ -239,7 +249,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                               temp_biscuit_report =
                                                               BiscuitsReport
                                                                   .getFilteredReportOfInterval(
-                                                            biscuitsReportsList,
+                                                                biscuitsReportsList,
                                                             int.parse(
                                                                 from_month),
                                                             int.parse(to_month),
@@ -249,6 +259,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                                 chosenYear),
                                                             ALL_LINES,
                                                             overweightTempList,
+                                                            dtReportsList,
                                                           );
                                                           List<
                                                                   QueryDocumentSnapshot<
@@ -264,7 +275,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                               temp_wafer_report =
                                                               WaferReport
                                                                   .getFilteredReportOfInterval(
-                                                            waferReportsList,
+                                                                waferReportsList,
                                                             int.parse(
                                                                 from_month),
                                                             int.parse(to_month),
@@ -274,6 +285,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                                 chosenYear),
                                                             ALL_LINES,
                                                             overweightTempList,
+                                                            dtReportsList,
                                                           );
                                                           List<
                                                                   QueryDocumentSnapshot<
@@ -289,7 +301,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                               temp_maamoul_report =
                                                               MaamoulReport
                                                                   .getFilteredReportOfInterval(
-                                                            maamoulReportsList,
+                                                                maamoulReportsList,
                                                             int.parse(
                                                                 from_month),
                                                             int.parse(to_month),
@@ -299,21 +311,13 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                                 chosenYear),
                                                             ALL_LINES,
                                                             overweightTempList,
+                                                            dtReportsList,
                                                           );
-                                                          List<
-                                                                  QueryDocumentSnapshot<
-                                                                      DownTimeReport>>
-                                                              dtReportsList =
-                                                              downTimeSnapshot
-                                                                      .data!
-                                                                      .docs
-                                                                  as List<
-                                                                      QueryDocumentSnapshot<
-                                                                          DownTimeReport>>;
+
                                                           int temp_wasted_minutes =
                                                               DownTimeReport
                                                                   .getWastedMinutesOfCriteria(
-                                                            dtReportsList,
+                                                                dtReportsList,
                                                             int.parse(
                                                                 from_month),
                                                             int.parse(to_month),
@@ -323,6 +327,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                                 chosenYear),
                                                             TOTAL_PLANT,
                                                             ALL_LINES,
+                                                            ALL_SHIFTS,
                                                           );
                                                           return Center(
                                                             child:

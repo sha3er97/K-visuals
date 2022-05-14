@@ -114,6 +114,7 @@ const MAAMOUL_AREA = 2;
 const TOTAL_PLANT = -1;
 
 const ALL_LINES = -1;
+const ALL_SHIFTS = -1;
 
 const PRODUCTION_REPORT = 0; //0,1,2 are left for 3 production areas
 const QFS_REPORT = 3;

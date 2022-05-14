@@ -11,11 +11,13 @@ import 'package:cairo_bisco_app/classes/utility_funcs/date_time_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/classes/values/form_values.dart';
 import 'package:cairo_bisco_app/components/alert_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:permission_handler/permission_handler.dart';
 
+import '../DownTimeReport.dart';
 import 'other_utility.dart';
 
 class ProductionExcelUtilities {
@@ -139,6 +141,7 @@ class ProductionExcelUtilities {
 
   void insertBiscuitReportRows(
     List<BiscuitsReport> reportsList,
+    List<QueryDocumentSnapshot<DownTimeReport>> downTimeList,
   ) {
     double totTheoreticals = 0.0,
         totKg = 0.0,
@@ -166,9 +169,8 @@ class ProductionExcelUtilities {
         avgOverweight = 0.0,
         totScrap = 0.0,
         totWeight = 0.0,
-        avgOEE = 0.0,
-        totStoppedMinutes = 0.0;
-    int totCartons = 0;
+        avgOEE = 0.0;
+    int totCartons = 0, totStoppedMinutes = 0, reportStoppedMinutes;
     reportsList.sort((a, b) {
       return (constructDateObject(a.day, a.month, a.year))
           .compareTo(constructDateObject(b.day, b.month, b.year));
@@ -185,7 +187,20 @@ class ProductionExcelUtilities {
           ? getCorrespondingOverweightToProdReport(report, this.overweightList)
           : 0.0;
       /////////////////////////////////////////////////////////////
-      totTheoreticals += calculateNetTheoreticalOfReport(report, theoreticals);
+      reportStoppedMinutes = DownTimeReport.getWastedMinutesOfCriteria(
+          downTimeList,
+          report.month,
+          report.month,
+          report.day,
+          report.day,
+          report.year,
+          report.area,
+          report.line_index,
+          report.shift_index);
+      totStoppedMinutes += reportStoppedMinutes;
+      /////////////////////////////////////////////////////////////
+      totTheoreticals += calculateNetTheoreticalOfReport(
+          report, theoreticals, reportStoppedMinutes);
       totKg += calculateProductionKg(report, report.productionInCartons);
       totRework += calculateAllRework(refNum, report);
       totExtrusionRework += report.extrusionRework;
@@ -221,21 +236,24 @@ class ProductionExcelUtilities {
       avgOEE = (avgOEE == 0.0
           ? calculateOeeFromOriginalReport(
               report,
-              calculateNetTheoreticalOfReport(report, theoreticals),
+              calculateNetTheoreticalOfReport(
+                  report, theoreticals, reportStoppedMinutes),
               refNum,
-              matchedOverWeight)
+              matchedOverWeight,
+              reportStoppedMinutes)
           : (avgOEE +
                   calculateOeeFromOriginalReport(
                       report,
-                      calculateNetTheoreticalOfReport(report, theoreticals),
+                      calculateNetTheoreticalOfReport(
+                          report, theoreticals, reportStoppedMinutes),
                       refNum,
-                      matchedOverWeight)) /
+                      matchedOverWeight,
+                      reportStoppedMinutes)) /
               2);
       totScrap += calculateAllScrap(refNum, report);
       totWeight += calculateAllWeightFromOriginalReport(
           refNum, report, matchedOverWeight);
       totCartons += report.productionInCartons;
-      totStoppedMinutes += report.wastedMinutes;
       /////////////////////////////////////////////////////////////
 
       List<dynamic> row = [
@@ -243,10 +261,11 @@ class ProductionExcelUtilities {
         prodType[refNum],
         (report.shift_index + 1),
         report.shiftHours,
-        report.wastedMinutes,
+        reportStoppedMinutes,
         report.skuName,
         prod_lines4[report.line_index - 1],
-        calculateNetTheoreticalOfReport(report, theoreticals),
+        calculateNetTheoreticalOfReport(
+            report, theoreticals, reportStoppedMinutes),
         "Kg",
         calculateProductionKg(report, report.productionInCartons),
         calculateAllRework(refNum, report),
@@ -290,18 +309,22 @@ class ProductionExcelUtilities {
             refNum, report, matchedOverWeight),
         (calculateRateFromOriginalReport(
                 report,
-                calculateNetTheoreticalOfReport(report, theoreticals),
+                calculateNetTheoreticalOfReport(
+                    report, theoreticals, reportStoppedMinutes),
                 refNum,
                 matchedOverWeight) *
             100),
-        (calculateAvailabilityFromOriginalReport(report) * 100),
+        (calculateAvailabilityFromOriginalReport(report, reportStoppedMinutes) *
+            100),
         (calculateQualityFromOriginalReport(report, refNum, matchedOverWeight) *
             100),
         calculateOeeFromOriginalReport(
             report,
-            calculateNetTheoreticalOfReport(report, theoreticals),
+            calculateNetTheoreticalOfReport(
+                report, theoreticals, reportStoppedMinutes),
             refNum,
-            matchedOverWeight),
+            matchedOverWeight,
+            reportStoppedMinutes),
         calculateOverweightKgFromOriginalReport(report, matchedOverWeight),
         report.productionInCartons,
         report.month,
@@ -372,6 +395,7 @@ class ProductionExcelUtilities {
 
   void insertWaferReportRows(
     List<WaferReport> reportsList,
+    List<QueryDocumentSnapshot<DownTimeReport>> downTimeList,
   ) {
     double totTheoreticals = 0.0,
         totKg = 0.0,
@@ -399,9 +423,8 @@ class ProductionExcelUtilities {
         avgOverweight = 0.0,
         totScrap = 0.0,
         totWeight = 0.0,
-        avgOEE = 0.0,
-        totStoppedMinutes = 0.0;
-    int totCartons = 0;
+        avgOEE = 0.0;
+    int totCartons = 0, totStoppedMinutes = 0, reportStoppedMinutes;
     reportsList.sort((a, b) {
       return (constructDateObject(a.day, a.month, a.year))
           .compareTo(constructDateObject(b.day, b.month, b.year));
@@ -418,7 +441,20 @@ class ProductionExcelUtilities {
           ? getCorrespondingOverweightToProdReport(report, this.overweightList)
           : 0.0;
       /////////////////////////////////////////////////////////////
-      totTheoreticals += calculateNetTheoreticalOfReport(report, theoreticals);
+      reportStoppedMinutes = DownTimeReport.getWastedMinutesOfCriteria(
+          downTimeList,
+          report.month,
+          report.month,
+          report.day,
+          report.day,
+          report.year,
+          report.area,
+          report.line_index,
+          report.shift_index);
+      totStoppedMinutes += reportStoppedMinutes;
+      /////////////////////////////////////////////////////////////
+      totTheoreticals += calculateNetTheoreticalOfReport(
+          report, theoreticals, reportStoppedMinutes);
       totKg += calculateProductionKg(report, report.productionInCartons);
       totRework += calculateAllRework(refNum, report);
       totCreamRework += report.creamRework;
@@ -454,31 +490,35 @@ class ProductionExcelUtilities {
       avgOEE = (avgOEE == 0.0
           ? calculateOeeFromOriginalReport(
               report,
-              calculateNetTheoreticalOfReport(report, theoreticals),
+              calculateNetTheoreticalOfReport(
+                  report, theoreticals, reportStoppedMinutes),
               refNum,
-              matchedOverWeight)
+              matchedOverWeight,
+              reportStoppedMinutes)
           : (avgOEE +
                   calculateOeeFromOriginalReport(
                       report,
-                      calculateNetTheoreticalOfReport(report, theoreticals),
+                      calculateNetTheoreticalOfReport(
+                          report, theoreticals, reportStoppedMinutes),
                       refNum,
-                      matchedOverWeight)) /
+                      matchedOverWeight,
+                      reportStoppedMinutes)) /
               2);
       totScrap += calculateAllScrap(refNum, report);
       totWeight += calculateAllWeightFromOriginalReport(
           refNum, report, matchedOverWeight);
       totCartons += report.productionInCartons;
-      totStoppedMinutes += report.wastedMinutes;
       /////////////////////////////////////////////////////////////
       List<dynamic> row = [
         constructDateString(report.day, report.month, report.year),
         prodType[refNum],
         (report.shift_index + 1),
         report.shiftHours,
-        report.wastedMinutes,
+        reportStoppedMinutes,
         report.skuName,
         prod_lines4[report.line_index - 1],
-        calculateNetTheoreticalOfReport(report, theoreticals),
+        calculateNetTheoreticalOfReport(
+            report, theoreticals, reportStoppedMinutes),
         "Kg",
         calculateProductionKg(report, report.productionInCartons),
         calculateAllRework(refNum, report),
@@ -522,18 +562,22 @@ class ProductionExcelUtilities {
             refNum, report, matchedOverWeight),
         (calculateRateFromOriginalReport(
                 report,
-                calculateNetTheoreticalOfReport(report, theoreticals),
+                calculateNetTheoreticalOfReport(
+                    report, theoreticals, reportStoppedMinutes),
                 refNum,
                 matchedOverWeight) *
             100),
-        (calculateAvailabilityFromOriginalReport(report) * 100),
+        (calculateAvailabilityFromOriginalReport(report, reportStoppedMinutes) *
+            100),
         (calculateQualityFromOriginalReport(report, refNum, matchedOverWeight) *
             100),
         calculateOeeFromOriginalReport(
             report,
-            calculateNetTheoreticalOfReport(report, theoreticals),
+            calculateNetTheoreticalOfReport(
+                report, theoreticals, reportStoppedMinutes),
             refNum,
-            matchedOverWeight),
+            matchedOverWeight,
+            reportStoppedMinutes),
         calculateOverweightKgFromOriginalReport(report, matchedOverWeight),
         report.productionInCartons,
         report.month,
@@ -603,6 +647,7 @@ class ProductionExcelUtilities {
 
   void insertMaamoulReportRows(
     List<MaamoulReport> reportsList,
+    List<QueryDocumentSnapshot<DownTimeReport>> downTimeList,
   ) {
     double totTheoreticals = 0.0,
         totKg = 0.0,
@@ -628,9 +673,8 @@ class ProductionExcelUtilities {
         avgOverweight = 0.0,
         totScrap = 0.0,
         totWeight = 0.0,
-        avgOEE = 0.0,
-        totStoppedMinutes = 0.0;
-    int totCartons = 0;
+        avgOEE = 0.0;
+    int totCartons = 0, totStoppedMinutes = 0, reportStoppedMinutes;
     reportsList.sort((a, b) {
       return (constructDateObject(a.day, a.month, a.year))
           .compareTo(constructDateObject(b.day, b.month, b.year));
@@ -647,7 +691,20 @@ class ProductionExcelUtilities {
           ? getCorrespondingOverweightToProdReport(report, this.overweightList)
           : 0.0;
       /////////////////////////////////////////////////////////////
-      totTheoreticals += calculateNetTheoreticalOfReport(report, theoreticals);
+      reportStoppedMinutes = DownTimeReport.getWastedMinutesOfCriteria(
+          downTimeList,
+          report.month,
+          report.month,
+          report.day,
+          report.day,
+          report.year,
+          report.area,
+          report.line_index,
+          report.shift_index);
+      totStoppedMinutes += reportStoppedMinutes;
+      /////////////////////////////////////////////////////////////
+      totTheoreticals += calculateNetTheoreticalOfReport(
+          report, theoreticals, reportStoppedMinutes);
       totKg += calculateProductionKg(report, report.productionInCartons);
       totRework += calculateAllRework(refNum, report);
       totMixerRework += report.mixerRework;
@@ -681,31 +738,35 @@ class ProductionExcelUtilities {
       avgOEE = (avgOEE == 0.0
           ? calculateOeeFromOriginalReport(
               report,
-              calculateNetTheoreticalOfReport(report, theoreticals),
+              calculateNetTheoreticalOfReport(
+                  report, theoreticals, reportStoppedMinutes),
               refNum,
-              matchedOverWeight)
+              matchedOverWeight,
+              reportStoppedMinutes)
           : (avgOEE +
                   calculateOeeFromOriginalReport(
                       report,
-                      calculateNetTheoreticalOfReport(report, theoreticals),
+                      calculateNetTheoreticalOfReport(
+                          report, theoreticals, reportStoppedMinutes),
                       refNum,
-                      matchedOverWeight)) /
+                      matchedOverWeight,
+                      reportStoppedMinutes)) /
               2);
       totScrap += calculateAllScrap(refNum, report);
       totWeight += calculateAllWeightFromOriginalReport(
           refNum, report, matchedOverWeight);
       totCartons += report.productionInCartons;
-      totStoppedMinutes += report.wastedMinutes;
       /////////////////////////////////////////////////////////////
       List<dynamic> row = [
         constructDateString(report.day, report.month, report.year),
         prodType[refNum],
         (report.shift_index + 1),
         report.shiftHours,
-        report.wastedMinutes,
+        reportStoppedMinutes,
         report.skuName,
         prod_lines4[report.line_index - 1],
-        calculateNetTheoreticalOfReport(report, theoreticals),
+        calculateNetTheoreticalOfReport(
+            report, theoreticals, reportStoppedMinutes),
         "Kg",
         calculateProductionKg(report, report.productionInCartons),
         calculateAllRework(refNum, report),
@@ -746,18 +807,22 @@ class ProductionExcelUtilities {
             refNum, report, matchedOverWeight),
         (calculateRateFromOriginalReport(
                 report,
-                calculateNetTheoreticalOfReport(report, theoreticals),
+                calculateNetTheoreticalOfReport(
+                    report, theoreticals, reportStoppedMinutes),
                 refNum,
                 matchedOverWeight) *
             100),
-        (calculateAvailabilityFromOriginalReport(report) * 100),
+        (calculateAvailabilityFromOriginalReport(report, reportStoppedMinutes) *
+            100),
         (calculateQualityFromOriginalReport(report, refNum, matchedOverWeight) *
             100),
         calculateOeeFromOriginalReport(
             report,
-            calculateNetTheoreticalOfReport(report, theoreticals),
+            calculateNetTheoreticalOfReport(
+                report, theoreticals, reportStoppedMinutes),
             refNum,
-            matchedOverWeight),
+            matchedOverWeight,
+            reportStoppedMinutes),
         calculateOverweightKgFromOriginalReport(report, matchedOverWeight),
         report.productionInCartons,
         report.month,
@@ -824,6 +889,7 @@ class ProductionExcelUtilities {
 
   void insertTotalReportRows(
     List<MiniProductionReport> reportsList,
+    List<QueryDocumentSnapshot<DownTimeReport>> downTimeList,
   ) {
     double totKg = 0.0,
         totRework = 0.0,
@@ -835,9 +901,8 @@ class ProductionExcelUtilities {
         avgOEE = 0.0,
         totOverWeightKg = 0.0,
         totPlanKg = 0.0,
-        totRmMuv = 0.0,
-        totStoppedMinutes = 0.0;
-    int totCartons = 0;
+        totRmMuv = 0.0;
+    int totCartons = 0, totStoppedMinutes = 0, reportStoppedMinutes;
     reportsList.sort((a, b) {
       return (constructDateObject(a.day, a.month, a.year))
           .compareTo(constructDateObject(b.day, b.month, b.year));
@@ -861,6 +926,20 @@ class ProductionExcelUtilities {
               report, this.overweightList)
           ? getCorrespondingOverweightToMiniReport(report, this.overweightList)
           : 0.0;
+      /////////////////////////////////////////////////////////////
+      reportStoppedMinutes = DownTimeReport.getWastedMinutesOfCriteria(
+        downTimeList,
+        report.month,
+        report.month,
+        report.day,
+        report.day,
+        report.year,
+        report.area,
+        report.line_index,
+        report.shift_index,
+      );
+      totStoppedMinutes += reportStoppedMinutes;
+      /////////////////////////////////////////////////////////////
       totKg += report.productionInKg;
       totRework += report.rework;
       totScrap += report.scrap;
@@ -868,21 +947,23 @@ class ProductionExcelUtilities {
       totCartons += report.productionInCartons;
       totOverWeightKg +=
           calculateOverweightKgFromMiniReport(report, matchedOverWeight);
-      avgOEE = calculateOeeFromMiniReport(report, matchedOverWeight) == 0.0
+      avgOEE = calculateOeeFromMiniReport(
+                  report, matchedOverWeight, reportStoppedMinutes) ==
+              0.0
           ? avgOEE
           : (avgOEE == 0.0
-              ? calculateOeeFromMiniReport(report, matchedOverWeight)
+              ? calculateOeeFromMiniReport(
+                  report, matchedOverWeight, reportStoppedMinutes)
               : (avgOEE +
-                      calculateOeeFromMiniReport(report, matchedOverWeight)) /
+                      calculateOeeFromMiniReport(
+                          report, matchedOverWeight, reportStoppedMinutes)) /
                   2);
-      totStoppedMinutes += report.wastedMinutes;
       /////////////////////////////////////////////////////////////
       List<dynamic> row = [
         constructDateString(report.day, report.month, report.year),
         report.planInKg,
         report.productionInKg,
         report.productionInCartons,
-        report.wastedMinutes,
         doesMiniReportHaveCorrespondingOverweight(report, this.overweightList)
             ? getCorrespondingOverweightToMiniReport(
                 report, this.overweightList)
@@ -893,9 +974,10 @@ class ProductionExcelUtilities {
         calculateReworkPercentFromMiniReport(report, matchedOverWeight),
         calculateWastePercent(report.totalFilmUsed, report.totalFilmWasted),
         (calculateRate(report, matchedOverWeight) * 100),
-        (calculateAvailability(report) * 100),
+        (calculateAvailability(report, reportStoppedMinutes) * 100),
         (calculateQuality(report, matchedOverWeight) * 100),
-        calculateOeeFromMiniReport(report, matchedOverWeight),
+        calculateOeeFromMiniReport(
+            report, matchedOverWeight, reportStoppedMinutes),
         report.rmMUV,
         report.month,
         getWeekNumber(report.day, report.month, report.year),

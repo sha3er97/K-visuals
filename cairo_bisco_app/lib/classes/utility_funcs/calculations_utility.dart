@@ -205,6 +205,7 @@ double calculateProductionKg(report, int cartons) {
 double calculateNetTheoreticalOfReport(
   report,
   simpleTheoreticals,
+  int wastedMinutes,
 ) {
   double res, theo;
   if (Credentials.isSimpleCalculation) {
@@ -217,7 +218,7 @@ double calculateNetTheoreticalOfReport(
         1000; //gm --> kg
   }
   res = theo *
-      ((report.shiftHours - minutesToHours(report.wastedMinutes)) /
+      ((report.shiftHours - minutesToHours(wastedMinutes)) /
           standardShiftHours);
   return double.parse(res.toStringAsFixed(1));
 }
@@ -257,23 +258,19 @@ double calculateOverweightKgFromMiniReport(
 }
 
 /*************************OEE calculations*********************************/
-double calculateOeeFromOriginalReport(
-  report,
-  theoreticalKg,
-  int refNum,
-  double matchedOverWeight,
-) {
+double calculateOeeFromOriginalReport(report, theoreticalKg, int refNum,
+    double matchedOverWeight, int wastedMinutes) {
   double res = calculateRateFromOriginalReport(
           report, theoreticalKg, refNum, matchedOverWeight) *
       calculateQualityFromOriginalReport(report, refNum, matchedOverWeight) *
-      calculateAvailabilityFromOriginalReport(report) *
+      calculateAvailabilityFromOriginalReport(report, wastedMinutes) *
       100;
   return double.parse(res.toStringAsFixed(1));
 }
 
-double calculateAvailabilityFromOriginalReport(report) {
-  double res = (report.shiftHours - minutesToHours(report.wastedMinutes)) /
-      report.shiftHours;
+double calculateAvailabilityFromOriginalReport(report, int wastedMinutes) {
+  double res =
+      (report.shiftHours - minutesToHours(wastedMinutes)) / report.shiftHours;
   return report.shiftHours == 0.0 ? 0.0 : double.parse(res.toStringAsFixed(2));
 }
 
@@ -316,7 +313,7 @@ double calculateOeeFromMiniReport(
 }
 
 double calculateAvailability(MiniProductionReport report, int wastedMinutes) {
-  double res = (report.plannedHours - minutesToHours(wastedMinutes * 1.0)) /
+  double res = (report.plannedHours - minutesToHours(wastedMinutes)) /
       report.plannedHours;
   return report.plannedHours == 0.0
       ? 0.0

@@ -174,6 +174,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                               int.parse(getYear()),
                               prodType.indexOf(type),
                               lineNum,
+                              ALL_SHIFTS,
                             );
 
                             List<QueryDocumentSnapshot<OverWeightReport>>
@@ -211,7 +212,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                                         QueryDocumentSnapshot<BiscuitsReport>>;
                                 temp_report =
                                     BiscuitsReport.getFilteredReportOfInterval(
-                                  biscuitsReportsList,
+                                      biscuitsReportsList,
                                   int.parse(getMonth()),
                                   int.parse(getMonth()),
                                   int.parse(getDay()),
@@ -219,6 +220,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                                   int.parse(getYear()),
                                   lineNum,
                                   overweightTempList,
+                                  dtReportsList,
                                 );
                                 break;
                               case WAFER_AREA:
@@ -228,7 +230,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                                         QueryDocumentSnapshot<WaferReport>>;
                                 temp_report =
                                     WaferReport.getFilteredReportOfInterval(
-                                  waferReportsList,
+                                      waferReportsList,
                                   int.parse(getMonth()),
                                   int.parse(getMonth()),
                                   int.parse(getDay()),
@@ -236,6 +238,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                                   int.parse(getYear()),
                                   lineNum,
                                   overweightTempList,
+                                  dtReportsList,
                                 );
                                 break;
                               default: //case MAAMOUL_AREA :
@@ -245,7 +248,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                                         QueryDocumentSnapshot<MaamoulReport>>;
                                 temp_report =
                                     MaamoulReport.getFilteredReportOfInterval(
-                                  maamoulReportsList,
+                                      maamoulReportsList,
                                   int.parse(getMonth()),
                                   int.parse(getMonth()),
                                   int.parse(getDay()),
@@ -253,6 +256,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                                   int.parse(getYear()),
                                   lineNum,
                                   overweightTempList,
+                                  dtReportsList,
                                 );
                                 break;
                             }

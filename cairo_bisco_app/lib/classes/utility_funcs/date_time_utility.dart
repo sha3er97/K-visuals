@@ -116,8 +116,8 @@ bool inEditPeriod(int day, int month, int year) {
   return (diff.inDays <= 2 && year == now.year && month == now.month);
 }
 
-double minutesToHours(double minutes) {
-  return minutes / 60;
+double minutesToHours(int minutes) {
+  return minutes / 60.0;
 }
 
 List<DateTime> getDaysInInterval(

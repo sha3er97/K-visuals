@@ -10,6 +10,7 @@ import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'DownTimeReport.dart';
 import 'Machine.dart';
 import 'OverWeightReport.dart';
 
@@ -554,6 +555,7 @@ class BiscuitsReport {
     int year,
     int lineNumRequired,
     List<OverWeightReport> overweightList,
+    List<QueryDocumentSnapshot<DownTimeReport>> downTimeList,
   ) {
     double temp_scrap = 0.0,
         temp_used_film = 0.0,
@@ -591,6 +593,17 @@ class BiscuitsReport {
               report.data(), overweightList)
           : 0.0;
       /////////////////////////////////////////////////////////////
+      int reportStoppedMinutes = DownTimeReport.getWastedMinutesOfCriteria(
+          downTimeList,
+          report.data().month,
+          report.data().month,
+          report.data().day,
+          report.data().day,
+          report.data().year,
+          report.data().area,
+          report.data().line_index,
+          report.data().shift_index);
+      /////////////////////////////////////////////////////////////
       if (lineNumRequired == ALL_LINES ||
           (lineNumRequired != ALL_LINES &&
               report.data().line_index == lineNumRequired)) {
@@ -607,8 +620,8 @@ class BiscuitsReport {
         temp_planInKg += calculateProductionKg(
             report.data(), report.data().shiftProductionPlan);
 
-        temp_theoreticalPlan +=
-            calculateNetTheoreticalOfReport(report.data(), simpleTheoreticals);
+        temp_theoreticalPlan += calculateNetTheoreticalOfReport(
+            report.data(), simpleTheoreticals, reportStoppedMinutes);
 
         temp_productionPlan += report.data().shiftProductionPlan;
         temp_scrap += calculateAllScrap(BISCUIT_AREA, report.data());
