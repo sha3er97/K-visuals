@@ -248,7 +248,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                                         QueryDocumentSnapshot<MaamoulReport>>;
                                 temp_report =
                                     MaamoulReport.getFilteredReportOfInterval(
-                                      maamoulReportsList,
+                                  maamoulReportsList,
                                   int.parse(getMonth()),
                                   int.parse(getMonth()),
                                   int.parse(getDay()),
