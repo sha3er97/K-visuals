@@ -350,7 +350,7 @@ class _WaferLinesState extends State<WaferLines> {
                                           int temp_wasted_minutes =
                                               DownTimeReport
                                                   .getWastedMinutesOfCriteria(
-                                                dtReportsList,
+                                            dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),

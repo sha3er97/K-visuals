@@ -230,7 +230,7 @@ class _FloorDashBoardState extends State<FloorDashBoard> {
                                         QueryDocumentSnapshot<WaferReport>>;
                                 temp_report =
                                     WaferReport.getFilteredReportOfInterval(
-                                      waferReportsList,
+                                  waferReportsList,
                                   int.parse(getMonth()),
                                   int.parse(getMonth()),
                                   int.parse(getDay()),
