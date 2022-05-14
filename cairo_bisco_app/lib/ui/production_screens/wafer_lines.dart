@@ -200,7 +200,7 @@ class _WaferLinesState extends State<WaferLines> {
                                                           WaferReport>>;
                                           MiniProductionReport temp_report =
                                               WaferReport
-                                              .getFilteredReportOfInterval(
+                                                  .getFilteredReportOfInterval(
                                             reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -213,8 +213,8 @@ class _WaferLinesState extends State<WaferLines> {
                                           );
 
                                           int temp_wasted_minutes =
-                                          DownTimeReport
-                                              .getWastedMinutesOfCriteria(
+                                              DownTimeReport
+                                                  .getWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -232,7 +232,7 @@ class _WaferLinesState extends State<WaferLines> {
                                                   .percent,
                                               isWebView: false,
                                               wastedMinutes:
-                                              temp_wasted_minutes,
+                                                  temp_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -483,8 +483,8 @@ class _WaferLinesState extends State<WaferLines> {
                                             dtReportsList,
                                           );
                                           int temp_wasted_minutes =
-                                          DownTimeReport
-                                              .getWastedMinutesOfCriteria(
+                                              DownTimeReport
+                                                  .getWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -502,7 +502,7 @@ class _WaferLinesState extends State<WaferLines> {
                                                   .percent,
                                               isWebView: false,
                                               wastedMinutes:
-                                              temp_wasted_minutes,
+                                                  temp_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -618,8 +618,8 @@ class _WaferLinesState extends State<WaferLines> {
                                             dtReportsList,
                                           );
                                           int temp_wasted_minutes =
-                                          DownTimeReport
-                                              .getWastedMinutesOfCriteria(
+                                              DownTimeReport
+                                                  .getWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -637,7 +637,7 @@ class _WaferLinesState extends State<WaferLines> {
                                                   .percent,
                                               isWebView: false,
                                               wastedMinutes:
-                                              temp_wasted_minutes,
+                                                  temp_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
