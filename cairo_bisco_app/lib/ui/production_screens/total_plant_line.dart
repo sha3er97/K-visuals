@@ -317,7 +317,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                           int temp_wasted_minutes =
                                                               DownTimeReport
                                                                   .getWastedMinutesOfCriteria(
-                                                                dtReportsList,
+                                                            dtReportsList,
                                                             int.parse(
                                                                 from_month),
                                                             int.parse(to_month),
