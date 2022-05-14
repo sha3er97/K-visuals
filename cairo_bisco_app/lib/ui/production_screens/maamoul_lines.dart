@@ -550,7 +550,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                   );
                                   int temp_wasted_minutes2 =
                                       DownTimeReport.getWastedMinutesOfCriteria(
-                                        dtReportsList,
+                                    dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
                                     int.parse(from_day),

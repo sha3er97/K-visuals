@@ -961,7 +961,7 @@ class _WaferLinesState extends State<WaferLines> {
                                           MiniProductionReport temp_report4 =
                                               WaferReport
                                                   .getFilteredReportOfInterval(
-                                                reportsList,
+                                            reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
