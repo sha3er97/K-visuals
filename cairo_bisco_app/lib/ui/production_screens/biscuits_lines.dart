@@ -738,7 +738,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                           MiniProductionReport temp_report =
                                               BiscuitsReport
                                                   .getFilteredReportOfInterval(
-                                                reportsList,
+                                            reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
@@ -889,15 +889,15 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                 );
                                 int temp_wasted_minutes2 =
                                     DownTimeReport.getWastedMinutesOfCriteria(
-                                      dtReportsList,
-                                      int.parse(from_month),
-                                      int.parse(to_month),
-                                      int.parse(from_day),
-                                      int.parse(to_day),
-                                      int.parse(chosenYear),
-                                      BISCUIT_AREA,
-                                      2,
-                                      ALL_SHIFTS,
+                                  dtReportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  2,
+                                  ALL_SHIFTS,
                                 );
                                 int temp_wasted_minutes3 =
                                     DownTimeReport.getWastedMinutesOfCriteria(
