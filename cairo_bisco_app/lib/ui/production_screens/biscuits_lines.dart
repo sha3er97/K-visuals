@@ -877,7 +877,7 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                         QueryDocumentSnapshot<DownTimeReport>>;
                                 int temp_wasted_minutes1 =
                                     DownTimeReport.getWastedMinutesOfCriteria(
-                                      dtReportsList,
+                                  dtReportsList,
                                   int.parse(from_month),
                                   int.parse(to_month),
                                   int.parse(from_day),
