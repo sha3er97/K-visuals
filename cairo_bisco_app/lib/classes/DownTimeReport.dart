@@ -41,7 +41,12 @@ class DownTimeReport {
       hour_from,
       hour_to,
       minute_from,
-      minute_to;
+      minute_to,
+      report_hour,
+      report_minute,
+      report_day,
+      report_month,
+      report_year;
 
   DownTimeReport({
     required this.machine,
@@ -74,6 +79,12 @@ class DownTimeReport {
     required this.rejected_by,
     required this.isRejected,
     required this.rejectComment,
+    //4.0.2 additions
+    required this.report_hour,
+    required this.report_minute,
+    required this.report_day,
+    required this.report_month,
+    required this.report_year,
   });
 
   DownTimeReport.fromJson(Map<String, Object?> json)
@@ -112,6 +123,17 @@ class DownTimeReport {
               json['rejected_by'] == null ? '' : json['rejected_by']! as String,
           isRejected:
               json['isRejected'] == null ? NO : json['isRejected']! as int,
+          //4.0.2 additions
+          report_hour:
+              json['report_hour'] == null ? 0 : json['report_hour']! as int,
+          report_minute:
+              json['report_minute'] == null ? 0 : json['report_minute']! as int,
+          report_month:
+              json['report_month'] == null ? 0 : json['report_month']! as int,
+          report_day:
+              json['report_day'] == null ? 0 : json['report_day']! as int,
+          report_year:
+              json['report_year'] == null ? 0 : json['report_year']! as int,
         );
 
   Map<String, Object?> toJson() {
@@ -146,6 +168,12 @@ class DownTimeReport {
       'rejected_by': rejected_by,
       'rejectComment': rejectComment,
       'isRejected': isRejected,
+      //4.0.2 additions
+      'report_hour': report_hour,
+      'report_minute': report_minute,
+      'report_month': report_month,
+      'report_day': report_day,
+      'report_year': report_year,
     };
   }
 
@@ -216,6 +244,12 @@ class DownTimeReport {
         rejected_by: '',
         rejectComment: '',
         isRejected: NO,
+        //4.0.2 additions
+        report_hour: DateTime.now().hour,
+        report_minute: DateTime.now().minute,
+        report_day: DateTime.now().day,
+        report_month: DateTime.now().month,
+        report_year: DateTime.now().year,
       ),
     );
   }
@@ -638,6 +672,11 @@ class DownTimeReport {
       rejected_by: '',
       rejectComment: '',
       isRejected: NO,
+      report_hour: -1,
+      report_minute: -1,
+      report_day: -1,
+      report_month: -1,
+      report_year: -1,
     );
   }
 

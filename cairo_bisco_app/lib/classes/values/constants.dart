@@ -3,8 +3,8 @@ import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'form_values.dart';
 
 /** version configs**/
-const versionNum = '4.0.1'; //edit also in pubspec.yaml
-const versionCode = 15; //edit also in pubspec.yaml
+const versionNum = '4.0.2'; //edit also in pubspec.yaml
+const versionCode = 16; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
 
@@ -119,10 +119,10 @@ const ALL_SHIFTS = -1;
 const PRODUCTION_REPORT = 0; //0,1,2 are left for 3 production areas
 const QFS_REPORT = 3;
 const EHS_REPORT = 4;
-const OVERWEIGHT_REPORT = 5;
+const DOWNTIME_REPORT = 5;
 const PEOPLE_REPORT = 6;
 const NRC_REPORT = 7;
-const DOWNTIME_REPORT = 8;
+const OVERWEIGHT_REPORT = 8;
 
 const ADMIN_ADD_SKU = 0;
 //const ADMIN_ROOT_CAUSES_EDIT = 1;
@@ -151,6 +151,7 @@ List<String> reportTypeNames = <String>[
   'Production',
   'QFS',
   'EHS',
+  'Down Time',
   '' // more reports
 ];
 Map<String, String> downTimeAuthoritiesMap = {
@@ -164,212 +165,3 @@ Map<String, String> downTimeAuthoritiesMap = {
   downTimeTypes[7]: authorities[5], //other
   downTimeTypes[8]: authorities[5], //other
 };
-List<String> biscuitsHeaders = [
-  "Date",
-  "القسم",
-  "الورديه",
-  "عدد ساعات الورديه",
-  "اجمالي توقفات الخط بالدقيقة Total line stops in Minutes",
-  "نوع الصنف",
-  "خط الانتاج",
-  "Theoretical Speed rate (kg)/shift",
-  "Unit",
-  "Production  الانتاج الفعلى",
-  "Total Rework اعادة تشغيل",
-  "Ext Rework اعادة تشغيل",
-  "Ext Scrap هالك التشكيل",
-  "Scrap Reason سبب الهالك",
-  "Oven Rework اعادة تشغيل",
-  "Oven Scrap هالك الفرن",
-  "Scrap Reason سبب الهالك",
-  "Cutter Rework اعادة تشغيل",
-  "Cutter Scrap الهالك",
-  "Scrap Reason سبب الهالك",
-  "Conv Rework اعادة تشغيل",
-  "Conv Scrap الهالك",
-  "Scrap Reason سبب الهالك",
-  "MC1 Speed",
-  "MC2 Speed",
-  "MC3 Speed",
-  "MC4 Speed",
-  "Packing Rework اعادة تشغيل",
-  "Packing Scrap هالك بسكويت منطقة التغليف",
-  "Scrap Reason سبب الهالك",
-  "هالك علب",
-  "هالك كرتون",
-  "MC1 Waste in Kg",
-  "Film Waste% MC1",
-  "MC2 Waste in Kg",
-  "Film Waste% MC2",
-  "MC3 Waste in Kg",
-  "Film Waste% MC3",
-  "MC4 Waste in Kg",
-  "Film Waste% MC4",
-  "Overweight%",
-  "Scrap kg",
-  "Rework%",
-  "Scrap%",
-  "Rate%",
-  "Availability%",
-  "Quality%",
-  "OEE%",
-  "Overweight (Kg)",
-  "Cartons",
-  "Month",
-  "Week",
-  "Year"
-];
-List<String> waferHeaders = [
-  "Date",
-  "القسم",
-  "الورديه",
-  "عدد ساعات الورديه",
-  "اجمالي توقفات الخط بالدقيقة Total line stops in Minutes",
-  "نوع الصنف",
-  "خط الانتاج",
-  "Theoretical Speed rate (kg)/shift",
-  "Unit",
-  "Production  الانتاج الفعلى",
-  "Total Rework اعادة تشغيل",
-  "Oven Rework اعادة تشغيل",
-  "Oven Scrap هالك الفرن",
-  "Scrap Reason سبب الهالك",
-  "Cream Rework اعادة تشغيل",
-  "Cream Scrap الهالك",
-  "Scrap Reason سبب الهالك",
-  "Cooler Rework اعادة تشغيل",
-  "Cooler Scrap الهالك",
-  "Scrap Reason سبب الهالك",
-  "Cutter Rework اعادة تشغيل",
-  "Cutter Scrap الهالك",
-  "Scrap Reason سبب الهالك",
-  "MC1 Speed",
-  "MC2 Speed",
-  "MC3 Speed",
-  "MC4 Speed",
-  "Packing Rework اعادة تشغيل",
-  "Packing Scrap هالك ويفر منطقة التغليف",
-  "Scrap Reason سبب الهالك",
-  "هالك علب",
-  "هالك كرتون",
-  "MC1 Waste in Kg",
-  "Film Waste% MC1",
-  "MC2 Waste in Kg",
-  "Film Waste% MC2",
-  "MC3 Waste in Kg",
-  "Film Waste% MC3",
-  "MC4 Waste in Kg",
-  "Film Waste% MC4",
-  "Overweight%",
-  "Scrap kg",
-  "Rework%",
-  "Scrap%",
-  "Rate%",
-  "Availability%",
-  "Quality%",
-  "OEE%",
-  "Overweight (Kg)",
-  "Cartons",
-  "Month",
-  "Week",
-  "Year"
-];
-List<String> maamoulHeaders = [
-  "Date",
-  "القسم",
-  "الورديه",
-  "عدد ساعات الورديه",
-  "اجمالي توقفات الخط بالدقيقة Total line stops in Minutes",
-  "نوع الصنف",
-  "خط الانتاج",
-  "Theoretical Speed rate (kg)/shift",
-  "Unit",
-  "Production  الانتاج الفعلى",
-  "Total Rework اعادة تشغيل",
-  "Mixer Rework اعادة تشغيل",
-  "Mixer Scrap الهالك",
-  "Scrap Reason سبب الهالك",
-  "Stamping Rework اعادة تشغيل",
-  "Stamping Scrap الهالك",
-  "Scrap Reason سبب الهالك",
-  "Oven Rework اعادة تشغيل",
-  "Oven Scrap هالك الفرن",
-  "Scrap Reason سبب الهالك",
-  "MC1 Speed",
-  "MC2 Speed",
-  "MC3 Speed",
-  "MC4 Speed",
-  "Packing Rework اعادة تشغيل",
-  "Packing Scrap هالك معمول منطقة التغليف",
-  "Scrap Reason سبب الهالك",
-  "هالك علب",
-  "هالك كرتون",
-  "MC1 Waste in Kg",
-  "Film Waste% MC1",
-  "MC2 Waste in Kg",
-  "Film Waste% MC2",
-  "MC3 Waste in Kg",
-  "Film Waste% MC3",
-  "MC4 Waste in Kg",
-  "Film Waste% MC4",
-  "Overweight%",
-  "Scrap kg",
-  "Rework%",
-  "Scrap%",
-  "Rate%",
-  "Availability%",
-  "Quality%",
-  "OEE%",
-  "Overweight (Kg)",
-  "Cartons",
-  "Month",
-  "Week",
-  "Year"
-];
-List<String> totalPlantHeaders = [
-  "Date",
-  "Plan in Kg",
-  "Production in Kg",
-  "Production in Cartons",
-  "Total line stops in Minutes",
-  "Overweight%",
-  "Overweight (Kg)",
-  "Scrap kg",
-  "Scrap%",
-  "Rework%",
-  "Film Waste%",
-  "Rate%",
-  "Availability%",
-  "Quality%",
-  "OEE%",
-  "RM MUV",
-  "Month",
-  "Week",
-  "Year"
-];
-
-List<String> QfsHeaders = [
-  "Date",
-  "Quality Incidents",
-  "Food Safety Incidents",
-  "CCP Failures",
-  "Consumer Complaints",
-  "G6 Escalation",
-  "Pes",
-  "Month",
-  "Week",
-  "Year"
-];
-
-List<String> EhsHeaders = [
-  "Date",
-  "First Aid Incidents",
-  "Lost Time Incidents",
-  "Recordable Incidents",
-  "Near Miss",
-  "Pre-shift risk Assessment",
-  "S7 Tours",
-  "Month",
-  "Week",
-  "Year"
-];

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:cairo_bisco_app/classes/DownTimeReport.dart';
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
@@ -12,6 +13,8 @@ import 'package:cross_file/cross_file.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:permission_handler/permission_handler.dart';
+
+import '../values/excelHeaders.dart';
 
 class OtherExcelUtilities {
   static var excel;
@@ -88,6 +91,9 @@ class OtherExcelUtilities {
         break;
       case EHS_REPORT:
         sheetObject.insertRowIterables(EhsHeaders, 0);
+        break;
+      case DOWNTIME_REPORT:
+        sheetObject.insertRowIterables(DownTimeHeaders, 0);
         break;
     }
   }
@@ -172,6 +178,97 @@ class OtherExcelUtilities {
       totRecordable,
       totNearMiss,
       totPreShift,
+      '-',
+      '-',
+      '-',
+      '-',
+    ];
+    sheetObject.appendRow(tot);
+  }
+
+  void insertDtReportRows(
+    List<DownTimeReport> reportsList,
+  ) {
+    int totMinutes = 0;
+    for (DownTimeReport report in reportsList) {
+      totMinutes += getTimeDifference(
+          report.yearFrom,
+          report.monthFrom,
+          report.dayFrom,
+          report.yearTo,
+          report.monthTo,
+          report.dayTo,
+          report.hour_from,
+          report.minute_from,
+          report.hour_to,
+          report.minute_to);
+      List<dynamic> row = [
+        constructDateString(report.dayFrom, report.monthFrom, report.yearFrom),
+        prodType[report.area],
+        report.shift_index + 1,
+        report.supName,
+        report.skuName,
+        prod_lines4[report.line_index - 1],
+        report.causeType,
+        report.machine,
+        report.isPlanned,
+        constructTimeString(report.hour_from, report.minute_from),
+        constructTimeString(report.hour_to, report.minute_to),
+        getTimeDifference(
+            report.yearFrom,
+            report.monthFrom,
+            report.dayFrom,
+            report.yearTo,
+            report.monthTo,
+            report.dayTo,
+            report.hour_from,
+            report.minute_from,
+            report.hour_to,
+            report.minute_to),
+        y_nDesc[report.isStopped_index],
+        report.rootCauseDrop,
+        report.rootCauseDesc,
+        report.wfCategory,
+        y_nDesc[report.isApproved],
+        report.approved_by,
+        y_nDesc[report.isRejected],
+        report.rejected_by,
+        report.rejectComment,
+        report.technicianName,
+        constructDateString(
+                report.report_day, report.report_month, report.report_year) +
+            " " +
+            constructTimeString(report.report_hour, report.report_minute),
+        report.monthFrom,
+        getWeekNumber(report.dayFrom, report.monthFrom, report.yearFrom),
+        report.yearFrom,
+      ];
+      // print(row);
+      sheetObject.appendRow(row);
+    }
+    List<dynamic> tot = [
+      'TOTAL',
+      '-',
+      '-',
+      '-',
+      '-',
+      '-',
+      '-',
+      '-',
+      '-',
+      '-',
+      '-',
+      totMinutes,
+      '-',
+      '-',
+      '-',
+      '-',
+      '-',
+      '-',
+      '-',
+      '-',
+      '-',
+      '-',
       '-',
       '-',
       '-',
