@@ -401,7 +401,8 @@ class DownTimeReport {
             report.data().dayFrom.toString());
         continue;
       }
-      if (report.data().area == refNum) hashMap[report.id] = report.data();
+      if (report.data().area == refNum || refNum == TOTAL_PLANT)
+        hashMap[report.id] = report.data();
     }
     return hashMap as HashMap<String, DownTimeReport>;
   }

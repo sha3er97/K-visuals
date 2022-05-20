@@ -187,6 +187,7 @@ class OtherExcelUtilities {
   }
 
   void insertDtReportRows(
+    context,
     List<DownTimeReport> reportsList,
   ) {
     int totMinutes = 0;
@@ -212,8 +213,8 @@ class OtherExcelUtilities {
         report.causeType,
         report.machine,
         report.isPlanned,
-        constructTimeString(report.hour_from, report.minute_from),
-        constructTimeString(report.hour_to, report.minute_to),
+        constructTimeString(context, report.hour_from, report.minute_from),
+        constructTimeString(context, report.hour_to, report.minute_to),
         getTimeDifference(
             report.yearFrom,
             report.monthFrom,
@@ -237,8 +238,9 @@ class OtherExcelUtilities {
         report.technicianName,
         constructDateString(
                 report.report_day, report.report_month, report.report_year) +
-            " " +
-            constructTimeString(report.report_hour, report.report_minute),
+            "--" +
+            constructTimeString(
+                context, report.report_hour, report.report_minute),
         report.monthFrom,
         getWeekNumber(report.dayFrom, report.monthFrom, report.yearFrom),
         report.yearFrom,

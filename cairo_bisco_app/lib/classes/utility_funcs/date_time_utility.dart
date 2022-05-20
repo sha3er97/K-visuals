@@ -66,8 +66,8 @@ String constructDateString(int day, int month, int year) {
   return day.toString() + "/" + month.toString() + "/" + year.toString();
 }
 
-String constructTimeString(int hour, int minute) {
-  return TimeOfDay(hour: hour, minute: minute).toString();
+String constructTimeString(context, int hour, int minute) {
+  return TimeOfDay(hour: hour, minute: minute).format(context);
   //return hour.toString() + ":" + minute.toString();
 }
 

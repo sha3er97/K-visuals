@@ -61,8 +61,10 @@ class DownTimeSummary {
         reportDetails: e.value,
         reportID: e.key,
         type: e.value.causeType,
-        to_time: constructTimeString(e.value.hour_to, e.value.minute_to),
-        from_time: constructTimeString(e.value.hour_from, e.value.minute_from),
+        to_time:
+            constructTimeString(context, e.value.hour_to, e.value.minute_to),
+        from_time: constructTimeString(
+            context, e.value.hour_from, e.value.minute_from),
         root_cause: e.value.rootCauseDrop,
         wastedMinutes: getTimeDifference(
                 e.value.yearFrom,

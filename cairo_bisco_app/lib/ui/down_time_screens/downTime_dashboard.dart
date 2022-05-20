@@ -16,7 +16,9 @@ import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import '../../classes/Machine.dart';
+import '../../classes/utility_funcs/other_excel_utilities.dart';
 import '../../classes/utility_funcs/text_utilities.dart';
+import '../../components/alert_dialog.dart';
 import '../../components/charts/HorizontalBarChart.dart';
 import '../../components/charts/LabeledPieChart.dart';
 
@@ -975,6 +977,83 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                                     ],
                                   ),
                                 ],
+                              ),
+                              SizedBox(height: defaultPadding),
+                              Padding(
+                                padding: const EdgeInsets.all(minimumPadding),
+                                child: Center(
+                                  child: RoundedButton(
+                                      btnText: 'Export Detailed Report',
+                                      color: KelloggColors.green,
+                                      onPressed: () {
+                                        if (int.parse(_selectedYearTo) !=
+                                            int.parse(_selectedYearFrom))
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(
+                                                "Error : invalid interval (reports of same year only are allowed)"),
+                                          ));
+                                        else {
+                                          DateTime dateFrom = DateTime(
+                                              int.parse(_selectedYearTo),
+                                              int.parse(_selectedMonthFrom),
+                                              int.parse(_selectedDayFrom));
+                                          DateTime dateAfter = DateTime(
+                                              int.parse(_selectedYearTo),
+                                              int.parse(_selectedMonthTo),
+                                              int.parse(_selectedDayTo));
+                                          if (dateFrom.isBefore(dateAfter) ||
+                                              dateFrom.isAtSameMomentAs(
+                                                  dateAfter)) {
+                                            calculateInterval();
+                                            OtherExcelUtilities util =
+                                                OtherExcelUtilities(
+                                                    refNum: DOWNTIME_REPORT);
+                                            util.insertHeaders();
+                                            downTimeReportRef.get().then(
+                                                (QuerySnapshot dtSnapshot) {
+                                              try {
+                                                List<
+                                                        QueryDocumentSnapshot<
+                                                            DownTimeReport>>
+                                                    dtReportsList =
+                                                    dtSnapshot.docs as List<
+                                                        QueryDocumentSnapshot<
+                                                            DownTimeReport>>;
+                                                List<DownTimeReport>
+                                                    allReports = DownTimeReport
+                                                        .getAllReportsOfInterval(
+                                                  dtReportsList,
+                                                  validated_month_from,
+                                                  validated_month_to,
+                                                  validated_day_from,
+                                                  validated_day_to,
+                                                  validated_year,
+                                                  TOTAL_PLANT,
+                                                  //ALL_LINES,
+                                                ).values.toList();
+
+                                                util.insertDtReportRows(
+                                                    context, allReports);
+
+                                                util.saveExcelFile(
+                                                    context,
+                                                    validated_day_from
+                                                        .toString(),
+                                                    validated_day_to.toString(),
+                                                    validated_month_from
+                                                        .toString(),
+                                                    validated_month_to
+                                                        .toString());
+                                              } catch (e) {
+                                                showExcelAlertDialog(
+                                                    context, false, "");
+                                              }
+                                            });
+                                          }
+                                        }
+                                      }),
+                                ),
                               ),
                             ],
                           ),
