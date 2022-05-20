@@ -674,7 +674,7 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                           MiniProductionReport temp_reportAll =
                                               MaamoulReport
                                                   .getFilteredReportOfInterval(
-                                                reportsList,
+                                            reportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
                                             int.parse(from_day),
