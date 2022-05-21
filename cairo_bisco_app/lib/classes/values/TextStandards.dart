@@ -94,11 +94,11 @@ Widget myHorizontalDivider() {
   );
 }
 
-Widget myVerticalDivider() {
+Widget myVerticalDivider(Color? lineColor) {
   return VerticalDivider(
     width: 15,
     thickness: 3,
-    // color: KelloggColors.darkRed,
+    color: lineColor,
     indent: 5,
     endIndent: 5,
   );

@@ -313,10 +313,24 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                             overweightTempList,
                                                             dtReportsList,
                                                           );
-
-                                                          int temp_wasted_minutes =
+                                                          int breakDown_wasted_minutes =
                                                               DownTimeReport
-                                                                  .getWastedMinutesOfCriteria(
+                                                                  .getBreakDownWastedMinutesOfCriteria(
+                                                            dtReportsList,
+                                                            int.parse(
+                                                                from_month),
+                                                            int.parse(to_month),
+                                                            int.parse(from_day),
+                                                            int.parse(to_day),
+                                                            int.parse(
+                                                                chosenYear),
+                                                            TOTAL_PLANT,
+                                                            ALL_LINES,
+                                                            ALL_SHIFTS,
+                                                          );
+                                                          int other_wasted_minutes =
+                                                              DownTimeReport
+                                                                  .getOtherWastedMinutesOfCriteria(
                                                             dtReportsList,
                                                             int.parse(
                                                                 from_month),
@@ -342,8 +356,10 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                                   temp_overweight_report
                                                                       .percent,
                                                               isWebView: false,
-                                                              wastedMinutes:
-                                                                  temp_wasted_minutes,
+                                                              wastedMinutesBreakDowns:
+                                                                  breakDown_wasted_minutes,
+                                                              wastedMinutesOther:
+                                                                  other_wasted_minutes,
                                                             ),
                                                           );
                                                         }

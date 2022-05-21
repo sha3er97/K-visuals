@@ -3,6 +3,8 @@ import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 
+import '../DownTimeReport.dart';
+import '../values/form_values.dart';
 import 'date_time_utility.dart';
 
 int getRefIdx(int type, int refNum) {
@@ -107,4 +109,8 @@ bool stringFilterCheck(
 ) {
   bool isTotal = valueToCheck.compareTo(totalCode) == 0;
   return (!isTotal && reportValue.compareTo(valueToCheck) == 0) || isTotal;
+}
+
+bool isMaintenanceReport(DownTimeReport report) {
+  return report.causeType.compareTo(downTimeTypes[1]) == 0;
 }

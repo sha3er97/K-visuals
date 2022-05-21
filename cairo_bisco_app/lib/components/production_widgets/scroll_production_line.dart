@@ -17,13 +17,14 @@ class ProductionLine extends StatelessWidget {
     required this.overweight,
     required this.report,
     required this.isWebView,
-    required this.wastedMinutes,
+    required this.wastedMinutesBreakDowns,
+    required this.wastedMinutesOther,
   }) : super(key: key);
   final MiniProductionReport report;
 
   final double overweight;
   final bool isWebView;
-  final int wastedMinutes;
+  final int wastedMinutesBreakDowns, wastedMinutesOther;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,6 @@ class ProductionLine extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(vertical: defaultPadding),
-      // padding: EdgeInsets.all(defaultPadding),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,7 +192,7 @@ class ProductionLine extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(width: minimumPadding),
-                                myVerticalDivider(),
+                                myVerticalDivider(null),
                                 SizedBox(width: minimumPadding),
                                 Expanded(
                                   child: Padding(
@@ -231,52 +231,72 @@ class ProductionLine extends StatelessWidget {
                 ),
           SizedBox(height: defaultPadding),
           Center(
-            // child: Row(
-            //   children: [
-            //     Center(
-            //       child: Text('Stopped Time',
-            //           style: TextStyle(
-            //               fontSize: aboveMediumFontSize,
-            //               fontWeight: FontWeight.bold,
-            //               color: KelloggColors.darkRed)),
-            //     ),
-            //     SizedBox(width: minimumPadding),
-            //     Center(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(BoxImageBorder),
-              child: ConstrainedBox(
-                constraints: BoxConstraints.tightFor(height: minimumBoxHeight),
-                child: ElevatedButton(
-                  child: Text(
-                    "Stopped Time : " +
-                        wastedMinutes.toString() +
-                        //report.wastedMinutes.round().toString() +
-                        " Mins.",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(BoxImageBorder),
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints.tightFor(height: minimumBoxHeight),
+                      child: ElevatedButton(
+                        child: Text(
+                          "BRK : " + wastedMinutesBreakDowns.toString(),
+                          //report.wastedMinutes.round().toString() +
+                          // +" Mins.",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            textStyle: TextStyle(
+                                fontSize: aboveMediumFontSize,
+                                fontFamily: 'MyFont'),
+                            primary: KelloggColors.grey),
+                        onPressed: () {},
+                      ),
+                    ),
                   ),
-                  style: ElevatedButton.styleFrom(
-                      textStyle: TextStyle(
-                          fontSize: aboveMediumFontSize, fontFamily: 'MyFont'),
-                      primary: KelloggColors.grey),
-                  onPressed: () {},
-                  // icon: ClipRRect(
-                  //   borderRadius: BorderRadius.circular(iconImageBorder),
-                  //   child: Container(
-                  //     height: mediumIconSize,
-                  //     width: mediumIconSize,
-                  //     padding: EdgeInsets.all(minimumPadding / 2),
-                  //     child: new Image.asset(
-                  //       'images/safety.png',
-                  //       color: KelloggColors.white,
-                  //     ),
-                  //   ),
-                  // ),
                 ),
-              ),
-              // ),
-              // ),
-              //   ],
+                myVerticalDivider(KelloggColors.darkRed),
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(BoxImageBorder),
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints.tightFor(height: minimumBoxHeight),
+                      child: ElevatedButton(
+                        child: Text(
+                          "OTH : " + wastedMinutesOther.toString(),
+                          //report.wastedMinutes.round().toString() +
+                          // +" Mins.",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            textStyle: TextStyle(
+                                fontSize: aboveMediumFontSize,
+                                fontFamily: 'MyFont'),
+                            primary: KelloggColors.yellow),
+                        onPressed: () {},
+                        // icon: ClipRRect(
+                        //   borderRadius: BorderRadius.circular(iconImageBorder),
+                        //   child: Container(
+                        //     height: mediumIconSize,
+                        //     width: mediumIconSize,
+                        //     padding: EdgeInsets.all(minimumPadding / 2),
+                        //     child: new Image.asset(
+                        //       'images/safety.png',
+                        //       color: KelloggColors.white,
+                        //     ),
+                        //   ),
+                        // ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(height: minimumPadding),
@@ -284,12 +304,12 @@ class ProductionLine extends StatelessWidget {
             report: report,
             overweight: overweight,
             isWebView: isWebView,
-            wastedMinutes: wastedMinutes,
-            circleColor:
-                calculateOeeFromMiniReport(report, overweight, wastedMinutes) <
-                        Plans.targetOEE
-                    ? KelloggColors.cockRed
-                    : KelloggColors.green,
+            wastedMinutes: wastedMinutesOther + wastedMinutesBreakDowns,
+            circleColor: calculateOeeFromMiniReport(report, overweight,
+                        wastedMinutesOther + wastedMinutesBreakDowns) <
+                    Plans.targetOEE
+                ? KelloggColors.cockRed
+                : KelloggColors.green,
           ),
           myHorizontalDivider(),
           SizedBox(height: minimumPadding),

@@ -146,8 +146,20 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                       downTimeSnapshot.data!.docs as List<
                                           QueryDocumentSnapshot<
                                               DownTimeReport>>;
-                                  int temp_wasted_minutes =
-                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                  int breakDown_wasted_minutes = DownTimeReport
+                                      .getBreakDownWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    BISCUIT_AREA,
+                                    1,
+                                    ALL_SHIFTS,
+                                  );
+                                  int other_wasted_minutes = DownTimeReport
+                                      .getOtherWastedMinutesOfCriteria(
                                     dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
@@ -226,8 +238,10 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                               overweight: temp_overweight_report
                                                   .percent,
                                               isWebView: false,
-                                              wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              wastedMinutesBreakDowns:
+                                                  breakDown_wasted_minutes,
+                                              wastedMinutesOther:
+                                                  other_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -278,8 +292,21 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                       downTimeSnapshot.data!.docs as List<
                                           QueryDocumentSnapshot<
                                               DownTimeReport>>;
-                                  int temp_wasted_minutes =
-                                      DownTimeReport.getWastedMinutesOfCriteria(
+
+                                  int breakDown_wasted_minutes = DownTimeReport
+                                      .getBreakDownWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    BISCUIT_AREA,
+                                    2,
+                                    ALL_SHIFTS,
+                                  );
+                                  int other_wasted_minutes = DownTimeReport
+                                      .getOtherWastedMinutesOfCriteria(
                                     dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
@@ -358,8 +385,10 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                               overweight: temp_overweight_report
                                                   .percent,
                                               isWebView: false,
-                                              wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              wastedMinutesBreakDowns:
+                                                  breakDown_wasted_minutes,
+                                              wastedMinutesOther:
+                                                  other_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -410,8 +439,20 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                       downTimeSnapshot.data!.docs as List<
                                           QueryDocumentSnapshot<
                                               DownTimeReport>>;
-                                  int temp_wasted_minutes =
-                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                  int breakDown_wasted_minutes = DownTimeReport
+                                      .getBreakDownWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    BISCUIT_AREA,
+                                    3,
+                                    ALL_SHIFTS,
+                                  );
+                                  int other_wasted_minutes = DownTimeReport
+                                      .getOtherWastedMinutesOfCriteria(
                                     dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
@@ -490,8 +531,10 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                               overweight: temp_overweight_report
                                                   .percent,
                                               isWebView: false,
-                                              wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              wastedMinutesBreakDowns:
+                                                  breakDown_wasted_minutes,
+                                              wastedMinutesOther:
+                                                  other_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -542,8 +585,20 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                       downTimeSnapshot.data!.docs as List<
                                           QueryDocumentSnapshot<
                                               DownTimeReport>>;
-                                  int temp_wasted_minutes =
-                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                  int breakDown_wasted_minutes = DownTimeReport
+                                      .getBreakDownWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    BISCUIT_AREA,
+                                    4,
+                                    ALL_SHIFTS,
+                                  );
+                                  int other_wasted_minutes = DownTimeReport
+                                      .getOtherWastedMinutesOfCriteria(
                                     dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
@@ -622,8 +677,10 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                               overweight: temp_overweight_report
                                                   .percent,
                                               isWebView: false,
-                                              wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              wastedMinutesBreakDowns:
+                                                  breakDown_wasted_minutes,
+                                              wastedMinutesOther:
+                                                  other_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -674,8 +731,20 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                       downTimeSnapshot.data!.docs as List<
                                           QueryDocumentSnapshot<
                                               DownTimeReport>>;
-                                  int temp_wasted_minutes =
-                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                  int breakDown_wasted_minutes = DownTimeReport
+                                      .getBreakDownWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    BISCUIT_AREA,
+                                    ALL_LINES,
+                                    ALL_SHIFTS,
+                                  );
+                                  int other_wasted_minutes = DownTimeReport
+                                      .getOtherWastedMinutesOfCriteria(
                                     dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
@@ -754,8 +823,10 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                               overweight: temp_overweight_report
                                                   .percent,
                                               isWebView: false,
-                                              wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              wastedMinutesBreakDowns:
+                                                  breakDown_wasted_minutes,
+                                              wastedMinutesOther:
+                                                  other_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -875,8 +946,8 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                     dtReportsList =
                                     downTimeSnapshot.data!.docs as List<
                                         QueryDocumentSnapshot<DownTimeReport>>;
-                                int temp_wasted_minutes1 =
-                                    DownTimeReport.getWastedMinutesOfCriteria(
+                                int breakDown_wasted_minutes1 = DownTimeReport
+                                    .getBreakDownWastedMinutesOfCriteria(
                                   dtReportsList,
                                   int.parse(from_month),
                                   int.parse(to_month),
@@ -887,8 +958,20 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                   1,
                                   ALL_SHIFTS,
                                 );
-                                int temp_wasted_minutes2 =
-                                    DownTimeReport.getWastedMinutesOfCriteria(
+                                int other_wasted_minutes1 = DownTimeReport
+                                    .getOtherWastedMinutesOfCriteria(
+                                  dtReportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  1,
+                                  ALL_SHIFTS,
+                                );
+                                int breakDown_wasted_minutes2 = DownTimeReport
+                                    .getBreakDownWastedMinutesOfCriteria(
                                   dtReportsList,
                                   int.parse(from_month),
                                   int.parse(to_month),
@@ -899,8 +982,20 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                   2,
                                   ALL_SHIFTS,
                                 );
-                                int temp_wasted_minutes3 =
-                                    DownTimeReport.getWastedMinutesOfCriteria(
+                                int other_wasted_minutes2 = DownTimeReport
+                                    .getOtherWastedMinutesOfCriteria(
+                                  dtReportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  2,
+                                  ALL_SHIFTS,
+                                );
+                                int breakDown_wasted_minutes3 = DownTimeReport
+                                    .getBreakDownWastedMinutesOfCriteria(
                                   dtReportsList,
                                   int.parse(from_month),
                                   int.parse(to_month),
@@ -911,8 +1006,20 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                   3,
                                   ALL_SHIFTS,
                                 );
-                                int temp_wasted_minutes4 =
-                                    DownTimeReport.getWastedMinutesOfCriteria(
+                                int other_wasted_minutes3 = DownTimeReport
+                                    .getOtherWastedMinutesOfCriteria(
+                                  dtReportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  3,
+                                  ALL_SHIFTS,
+                                );
+                                int breakDown_wasted_minutes4 = DownTimeReport
+                                    .getBreakDownWastedMinutesOfCriteria(
                                   dtReportsList,
                                   int.parse(from_month),
                                   int.parse(to_month),
@@ -923,8 +1030,32 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                   4,
                                   ALL_SHIFTS,
                                 );
-                                int temp_wasted_minutesAll =
-                                    DownTimeReport.getWastedMinutesOfCriteria(
+                                int other_wasted_minutes4 = DownTimeReport
+                                    .getOtherWastedMinutesOfCriteria(
+                                  dtReportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  4,
+                                  ALL_SHIFTS,
+                                );
+                                int breakDown_wasted_minutesAll = DownTimeReport
+                                    .getBreakDownWastedMinutesOfCriteria(
+                                  dtReportsList,
+                                  int.parse(from_month),
+                                  int.parse(to_month),
+                                  int.parse(from_day),
+                                  int.parse(to_day),
+                                  int.parse(chosenYear),
+                                  BISCUIT_AREA,
+                                  ALL_LINES,
+                                  ALL_SHIFTS,
+                                );
+                                int other_wasted_minutesAll = DownTimeReport
+                                    .getOtherWastedMinutesOfCriteria(
                                   dtReportsList,
                                   int.parse(from_month),
                                   int.parse(to_month),
@@ -1058,15 +1189,17 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                                                           .percent,
                                                                   isWebView:
                                                                       true,
-                                                                  wastedMinutes:
-                                                                      temp_wasted_minutes1,
+                                                                  wastedMinutesBreakDowns:
+                                                                      breakDown_wasted_minutes1,
+                                                                  wastedMinutesOther:
+                                                                      other_wasted_minutes1,
                                                                 ),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                      myVerticalDivider(),
+                                                      myVerticalDivider(null),
                                                       Expanded(
                                                         child: Padding(
                                                           padding: const EdgeInsets
@@ -1091,15 +1224,17 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                                                           .percent,
                                                                   isWebView:
                                                                       true,
-                                                                  wastedMinutes:
-                                                                      temp_wasted_minutes2,
+                                                                  wastedMinutesBreakDowns:
+                                                                      breakDown_wasted_minutes2,
+                                                                  wastedMinutesOther:
+                                                                      other_wasted_minutes2,
                                                                 ),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                      myVerticalDivider(),
+                                                      myVerticalDivider(null),
                                                       Expanded(
                                                         child: Padding(
                                                           padding: const EdgeInsets
@@ -1124,15 +1259,17 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                                                           .percent,
                                                                   isWebView:
                                                                       true,
-                                                                  wastedMinutes:
-                                                                      temp_wasted_minutes3,
+                                                                  wastedMinutesBreakDowns:
+                                                                      breakDown_wasted_minutes3,
+                                                                  wastedMinutesOther:
+                                                                      other_wasted_minutes3,
                                                                 ),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                      myVerticalDivider(),
+                                                      myVerticalDivider(null),
                                                       Expanded(
                                                         child: Padding(
                                                           padding: const EdgeInsets
@@ -1157,15 +1294,17 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                                                           .percent,
                                                                   isWebView:
                                                                       true,
-                                                                  wastedMinutes:
-                                                                      temp_wasted_minutes4,
+                                                                  wastedMinutesBreakDowns:
+                                                                      breakDown_wasted_minutes4,
+                                                                  wastedMinutesOther:
+                                                                      other_wasted_minutes4,
                                                                 ),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                      myVerticalDivider(),
+                                                      myVerticalDivider(null),
                                                       Expanded(
                                                         child: Padding(
                                                           padding: const EdgeInsets
@@ -1190,8 +1329,10 @@ class _BiscuitLinesState extends State<BiscuitLines> {
                                                                           .percent,
                                                                   isWebView:
                                                                       true,
-                                                                  wastedMinutes:
-                                                                      temp_wasted_minutesAll,
+                                                                  wastedMinutesBreakDowns:
+                                                                      breakDown_wasted_minutesAll,
+                                                                  wastedMinutesOther:
+                                                                      other_wasted_minutesAll,
                                                                 ),
                                                               ),
                                                             ],

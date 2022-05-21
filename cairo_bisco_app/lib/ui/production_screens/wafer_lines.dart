@@ -212,9 +212,21 @@ class _WaferLinesState extends State<WaferLines> {
                                             dtReportsList,
                                           );
 
-                                          int temp_wasted_minutes =
+                                          int breakDown_wasted_minutes =
                                               DownTimeReport
-                                                  .getWastedMinutesOfCriteria(
+                                                  .getBreakDownWastedMinutesOfCriteria(
+                                            dtReportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            WAFER_AREA,
+                                            1,
+                                            ALL_SHIFTS,
+                                          );
+                                          int other_wasted_minutes = DownTimeReport
+                                              .getOtherWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -231,8 +243,10 @@ class _WaferLinesState extends State<WaferLines> {
                                               overweight: temp_overweight_report
                                                   .percent,
                                               isWebView: false,
-                                              wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              wastedMinutesBreakDowns:
+                                                  breakDown_wasted_minutes,
+                                              wastedMinutesOther:
+                                                  other_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -347,9 +361,21 @@ class _WaferLinesState extends State<WaferLines> {
                                             overweightTempList,
                                             dtReportsList,
                                           );
-                                          int temp_wasted_minutes =
+                                          int breakDown_wasted_minutes =
                                               DownTimeReport
-                                                  .getWastedMinutesOfCriteria(
+                                                  .getBreakDownWastedMinutesOfCriteria(
+                                            dtReportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            WAFER_AREA,
+                                            2,
+                                            ALL_SHIFTS,
+                                          );
+                                          int other_wasted_minutes = DownTimeReport
+                                              .getOtherWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -366,8 +392,10 @@ class _WaferLinesState extends State<WaferLines> {
                                               overweight: temp_overweight_report
                                                   .percent,
                                               isWebView: false,
-                                              wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              wastedMinutesBreakDowns:
+                                                  breakDown_wasted_minutes,
+                                              wastedMinutesOther:
+                                                  other_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -482,9 +510,21 @@ class _WaferLinesState extends State<WaferLines> {
                                             overweightTempList,
                                             dtReportsList,
                                           );
-                                          int temp_wasted_minutes =
+                                          int breakDown_wasted_minutes =
                                               DownTimeReport
-                                                  .getWastedMinutesOfCriteria(
+                                                  .getBreakDownWastedMinutesOfCriteria(
+                                            dtReportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            WAFER_AREA,
+                                            3,
+                                            ALL_SHIFTS,
+                                          );
+                                          int other_wasted_minutes = DownTimeReport
+                                              .getOtherWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -501,8 +541,10 @@ class _WaferLinesState extends State<WaferLines> {
                                               overweight: temp_overweight_report
                                                   .percent,
                                               isWebView: false,
-                                              wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              wastedMinutesBreakDowns:
+                                                  breakDown_wasted_minutes,
+                                              wastedMinutesOther:
+                                                  other_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -617,9 +659,21 @@ class _WaferLinesState extends State<WaferLines> {
                                             overweightTempList,
                                             dtReportsList,
                                           );
-                                          int temp_wasted_minutes =
+                                          int breakDown_wasted_minutes =
                                               DownTimeReport
-                                                  .getWastedMinutesOfCriteria(
+                                                  .getBreakDownWastedMinutesOfCriteria(
+                                            dtReportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            WAFER_AREA,
+                                            4,
+                                            ALL_SHIFTS,
+                                          );
+                                          int other_wasted_minutes = DownTimeReport
+                                              .getOtherWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -636,8 +690,10 @@ class _WaferLinesState extends State<WaferLines> {
                                               overweight: temp_overweight_report
                                                   .percent,
                                               isWebView: false,
-                                              wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              wastedMinutesBreakDowns:
+                                                  breakDown_wasted_minutes,
+                                              wastedMinutesOther:
+                                                  other_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -714,8 +770,20 @@ class _WaferLinesState extends State<WaferLines> {
                                       downTimeSnapshot.data!.docs as List<
                                           QueryDocumentSnapshot<
                                               DownTimeReport>>;
-                                  int temp_wasted_minutes =
-                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                  int breakDown_wasted_minutes = DownTimeReport
+                                      .getBreakDownWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    WAFER_AREA,
+                                    ALL_LINES,
+                                    ALL_SHIFTS,
+                                  );
+                                  int other_wasted_minutes = DownTimeReport
+                                      .getOtherWastedMinutesOfCriteria(
                                     dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
@@ -767,8 +835,10 @@ class _WaferLinesState extends State<WaferLines> {
                                               overweight: temp_overweight_report
                                                   .percent,
                                               isWebView: false,
-                                              wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              wastedMinutesBreakDowns:
+                                                  breakDown_wasted_minutes,
+                                              wastedMinutesOther:
+                                                  other_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -985,9 +1055,9 @@ class _WaferLinesState extends State<WaferLines> {
                                             dtReportsList,
                                           );
 
-                                          int temp_wasted_minutes1 =
+                                          int breakDown_wasted_minutes1 =
                                               DownTimeReport
-                                                  .getWastedMinutesOfCriteria(
+                                                  .getBreakDownWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -998,9 +1068,22 @@ class _WaferLinesState extends State<WaferLines> {
                                             1,
                                             ALL_SHIFTS,
                                           );
-                                          int temp_wasted_minutes2 =
+                                          int other_wasted_minutes1 =
                                               DownTimeReport
-                                                  .getWastedMinutesOfCriteria(
+                                                  .getOtherWastedMinutesOfCriteria(
+                                            dtReportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            WAFER_AREA,
+                                            1,
+                                            ALL_SHIFTS,
+                                          );
+                                          int breakDown_wasted_minutes2 =
+                                              DownTimeReport
+                                                  .getBreakDownWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -1011,9 +1094,22 @@ class _WaferLinesState extends State<WaferLines> {
                                             2,
                                             ALL_SHIFTS,
                                           );
-                                          int temp_wasted_minutes3 =
+                                          int other_wasted_minutes2 =
                                               DownTimeReport
-                                                  .getWastedMinutesOfCriteria(
+                                                  .getOtherWastedMinutesOfCriteria(
+                                            dtReportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            WAFER_AREA,
+                                            2,
+                                            ALL_SHIFTS,
+                                          );
+                                          int breakDown_wasted_minutes3 =
+                                              DownTimeReport
+                                                  .getBreakDownWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -1024,9 +1120,22 @@ class _WaferLinesState extends State<WaferLines> {
                                             3,
                                             ALL_SHIFTS,
                                           );
-                                          int temp_wasted_minutes4 =
+                                          int other_wasted_minutes3 =
                                               DownTimeReport
-                                                  .getWastedMinutesOfCriteria(
+                                                  .getOtherWastedMinutesOfCriteria(
+                                            dtReportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            WAFER_AREA,
+                                            3,
+                                            ALL_SHIFTS,
+                                          );
+                                          int breakDown_wasted_minutes4 =
+                                              DownTimeReport
+                                                  .getBreakDownWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -1037,9 +1146,35 @@ class _WaferLinesState extends State<WaferLines> {
                                             4,
                                             ALL_SHIFTS,
                                           );
-                                          int temp_wasted_minutesAll =
+                                          int other_wasted_minutes4 =
                                               DownTimeReport
-                                                  .getWastedMinutesOfCriteria(
+                                                  .getOtherWastedMinutesOfCriteria(
+                                            dtReportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            WAFER_AREA,
+                                            4,
+                                            ALL_SHIFTS,
+                                          );
+                                          int breakDown_wasted_minutesAll =
+                                              DownTimeReport
+                                                  .getBreakDownWastedMinutesOfCriteria(
+                                            dtReportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            WAFER_AREA,
+                                            ALL_LINES,
+                                            ALL_SHIFTS,
+                                          );
+                                          int other_wasted_minutesAll =
+                                              DownTimeReport
+                                                  .getOtherWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -1086,15 +1221,17 @@ class _WaferLinesState extends State<WaferLines> {
                                                                           .percent,
                                                                   isWebView:
                                                                       true,
-                                                                  wastedMinutes:
-                                                                      temp_wasted_minutes1,
+                                                                  wastedMinutesBreakDowns:
+                                                                      breakDown_wasted_minutes1,
+                                                                  wastedMinutesOther:
+                                                                      other_wasted_minutes1,
                                                                 ),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                      myVerticalDivider(),
+                                                      myVerticalDivider(null),
                                                       Expanded(
                                                         child: Padding(
                                                           padding: const EdgeInsets
@@ -1119,15 +1256,17 @@ class _WaferLinesState extends State<WaferLines> {
                                                                           .percent,
                                                                   isWebView:
                                                                       true,
-                                                                  wastedMinutes:
-                                                                      temp_wasted_minutes2,
+                                                                  wastedMinutesBreakDowns:
+                                                                      breakDown_wasted_minutes2,
+                                                                  wastedMinutesOther:
+                                                                      other_wasted_minutes2,
                                                                 ),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                      myVerticalDivider(),
+                                                      myVerticalDivider(null),
                                                       Expanded(
                                                         child: Padding(
                                                           padding: const EdgeInsets
@@ -1152,15 +1291,17 @@ class _WaferLinesState extends State<WaferLines> {
                                                                           .percent,
                                                                   isWebView:
                                                                       true,
-                                                                  wastedMinutes:
-                                                                      temp_wasted_minutes3,
+                                                                  wastedMinutesBreakDowns:
+                                                                      breakDown_wasted_minutes3,
+                                                                  wastedMinutesOther:
+                                                                      other_wasted_minutes3,
                                                                 ),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                      myVerticalDivider(),
+                                                      myVerticalDivider(null),
                                                       Expanded(
                                                         child: Padding(
                                                           padding: const EdgeInsets
@@ -1185,15 +1326,17 @@ class _WaferLinesState extends State<WaferLines> {
                                                                           .percent,
                                                                   isWebView:
                                                                       true,
-                                                                  wastedMinutes:
-                                                                      temp_wasted_minutes4,
+                                                                  wastedMinutesBreakDowns:
+                                                                      breakDown_wasted_minutes4,
+                                                                  wastedMinutesOther:
+                                                                      other_wasted_minutes4,
                                                                 ),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                      myVerticalDivider(),
+                                                      myVerticalDivider(null),
                                                       Expanded(
                                                         child: Padding(
                                                           padding: const EdgeInsets
@@ -1218,8 +1361,10 @@ class _WaferLinesState extends State<WaferLines> {
                                                                           .percent,
                                                                   isWebView:
                                                                       true,
-                                                                  wastedMinutes:
-                                                                      temp_wasted_minutesAll,
+                                                                  wastedMinutesBreakDowns:
+                                                                      breakDown_wasted_minutesAll,
+                                                                  wastedMinutesOther:
+                                                                      other_wasted_minutesAll,
                                                                 ),
                                                               ),
                                                             ],

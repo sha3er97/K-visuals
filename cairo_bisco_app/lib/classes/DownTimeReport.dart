@@ -875,4 +875,118 @@ class DownTimeReport {
     }
     return temp_wastedMinutes;
   }
+
+  static int getBreakDownWastedMinutesOfCriteria(
+    List<QueryDocumentSnapshot<DownTimeReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+    int areaRequired,
+    int line_index,
+    int shift_index,
+  ) {
+    List<DownTimeReport> filteredList = [];
+    int temp_wastedMinutes = 0;
+
+    for (var report in reportsList) {
+      if (report.data().isApproved == NO) {
+        print('debug :: DownTimeReport filtered out due to its approval --> ' +
+            report.data().isApproved.toString());
+        continue;
+      }
+      if (!isDayInInterval(
+        report.data().dayFrom,
+        report.data().monthFrom,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+        year,
+      )) {
+        print('debug :: DownTimeReport filtered out due to its date --> ' +
+            report.data().dayFrom.toString());
+        continue;
+      }
+      if (intFilterCheck(report.data().area, areaRequired, TOTAL_PLANT) &&
+          intFilterCheck(report.data().line_index, line_index, ALL_LINES) &&
+          intFilterCheck(report.data().shift_index, shift_index, ALL_SHIFTS) &&
+          report.data().isStopped_index != YES &&
+          isMaintenanceReport(report.data())) {
+        filteredList.add(report.data());
+      }
+    }
+    for (DownTimeReport report in filteredList) {
+      temp_wastedMinutes += getTimeDifference(
+          report.yearFrom,
+          report.monthFrom,
+          report.dayFrom,
+          report.yearTo,
+          report.monthTo,
+          report.dayTo,
+          report.hour_from,
+          report.minute_from,
+          report.hour_to,
+          report.minute_to);
+    }
+    return temp_wastedMinutes;
+  }
+
+  static int getOtherWastedMinutesOfCriteria(
+    List<QueryDocumentSnapshot<DownTimeReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+    int areaRequired,
+    int line_index,
+    int shift_index,
+  ) {
+    List<DownTimeReport> filteredList = [];
+    int temp_wastedMinutes = 0;
+
+    for (var report in reportsList) {
+      if (report.data().isApproved == NO) {
+        print('debug :: DownTimeReport filtered out due to its approval --> ' +
+            report.data().isApproved.toString());
+        continue;
+      }
+      if (!isDayInInterval(
+        report.data().dayFrom,
+        report.data().monthFrom,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+        year,
+      )) {
+        print('debug :: DownTimeReport filtered out due to its date --> ' +
+            report.data().dayFrom.toString());
+        continue;
+      }
+      if (intFilterCheck(report.data().area, areaRequired, TOTAL_PLANT) &&
+          intFilterCheck(report.data().line_index, line_index, ALL_LINES) &&
+          intFilterCheck(report.data().shift_index, shift_index, ALL_SHIFTS) &&
+          report.data().isStopped_index != YES &&
+          !isMaintenanceReport(report.data())) {
+        filteredList.add(report.data());
+      }
+    }
+    for (DownTimeReport report in filteredList) {
+      temp_wastedMinutes += getTimeDifference(
+          report.yearFrom,
+          report.monthFrom,
+          report.dayFrom,
+          report.yearTo,
+          report.monthTo,
+          report.dayTo,
+          report.hour_from,
+          report.minute_from,
+          report.hour_to,
+          report.minute_to);
+    }
+    return temp_wastedMinutes;
+  }
 }

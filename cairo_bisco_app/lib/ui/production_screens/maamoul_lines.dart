@@ -182,9 +182,21 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                                   as List<
                                                       QueryDocumentSnapshot<
                                                           DownTimeReport>>;
-                                          int temp_wasted_minutes =
+                                          int breakDown_wasted_minutes =
                                               DownTimeReport
-                                                  .getWastedMinutesOfCriteria(
+                                                  .getBreakDownWastedMinutesOfCriteria(
+                                            dtReportsList,
+                                            int.parse(from_month),
+                                            int.parse(to_month),
+                                            int.parse(from_day),
+                                            int.parse(to_day),
+                                            int.parse(chosenYear),
+                                            MAAMOUL_AREA,
+                                            1,
+                                            ALL_SHIFTS,
+                                          );
+                                          int other_wasted_minutes = DownTimeReport
+                                              .getOtherWastedMinutesOfCriteria(
                                             dtReportsList,
                                             int.parse(from_month),
                                             int.parse(to_month),
@@ -222,8 +234,10 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                               overweight: temp_overweight_report
                                                   .percent,
                                               isWebView: false,
-                                              wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              wastedMinutesBreakDowns:
+                                                  breakDown_wasted_minutes,
+                                              wastedMinutesOther:
+                                                  other_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -273,8 +287,20 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                       downTimeSnapshot.data!.docs as List<
                                           QueryDocumentSnapshot<
                                               DownTimeReport>>;
-                                  int temp_wasted_minutes =
-                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                  int breakDown_wasted_minutes = DownTimeReport
+                                      .getBreakDownWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                    2,
+                                    ALL_SHIFTS,
+                                  );
+                                  int other_wasted_minutes = DownTimeReport
+                                      .getOtherWastedMinutesOfCriteria(
                                     dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
@@ -353,8 +379,10 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                               overweight: temp_overweight_report
                                                   .percent,
                                               isWebView: false,
-                                              wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              wastedMinutesBreakDowns:
+                                                  breakDown_wasted_minutes,
+                                              wastedMinutesOther:
+                                                  other_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -404,8 +432,20 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                       downTimeSnapshot.data!.docs as List<
                                           QueryDocumentSnapshot<
                                               DownTimeReport>>;
-                                  int temp_wasted_minutes =
-                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                  int breakDown_wasted_minutes = DownTimeReport
+                                      .getBreakDownWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                    ALL_LINES,
+                                    ALL_SHIFTS,
+                                  );
+                                  int other_wasted_minutes = DownTimeReport
+                                      .getOtherWastedMinutesOfCriteria(
                                     dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
@@ -484,8 +524,10 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                               overweight: temp_overweight_report
                                                   .percent,
                                               isWebView: false,
-                                              wastedMinutes:
-                                                  temp_wasted_minutes,
+                                              wastedMinutesBreakDowns:
+                                                  breakDown_wasted_minutes,
+                                              wastedMinutesOther:
+                                                  other_wasted_minutes,
                                             ),
                                           );
                                         } catch (e) {
@@ -536,8 +578,8 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                       downTimeSnapshot.data!.docs as List<
                                           QueryDocumentSnapshot<
                                               DownTimeReport>>;
-                                  int temp_wasted_minutes1 =
-                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                  int breakDown_wasted_minutes1 = DownTimeReport
+                                      .getBreakDownWastedMinutesOfCriteria(
                                     dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
@@ -548,8 +590,20 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                     1,
                                     ALL_SHIFTS,
                                   );
-                                  int temp_wasted_minutes2 =
-                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                  int other_wasted_minutes1 = DownTimeReport
+                                      .getOtherWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                    1,
+                                    ALL_SHIFTS,
+                                  );
+                                  int breakDown_wasted_minutes2 = DownTimeReport
+                                      .getBreakDownWastedMinutesOfCriteria(
                                     dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
@@ -560,8 +614,33 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                     2,
                                     ALL_SHIFTS,
                                   );
-                                  int temp_wasted_minutesAll =
-                                      DownTimeReport.getWastedMinutesOfCriteria(
+                                  int other_wasted_minutes2 = DownTimeReport
+                                      .getOtherWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                    2,
+                                    ALL_SHIFTS,
+                                  );
+                                  int breakDown_wasted_minutesAll =
+                                      DownTimeReport
+                                          .getBreakDownWastedMinutesOfCriteria(
+                                    dtReportsList,
+                                    int.parse(from_month),
+                                    int.parse(to_month),
+                                    int.parse(from_day),
+                                    int.parse(to_day),
+                                    int.parse(chosenYear),
+                                    MAAMOUL_AREA,
+                                    ALL_LINES,
+                                    ALL_SHIFTS,
+                                  );
+                                  int other_wasted_minutesAll = DownTimeReport
+                                      .getOtherWastedMinutesOfCriteria(
                                     dtReportsList,
                                     int.parse(from_month),
                                     int.parse(to_month),
@@ -720,15 +799,17 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                                                           .percent,
                                                                   isWebView:
                                                                       true,
-                                                                  wastedMinutes:
-                                                                      temp_wasted_minutes1,
+                                                                  wastedMinutesBreakDowns:
+                                                                      breakDown_wasted_minutes1,
+                                                                  wastedMinutesOther:
+                                                                      other_wasted_minutes1,
                                                                 ),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                      myVerticalDivider(),
+                                                      myVerticalDivider(null),
                                                       Expanded(
                                                         child: Padding(
                                                           padding: const EdgeInsets
@@ -753,15 +834,17 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                                                           .percent,
                                                                   isWebView:
                                                                       true,
-                                                                  wastedMinutes:
-                                                                      temp_wasted_minutes2,
+                                                                  wastedMinutesBreakDowns:
+                                                                      breakDown_wasted_minutes2,
+                                                                  wastedMinutesOther:
+                                                                      other_wasted_minutes2,
                                                                 ),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                      myVerticalDivider(),
+                                                      myVerticalDivider(null),
                                                       Expanded(
                                                         child: Padding(
                                                           padding: const EdgeInsets
@@ -786,8 +869,10 @@ class _MaamoulLinesState extends State<MaamoulLines> {
                                                                           .percent,
                                                                   isWebView:
                                                                       true,
-                                                                  wastedMinutes:
-                                                                      temp_wasted_minutesAll,
+                                                                  wastedMinutesBreakDowns:
+                                                                      breakDown_wasted_minutesAll,
+                                                                  wastedMinutesOther:
+                                                                      other_wasted_minutesAll,
                                                                 ),
                                                               ),
                                                             ],
