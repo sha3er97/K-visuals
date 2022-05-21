@@ -268,7 +268,7 @@ class ProductionLine extends StatelessWidget {
                           BoxConstraints.tightFor(height: minimumBoxHeight),
                       child: ElevatedButton(
                         child: Text(
-                          "OTH : " + wastedMinutesOther.toString(),
+                          "DT : " + wastedMinutesOther.toString(),
                           //report.wastedMinutes.round().toString() +
                           // +" Mins.",
                           maxLines: 1,
