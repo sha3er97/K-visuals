@@ -3,8 +3,8 @@ import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'form_values.dart';
 
 /** version configs**/
-const versionNum = '4.0.2'; //edit also in pubspec.yaml
-const versionCode = 16; //edit also in pubspec.yaml
+const versionNum = '4.0.3'; //edit also in pubspec.yaml
+const versionCode = 17; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
 

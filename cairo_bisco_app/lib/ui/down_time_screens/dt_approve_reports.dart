@@ -83,6 +83,20 @@ class _ApproveReportsState extends State<ApproveReports> {
                             );
                             reportsTitlesList = DownTimeSummary.makeList(
                                 context, downTimeReportsList);
+                            reportsTitlesList.sort((a, b) {
+                              return (constructTimeObject(
+                                      a.reportDetails.report_day,
+                                      a.reportDetails.report_month,
+                                      a.reportDetails.report_year,
+                                      a.reportDetails.report_hour,
+                                      a.reportDetails.report_minute))
+                                  .compareTo(constructTimeObject(
+                                      b.reportDetails.report_day,
+                                      b.reportDetails.report_month,
+                                      b.reportDetails.report_year,
+                                      b.reportDetails.report_hour,
+                                      b.reportDetails.report_minute));
+                            });
                           });
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text("Report refreshed"),
@@ -99,19 +113,19 @@ class _ApproveReportsState extends State<ApproveReports> {
                   itemCount: reportsTitlesList.length,
                   itemBuilder: (BuildContext context, int index) {
                     String reportSummary = "By : " +
-                        reportsTitlesList[index].supName +
+                        reportsTitlesList[index].reportDetails.supName +
                         "\nTech. : " +
-                        reportsTitlesList[index].technicianName +
+                        reportsTitlesList[index].reportDetails.technicianName +
                         '\n' +
-                        reportsTitlesList[index].type +
+                        reportsTitlesList[index].reportDetails.causeType +
                         " = " +
-                        reportsTitlesList[index].responsible +
+                        reportsTitlesList[index].reportDetails.responsible +
                         '\n' +
                         reportsTitlesList[index].areaName +
                         " " +
                         reportsTitlesList[index].lineName +
                         '\n' +
-                        reportsTitlesList[index].root_cause +
+                        reportsTitlesList[index].reportDetails.rootCauseDrop +
                         "\nFrom : " +
                         reportsTitlesList[index].dateFrom +
                         " at " +
@@ -127,18 +141,27 @@ class _ApproveReportsState extends State<ApproveReports> {
                         reportsTitlesList[index].stoppedStatus +
                         "\n-----------------------------\n";
                     return ListTile(
-                      title: reportsTitlesList[index].is_rejected == YES
-                          ? aboveMediumHeading(reportSummary)
-                          : adminHeading(reportSummary),
-                      subtitle: reportsTitlesList[index].is_rejected == YES
-                          ? aboveMediumHeading("Rejected By : " +
-                              reportsTitlesList[index].rejected_by +
-                              " Because :\n" +
-                              reportsTitlesList[index].rejectComment +
-                              "\n-----------------------------\n")
-                          : EmptyPlaceHolder(),
+                      title:
+                          reportsTitlesList[index].reportDetails.isRejected ==
+                                  YES
+                              ? aboveMediumHeading(reportSummary)
+                              : adminHeading(reportSummary),
+                      subtitle:
+                          reportsTitlesList[index].reportDetails.isRejected ==
+                                  YES
+                              ? aboveMediumHeading("Rejected By : " +
+                                  reportsTitlesList[index]
+                                      .reportDetails
+                                      .rejected_by +
+                                  " Because :\n" +
+                                  reportsTitlesList[index]
+                                      .reportDetails
+                                      .rejectComment +
+                                  "\n-----------------------------\n")
+                              : EmptyPlaceHolder(),
                       leading: IconButton(
-                        tooltip: "Approve",
+                        tooltip: "Approve " +
+                            reportsTitlesList[index].reportDateTime,
                         icon: const Icon(Icons.mode_edit),
                         color: KelloggColors.green,
                         onPressed: () {
@@ -147,7 +170,8 @@ class _ApproveReportsState extends State<ApproveReports> {
                         },
                       ),
                       trailing: IconButton(
-                        tooltip: "Reject",
+                        tooltip:
+                            "Reject " + reportsTitlesList[index].reportDateTime,
                         icon: const Icon(Icons.close),
                         color: KelloggColors.cockRed,
                         onPressed: () {

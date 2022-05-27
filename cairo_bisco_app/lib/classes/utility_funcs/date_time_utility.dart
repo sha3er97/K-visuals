@@ -90,6 +90,11 @@ DateTime constructDateObject(int day, int month, int year) {
   return new DateTime(year, month, day);
 }
 
+DateTime constructTimeObject(
+    int day, int month, int year, int hour, int minute) {
+  return new DateTime(year, month, day, hour, minute);
+}
+
 int getWeekNumber(int day, int month, int year) {
   final yearStart = new DateTime(year, 1, 1);
   final reportDate = new DateTime(year, month, day);
