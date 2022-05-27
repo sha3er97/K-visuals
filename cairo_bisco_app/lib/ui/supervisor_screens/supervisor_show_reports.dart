@@ -195,10 +195,10 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
       maamoulReportRef,
       qualityReportRef,
       ehsReportRef,
-      overWeightReportRef,
+      downTimeReportRef,
       peopleReportRef,
       nrcReportRef,
-      downTimeReportRef,
+      overWeightReportRef,
     ];
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
@@ -465,7 +465,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                           validated_month_from = int.parse(_selectedMonthFrom);
                           validated_month_to = int.parse(_selectedMonthTo);
                           validated_year = int.parse(_selectedYearFrom);
-
+                          print("type =" + type.toString());
                           allRefs[getRefIdx(type, refNum)]
                               .get()
                               .then((QuerySnapshot snapshot) {
