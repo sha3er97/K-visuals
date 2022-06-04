@@ -1,22 +1,20 @@
 import 'dart:collection';
 
 import 'package:cairo_bisco_app/classes/DownTimeSummary.dart';
-import 'package:cairo_bisco_app/classes/ReportTitle.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_time_utility.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
-import 'package:cairo_bisco_app/ui/down_time_screens/rejectDownTimeReportAlert.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
-import 'package:cairo_bisco_app/components/list_items/report_item.dart';
 import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
+import 'package:cairo_bisco_app/ui/down_time_screens/rejectDownTimeReportAlert.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import '../../classes/DownTimeReport.dart';
 import '../../classes/values/TextStandards.dart';
+import '../../classes/values/form_values.dart';
 import '../../components/alert_dialog.dart';
 
 class ApproveReports extends StatefulWidget {
@@ -117,7 +115,8 @@ class _ApproveReportsState extends State<ApproveReports> {
                         "\nTech. : " +
                         reportsTitlesList[index].reportDetails.technicianName +
                         '\n' +
-                        reportsTitlesList[index].reportDetails.causeType +
+                        displayDownTimeTypes[downTimeTypes.indexOf(
+                            reportsTitlesList[index].reportDetails.causeType)] +
                         " = " +
                         reportsTitlesList[index].reportDetails.responsible +
                         '\n' +

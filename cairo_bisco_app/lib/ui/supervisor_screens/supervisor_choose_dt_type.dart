@@ -62,7 +62,9 @@ class _SupervisorChooseDtTypeState extends State<SupervisorChooseDtType> {
   @override
   void initState() {
     super.initState();
-    dtType = isEdit ? reportDetails.causeType : downTimeTypes[0];
+    dtType = isEdit
+        ? displayDownTimeTypes[downTimeTypes.indexOf(reportDetails.causeType)]
+        : displayDownTimeTypes[0];
   }
 
   @override
@@ -109,10 +111,10 @@ class _SupervisorChooseDtTypeState extends State<SupervisorChooseDtType> {
                           value: dtType,
                           isExpanded: true,
                           validator: (value) =>
-                              value == downTimeTypes[0] || value == null
+                              value == displayDownTimeTypes[0] || value == null
                                   ? missingValueErrorText
                                   : null,
-                          items: downTimeTypes.map((String value) {
+                          items: displayDownTimeTypes.map((String value) {
                             return new DropdownMenuItem<String>(
                               value: value,
                               child: Text(
@@ -147,7 +149,9 @@ class _SupervisorChooseDtTypeState extends State<SupervisorChooseDtType> {
                                               reportID: reportID,
                                               dtType: isEdit
                                                   ? reportDetails.causeType
-                                                  : dtType,
+                                                  : downTimeTypes[
+                                                      displayDownTimeTypes
+                                                          .indexOf(dtType)],
                                               isEdit: isEdit,
                                             )));
                               } else {

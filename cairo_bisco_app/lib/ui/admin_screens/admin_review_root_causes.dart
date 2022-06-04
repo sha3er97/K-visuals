@@ -19,7 +19,7 @@ class AdminReviewRootCauses extends StatefulWidget {
 }
 
 class _AdminReviewRootCausesState extends State<AdminReviewRootCauses> {
-  String type = downTimeTypes[0], cause = "";
+  String type = displayDownTimeTypes[0], cause = "";
 
   bool _valid_cause_validate = false;
   bool showSpinner = false;
@@ -77,7 +77,7 @@ class _AdminReviewRootCausesState extends State<AdminReviewRootCauses> {
                             // decoration: InputDecoration(labelText: 'اختر'),
                             value: type,
                             isExpanded: true,
-                            items: downTimeTypes.map((String value) {
+                            items: displayDownTimeTypes.map((String value) {
                               return new DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
@@ -150,7 +150,8 @@ class _AdminReviewRootCausesState extends State<AdminReviewRootCauses> {
                                   if (!_valid_cause_validate) {
                                     RootCause.addCause(
                                       context,
-                                      type,
+                                      downTimeTypes[
+                                          displayDownTimeTypes.indexOf(type)],
                                       cause.trim(),
                                     );
                                   } else {
@@ -181,14 +182,18 @@ class _AdminReviewRootCausesState extends State<AdminReviewRootCauses> {
                             itemBuilder: (BuildContext context, int index) {
                               if (RootCause.reversedCausesMap[
                                               RootCause.allCauses[index]]!
-                                          .compareTo(type) ==
+                                          .compareTo(downTimeTypes[
+                                              displayDownTimeTypes
+                                                  .indexOf(type)]) ==
                                       0 ||
-                                  type.compareTo(downTimeTypes[0]) == 0) {
+                                  type.compareTo(displayDownTimeTypes[0]) ==
+                                      0) {
                                 return ListTile(
-                                  title: adminHeading(RootCause
-                                          .reversedCausesMap[
-                                              RootCause.allCauses[index]]
-                                          .toString() +
+                                  title: adminHeading(displayDownTimeTypes[
+                                          downTimeTypes.indexOf(RootCause
+                                              .reversedCausesMap[
+                                                  RootCause.allCauses[index]]
+                                              .toString())] +
                                       " : " +
                                       RootCause.allCauses[index]),
                                   leading: IconButton(

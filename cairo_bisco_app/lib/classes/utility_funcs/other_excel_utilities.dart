@@ -210,7 +210,7 @@ class OtherExcelUtilities {
         report.supName,
         report.skuName,
         prod_lines4[report.line_index - 1],
-        report.causeType,
+        displayDownTimeTypes[downTimeTypes.indexOf(report.causeType)],
         report.machine,
         report.isPlanned,
         constructTimeString(context, report.hour_from, report.minute_from),
