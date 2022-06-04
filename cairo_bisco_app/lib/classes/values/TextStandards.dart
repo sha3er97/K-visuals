@@ -75,6 +75,17 @@ Text smallerHeading(String title) {
   );
 }
 
+Text greyHint(String title) {
+  return Text(
+    title + ' * ',
+    textAlign: TextAlign.center,
+    style: TextStyle(
+        fontSize: mediumFontSize,
+        fontWeight: FontWeight.w500,
+        color: KelloggColors.grey),
+  );
+}
+
 Text adminHeading(String title) {
   return Text(
     title,

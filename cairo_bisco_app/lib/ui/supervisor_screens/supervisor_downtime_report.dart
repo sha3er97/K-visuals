@@ -841,6 +841,10 @@ class _SupervisorDownTimeReportFormState
                           ),
                           SizedBox(height: defaultPadding),
                           /////////////////////////////////////////////////////////////////////////////
+                          greyHint(categoriesDefinition[
+                              wfCategories.indexOf(wfCategory)]),
+                          SizedBox(height: defaultPadding),
+                          /////////////////////////////////////////////////////////////////////////////
                           smallerHeading(
                               'توقيت و مدة العطل\nDown Time Duration'),
                           // Row(
