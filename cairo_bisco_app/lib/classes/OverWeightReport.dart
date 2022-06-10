@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_time_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/other_utility.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -220,6 +221,65 @@ class OverWeightReport {
     return hashMap as HashMap<String, OverWeightReport>;
   }
 
+  static OverWeightReport getScrapDashboardSummary(
+    List<QueryDocumentSnapshot<OverWeightReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+    int areaRequired,
+    int lineNumRequired,
+    String sku,
+  ) {
+    double temp_percent = 0.0;
+    int valid_reports_count = 0;
+    int temp_month = month_from, temp_day = day_from, temp_year = year;
+    for (var report in reportsList) {
+      if (!isDayInInterval(
+        report.data().day,
+        report.data().month,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+        year,
+      )) {
+        // print('debug :: OverWeightReport filtered out due to its date --> ' +
+        //     report.data().day.toString());
+        continue;
+      }
+
+      if (intFilterCheck(report.data().area, areaRequired, 3) &&
+          intFilterCheck(report.data().line_index, lineNumRequired, 0) &&
+          stringFilterCheck(report.data().skuName, sku, '-')) {
+        temp_percent += report.data().percent;
+        valid_reports_count++;
+        temp_month = report.data().month;
+        temp_day = report.data().day;
+        temp_year = report.data().year;
+        print('debug :: OverWeightReport selected');
+      } else {
+        print('debug :: OverWeightReport filtered out due to conditions');
+      }
+    }
+    //return the total in capsulized form
+    return OverWeightReport(
+      skuName: '',
+      supName: '',
+      percent:
+          valid_reports_count == 0 ? 0.0 : temp_percent / valid_reports_count,
+      line_index: lineNumRequired,
+      area: areaRequired,
+      year: temp_year,
+      month: temp_month,
+      day: temp_day,
+      pes_index: -1,
+      g6_index: -1,
+      consumer_complaints: -1,
+    );
+  }
+
   static OverWeightReport getFilteredReportOfInterval(
     List<QueryDocumentSnapshot<OverWeightReport>> reportsList,
     int month_from,
@@ -253,11 +313,9 @@ class OverWeightReport {
         continue;
       }
 
-      if (lineNumRequired != ALL_LINES &&
-          areaRequired != TOTAL_PLANT &&
-          report.data().line_index == lineNumRequired &&
-          report.data().area == areaRequired) {
-        //all shifts in one line in one area
+      if (intFilterCheck(report.data().area, areaRequired, TOTAL_PLANT) &&
+          intFilterCheck(
+              report.data().line_index, lineNumRequired, ALL_LINES)) {
         temp_percent += report.data().percent;
         valid_reports_count++;
         temp_consumer_complaints += report.data().consumer_complaints;
@@ -267,33 +325,6 @@ class OverWeightReport {
         temp_day = report.data().day;
         temp_year = report.data().year;
         lastSkuName = report.data().skuName;
-        print('debug :: OverWeightReport chosen in first if');
-      } else if (lineNumRequired == ALL_LINES &&
-          areaRequired != TOTAL_PLANT &&
-          report.data().area == areaRequired) {
-        // all shifts all lines in one area
-        temp_percent += report.data().percent;
-        valid_reports_count++;
-        temp_consumer_complaints += report.data().consumer_complaints;
-        temp_pes_index = max(temp_pes_index, report.data().pes_index);
-        temp_g6_index = max(temp_g6_index, report.data().g6_index);
-        temp_month = report.data().month;
-        temp_day = report.data().day;
-        temp_year = report.data().year;
-        lastSkuName = report.data().skuName;
-        print('debug :: OverWeightReport chosen in second if');
-      } else if (areaRequired == TOTAL_PLANT) {
-        // all shifts all lines all areas
-        temp_percent += report.data().percent;
-        valid_reports_count++;
-        temp_consumer_complaints += report.data().consumer_complaints;
-        temp_pes_index = max(temp_pes_index, report.data().pes_index);
-        temp_g6_index = max(temp_g6_index, report.data().g6_index);
-        temp_month = report.data().month;
-        temp_day = report.data().day;
-        temp_year = report.data().year;
-        lastSkuName = report.data().skuName;
-        print('debug :: OverWeightReport chosen in third if');
       } else {
         print('debug :: OverWeightReport filtered out due to conditions');
       }

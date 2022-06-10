@@ -1,5 +1,6 @@
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 
+import '../SKU.dart';
 import 'form_values.dart';
 
 /** version configs**/
@@ -143,6 +144,12 @@ List<List<String>> correspondingLines = [
   ['-'].followedBy(prod_lines4).toList(), //biscuits
   ['-'].followedBy(prod_lines4).toList(), //wafer
   ['-'].followedBy(prod_lines2).toList(), //maamoul
+  ['-'], //total plant
+];
+List<List<String>> correspondingSkus = [
+  ['-'].followedBy(SKU.allSkus[0]).toList(), //biscuits
+  ['-'].followedBy(SKU.allSkus[1]).toList(), //wafer
+  ['-'].followedBy(SKU.allSkus[2]).toList(), //maamoul
   ['-'], //total plant
 ];
 List<String> reportTypeNames = <String>[

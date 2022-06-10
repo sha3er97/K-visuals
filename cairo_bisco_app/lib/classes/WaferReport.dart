@@ -721,4 +721,78 @@ class WaferReport {
       mc4WasteKg: 0.0,
     );
   }
+
+  static MiniProductionReport getScrapDashboardSummary(
+    List<QueryDocumentSnapshot<WaferReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+    int lineNumRequired,
+    String sku,
+    // List<OverWeightReport> overweightList,
+  ) {
+    double temp_scrap = 0.0, temp_productionInKg = 0.0, temp_rework = 0.0;
+    int temp_month = month_from, temp_day = day_from, temp_year = year;
+
+    for (var report in reportsList) {
+      if (!isDayInInterval(
+        report.data().day,
+        report.data().month,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+        year,
+      )) {
+        // print('debug :: BiscuitsReport filtered out due to its date --> ' +
+        //     report.data().day.toString());
+        continue;
+      }
+      // double matchedOverWeight = doesProdReportHaveCorrespondingOverweight(
+      //     report.data(), overweightList)
+      //     ? getCorrespondingOverweightToProdReport(
+      //     report.data(), overweightList)
+      //     : 0.0;
+      /////////////////////////////////////////////////////////////
+      if (intFilterCheck(report.data().line_index, lineNumRequired, 0) &&
+          stringFilterCheck(report.data().skuName, sku, '-')) {
+        temp_productionInKg += calculateProductionKg(
+            report.data(), report.data().productionInCartons);
+
+        temp_scrap += calculateAllScrap(WAFER_AREA, report.data());
+        temp_rework += calculateAllRework(WAFER_AREA, report.data());
+        temp_month = report.data().month;
+        temp_day = report.data().day;
+        temp_year = report.data().year;
+      }
+    }
+    //return the total in capsulized form
+    return MiniProductionReport(
+      skuName: '',
+      shift_index: -1,
+      line_index: -1,
+      area: -1,
+      year: temp_year,
+      month: temp_month,
+      day: temp_day,
+      scrap: temp_scrap,
+      productionInCartons: -1,
+      productionInKg: temp_productionInKg,
+      planInKg: -1,
+      totalFilmWasted: -1,
+      // totalFilmUsed: temp_used_film == 0 ? 1 : temp_used_film,
+      totalFilmUsed: -1,
+      rework: temp_rework,
+      // shiftProductionPlan: temp_productionPlan == 0 ? 1 : temp_productionPlan,
+      // theoreticalAverage: temp_theoreticalPlan == 0 ? 1 : temp_theoreticalPlan,
+      shiftProductionPlan: -1,
+      theoreticalAverage: -1,
+      pmMUV: -1,
+      rmMUV: -1,
+      // wastedMinutes: temp_wasted_minutes,
+      plannedHours: -1,
+    );
+  }
 }

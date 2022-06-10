@@ -3,7 +3,6 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:cairo_bisco_app/ui/admin_screens/admin_home_page.dart';
-import 'package:cairo_bisco_app/ui/down_time_screens/downTime_dashboard.dart';
 import 'package:cairo_bisco_app/ui/login_screens/login.dart';
 import 'package:cairo_bisco_app/ui/production_screens/home_production.dart';
 import 'package:cairo_bisco_app/ui/production_screens/home_production_interval.dart';
@@ -14,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../ui/down_time_screens/dt_approve_reports.dart';
+import '../../ui/extra_dashboards/choose_dashboard.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({
@@ -150,14 +150,14 @@ class SideMenu extends StatelessWidget {
               : EmptyPlaceHolder(),
           isAdmin
               ? DrawerListTile(
-                  title: "DownTime Dashboard",
+                  title: "More Dashboards",
                   image: "pie_chart",
                   press: () {
                     // WidgetsBinding.instance!.addPostFrameCallback((_) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DownTimeDashboard(),
+                        builder: (context) => ChooseDashBoard(),
                       ),
                     );
                     // });
