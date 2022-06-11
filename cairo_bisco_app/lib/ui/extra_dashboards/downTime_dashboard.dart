@@ -932,11 +932,11 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                                                 aboveMediumHeading(
                                                     "Down Time Line Distribution"),
                                                 SizedBox(
-                                                  height: minimumPadding,
+                                                  height: defaultPadding,
                                                 ),
                                                 Expanded(
                                                   child: PieOutsideLabelChart
-                                                      .withLineDistributionData(
+                                                      .withFiveShades(
                                                           tempLineDistributionList),
                                                 )
                                               ],

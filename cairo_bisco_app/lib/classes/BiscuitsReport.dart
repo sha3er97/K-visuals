@@ -10,6 +10,7 @@ import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'CauseCount.dart';
 import 'DownTimeReport.dart';
 import 'Machine.dart';
 import 'OverWeightReport.dart';
@@ -546,80 +547,6 @@ class BiscuitsReport {
     return hashMap as HashMap<String, BiscuitsReport>;
   }
 
-  static MiniProductionReport getScrapDashboardSummary(
-    List<QueryDocumentSnapshot<BiscuitsReport>> reportsList,
-    int month_from,
-    int month_to,
-    int day_from,
-    int day_to,
-    int year,
-    int lineNumRequired,
-    String sku,
-    // List<OverWeightReport> overweightList,
-  ) {
-    double temp_scrap = 0.0, temp_productionInKg = 0.0, temp_rework = 0.0;
-    int temp_month = month_from, temp_day = day_from, temp_year = year;
-
-    for (var report in reportsList) {
-      if (!isDayInInterval(
-        report.data().day,
-        report.data().month,
-        month_from,
-        month_to,
-        day_from,
-        day_to,
-        year,
-      )) {
-        // print('debug :: BiscuitsReport filtered out due to its date --> ' +
-        //     report.data().day.toString());
-        continue;
-      }
-      // double matchedOverWeight = doesProdReportHaveCorrespondingOverweight(
-      //     report.data(), overweightList)
-      //     ? getCorrespondingOverweightToProdReport(
-      //     report.data(), overweightList)
-      //     : 0.0;
-      /////////////////////////////////////////////////////////////
-      if (intFilterCheck(report.data().line_index, lineNumRequired, 0) &&
-          stringFilterCheck(report.data().skuName, sku, '-')) {
-        temp_productionInKg += calculateProductionKg(
-            report.data(), report.data().productionInCartons);
-
-        temp_scrap += calculateAllScrap(BISCUIT_AREA, report.data());
-        temp_rework += calculateAllRework(BISCUIT_AREA, report.data());
-        temp_month = report.data().month;
-        temp_day = report.data().day;
-        temp_year = report.data().year;
-      }
-    }
-    //return the total in capsulized form
-    return MiniProductionReport(
-      skuName: '',
-      shift_index: -1,
-      line_index: -1,
-      area: -1,
-      year: temp_year,
-      month: temp_month,
-      day: temp_day,
-      scrap: temp_scrap,
-      productionInCartons: -1,
-      productionInKg: temp_productionInKg,
-      planInKg: -1,
-      totalFilmWasted: -1,
-      // totalFilmUsed: temp_used_film == 0 ? 1 : temp_used_film,
-      totalFilmUsed: -1,
-      rework: temp_rework,
-      // shiftProductionPlan: temp_productionPlan == 0 ? 1 : temp_productionPlan,
-      // theoreticalAverage: temp_theoreticalPlan == 0 ? 1 : temp_theoreticalPlan,
-      shiftProductionPlan: -1,
-      theoreticalAverage: -1,
-      pmMUV: -1,
-      rmMUV: -1,
-      // wastedMinutes: temp_wasted_minutes,
-      plannedHours: -1,
-    );
-  }
-
   static MiniProductionReport getFilteredReportOfInterval(
     List<QueryDocumentSnapshot<BiscuitsReport>> reportsList,
     int month_from,
@@ -796,5 +723,162 @@ class BiscuitsReport {
       mc4FilmUsed: 0.0,
       mc4WasteKg: 0.0,
     );
+  }
+
+  static MiniProductionReport getScrapDashboardSummary(
+    List<QueryDocumentSnapshot<BiscuitsReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+    int lineNumRequired,
+    String sku,
+    // List<OverWeightReport> overweightList,
+  ) {
+    double temp_scrap = 0.0, temp_productionInKg = 0.0, temp_rework = 0.0;
+    int temp_month = month_from, temp_day = day_from, temp_year = year;
+
+    for (var report in reportsList) {
+      if (!isDayInInterval(
+        report.data().day,
+        report.data().month,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+        year,
+      )) {
+        // print('debug :: BiscuitsReport filtered out due to its date --> ' +
+        //     report.data().day.toString());
+        continue;
+      }
+      // double matchedOverWeight = doesProdReportHaveCorrespondingOverweight(
+      //     report.data(), overweightList)
+      //     ? getCorrespondingOverweightToProdReport(
+      //     report.data(), overweightList)
+      //     : 0.0;
+      /////////////////////////////////////////////////////////////
+      if (intFilterCheck(report.data().line_index, lineNumRequired, 0) &&
+          stringFilterCheck(report.data().skuName, sku, '-')) {
+        temp_productionInKg += calculateProductionKg(
+            report.data(), report.data().productionInCartons);
+
+        temp_scrap += calculateAllScrap(BISCUIT_AREA, report.data());
+        temp_rework += calculateAllRework(BISCUIT_AREA, report.data());
+        temp_month = report.data().month;
+        temp_day = report.data().day;
+        temp_year = report.data().year;
+      }
+    }
+    //return the total in capsulized form
+    return MiniProductionReport(
+      skuName: '',
+      shift_index: -1,
+      line_index: -1,
+      area: -1,
+      year: temp_year,
+      month: temp_month,
+      day: temp_day,
+      scrap: temp_scrap,
+      productionInCartons: -1,
+      productionInKg: temp_productionInKg,
+      planInKg: -1,
+      totalFilmWasted: -1,
+      // totalFilmUsed: temp_used_film == 0 ? 1 : temp_used_film,
+      totalFilmUsed: -1,
+      rework: temp_rework,
+      // shiftProductionPlan: temp_productionPlan == 0 ? 1 : temp_productionPlan,
+      // theoreticalAverage: temp_theoreticalPlan == 0 ? 1 : temp_theoreticalPlan,
+      shiftProductionPlan: -1,
+      theoreticalAverage: -1,
+      pmMUV: -1,
+      rmMUV: -1,
+      // wastedMinutes: temp_wasted_minutes,
+      plannedHours: -1,
+    );
+  }
+
+  static List<CauseCount> getScrapDistribution(
+    List<QueryDocumentSnapshot<BiscuitsReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+    int line_index,
+    String sku,
+  ) {
+    HashMap<String, CauseCount> tempMap = new HashMap<String, CauseCount>();
+    for (var report in reportsList) {
+      if (!isDayInInterval(
+        report.data().day,
+        report.data().month,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+        year,
+      )) {
+        print('debug :: BiscuitsReport filtered out due to its date --> ' +
+            report.data().day.toString());
+        continue;
+      }
+      if (stringFilterCheck(report.data().skuName, sku, '-') &&
+          intFilterCheck(report.data().line_index, line_index, 0)) {
+        for (int i = 0; i < scrapAreas[BISCUIT_AREA].length; i++) {
+          if (tempMap[scrapAreas[BISCUIT_AREA][i]] == null) {
+            switch (i) {
+              case 0:
+                tempMap[scrapAreas[BISCUIT_AREA][i]] = new CauseCount(
+                    scrapAreas[BISCUIT_AREA][i], report.data().ovenScrap);
+                break;
+              case 1:
+                tempMap[scrapAreas[BISCUIT_AREA][i]] = new CauseCount(
+                    scrapAreas[BISCUIT_AREA][i], report.data().packingScrap);
+                break;
+              case 2:
+                tempMap[scrapAreas[BISCUIT_AREA][i]] = new CauseCount(
+                    scrapAreas[BISCUIT_AREA][i], report.data().extrusionScrap);
+                break;
+              case 3:
+                tempMap[scrapAreas[BISCUIT_AREA][i]] = new CauseCount(
+                    scrapAreas[BISCUIT_AREA][i], report.data().conveyorScrap);
+                break;
+              case 4:
+                tempMap[scrapAreas[BISCUIT_AREA][i]] = new CauseCount(
+                    scrapAreas[BISCUIT_AREA][i], report.data().cutterScrap);
+                break;
+            }
+          } else {
+            switch (i) {
+              case 0:
+                tempMap[scrapAreas[BISCUIT_AREA][i]]!
+                    .incrementCount(report.data().ovenScrap);
+                break;
+              case 1:
+                tempMap[scrapAreas[BISCUIT_AREA][i]]!
+                    .incrementCount(report.data().packingScrap);
+                break;
+              case 2:
+                tempMap[scrapAreas[BISCUIT_AREA][i]]!
+                    .incrementCount(report.data().extrusionScrap);
+                break;
+              case 3:
+                tempMap[scrapAreas[BISCUIT_AREA][i]]!
+                    .incrementCount(report.data().conveyorScrap);
+                break;
+              case 4:
+                tempMap[scrapAreas[BISCUIT_AREA][i]]!
+                    .incrementCount(report.data().cutterScrap);
+                break;
+            }
+          }
+        }
+      } else {
+        print('debug :: BiscuitReport filtered out due to conditions');
+      }
+    }
+    return tempMap.values.toList();
   }
 }

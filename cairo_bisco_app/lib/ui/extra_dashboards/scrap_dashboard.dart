@@ -1,3 +1,4 @@
+import 'package:cairo_bisco_app/classes/CauseCount.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +18,7 @@ import '../../classes/values/constants.dart';
 import '../../classes/values/form_values.dart';
 import '../../components/buttons/back_btn.dart';
 import '../../components/buttons/rounded_btn.dart';
+import '../../components/charts/LabeledPieChart.dart';
 
 class ScrapDashboard extends StatefulWidget {
   @override
@@ -138,6 +140,12 @@ class _ScrapDashboardState extends State<ScrapDashboard> {
     MiniProductionReport.getEmptyReport(),
   ];
   OverWeightReport overweightTempReport = OverWeightReport.getEmptyReport();
+  List<List<CauseCount>> allScrapDistribution = [
+    [],
+    [],
+    [],
+    [],
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -644,6 +652,18 @@ class _ScrapDashboardState extends State<ScrapDashboard> {
                                           .indexOf(selectedProdLine),
                                       sku,
                                     );
+                                    allScrapDistribution[BISCUIT_AREA] =
+                                        BiscuitsReport.getScrapDistribution(
+                                      biscuitsReportsList,
+                                      validated_month_from,
+                                      validated_month_to,
+                                      validated_day_from,
+                                      validated_day_to,
+                                      validated_year,
+                                      correspondingLines[refNum]
+                                          .indexOf(selectedProdLine),
+                                      sku,
+                                    );
 
                                     temp_wafer_report =
                                         WaferReport.getScrapDashboardSummary(
@@ -657,9 +677,32 @@ class _ScrapDashboardState extends State<ScrapDashboard> {
                                           .indexOf(selectedProdLine),
                                       sku,
                                     );
-
+                                    allScrapDistribution[WAFER_AREA] =
+                                        WaferReport.getScrapDistribution(
+                                      waferReportsList,
+                                      validated_month_from,
+                                      validated_month_to,
+                                      validated_day_from,
+                                      validated_day_to,
+                                      validated_year,
+                                      correspondingLines[refNum]
+                                          .indexOf(selectedProdLine),
+                                      sku,
+                                    );
                                     temp_maamoul_report =
                                         MaamoulReport.getScrapDashboardSummary(
+                                      maamoulReportsList,
+                                      validated_month_from,
+                                      validated_month_to,
+                                      validated_day_from,
+                                      validated_day_to,
+                                      validated_year,
+                                      correspondingLines[refNum]
+                                          .indexOf(selectedProdLine),
+                                      sku,
+                                    );
+                                    allScrapDistribution[MAAMOUL_AREA] =
+                                        MaamoulReport.getScrapDistribution(
                                       maamoulReportsList,
                                       validated_month_from,
                                       validated_month_to,
@@ -675,6 +718,12 @@ class _ScrapDashboardState extends State<ScrapDashboard> {
                                       temp_biscuits_report,
                                       temp_wafer_report,
                                       temp_maamoul_report
+                                    ]);
+                                    allScrapDistribution[3] =
+                                        CauseCount.mergeCauseCounts([
+                                      allScrapDistribution[BISCUIT_AREA],
+                                      allScrapDistribution[WAFER_AREA],
+                                      allScrapDistribution[MAAMOUL_AREA]
                                     ]);
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
@@ -965,6 +1014,25 @@ class _ScrapDashboardState extends State<ScrapDashboard> {
                     ],
                   ),
                 ],
+              ),
+              SizedBox(height: defaultPadding),
+              Container(
+                height: largeChartHeight,
+                width: largeChartWidth,
+                child: Card(
+                  child: Column(
+                    children: [
+                      aboveMediumHeading("Scrap Distribution"),
+                      SizedBox(
+                        height: minimumPadding,
+                      ),
+                      Expanded(
+                        child: PieOutsideLabelChart.withTenShades(
+                            allScrapDistribution[refNum]),
+                      )
+                    ],
+                  ),
+                ),
               ),
               SizedBox(height: defaultPadding),
             ],

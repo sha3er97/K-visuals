@@ -1,10 +1,28 @@
+import 'dart:collection';
+
 class CauseCount {
   final String causeName;
-  int count;
+  num count;
 
   CauseCount(this.causeName, this.count);
 
-  void incrementCount(int count) {
+  void incrementCount(num count) {
     this.count += count;
+  }
+
+  static List<CauseCount> mergeCauseCounts(
+    List<List<CauseCount>> countsList,
+  ) {
+    HashMap<String, CauseCount> tempMap = new HashMap<String, CauseCount>();
+    for (List<CauseCount> areaList in countsList) {
+      for (CauseCount count in areaList) {
+        if (tempMap[count.causeName] == null) {
+          tempMap[count.causeName] = count;
+        } else {
+          tempMap[count.causeName]!.incrementCount(count.count);
+        }
+      }
+    }
+    return tempMap.values.toList();
   }
 }

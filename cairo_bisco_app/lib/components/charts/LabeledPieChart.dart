@@ -28,10 +28,16 @@ class PieOutsideLabelChart extends StatelessWidget {
     );
   }
 
-  factory PieOutsideLabelChart.withLineDistributionData(
-      List<CauseCount> causesList) {
+  factory PieOutsideLabelChart.withFiveShades(List<CauseCount> causesList) {
     return new PieOutsideLabelChart(
-      _getLineDistributionData(causesList),
+      _FiveShadesData(causesList),
+      animate: true,
+    );
+  }
+
+  factory PieOutsideLabelChart.withTenShades(List<CauseCount> causesList) {
+    return new PieOutsideLabelChart(
+      _TenShadesData(causesList),
       animate: true,
     );
   }
@@ -62,11 +68,11 @@ class PieOutsideLabelChart extends StatelessWidget {
         ]));
   }
 
-  static List<charts.Series<CauseCount, String>> _getLineDistributionData(
+  static List<charts.Series<CauseCount, String>> _FiveShadesData(
       List<CauseCount> causesList) {
     return [
       new charts.Series<CauseCount, String>(
-        id: 'Line Distribution',
+        id: '',
         domainFn: (CauseCount cause, _) => cause.causeName,
         measureFn: (CauseCount cause, _) => cause.count,
         data: causesList,
@@ -75,6 +81,23 @@ class PieOutsideLabelChart extends StatelessWidget {
         // Set a label accessor to control the text of the arc label.
         labelAccessorFn: (CauseCount row, _) =>
             '${row.causeName}: ${row.count}',
+      )
+    ];
+  }
+
+  static List<charts.Series<CauseCount, String>> _TenShadesData(
+      List<CauseCount> causesList) {
+    return [
+      new charts.Series<CauseCount, String>(
+        id: '',
+        domainFn: (CauseCount cause, _) => cause.causeName,
+        measureFn: (CauseCount cause, _) => cause.count,
+        data: causesList,
+        colorFn: (_, i) => charts.MaterialPalette.red.makeShades(10)[i!],
+        fillColorFn: (_, __) => charts.MaterialPalette.red.shadeDefault.darker,
+        // Set a label accessor to control the text of the arc label.
+        labelAccessorFn: (CauseCount row, _) =>
+            '${row.causeName}: ${row.count.ceil()} Kg',
       )
     ];
   }

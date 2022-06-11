@@ -17,6 +17,9 @@ const misleadingResolvingOpacity = 0.75;
 const causesDisplayDefaultLimit = 10;
 const defaultChartHeight = 350.0;
 const defaultChartWidth = defaultChartHeight * 1.75;
+const largeChartHeight = 400.0;
+const largeChartWidth = largeChartHeight * 1.75;
+
 //padding
 const defaultPadding = 16.0;
 const mediumPadding = 12.0;
@@ -172,3 +175,27 @@ Map<String, String> downTimeAuthoritiesMap = {
   downTimeTypes[7]: authorities[5], //other
   downTimeTypes[8]: authorities[5], //other
 };
+List<String> commonScrapAreas = <String>[
+  'Oven',
+  'Packing',
+];
+List<String> waferScrapAreas = <String>[
+  'Cream',
+  'Cooler',
+  'Cutter',
+];
+List<String> biscuitsScrapAreas = <String>[
+  'Extrusion',
+  'Conveyor',
+  'Cutter',
+];
+List<String> maamoulScrapAreas = <String>[
+  'Mixer',
+  'Stamping',
+];
+
+List<List<String>> scrapAreas = [
+  commonScrapAreas.followedBy(biscuitsScrapAreas).toList(),
+  commonScrapAreas.followedBy(waferScrapAreas).toList(),
+  commonScrapAreas.followedBy(maamoulScrapAreas).toList(),
+];

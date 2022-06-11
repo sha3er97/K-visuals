@@ -8,6 +8,7 @@ import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'CauseCount.dart';
 import 'DownTimeReport.dart';
 import 'Machine.dart';
 import 'MiniProductionReport.dart';
@@ -715,7 +716,7 @@ class MaamoulReport {
         day_to,
         year,
       )) {
-        // print('debug :: BiscuitsReport filtered out due to its date --> ' +
+        // print('debug :: MaamoulReport filtered out due to its date --> ' +
         //     report.data().day.toString());
         continue;
       }
@@ -763,5 +764,80 @@ class MaamoulReport {
       // wastedMinutes: temp_wasted_minutes,
       plannedHours: -1,
     );
+  }
+
+  static List<CauseCount> getScrapDistribution(
+    List<QueryDocumentSnapshot<MaamoulReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+    int line_index,
+    String sku,
+  ) {
+    HashMap<String, CauseCount> tempMap = new HashMap<String, CauseCount>();
+    for (var report in reportsList) {
+      if (!isDayInInterval(
+        report.data().day,
+        report.data().month,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+        year,
+      )) {
+        print('debug :: MaamoulReport filtered out due to its date --> ' +
+            report.data().day.toString());
+        continue;
+      }
+      if (stringFilterCheck(report.data().skuName, sku, '-') &&
+          intFilterCheck(report.data().line_index, line_index, 0)) {
+        for (int i = 0; i < scrapAreas[MAAMOUL_AREA].length; i++) {
+          if (tempMap[scrapAreas[MAAMOUL_AREA][i]] == null) {
+            switch (i) {
+              case 0:
+                tempMap[scrapAreas[MAAMOUL_AREA][i]] = new CauseCount(
+                    scrapAreas[MAAMOUL_AREA][i], report.data().ovenScrap);
+                break;
+              case 1:
+                tempMap[scrapAreas[MAAMOUL_AREA][i]] = new CauseCount(
+                    scrapAreas[MAAMOUL_AREA][i], report.data().packingScrap);
+                break;
+              case 2:
+                tempMap[scrapAreas[MAAMOUL_AREA][i]] = new CauseCount(
+                    scrapAreas[MAAMOUL_AREA][i], report.data().mixerScrap);
+                break;
+              case 3:
+                tempMap[scrapAreas[MAAMOUL_AREA][i]] = new CauseCount(
+                    scrapAreas[MAAMOUL_AREA][i], report.data().stampingScrap);
+                break;
+            }
+          } else {
+            switch (i) {
+              case 0:
+                tempMap[scrapAreas[MAAMOUL_AREA][i]]!
+                    .incrementCount(report.data().ovenScrap);
+                break;
+              case 1:
+                tempMap[scrapAreas[MAAMOUL_AREA][i]]!
+                    .incrementCount(report.data().packingScrap);
+                break;
+              case 2:
+                tempMap[scrapAreas[MAAMOUL_AREA][i]]!
+                    .incrementCount(report.data().mixerScrap);
+                break;
+              case 3:
+                tempMap[scrapAreas[MAAMOUL_AREA][i]]!
+                    .incrementCount(report.data().stampingScrap);
+                break;
+            }
+          }
+        }
+      } else {
+        print('debug :: MaamoulReport filtered out due to conditions');
+      }
+    }
+    return tempMap.values.toList();
   }
 }
