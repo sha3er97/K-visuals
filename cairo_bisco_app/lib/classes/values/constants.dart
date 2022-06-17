@@ -18,7 +18,7 @@ const causesDisplayDefaultLimit = 10;
 const defaultChartHeight = 350.0;
 const defaultChartWidth = defaultChartHeight * 1.75;
 const largeChartHeight = 400.0;
-const largeChartWidth = largeChartHeight * 1.75;
+const largeChartWidth = largeChartHeight * 1.85;
 
 //padding
 const defaultPadding = 16.0;

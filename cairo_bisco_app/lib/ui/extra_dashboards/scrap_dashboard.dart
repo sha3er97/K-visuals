@@ -783,7 +783,9 @@ class _ScrapDashboardState extends State<ScrapDashboard> {
                                 textStyle: TextStyle(
                                     fontSize: largeButtonFont,
                                     fontFamily: 'MyFont'),
-                                primary: reportsList[refNum].scrap >
+                                primary: calculateScrapPercentFromMiniReport(
+                                            reportsList[refNum],
+                                            overweightTempReport.percent) >
                                         Plans.universalTargetScrap
                                     ? KelloggColors.cockRed
                                     : KelloggColors.green,
@@ -797,7 +799,10 @@ class _ScrapDashboardState extends State<ScrapDashboard> {
                                   padding: EdgeInsets.all(minimumPadding / 2),
                                   child: new Image.asset(
                                     'images/' +
-                                        (reportsList[refNum].scrap >
+                                        (calculateScrapPercentFromMiniReport(
+                                                    reportsList[refNum],
+                                                    overweightTempReport
+                                                        .percent) >
                                                 Plans.universalTargetScrap
                                             ? "down"
                                             : "up") +
@@ -828,7 +833,9 @@ class _ScrapDashboardState extends State<ScrapDashboard> {
                                 textStyle: TextStyle(
                                     fontSize: largeButtonFont,
                                     fontFamily: 'MyFont'),
-                                primary: reportsList[refNum].rework >
+                                primary: calculateScrapPercentFromMiniReport(
+                                            reportsList[refNum],
+                                            overweightTempReport.percent) >
                                         Plans.universalTargetScrap
                                     ? KelloggColors.cockRed
                                     : KelloggColors.green,
@@ -869,7 +876,9 @@ class _ScrapDashboardState extends State<ScrapDashboard> {
                                 textStyle: TextStyle(
                                     fontSize: largeButtonFont,
                                     fontFamily: 'MyFont'),
-                                primary: reportsList[refNum].rework >
+                                primary: calculateReworkPercentFromMiniReport(
+                                            reportsList[refNum],
+                                            overweightTempReport.percent) >
                                         Plans.universalTargetScrap
                                     ? KelloggColors.cockRed
                                     : KelloggColors.green,
@@ -883,7 +892,10 @@ class _ScrapDashboardState extends State<ScrapDashboard> {
                                   padding: EdgeInsets.all(minimumPadding / 2),
                                   child: new Image.asset(
                                     'images/' +
-                                        (reportsList[refNum].rework >
+                                        (calculateReworkPercentFromMiniReport(
+                                                    reportsList[refNum],
+                                                    overweightTempReport
+                                                        .percent) >
                                                 Plans.universalTargetScrap
                                             ? "down"
                                             : "up") +
@@ -914,8 +926,108 @@ class _ScrapDashboardState extends State<ScrapDashboard> {
                                 textStyle: TextStyle(
                                     fontSize: largeButtonFont,
                                     fontFamily: 'MyFont'),
-                                primary: reportsList[refNum].rework >
+                                primary: calculateReworkPercentFromMiniReport(
+                                            reportsList[refNum],
+                                            overweightTempReport.percent) >
                                         Plans.universalTargetScrap
+                                    ? KelloggColors.cockRed
+                                    : KelloggColors.green,
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(width: defaultPadding),
+                  myVerticalDivider(KelloggColors.darkRed),
+                  SizedBox(width: defaultPadding),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Text('Film Waste',
+                            style: TextStyle(
+                                fontSize: aboveMediumFontSize,
+                                fontWeight: FontWeight.bold,
+                                color: KelloggColors.darkRed)),
+                      ),
+                      SizedBox(height: minimumPadding),
+                      Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(BoxImageBorder),
+                          child: ConstrainedBox(
+                            constraints:
+                                BoxConstraints.tightFor(height: kpiBoxHeight),
+                            child: ElevatedButton.icon(
+                              label: Text("Wt. " +
+                                  reportsList[refNum]
+                                      .totalFilmWasted
+                                      .toStringAsFixed(1) +
+                                  " Kg."),
+                              style: ElevatedButton.styleFrom(
+                                textStyle: TextStyle(
+                                    fontSize: largeButtonFont,
+                                    fontFamily: 'MyFont'),
+                                primary: calculateWastePercent(
+                                            reportsList[refNum].totalFilmUsed,
+                                            reportsList[refNum]
+                                                .totalFilmWasted) >
+                                        Plans.universalTargetFilmWaste
+                                    ? KelloggColors.cockRed
+                                    : KelloggColors.green,
+                              ),
+                              icon: ClipRRect(
+                                borderRadius:
+                                    BorderRadius.circular(iconImageBorder),
+                                child: Container(
+                                  height: mediumIconSize,
+                                  width: mediumIconSize,
+                                  padding: EdgeInsets.all(minimumPadding / 2),
+                                  child: new Image.asset(
+                                    'images/' +
+                                        (calculateWastePercent(
+                                                    reportsList[refNum]
+                                                        .totalFilmUsed,
+                                                    reportsList[refNum]
+                                                        .totalFilmWasted) >
+                                                Plans.universalTargetFilmWaste
+                                            ? "down"
+                                            : "up") +
+                                        '.png',
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: minimumPadding),
+                      Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(BoxImageBorder),
+                          child: ConstrainedBox(
+                            constraints:
+                                BoxConstraints.tightFor(height: kpiBoxHeight),
+                            child: ElevatedButton(
+                              child: Text("Percentage : " +
+                                  calculateWastePercent(
+                                          reportsList[refNum].totalFilmUsed,
+                                          reportsList[refNum].totalFilmWasted)
+                                      .toStringAsFixed(2) +
+                                  " %"),
+                              style: ElevatedButton.styleFrom(
+                                textStyle: TextStyle(
+                                    fontSize: largeButtonFont,
+                                    fontFamily: 'MyFont'),
+                                primary: calculateWastePercent(
+                                            reportsList[refNum].totalFilmUsed,
+                                            reportsList[refNum]
+                                                .totalFilmWasted) >
+                                        Plans.universalTargetFilmWaste
                                     ? KelloggColors.cockRed
                                     : KelloggColors.green,
                               ),

@@ -736,7 +736,11 @@ class BiscuitsReport {
     String sku,
     // List<OverWeightReport> overweightList,
   ) {
-    double temp_scrap = 0.0, temp_productionInKg = 0.0, temp_rework = 0.0;
+    double temp_scrap = 0.0,
+        temp_productionInKg = 0.0,
+        temp_used_film = 0.0,
+        temp_wasted_film = 0.0,
+        temp_rework = 0.0;
     int temp_month = month_from, temp_day = day_from, temp_year = year;
 
     for (var report in reportsList) {
@@ -766,6 +770,8 @@ class BiscuitsReport {
 
         temp_scrap += calculateAllScrap(BISCUIT_AREA, report.data());
         temp_rework += calculateAllRework(BISCUIT_AREA, report.data());
+        temp_wasted_film += calculateAllWastedFilmWaste(report.data());
+        temp_used_film += calculateAllUsedFilmWaste(report.data());
         temp_month = report.data().month;
         temp_day = report.data().day;
         temp_year = report.data().year;
@@ -784,9 +790,9 @@ class BiscuitsReport {
       productionInCartons: -1,
       productionInKg: temp_productionInKg,
       planInKg: -1,
-      totalFilmWasted: -1,
+      totalFilmWasted: temp_wasted_film,
       // totalFilmUsed: temp_used_film == 0 ? 1 : temp_used_film,
-      totalFilmUsed: -1,
+      totalFilmUsed: temp_used_film,
       rework: temp_rework,
       // shiftProductionPlan: temp_productionPlan == 0 ? 1 : temp_productionPlan,
       // theoreticalAverage: temp_theoreticalPlan == 0 ? 1 : temp_theoreticalPlan,
