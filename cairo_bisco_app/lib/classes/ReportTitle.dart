@@ -1,6 +1,5 @@
 import 'dart:collection';
 
-import 'package:cairo_bisco_app/classes/DownTimeReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_time_utility.dart';
 
 class ReportTitle {
