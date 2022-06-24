@@ -2,6 +2,7 @@ import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../DownTimeReport.dart';
 import '../values/form_values.dart';
@@ -113,4 +114,8 @@ bool stringFilterCheck(
 
 bool isMaintenanceReport(DownTimeReport report) {
   return report.causeType.compareTo(downTimeTypes[1]) == 0;
+}
+
+int getReversedStoppedIndex(QueryDocumentSnapshot<DownTimeReport> report) {
+  return report.data().isStopped_index == 1 ? 2 : 1; //1-->2 //2-->1
 }

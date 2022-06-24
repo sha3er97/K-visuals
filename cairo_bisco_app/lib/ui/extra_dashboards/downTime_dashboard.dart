@@ -960,7 +960,7 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                                             child: Column(
                                               children: [
                                                 aboveMediumHeading(
-                                                    "How Much Did The line Stop"),
+                                                    "Did the line stop ?"),
                                                 SizedBox(
                                                   height: minimumPadding,
                                                 ),

@@ -4,8 +4,8 @@ import '../SKU.dart';
 import 'form_values.dart';
 
 /** version configs**/
-const versionNum = '4.0.4'; //edit also in pubspec.yaml
-const versionCode = 18; //edit also in pubspec.yaml
+const versionNum = '4.0.5'; //edit also in pubspec.yaml
+const versionCode = 19; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
 

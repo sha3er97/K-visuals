@@ -528,9 +528,9 @@ class DownTimeReport {
               report.data().wfCategory, wfCategory, wfCategories[0]) &&
           intFilterCheck(report.data().isStopped_index, indexOfIsStopped, 0) &&
           intFilterCheck(report.data().line_index, line_index, 0)) {
-        if (tempMap[report.data().isStopped_index.toString()] == null) {
-          tempMap[report.data().isStopped_index.toString()] = new CauseCount(
-              y_nDesc[report.data().isStopped_index],
+        if (tempMap[getReversedStoppedIndex(report).toString()] == null) {
+          tempMap[getReversedStoppedIndex(report).toString()] = new CauseCount(
+              y_nDesc[getReversedStoppedIndex(report)],
               getTimeDifference(
                   report.data().yearFrom,
                   report.data().monthFrom,
@@ -543,7 +543,7 @@ class DownTimeReport {
                   report.data().hour_to,
                   report.data().minute_to));
         } else {
-          tempMap[report.data().isStopped_index.toString()]!.incrementCount(
+          tempMap[getReversedStoppedIndex(report).toString()]!.incrementCount(
               getTimeDifference(
                   report.data().yearFrom,
                   report.data().monthFrom,
