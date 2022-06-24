@@ -125,6 +125,13 @@ class _ApproveReportsState extends State<ApproveReports> {
                         reportsTitlesList[index].lineName +
                         '\n' +
                         reportsTitlesList[index].reportDetails.rootCauseDrop +
+                        (reportsTitlesList[index]
+                                .reportDetails
+                                .rootCauseDesc
+                                .isEmpty
+                            ? ""
+                            : '\n') +
+                        reportsTitlesList[index].reportDetails.rootCauseDesc +
                         "\nFrom : " +
                         reportsTitlesList[index].dateFrom +
                         " at " +

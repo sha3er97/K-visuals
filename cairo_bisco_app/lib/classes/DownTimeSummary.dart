@@ -15,7 +15,9 @@ class DownTimeSummary {
       lineName,
       areaName,
       stoppedStatus,
-      reportDateTime;
+      reportDateTime,
+      //4.0.5 additions
+      rootCauseDesc;
   final DownTimeReport reportDetails;
 
   DownTimeSummary({
@@ -30,6 +32,8 @@ class DownTimeSummary {
     required this.areaName,
     required this.stoppedStatus,
     required this.reportDateTime,
+    //4.0.5 additions
+    required this.rootCauseDesc,
   });
 
   static List<DownTimeSummary> makeList(
@@ -69,7 +73,8 @@ class DownTimeSummary {
         stoppedStatus: e.value.isStopped_index == YES //= there is product
             ? "Line Didn't Stop"
             : "Line Stopped",
-        //4.0.1 additions
+        //4.0.5 additions
+        rootCauseDesc: e.value.rootCauseDesc,
       );
       tempList.add(tempTitle);
     });

@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
+import 'package:cairo_bisco_app/classes/DownTimeReportTitle.dart';
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
 import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
 import 'package:cairo_bisco_app/classes/NRCReport.dart';
@@ -108,6 +109,7 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
 
   //temp variables
   List<ReportTitle> reportsTitlesList = [];
+  List<DownTimeReportTitle> dtReportsTitlesList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -649,8 +651,8 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                                     validated_year,
                                     refNum,
                                   );
-                                  reportsTitlesList =
-                                      ReportTitle.downTimeReportToTitleList(
+                                  dtReportsTitlesList = DownTimeReportTitle
+                                      .downTimeReportToTitleList(
                                           downTimeReportsList);
                                   break;
                               }
@@ -675,18 +677,37 @@ class _SupervisorShowAllReportsState extends State<SupervisorShowAllReports> {
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
                   padding: const EdgeInsets.all(minimumPadding),
-                  itemCount: reportsTitlesList.length,
+                  itemCount: type == DOWNTIME_REPORT
+                      ? dtReportsTitlesList.length
+                      : reportsTitlesList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return ReportItem(
-                      line: reportsTitlesList[index].line,
-                      shift: reportsTitlesList[index].shift,
-                      date: reportsTitlesList[index].date,
-                      supName: reportsTitlesList[index].supName,
-                      reportDetails: reportsTitlesList[index].reportDetails,
-                      reportID: reportsTitlesList[index].reportID,
-                      refNum: refNum,
-                      type: type,
-                    );
+                    switch (type) {
+                      case DOWNTIME_REPORT:
+                        return ReportItem(
+                          line: dtReportsTitlesList[index].line,
+                          shift: dtReportsTitlesList[index].shift,
+                          date: dtReportsTitlesList[index].date,
+                          supName: dtReportsTitlesList[index].supName,
+                          reportDetails:
+                              dtReportsTitlesList[index].reportDetails,
+                          reportID: dtReportsTitlesList[index].reportID,
+                          refNum: refNum,
+                          type: type,
+                          rootCause: dtReportsTitlesList[index].rootCause,
+                        );
+                      default:
+                        return ReportItem(
+                          line: reportsTitlesList[index].line,
+                          shift: reportsTitlesList[index].shift,
+                          date: reportsTitlesList[index].date,
+                          supName: reportsTitlesList[index].supName,
+                          reportDetails: reportsTitlesList[index].reportDetails,
+                          reportID: reportsTitlesList[index].reportID,
+                          refNum: refNum,
+                          type: type,
+                          rootCause: "",
+                        );
+                    }
                   }),
             ],
           ),

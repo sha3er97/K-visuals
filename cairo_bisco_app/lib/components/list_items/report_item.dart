@@ -24,9 +24,10 @@ class ReportItem extends StatelessWidget {
     required this.reportID,
     // required this.param_onPressed,
     // required this.btn_icon,
+    required this.rootCause,
   });
 
-  final String date, supName, reportID;
+  final String date, supName, reportID, rootCause;
   final int line, shift, refNum, type;
   final dynamic reportDetails;
 
@@ -66,6 +67,7 @@ class ReportItem extends StatelessWidget {
                   date +
                       '\n' +
                       supName +
+                      (type == DOWNTIME_REPORT ? '\n' + rootCause : "") +
                       (line > -1 ? '\n' + prod_lines4[line] : "") +
                       (shift > -1 ? '\n' + shifts[shift] : ""),
                   textAlign: TextAlign.center,
