@@ -48,7 +48,7 @@ class _ApproveReportsState extends State<ApproveReports> {
           backgroundColor: KelloggColors.white.withOpacity(0),
           shadowColor: KelloggColors.white.withOpacity(0),
           leading: MyBackButton(
-            admin: false,
+            color: KelloggColors.darkRed,
           ),
           title: Text(
             "Approve Reports",

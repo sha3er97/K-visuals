@@ -26,10 +26,14 @@ class SideMenu extends StatelessWidget {
     bool isOwner = Credentials.isUserOwner;
     bool isKws = Credentials.isUserKws;
     return Drawer(
+      backgroundColor: KelloggColors.white,
       child: ListView(
         children: [
+          // DrawerHeader(
+          //   child: Image.asset("images/logo.png"),
+          // ),
           DrawerHeader(
-            child: Image.asset("images/logo.png"),
+            child: Image.asset("images/small factory.jpg"),
           ),
           SizedBox(
             height: minimumPadding,

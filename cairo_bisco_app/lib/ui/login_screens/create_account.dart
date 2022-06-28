@@ -10,6 +10,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
+import '../../components/special_components/wave_widget.dart';
+
 class CreateAccount extends StatefulWidget {
   @override
   _CreateAccountState createState() => _CreateAccountState();
@@ -26,16 +28,18 @@ class _CreateAccountState extends State<CreateAccount> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: KelloggColors.white,
         appBar: new AppBar(
-          backgroundColor: KelloggColors.white.withOpacity(0),
+          backgroundColor: KelloggColors.darkRed,
           shadowColor: KelloggColors.white.withOpacity(0),
           leading: MyBackButton(
-            admin: false,
+            color: KelloggColors.white,
           ),
         ),
         body: SingleChildScrollView(
@@ -43,21 +47,55 @@ class _CreateAccountState extends State<CreateAccount> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
-                child: SizedBox(
-                  width: TightBoxWidth,
-                  height: logoHeight,
-                  child: new Image.asset(
-                    'images/logo.png',
-                    height: logoHeight,
-                    fit: BoxFit.scaleDown,
+              // Center(
+              //   child: SizedBox(
+              //     width: TightBoxWidth,
+              //     height: logoHeight,
+              //     child: new Image.asset(
+              //       'images/logo.png',
+              //       height: logoHeight,
+              //       fit: BoxFit.scaleDown,
+              //     ),
+              //     // child: SvgPicture.asset('images/login.svg')
+              //   ),
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(20, 15, 20, 8),
+              //   child: subHeading('Create Account'),
+              // ),
+              Stack(
+                children: <Widget>[
+                  Container(
+                    height: size.height - 400,
+                    color: KelloggColors.darkRed,
                   ),
-                  // child: SvgPicture.asset('images/login.svg')
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 15, 20, 8),
-                child: subHeading('Create Account'),
+                  AnimatedPositioned(
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.easeOutQuad,
+                    top: keyboardOpen ? -size.height / 3.7 : 0.0,
+                    child: WaveWidget(
+                      size: size,
+                      yOffset: size.height / 3.0,
+                      color: KelloggColors.white,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 100.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          'Register',
+                          style: TextStyle(
+                            color: KelloggColors.white,
+                            fontSize: titleFontSize,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: defaultPadding),

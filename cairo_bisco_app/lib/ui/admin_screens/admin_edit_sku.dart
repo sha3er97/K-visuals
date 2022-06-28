@@ -77,7 +77,7 @@ class _AdminEditSkuState extends State<AdminEditSku> {
             backgroundColor: KelloggColors.white.withOpacity(0),
             shadowColor: KelloggColors.white.withOpacity(0),
             leading: MyBackButton(
-              admin: false,
+              color: KelloggColors.darkBlue,
             ),
             title: Text(
               prodType[refNum],

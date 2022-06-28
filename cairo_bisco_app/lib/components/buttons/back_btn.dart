@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 
 class MyBackButton extends StatelessWidget {
-  MyBackButton({required this.admin});
+  MyBackButton({required this.color});
 
-  final bool admin;
+  final Color color;
+
+  // final bool admin;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,8 @@ class MyBackButton extends StatelessWidget {
         },
         child: Icon(
           Icons.arrow_back_ios,
-          color: admin ? KelloggColors.darkBlue : KelloggColors.darkRed,
+          color:
+              color, //admin ? KelloggColors.darkBlue : KelloggColors.darkRed,
         ),
       ),
     );

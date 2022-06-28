@@ -4,8 +4,8 @@ import '../SKU.dart';
 import 'form_values.dart';
 
 /** version configs**/
-const versionNum = '4.0.5'; //edit also in pubspec.yaml
-const versionCode = 19; //edit also in pubspec.yaml
+const versionNum = '5.0.0'; //edit also in pubspec.yaml
+const versionCode = 20; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
 
@@ -27,6 +27,7 @@ const minimumPadding = 8.0;
 const pushAwayPadding = 60.0;
 
 //font sizes
+const titleFontSize = 40.0;
 const largeButtonFont = 25.0;
 const largeFontSize = 20.0;
 const aboveMediumFontSize = 16.0;

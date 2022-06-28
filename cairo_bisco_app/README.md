@@ -15,8 +15,13 @@ Project for Kellogg's Bisco Misr Cairo Plant
    > firebase serve --only hosting
 6. Deploy a new release
    > firebase deploy --only hosting:bisco-k-visuals
-7. Use [deployment URL](https://bisco-k-visuals.web.app)
+   >
+   > firebase deploy --only hosting:factory-tracker-visuals
+
+7. Use [deployment URL](https://bisco-k-visuals.web.app) or
+   new [deployment URL](https://factory-tracker-visuals.web.app)
    > https://bisco-k-visuals.web.app
+   > https://factory-tracker-visuals.web.app
 
 ## export apk
 

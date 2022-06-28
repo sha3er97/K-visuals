@@ -145,7 +145,7 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
             backgroundColor: KelloggColors.white.withOpacity(0),
             shadowColor: KelloggColors.white.withOpacity(0),
             leading: MyBackButton(
-              admin: false,
+              color: KelloggColors.darkRed,
             ),
             title: Text(
               prodType[refNum],

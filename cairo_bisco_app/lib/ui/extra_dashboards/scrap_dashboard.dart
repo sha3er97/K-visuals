@@ -194,7 +194,7 @@ class _ScrapDashboardState extends State<ScrapDashboard> {
           backgroundColor: KelloggColors.white.withOpacity(0),
           shadowColor: KelloggColors.white.withOpacity(0),
           leading: MyBackButton(
-            admin: false,
+            color: KelloggColors.darkRed,
           ),
           title: Text('Scrap DashBoard',
               style: TextStyle(

@@ -1,5 +1,9 @@
+import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
+import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:flutter/material.dart';
+
+import 'error_success_screens/loading_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -14,64 +18,25 @@ class _SplashState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // FirebaseAuth.instance.userChanges().listen(
-    //   (User? user) {
-    //     if (Credentials.lastVersionCode > versionCode) {
-    //       //play store has a newer update
-    //       showForceUpdateAlertDialog(context);
-    //     } else {
-    //       Timer(
-    //         Duration(seconds: splashScreenDuration),
-    //         () => {
-    //           if (user == null)
-    //             {
-    //               print('User is currently signed out!'),
-    //               Navigator.push(
-    //                   context,
-    //                   MaterialPageRoute(
-    //                       builder: (BuildContext context) => Login())),
-    //             }
-    //           else
-    //             {
-    //               print('User is signed in!'),
-    //               if (Credentials.isAdmin(user.email.toString()))
-    //                 {
-    //                   Credentials.isUserAdmin = true,
-    //                 }
-    //               else
-    //                 {
-    //                   Credentials.isUserAdmin = false,
-    //                 },
-    //               if (Credentials.isOwner(user.email.toString()))
-    //                 {
-    //                   Credentials.isUserOwner = true,
-    //                 }
-    //               else
-    //                 {
-    //                   Credentials.isUserOwner = false,
-    //                 },
-    //               Credentials.userEmail = user.email.toString(),
-    //               Navigator.push(
-    //                   context,
-    //                   MaterialPageRoute(
-    //                       builder: (BuildContext context) => HomePage())),
-    //             }
-    //         },
-    //       );
-    //     }
-    //   },
-    // );
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: KelloggColors.white,
-      body: SafeArea(
-        child: Center(
-          child: new Image.asset(
-            'images/kws_logo.png',
-            fit: BoxFit.cover,
-          ),
-        ),
+      // body: SafeArea(
+      //   child: Center(
+      //     child: new Image.asset(
+      //       'images/kws_logo.png',
+      //       fit: BoxFit.cover,
+      //     ),
+      //   ),
+      // ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          subHeading('Welcome'),
+          SizedBox(height: defaultPadding),
+          ColorLoader(),
+        ],
       ),
     );
   }

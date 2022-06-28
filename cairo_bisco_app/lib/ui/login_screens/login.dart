@@ -12,6 +12,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
+import '../../components/special_components/wave_widget.dart';
+
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -28,6 +30,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: SafeArea(
@@ -39,21 +43,55 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: SizedBox(
-                    width: TightBoxWidth,
-                    height: logoHeight,
-                    child: new Image.asset(
-                      'images/logo.png',
-                      height: logoHeight,
-                      fit: BoxFit.scaleDown,
+                // Center(
+                //   child: SizedBox(
+                //     width: TightBoxWidth,
+                //     height: logoHeight,
+                //     child: new Image.asset(
+                //       'images/logo.png',
+                //       height: logoHeight,
+                //       fit: BoxFit.scaleDown,
+                //     ),
+                //     // child: SvgPicture.asset('images/login.svg')
+                //   ),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(20, 15, 20, 8),
+                //   child: subHeading('Login'),
+                // ),
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      height: size.height - 400,
+                      color: KelloggColors.darkRed,
                     ),
-                    // child: SvgPicture.asset('images/login.svg')
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 15, 20, 8),
-                  child: subHeading('Login'),
+                    AnimatedPositioned(
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.easeOutQuad,
+                      top: keyboardOpen ? -size.height / 3.7 : 0.0,
+                      child: WaveWidget(
+                        size: size,
+                        yOffset: size.height / 3.0,
+                        color: KelloggColors.white,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 100.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            'Login',
+                            style: TextStyle(
+                              color: KelloggColors.white,
+                              fontSize: titleFontSize,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding:
