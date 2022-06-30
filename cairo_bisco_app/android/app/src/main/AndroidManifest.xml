@@ -11,9 +11,9 @@
 
     <application
         android:name="${applicationName}"
-        android:label="K Visuals"
+        android:label="Factory Tracker"
         android:usesCleartextTraffic="true"
-        android:icon="@mipmap/k_logo">
+        android:icon="@mipmap/new_logo">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

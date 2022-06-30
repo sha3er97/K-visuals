@@ -97,7 +97,8 @@ const maxFilmWaste = 20.0;
 const monthDays = 28.0; // month is 28 days
 const standardShiftHours = 8.0;
 const factory_name = "bisco_cairo";
-const appName = 'K Visuals';
+// const appName = 'K Visuals';
+const appName = 'Factory Tracker';
 
 /** string constants **/
 const dropDownSelectionErrorText = "Please select all fields";
