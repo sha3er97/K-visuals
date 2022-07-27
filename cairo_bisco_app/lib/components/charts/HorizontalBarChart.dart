@@ -1,11 +1,9 @@
 import 'package:cairo_bisco_app/classes/RootCause.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../classes/CauseCount.dart';
-import '../../classes/DownTimeReport.dart';
 
 class HorizontalBarChart extends StatelessWidget {
   final List<charts.Series<dynamic, String>> seriesList;

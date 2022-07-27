@@ -15,6 +15,7 @@ import 'classes/Machine.dart';
 import 'classes/Plans.dart';
 import 'classes/SKU.dart';
 import 'components/alert_dialog.dart';
+import 'config.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -36,8 +37,15 @@ Future<void> loadRules() async {
   await Credentials.getKwsUsers();
 }
 
+final configurations = Configurations();
+
 class MyApp extends StatelessWidget {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp(
+      options: FirebaseOptions(
+          apiKey: configurations.apiKey,
+          appId: configurations.appId,
+          messagingSenderId: configurations.messagingSenderId,
+          projectId: configurations.projectId));
 
   @override
   Widget build(BuildContext context) {

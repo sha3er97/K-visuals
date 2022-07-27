@@ -1,9 +1,7 @@
-import 'dart:ui';
 
 import 'package:arrow_path/arrow_path.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:cairo_bisco_app/classes/values/colors.dart';
 
 class LeftArrow extends CustomPainter {
   LeftArrow({

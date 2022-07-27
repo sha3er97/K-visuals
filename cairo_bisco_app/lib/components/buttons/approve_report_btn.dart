@@ -1,4 +1,3 @@
-import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/DownTimeReport.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:flutter/material.dart';
