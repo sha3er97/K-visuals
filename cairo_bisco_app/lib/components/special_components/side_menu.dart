@@ -188,7 +188,7 @@ class SideMenu extends StatelessWidget {
             image: "exit",
             press: () async {
               await FirebaseAuth.instance.signOut();
-              WidgetsBinding.instance!.addPostFrameCallback((_) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
                 Navigator.pop(context);
                 // Navigator.pop(context);
                 Navigator.push(

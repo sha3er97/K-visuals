@@ -1,7 +1,8 @@
 import 'dart:math';
-import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
+
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
+import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,7 +20,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
     ConfettiController(duration: const Duration(seconds: 5));
     _controllerBottomCenter =
         ConfettiController(duration: const Duration(seconds: 10));
-    WidgetsBinding.instance!
+    WidgetsBinding.instance
         .addPostFrameCallback((_) => _controllerBottomCenter.play());
     super.initState();
   }

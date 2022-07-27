@@ -7,33 +7,23 @@ this screen will contain
 4- qfs brief
 5- ehs brief
  *********************************/
-import 'dart:math';
 
 import 'package:cairo_bisco_app/classes/BiscuitsReport.dart';
 import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
 import 'package:cairo_bisco_app/classes/MaamoulReport.dart';
-import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
-import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
 import 'package:cairo_bisco_app/classes/WaferReport.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/calculations_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_time_utility.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
-import 'package:cairo_bisco_app/components/production_widgets/chart.dart';
-import 'package:cairo_bisco_app/components/production_widgets/production_info_card.dart';
-import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/6kpis_good_bad_indicator.dart';
-import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:cairo_bisco_app/components/special_components/side_menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
-import 'error_success_screens/loading_screen.dart';
 
 class HomePage extends StatefulWidget {
   @override
