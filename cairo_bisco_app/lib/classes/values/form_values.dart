@@ -22,7 +22,8 @@ List<String> biscuitsMachines = <String>[
   'Packaging Metal Detector جهاز كشف المعادن التغليف',
   'Conveyor السير',
   'ماكينة الصلاحية Date Coding Machine',
-  'الخط بالكامل ALL Line',
+  'Auto Dough and date feeding التغذية الالية'
+      'الخط بالكامل ALL Line',
 ];
 List<String> waferMachines = <String>[
   '-',
