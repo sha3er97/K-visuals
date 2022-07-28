@@ -170,7 +170,9 @@ class ProductionExcelUtilities {
         avgOverweight = 0.0,
         totScrap = 0.0,
         totWeight = 0.0,
-        avgOEE = 0.0;
+        avgOEE = 0.0,
+        //5.0.1 additions
+        totOverWtKg = 0.0;
     int totCartons = 0, totStoppedMinutes = 0, reportStoppedMinutes;
     reportsList.sort((a, b) {
       return (constructDateObject(a.day, a.month, a.year))
@@ -224,6 +226,8 @@ class ProductionExcelUtilities {
       totMc3Used += report.mc3FilmUsed;
       totMc4Waste += report.mc4WasteKg;
       totMc4Used += report.mc4FilmUsed;
+      totOverWtKg +=
+          calculateOverweightKgFromOriginalReport(report, matchedOverWeight);
       avgOverweight =
           doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
               ? (avgOverweight == 0.0
@@ -385,7 +389,7 @@ class ProductionExcelUtilities {
       '-',
       '-',
       double.parse(avgOEE.toStringAsFixed(2)),
-      double.parse((totKg * (avgOverweight / 100)).toStringAsFixed(2)),
+      totOverWtKg.toStringAsFixed(2),
       totCartons,
       '-',
       '-',
@@ -424,7 +428,9 @@ class ProductionExcelUtilities {
         avgOverweight = 0.0,
         totScrap = 0.0,
         totWeight = 0.0,
-        avgOEE = 0.0;
+        avgOEE = 0.0,
+        //5.0.1 additions
+        totOverWtKg = 0.0;
     int totCartons = 0, totStoppedMinutes = 0, reportStoppedMinutes;
     reportsList.sort((a, b) {
       return (constructDateObject(a.day, a.month, a.year))
@@ -478,6 +484,8 @@ class ProductionExcelUtilities {
       totMc3Used += report.mc3FilmUsed;
       totMc4Waste += report.mc4WasteKg;
       totMc4Used += report.mc4FilmUsed;
+      totOverWtKg +=
+          calculateOverweightKgFromOriginalReport(report, matchedOverWeight);
       avgOverweight =
           doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
               ? (avgOverweight == 0.0
@@ -637,7 +645,7 @@ class ProductionExcelUtilities {
       '-',
       '-',
       double.parse(avgOEE.toStringAsFixed(2)),
-      double.parse((totKg * (avgOverweight / 100)).toStringAsFixed(2)),
+      totOverWtKg.toStringAsFixed(2),
       totCartons,
       '-',
       '-',
@@ -674,7 +682,10 @@ class ProductionExcelUtilities {
         avgOverweight = 0.0,
         totScrap = 0.0,
         totWeight = 0.0,
-        avgOEE = 0.0;
+        avgOEE = 0.0,
+        //5.0.1 additions
+        totOverWtKg = 0.0;
+
     int totCartons = 0, totStoppedMinutes = 0, reportStoppedMinutes;
     reportsList.sort((a, b) {
       return (constructDateObject(a.day, a.month, a.year))
@@ -726,6 +737,8 @@ class ProductionExcelUtilities {
       totMc3Used += report.mc3FilmUsed;
       totMc4Waste += report.mc4WasteKg;
       totMc4Used += report.mc4FilmUsed;
+      totOverWtKg +=
+          calculateOverweightKgFromOriginalReport(report, matchedOverWeight);
       avgOverweight =
           doesProdReportHaveCorrespondingOverweight(report, this.overweightList)
               ? (avgOverweight == 0.0
@@ -879,7 +892,7 @@ class ProductionExcelUtilities {
       '-',
       '-',
       double.parse(avgOEE.toStringAsFixed(2)),
-      double.parse((totKg * (avgOverweight / 100)).toStringAsFixed(2)),
+      totOverWtKg.toStringAsFixed(2),
       totCartons,
       '-',
       '-',
