@@ -696,9 +696,10 @@ class DownTimeReport {
         .update({
           'approved_by': Credentials.getUserName(),
           'isApproved': YES,
-          'rejected_by': '',
           'isRejected': NO,
-          'rejectComment': '',
+          // 'rejected_by': '',
+          // 'rejectComment': '',
+          //NEW 5.0.1 :: leave comment and commenter
         })
         .then((value) => {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(

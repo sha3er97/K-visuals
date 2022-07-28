@@ -124,6 +124,8 @@ class _ApproveReportsState extends State<ApproveReports> {
                         " " +
                         reportsTitlesList[index].lineName +
                         '\n' +
+                        reportsTitlesList[index].machine +
+                        '\n' +
                         reportsTitlesList[index].reportDetails.rootCauseDrop +
                         (reportsTitlesList[index]
                                 .reportDetails

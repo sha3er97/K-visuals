@@ -17,24 +17,27 @@ class DownTimeSummary {
       stoppedStatus,
       reportDateTime,
       //4.0.5 additions
-      rootCauseDesc;
+      rootCauseDesc,
+      //5.0.1 additions
+      machine;
   final DownTimeReport reportDetails;
 
-  DownTimeSummary({
-    required this.dateFrom,
-    required this.dateTo,
-    required this.reportID,
-    required this.from_time,
-    required this.to_time,
-    required this.reportDetails,
-    required this.wastedMinutes,
-    required this.lineName,
-    required this.areaName,
-    required this.stoppedStatus,
-    required this.reportDateTime,
-    //4.0.5 additions
-    required this.rootCauseDesc,
-  });
+  DownTimeSummary(
+      {required this.dateFrom,
+      required this.dateTo,
+      required this.reportID,
+      required this.from_time,
+      required this.to_time,
+      required this.reportDetails,
+      required this.wastedMinutes,
+      required this.lineName,
+      required this.areaName,
+      required this.stoppedStatus,
+      required this.reportDateTime,
+      //4.0.5 additions
+      required this.rootCauseDesc,
+      //5.0.1 additions
+      required this.machine});
 
   static List<DownTimeSummary> makeList(
       context, HashMap<String, DownTimeReport> map) {
@@ -75,6 +78,7 @@ class DownTimeSummary {
             : "Line Stopped",
         //4.0.5 additions
         rootCauseDesc: e.value.rootCauseDesc,
+        machine: e.value.machine,
       );
       tempList.add(tempTitle);
     });
