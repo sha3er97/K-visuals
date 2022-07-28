@@ -35,36 +35,42 @@ class _EhsDetailedReportState extends State<EhsDetailedReport> {
     setState(() {
       _selectedYearFrom = val;
     });
+    return null;
   }
 
   VoidCallback? onFromMonthChange(val) {
     setState(() {
       _selectedMonthFrom = val;
     });
+    return null;
   }
 
   VoidCallback? onFromDayChange(val) {
     setState(() {
       _selectedDayFrom = val;
     });
+    return null;
   }
 
   VoidCallback? onToYearChange(val) {
     setState(() {
       _selectedYearTo = val;
     });
+    return null;
   }
 
   VoidCallback? onToMonthChange(val) {
     setState(() {
       _selectedMonthTo = val;
     });
+    return null;
   }
 
   VoidCallback? onToDayChange(val) {
     setState(() {
       _selectedDayTo = val;
     });
+    return null;
   }
 
   int days_in_interval = 1;

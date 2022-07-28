@@ -24,7 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
   #  syncfusion_flutter_gauges: ^19.1.65
-  gauges: ^1.0.0
+  #  gauges: ^1.0.0
+  pretty_gauge: 1.0.0
   fl_chart: ^0.40.0
   excel: ^1.1.5
   permission_handler: ^8.2.5

@@ -1,5 +1,4 @@
 import 'package:cairo_bisco_app/ui/supervisor_screens/supervisor_downtime_report.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../classes/values/TextStandards.dart';

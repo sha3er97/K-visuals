@@ -7,7 +7,10 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
+
+// import 'package:gauges/gauges.dart';
+// import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:pretty_gauge/pretty_gauge.dart';
 
 import 'oee_diagram.dart';
 
@@ -366,73 +369,119 @@ class ProductionLine extends StatelessWidget {
           // ),
           Center(
             child: Container(
-              height: !isWebView ? LargeGaugeSize : gaugeSize,
-              width: !isWebView ? LargeGaugeSize : gaugeSize,
-              child: SfRadialGauge(
-                title: GaugeTitle(
-                    text: 'Scrap%',
-                    textStyle: TextStyle(
+              child: PrettyGauge(
+                minValue: 0,
+                maxValue: maxScrap,
+                gaugeSize: !isWebView ? LargeGaugeSize : gaugeSize,
+                segments: [
+                  GaugeSegment(
+                      'below',
+                      noWork
+                          ? Plans.universalTargetScrap
+                          : (isTotal
+                              ? Plans.universalTargetScrap
+                              : SKU.skuDetails[report.skuName]!.targetScrap),
+                      KelloggColors.successGreen),
+                  GaugeSegment(
+                      'above',
+                      maxScrap -
+                          (noWork
+                              ? Plans.universalTargetScrap
+                              : (isTotal
+                                  ? Plans.universalTargetScrap
+                                  : SKU.skuDetails[report.skuName]!
+                                      .targetScrap)),
+                      KelloggColors.clearRed),
+                ],
+                currentValue:
+                    calculateScrapPercentFromMiniReport(report, overweight),
+                displayWidget: Text('Scrap%',
+                    style: TextStyle(
                         fontSize: aboveMediumFontSize,
                         fontWeight: FontWeight.bold,
                         color: KelloggColors.darkRed)),
-                enableLoadingAnimation: true,
-                animationDuration: 2000,
-                axes: <RadialAxis>[
-                  RadialAxis(
-                      minimum: 0,
-                      maximum: maxScrap,
-                      pointers: <GaugePointer>[
-                        NeedlePointer(
-                          value: calculateScrapPercentFromMiniReport(
-                              report, overweight),
-                          needleLength: !isWebView
-                              ? LargeGaugeNeedleLength
-                              : gaugeNeedleLength,
-                          needleEndWidth: needleEndWidth,
-                          enableAnimation: true,
-                        )
-                      ],
-                      ranges: <GaugeRange>[
-                        GaugeRange(
-                            startValue: 0,
-                            endValue: noWork
-                                ? Plans.universalTargetScrap
-                                : (isTotal
-                                    ? Plans.universalTargetScrap
-                                    : SKU.skuDetails[report.skuName]!
-                                        .targetScrap),
-                            color: KelloggColors.successGreen),
-                        GaugeRange(
-                            startValue: noWork
-                                ? Plans.universalTargetScrap
-                                : (isTotal
-                                    ? Plans.universalTargetScrap
-                                    : SKU.skuDetails[report.skuName]!
-                                        .targetScrap),
-                            endValue: maxScrap,
-                            color: KelloggColors.clearRed)
-                      ],
-                      annotations: <GaugeAnnotation>[
-                        GaugeAnnotation(
-                            widget: Text(
-                              calculateScrapPercentFromMiniReport(
-                                          report, overweight)
-                                      .toStringAsFixed(1) +
-                                  ' %',
-                              style: TextStyle(
-                                  color: KelloggColors.darkRed,
-                                  fontSize: !isWebView
-                                      ? aboveMediumFontSize
-                                      : minimumFontSize,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            positionFactor: 0.5,
-                            angle: 90)
-                      ])
-                ],
+                valueWidget: Text(
+                  calculateScrapPercentFromMiniReport(report, overweight)
+                          .toStringAsFixed(1) +
+                      ' %',
+                  style: TextStyle(
+                      color: KelloggColors.darkRed,
+                      fontSize:
+                          !isWebView ? aboveMediumFontSize : minimumFontSize,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ),
+          // Center(
+          //   child: Container(
+          //     height: !isWebView ? LargeGaugeSize : gaugeSize,
+          //     width: !isWebView ? LargeGaugeSize : gaugeSize,
+          //     child: SfRadialGauge(
+          //       title: GaugeTitle(
+          //           text: 'Scrap%',
+          //           textStyle: TextStyle(
+          //               fontSize: aboveMediumFontSize,
+          //               fontWeight: FontWeight.bold,
+          //               color: KelloggColors.darkRed)),
+          //       enableLoadingAnimation: true,
+          //       animationDuration: 2000,
+          //       axes: <RadialAxis>[
+          //         RadialAxis(
+          //             minimum: 0,
+          //             maximum: maxScrap,
+          //             pointers: <GaugePointer>[
+          //               NeedlePointer(
+          //                 value: calculateScrapPercentFromMiniReport(
+          //                     report, overweight),
+          //                 needleLength: !isWebView
+          //                     ? LargeGaugeNeedleLength
+          //                     : gaugeNeedleLength,
+          //                 needleEndWidth: needleEndWidth,
+          //                 enableAnimation: true,
+          //               )
+          //             ],
+          //             ranges: <GaugeRange>[
+          //               GaugeRange(
+          //                   startValue: 0,
+          //                   endValue: noWork
+          //                       ? Plans.universalTargetScrap
+          //                       : (isTotal
+          //                           ? Plans.universalTargetScrap
+          //                           : SKU.skuDetails[report.skuName]!
+          //                               .targetScrap),
+          //                   color: KelloggColors.successGreen),
+          //               GaugeRange(
+          //                   startValue: noWork
+          //                       ? Plans.universalTargetScrap
+          //                       : (isTotal
+          //                           ? Plans.universalTargetScrap
+          //                           : SKU.skuDetails[report.skuName]!
+          //                               .targetScrap),
+          //                   endValue: maxScrap,
+          //                   color: KelloggColors.clearRed)
+          //             ],
+          //             annotations: <GaugeAnnotation>[
+          //               GaugeAnnotation(
+          //                   widget: Text(
+          //                     calculateScrapPercentFromMiniReport(
+          //                                 report, overweight)
+          //                             .toStringAsFixed(1) +
+          //                         ' %',
+          //                     style: TextStyle(
+          //                         color: KelloggColors.darkRed,
+          //                         fontSize: !isWebView
+          //                             ? aboveMediumFontSize
+          //                             : minimumFontSize,
+          //                         fontWeight: FontWeight.bold),
+          //                   ),
+          //                   positionFactor: 0.5,
+          //                   angle: 90)
+          //             ])
+          //       ],
+          //     ),
+          //   ),
+          // ),
           Center(
             child: Text('Over Weight%',
                 style: TextStyle(
@@ -473,73 +522,243 @@ class ProductionLine extends StatelessWidget {
           ),
           Center(
             child: Container(
-              height: !isWebView ? LargeGaugeSize : gaugeSize,
-              width: !isWebView ? LargeGaugeSize : gaugeSize,
-              child: SfRadialGauge(
-                title: GaugeTitle(
-                    text: 'Film Waste%',
-                    textStyle: TextStyle(
+              child: PrettyGauge(
+                minValue: 0,
+                maxValue: maxFilmWaste,
+                gaugeSize: !isWebView ? LargeGaugeSize : gaugeSize,
+                segments: [
+                  GaugeSegment(
+                      'below',
+                      noWork
+                          ? Plans.universalTargetFilmWaste
+                          : (isTotal
+                              ? Plans.universalTargetFilmWaste
+                              : SKU
+                                  .skuDetails[report.skuName]!.targetFilmWaste),
+                      KelloggColors.successGreen),
+                  GaugeSegment(
+                      'above',
+                      maxFilmWaste -
+                          (noWork
+                              ? Plans.universalTargetFilmWaste
+                              : (isTotal
+                                  ? Plans.universalTargetFilmWaste
+                                  : SKU.skuDetails[report.skuName]!
+                                      .targetFilmWaste)),
+                      KelloggColors.clearRed),
+                ],
+                currentValue: calculateWastePercent(
+                    report.totalFilmUsed, report.totalFilmWasted),
+                displayWidget: Text('Film Waste%',
+                    style: TextStyle(
                         fontSize: aboveMediumFontSize,
                         fontWeight: FontWeight.bold,
                         color: KelloggColors.darkRed)),
-                enableLoadingAnimation: true,
-                animationDuration: 2000,
-                axes: <RadialAxis>[
-                  RadialAxis(
-                      minimum: 0,
-                      maximum: maxFilmWaste,
-                      pointers: <GaugePointer>[
-                        NeedlePointer(
-                          value: calculateWastePercent(
-                              report.totalFilmUsed, report.totalFilmWasted),
-                          needleLength: !isWebView
-                              ? LargeGaugeNeedleLength
-                              : gaugeNeedleLength,
-                          needleEndWidth: needleEndWidth,
-                          enableAnimation: true,
-                        )
-                      ],
-                      ranges: <GaugeRange>[
-                        GaugeRange(
-                            startValue: 0,
-                            endValue: noWork
-                                ? Plans.universalTargetFilmWaste
-                                : (isTotal
-                                    ? Plans.universalTargetFilmWaste
-                                    : SKU.skuDetails[report.skuName]!
-                                        .targetFilmWaste),
-                            color: KelloggColors.successGreen),
-                        GaugeRange(
-                            startValue: noWork
-                                ? Plans.universalTargetFilmWaste
-                                : (isTotal
-                                    ? Plans.universalTargetFilmWaste
-                                    : SKU.skuDetails[report.skuName]!
-                                        .targetFilmWaste),
-                            endValue: maxFilmWaste,
-                            color: KelloggColors.clearRed)
-                      ],
-                      annotations: <GaugeAnnotation>[
-                        GaugeAnnotation(
-                            widget: Text(
-                              calculateWastePercent(report.totalFilmUsed,
-                                          report.totalFilmWasted)
-                                      .toStringAsFixed(1) +
-                                  ' %',
-                              style: TextStyle(
-                                  color: KelloggColors.darkRed,
-                                  fontSize: !isWebView
-                                      ? aboveMediumFontSize
-                                      : minimumFontSize,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            positionFactor: 0.5,
-                            angle: 90)
-                      ])
-                ],
+                valueWidget: Text(
+                  calculateWastePercent(
+                              report.totalFilmUsed, report.totalFilmWasted)
+                          .toStringAsFixed(1) +
+                      ' %',
+                  style: TextStyle(
+                      color: KelloggColors.darkRed,
+                      fontSize:
+                          !isWebView ? aboveMediumFontSize : minimumFontSize,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ),
+          // Center(
+          //   child: Container(
+          //     height: !isWebView ? LargeGaugeSize : gaugeSize,
+          //     width: !isWebView ? LargeGaugeSize : gaugeSize,
+          //     child: SfRadialGauge(
+          //       title: GaugeTitle(
+          //           text: 'Film Waste%',
+          //           textStyle: TextStyle(
+          //               fontSize: aboveMediumFontSize,
+          //               fontWeight: FontWeight.bold,
+          //               color: KelloggColors.darkRed)),
+          //       enableLoadingAnimation: true,
+          //       animationDuration: 2000,
+          //       axes: <RadialAxis>[
+          //         RadialAxis(
+          //             minimum: 0,
+          //             maximum: maxFilmWaste,
+          //             pointers: <GaugePointer>[
+          //               NeedlePointer(
+          //                 value: calculateWastePercent(
+          //                     report.totalFilmUsed, report.totalFilmWasted),
+          //                 needleLength: !isWebView
+          //                     ? LargeGaugeNeedleLength
+          //                     : gaugeNeedleLength,
+          //                 needleEndWidth: needleEndWidth,
+          //                 enableAnimation: true,
+          //               )
+          //             ],
+          //             ranges: <GaugeRange>[
+          //               GaugeRange(
+          //                   startValue: 0,
+          //                   endValue: noWork
+          //                       ? Plans.universalTargetFilmWaste
+          //                       : (isTotal
+          //                           ? Plans.universalTargetFilmWaste
+          //                           : SKU.skuDetails[report.skuName]!
+          //                               .targetFilmWaste),
+          //                   color: KelloggColors.successGreen),
+          //               GaugeRange(
+          //                   startValue: noWork
+          //                       ? Plans.universalTargetFilmWaste
+          //                       : (isTotal
+          //                           ? Plans.universalTargetFilmWaste
+          //                           : SKU.skuDetails[report.skuName]!
+          //                               .targetFilmWaste),
+          //                   endValue: maxFilmWaste,
+          //                   color: KelloggColors.clearRed)
+          //             ],
+          //             annotations: <GaugeAnnotation>[
+          //               GaugeAnnotation(
+          //                   widget: Text(
+          //                     calculateWastePercent(report.totalFilmUsed,
+          //                                 report.totalFilmWasted)
+          //                             .toStringAsFixed(1) +
+          //                         ' %',
+          //                     style: TextStyle(
+          //                         color: KelloggColors.darkRed,
+          //                         fontSize: !isWebView
+          //                             ? aboveMediumFontSize
+          //                             : minimumFontSize,
+          //                         fontWeight: FontWeight.bold),
+          //                   ),
+          //                   positionFactor: 0.5,
+          //                   angle: 90)
+          //             ])
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          // SizedBox(height: minimumPadding),
+          // Center(
+          //   child: Text('Film Waste%',
+          //       style: TextStyle(
+          //           fontSize: aboveMediumFontSize,
+          //           fontWeight: FontWeight.bold,
+          //           color: KelloggColors.darkRed)),
+          // ),
+          // SizedBox(height: defaultPadding),
+          // Center(
+          //   child: Container(
+          //     height: !isWebView ? LargeGaugeSize*0.75 : gaugeSize*0.75,
+          //     width: !isWebView ? LargeGaugeSize : gaugeSize,
+          //     child: RadialGauge(
+          //       axes: [
+          //         RadialGaugeAxis(
+          //           minValue: 0,
+          //           maxValue: maxFilmWaste,
+          //           minAngle: gaugeStartAngle,
+          //           maxAngle: gaugeEndAngle,
+          //           radius: 0.6,
+          //           width: 0.2,
+          //           color: Colors.transparent,
+          //           ticks: [
+          //             RadialTicks(
+          //               interval: 10,
+          //               alignment: RadialTickAxisAlignment.inside,
+          //               color: KelloggColors.yellow,
+          //               length: 0.2,
+          //               children: [
+          //                 RadialTicks(
+          //                     ticksInBetween: 5,
+          //                     length: 0.1,
+          //                     color: KelloggColors.grey),
+          //               ],
+          //             )
+          //           ],
+          //           pointers: [
+          //             RadialNeedlePointer(
+          //               value: calculateWastePercent(
+          //                   report.totalFilmUsed, report.totalFilmWasted),
+          //               thicknessStart: 20,
+          //               thicknessEnd: 0,
+          //               length: !isWebView
+          //                   ? LargeGaugeNeedleLength
+          //                   : gaugeNeedleLength,
+          //               knobRadiusAbsolute: 10,
+          //             )
+          //           ],
+          //           segments: [
+          //             RadialGaugeSegment(
+          //               minValue: 0,
+          //               maxValue: maxFilmWaste*0.5,
+          //               minAngle: gaugeStartAngle,
+          //               maxAngle: 0,
+          //               color: KelloggColors.successGreen,
+          //             ),
+          //             // RadialGaugeSegment(
+          //             //   minValue: 0,
+          //             //   maxValue: noWork
+          //             //       ? Plans.universalTargetFilmWaste
+          //             //       : (isTotal
+          //             //           ? Plans.universalTargetFilmWaste
+          //             //           : SKU.skuDetails[report.skuName]!
+          //             //               .targetFilmWaste),
+          //             //   minAngle: gaugeStartAngle,
+          //             //   maxAngle: min(
+          //             //       gaugeStartAngle +
+          //             //           (((noWork
+          //             //                       ? Plans.universalTargetFilmWaste
+          //             //                       : (isTotal
+          //             //                           ? Plans.universalTargetFilmWaste
+          //             //                           : SKU
+          //             //                               .skuDetails[report.skuName]!
+          //             //                               .targetFilmWaste)) /
+          //             //                   maxFilmWaste) *
+          //             //               (gaugeEndAngle - gaugeStartAngle)),
+          //             //       gaugeEndAngle*0.99),
+          //             //   color: KelloggColors.successGreen,
+          //             // ),
+          //             RadialGaugeSegment(
+          //               minValue: noWork
+          //                   ? Plans.universalTargetFilmWaste
+          //                   : (isTotal
+          //                       ? Plans.universalTargetFilmWaste
+          //                       : SKU.skuDetails[report.skuName]!
+          //                           .targetFilmWaste),
+          //               maxValue: maxFilmWaste,
+          //               minAngle: min(
+          //                   gaugeStartAngle +
+          //                       (((noWork
+          //                                   ? Plans.universalTargetFilmWaste
+          //                                   : (isTotal
+          //                                       ? Plans.universalTargetFilmWaste
+          //                                       : SKU
+          //                                           .skuDetails[report.skuName]!
+          //                                           .targetFilmWaste)) /
+          //                               maxFilmWaste) *
+          //                           (gaugeEndAngle - gaugeStartAngle)),
+          //                   gaugeEndAngle),
+          //               maxAngle: gaugeEndAngle,
+          //               color: KelloggColors.clearRed,
+          //             ),
+          //           ],
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          // Center(
+          //   child: Text(
+          //     calculateWastePercent(
+          //                 report.totalFilmUsed, report.totalFilmWasted)
+          //             .toStringAsFixed(1) +
+          //         ' %',
+          //     style: TextStyle(
+          //         color: KelloggColors.darkRed,
+          //         fontSize: !isWebView ? aboveMediumFontSize : minimumFontSize,
+          //         fontWeight: FontWeight.bold),
+          //   ),
+          // ),
+          // SizedBox(height: minimumPadding),
           //////////////////////////////////////////////////////////////////////////////////
           Center(
             child: Text('RM MUV (EGP)',

@@ -1,7 +1,7 @@
-import 'package:cairo_bisco_app/classes/DownTimeReport.dart';
-import 'package:cairo_bisco_app/classes/RootCause.dart';
 import 'package:cairo_bisco_app/classes/Credentials.dart';
+import 'package:cairo_bisco_app/classes/DownTimeReport.dart';
 import 'package:cairo_bisco_app/classes/Machine.dart';
+import 'package:cairo_bisco_app/classes/RootCause.dart';
 import 'package:cairo_bisco_app/classes/SKU.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_time_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/other_utility.dart';
@@ -14,11 +14,9 @@ import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/material.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class SupervisorDownTimeReportForm extends StatefulWidget {
   SupervisorDownTimeReportForm({
@@ -46,8 +44,7 @@ class SupervisorDownTimeReportForm extends StatefulWidget {
       );
 }
 
-class _SupervisorDownTimeReportFormState
-    extends State<SupervisorDownTimeReportForm> {
+class _SupervisorDownTimeReportFormState extends State<SupervisorDownTimeReportForm> {
   _SupervisorDownTimeReportFormState({
     required this.refNum,
     required this.reportDetails,
@@ -77,7 +74,7 @@ class _SupervisorDownTimeReportFormState
       isStopped,
       wfCategory,
       machine,
-      //responsible,
+  //responsible,
       selectedProdLine,
       rootCauseDrop,
       sku;
@@ -197,27 +194,27 @@ class _SupervisorDownTimeReportFormState
     rootCauseDesc = isEdit ? reportDetails.rootCauseDesc.toString() : '';
     fromTime = isEdit
         ? TimeOfDay(
-            hour: reportDetails.hour_from, minute: reportDetails.minute_from)
+        hour: reportDetails.hour_from, minute: reportDetails.minute_from)
         : TimeOfDay.now();
     toTime = isEdit
         ? TimeOfDay(
-            hour: reportDetails.hour_to, minute: reportDetails.minute_to)
+        hour: reportDetails.hour_to, minute: reportDetails.minute_to)
         : TimeOfDay.now();
     technicianName = isEdit ? reportDetails.technicianName.toString() : '';
     ///////////////////////////////////////////////////////////////////////////////
     selectedShift = shifts[reportDetails.shift_index];
     selectedYearFrom = years[
-        (isEdit ? reportDetails.yearFrom : (int.parse(getYear()))) - 2020];
+    (isEdit ? reportDetails.yearFrom : (int.parse(getYear()))) - 2020];
     selectedYearTo =
-        years[(isEdit ? reportDetails.yearTo : (int.parse(getYear()))) - 2020];
+    years[(isEdit ? reportDetails.yearTo : (int.parse(getYear()))) - 2020];
     selectedMonthFrom = months[
-        (isEdit ? reportDetails.monthFrom : (int.parse(getMonth()))) - 1];
+    (isEdit ? reportDetails.monthFrom : (int.parse(getMonth()))) - 1];
     selectedMonthTo =
-        months[(isEdit ? reportDetails.monthTo : (int.parse(getMonth()))) - 1];
+    months[(isEdit ? reportDetails.monthTo : (int.parse(getMonth()))) - 1];
     selectedDayFrom =
-        days[(isEdit ? reportDetails.dayFrom : (int.parse(getDay()))) - 1];
+    days[(isEdit ? reportDetails.dayFrom : (int.parse(getDay()))) - 1];
     selectedDayTo =
-        days[(isEdit ? reportDetails.dayTo : (int.parse(getDay()))) - 1];
+    days[(isEdit ? reportDetails.dayTo : (int.parse(getDay()))) - 1];
     selectedProdLine = prod_lines4[reportDetails.line_index - 1];
     sku = isEdit ? reportDetails.skuName : SKU.allSkus[refNum][0];
     isPlanned = isEdit ? reportDetails.isPlanned : plannedTypes[0];
@@ -226,7 +223,7 @@ class _SupervisorDownTimeReportFormState
     machine = isEdit ? reportDetails.machine : allMachines[refNum][0];
     //responsible = isEdit ? reportDetails.responsible : authorities[0];
     rootCauseDrop =
-        isEdit ? reportDetails.rootCauseDrop : RootCause.causesMap[dtType]![0];
+    isEdit ? reportDetails.rootCauseDrop : RootCause.causesMap[dtType]![0];
   }
 
   @override
@@ -260,7 +257,7 @@ class _SupervisorDownTimeReportFormState
                 children: [
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: defaultPadding),
+                    const EdgeInsets.symmetric(horizontal: defaultPadding),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Column(
@@ -268,14 +265,14 @@ class _SupervisorDownTimeReportFormState
                         children: [
                           reportDetails.isApproved == YES
                               ? NormalMessageHeading("Approved Report by : " +
-                                  reportDetails.approved_by)
+                              reportDetails.approved_by)
                               : reportDetails.isRejected == YES
-                                  ? ErrorMessageHeading(
-                                      "Rejected Report by : " +
-                                          reportDetails.rejected_by +
-                                          "Because :\n" +
-                                          reportDetails.rejectComment)
-                                  : EmptyPlaceHolder(),
+                              ? ErrorMessageHeading(
+                              "Rejected Report by : " +
+                                  reportDetails.rejected_by +
+                                  "Because :\n" +
+                                  reportDetails.rejectComment)
+                              : EmptyPlaceHolder(),
                           smallerHeading('اسم المسؤول\nResponsible Name'),
                           SizedBox(height: minimumPadding),
                           TextFormField(
@@ -350,7 +347,7 @@ class _SupervisorDownTimeReportFormState
                                                 value,
                                                 style: TextStyle(
                                                     color:
-                                                        KelloggColors.darkRed),
+                                                    KelloggColors.darkRed),
                                               ),
                                             );
                                           }).toList(),
@@ -381,7 +378,7 @@ class _SupervisorDownTimeReportFormState
                                                 value,
                                                 style: TextStyle(
                                                     color:
-                                                        KelloggColors.darkRed),
+                                                    KelloggColors.darkRed),
                                               ),
                                             );
                                           }).toList(),
@@ -413,7 +410,7 @@ class _SupervisorDownTimeReportFormState
                                                 value,
                                                 style: TextStyle(
                                                     color:
-                                                        KelloggColors.darkRed),
+                                                    KelloggColors.darkRed),
                                               ),
                                             );
                                           }).toList(),
@@ -464,7 +461,7 @@ class _SupervisorDownTimeReportFormState
                                                 value,
                                                 style: TextStyle(
                                                     color:
-                                                        KelloggColors.darkRed),
+                                                    KelloggColors.darkRed),
                                               ),
                                             );
                                           }).toList(),
@@ -495,7 +492,7 @@ class _SupervisorDownTimeReportFormState
                                                 value,
                                                 style: TextStyle(
                                                     color:
-                                                        KelloggColors.darkRed),
+                                                    KelloggColors.darkRed),
                                               ),
                                             );
                                           }).toList(),
@@ -527,7 +524,7 @@ class _SupervisorDownTimeReportFormState
                                                 value,
                                                 style: TextStyle(
                                                     color:
-                                                        KelloggColors.darkRed),
+                                                    KelloggColors.darkRed),
                                               ),
                                             );
                                           }).toList(),
@@ -546,7 +543,7 @@ class _SupervisorDownTimeReportFormState
                           SizedBox(height: minimumPadding),
                           Container(
                             margin:
-                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            EdgeInsets.symmetric(vertical: minimumPadding),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: defaultPadding),
                             child: DropdownButtonFormField<String>(
@@ -558,7 +555,7 @@ class _SupervisorDownTimeReportFormState
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -571,7 +568,7 @@ class _SupervisorDownTimeReportFormState
                           SizedBox(height: minimumPadding),
                           Container(
                             margin:
-                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            EdgeInsets.symmetric(vertical: minimumPadding),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: defaultPadding),
                             child: DropdownButtonFormField<String>(
@@ -584,7 +581,7 @@ class _SupervisorDownTimeReportFormState
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -597,7 +594,7 @@ class _SupervisorDownTimeReportFormState
                           SizedBox(height: minimumPadding),
                           Container(
                             margin:
-                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            EdgeInsets.symmetric(vertical: minimumPadding),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: defaultPadding),
                             child: DropdownButtonFormField<String>(
@@ -610,7 +607,7 @@ class _SupervisorDownTimeReportFormState
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -623,7 +620,7 @@ class _SupervisorDownTimeReportFormState
                           SizedBox(height: minimumPadding),
                           Container(
                             margin:
-                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            EdgeInsets.symmetric(vertical: minimumPadding),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: defaultPadding),
                             child: DropdownButtonFormField<String>(
@@ -631,9 +628,9 @@ class _SupervisorDownTimeReportFormState
                               value: machine,
                               isExpanded: true,
                               validator: (value) =>
-                                  value == allMachines[refNum][0]
-                                      ? missingValueErrorText
-                                      : null,
+                              value == allMachines[refNum][0]
+                                  ? missingValueErrorText
+                                  : null,
                               items: allMachines[refNum]
                                   .followedBy(Machine.packingMachinesList)
                                   .map((String value) {
@@ -642,7 +639,7 @@ class _SupervisorDownTimeReportFormState
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -656,7 +653,7 @@ class _SupervisorDownTimeReportFormState
                           SizedBox(height: minimumPadding),
                           Container(
                             margin:
-                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            EdgeInsets.symmetric(vertical: minimumPadding),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: defaultPadding),
                             child: DropdownButtonFormField<String>(
@@ -672,7 +669,7 @@ class _SupervisorDownTimeReportFormState
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -711,7 +708,7 @@ class _SupervisorDownTimeReportFormState
                           SizedBox(height: minimumPadding),
                           Container(
                             margin:
-                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            EdgeInsets.symmetric(vertical: minimumPadding),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: defaultPadding),
                             child: DropdownSearch<String>(
@@ -730,23 +727,23 @@ class _SupervisorDownTimeReportFormState
                               popupItemBuilder:
                                   (context, selected, bool dummy) {
                                 Widget item(String i) => Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: minimumPadding,
-                                          vertical: minimumPadding),
-                                      child: Text(
-                                        i,
-                                        style: TextStyle(
-                                            color: KelloggColors.darkRed),
-                                      ),
-                                    );
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: minimumPadding,
+                                      vertical: minimumPadding),
+                                  child: Text(
+                                    i,
+                                    style: TextStyle(
+                                        color: KelloggColors.darkRed),
+                                  ),
+                                );
                                 return item(selected);
                               },
                               dropdownBuilder: (context, selected) {
                                 Widget item(String i) => Text(
-                                      i,
-                                      style: TextStyle(
-                                          color: KelloggColors.darkRed),
-                                    );
+                                  i,
+                                  style: TextStyle(
+                                      color: KelloggColors.darkRed),
+                                );
                                 return item(selected!);
                               },
                               items: RootCause.causesMap[dtType],
@@ -816,7 +813,7 @@ class _SupervisorDownTimeReportFormState
                           SizedBox(height: minimumPadding),
                           Container(
                             margin:
-                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            EdgeInsets.symmetric(vertical: minimumPadding),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: defaultPadding),
                             child: DropdownButtonFormField<String>(
@@ -832,7 +829,7 @@ class _SupervisorDownTimeReportFormState
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -842,7 +839,7 @@ class _SupervisorDownTimeReportFormState
                           SizedBox(height: defaultPadding),
                           /////////////////////////////////////////////////////////////////////////////
                           greyHint(categoriesDefinition[
-                              wfCategories.indexOf(wfCategory)]),
+                          wfCategories.indexOf(wfCategory)]),
                           SizedBox(height: defaultPadding),
                           /////////////////////////////////////////////////////////////////////////////
                           smallerHeading(
@@ -856,7 +853,7 @@ class _SupervisorDownTimeReportFormState
                               child: RoundedButton(
                                 onPressed: () async {
                                   final TimeOfDay? timeOfDay =
-                                      await showTimePicker(
+                                  await showTimePicker(
                                     context: context,
                                     initialTime: fromTime,
                                     initialEntryMode: TimePickerEntryMode.dial,
@@ -885,7 +882,7 @@ class _SupervisorDownTimeReportFormState
                               child: RoundedButton(
                                 onPressed: () async {
                                   final TimeOfDay? timeOfDay =
-                                      await showTimePicker(
+                                  await showTimePicker(
                                     context: context,
                                     initialTime: toTime,
                                     initialEntryMode: TimePickerEntryMode.dial,
@@ -912,7 +909,7 @@ class _SupervisorDownTimeReportFormState
                           SizedBox(height: minimumPadding),
                           Container(
                             margin:
-                                EdgeInsets.symmetric(vertical: minimumPadding),
+                            EdgeInsets.symmetric(vertical: minimumPadding),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: defaultPadding),
                             child: DropdownButtonFormField<String>(
@@ -928,7 +925,7 @@ class _SupervisorDownTimeReportFormState
                                   child: Text(
                                     value,
                                     style:
-                                        TextStyle(color: KelloggColors.darkRed),
+                                    TextStyle(color: KelloggColors.darkRed),
                                   ),
                                 );
                               }).toList(),
@@ -976,234 +973,234 @@ class _SupervisorDownTimeReportFormState
                           isEdit
                               ? EmptyPlaceHolder()
                               : Padding(
-                                  padding: const EdgeInsets.all(minimumPadding),
-                                  child: Center(
-                                    child: RoundedButton(
-                                      btnText: 'تسليم التقرير',
-                                      color: KelloggColors.darkRed,
-                                      onPressed: () async {
-                                        setState(() {
-                                          showSpinner = true;
-                                          _sup_name_validate =
-                                              emptyField(supName);
-                                          _technicianName_validate =
-                                              emptyField(technicianName);
-                                        });
-                                        try {
-                                          if (_formKey.currentState!
-                                              .validate()) {
-                                            //form is valid, proceed further
-                                            _formKey.currentState!.save();
-                                            if (!_sup_name_validate &&
-                                                !_technicianName_validate) {
-                                              DownTimeReport.addReport(
-                                                supName,
-                                                sku,
-                                                machine,
-                                                downTimeAuthoritiesMap[dtType]
-                                                    .toString(),
-                                                //responsible,
-                                                rootCauseDrop,
-                                                rootCauseDesc,
-                                                wfCategory,
-                                                dtType,
-                                                shifts.indexOf(selectedShift),
-                                                refNum,
-                                                int.parse(selectedYearFrom),
-                                                int.parse(selectedMonthFrom),
-                                                int.parse(selectedDayFrom),
-                                                int.parse(selectedYearTo),
-                                                int.parse(selectedMonthTo),
-                                                int.parse(selectedDayTo),
-                                                prod_lines4.indexOf(
-                                                        selectedProdLine) +
-                                                    1,
-                                                isPlanned,
-                                                fromTime.hour,
-                                                toTime.hour,
-                                                fromTime.minute,
-                                                toTime.minute,
-                                                y_nDesc.indexOf(isStopped),
-                                                technicianName,
-                                              );
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SuccessScreen()));
-                                            } else {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(SnackBar(
-                                                content:
-                                                    Text(submissionErrorText),
-                                              ));
-                                            }
-                                          } else {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  dropDownSelectionErrorText),
-                                            ));
-                                          }
-                                          setState(() {
-                                            showSpinner = false;
-                                          });
-                                        } catch (e) {
-                                          print(e);
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ),
+                            padding: const EdgeInsets.all(minimumPadding),
+                            child: Center(
+                              child: RoundedButton(
+                                btnText: 'تسليم التقرير',
+                                color: KelloggColors.darkRed,
+                                onPressed: () async {
+                                  setState(() {
+                                    showSpinner = true;
+                                    _sup_name_validate =
+                                        emptyField(supName);
+                                    _technicianName_validate =
+                                        emptyField(technicianName);
+                                  });
+                                  try {
+                                    if (_formKey.currentState!
+                                        .validate()) {
+                                      //form is valid, proceed further
+                                      _formKey.currentState!.save();
+                                      if (!_sup_name_validate &&
+                                          !_technicianName_validate) {
+                                        DownTimeReport.addReport(
+                                          supName,
+                                          sku,
+                                          machine,
+                                          downTimeAuthoritiesMap[dtType]
+                                              .toString(),
+                                          //responsible,
+                                          rootCauseDrop,
+                                          rootCauseDesc,
+                                          wfCategory,
+                                          dtType,
+                                          shifts.indexOf(selectedShift),
+                                          refNum,
+                                          int.parse(selectedYearFrom),
+                                          int.parse(selectedMonthFrom),
+                                          int.parse(selectedDayFrom),
+                                          int.parse(selectedYearTo),
+                                          int.parse(selectedMonthTo),
+                                          int.parse(selectedDayTo),
+                                          prod_lines4.indexOf(
+                                              selectedProdLine) +
+                                              1,
+                                          isPlanned,
+                                          fromTime.hour,
+                                          toTime.hour,
+                                          fromTime.minute,
+                                          toTime.minute,
+                                          y_nDesc.indexOf(isStopped),
+                                          technicianName,
+                                        );
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SuccessScreen()));
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content:
+                                          Text(submissionErrorText),
+                                        ));
+                                      }
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text(
+                                            dropDownSelectionErrorText),
+                                      ));
+                                    }
+                                    setState(() {
+                                      showSpinner = false;
+                                    });
+                                  } catch (e) {
+                                    print(e);
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
                           //////////////////////////////////////////////////////////////////
                           !isEdit
                               ? EmptyPlaceHolder()
                               : Padding(
-                                  padding: const EdgeInsets.all(minimumPadding),
-                                  child: Center(
-                                    child: RoundedButton(
-                                      btnText:
-                                          reportDetails.isApproved == YES &&
-                                                  !Credentials.isUserKws
-                                              ? "Edit Disabled"
-                                              : 'Edit Report',
-                                      color: reportDetails.isApproved == YES &&
-                                              !Credentials.isUserKws
-                                          ? KelloggColors.grey
-                                          : KelloggColors.darkBlue,
-                                      onPressed: () {
-                                        if ((reportDetails.isApproved == NO &&
-                                                !Credentials.isUserKws) ||
-                                            Credentials.isUserKws) {
-                                          setState(() {
-                                            showSpinner = true;
-                                            _sup_name_validate =
-                                                emptyField(supName);
-                                            _technicianName_validate =
-                                                emptyField(technicianName);
-                                          });
-                                          try {
-                                            if (_formKey.currentState!
-                                                .validate()) {
-                                              //form is valid, proceed further
-                                              _formKey.currentState!.save();
-                                              if (!_sup_name_validate &&
-                                                  !_technicianName_validate) {
-                                                if (canEditThisReport(
-                                                    supName,
-                                                    int.parse(selectedDayFrom),
-                                                    int.parse(
-                                                        selectedMonthFrom),
-                                                    int.parse(
-                                                        selectedYearFrom))) {
-                                                  DownTimeReport.editReport(
-                                                    context,
-                                                    reportID,
-                                                    supName,
-                                                    sku,
-                                                    machine,
-                                                    downTimeAuthoritiesMap[
-                                                            dtType]
-                                                        .toString(),
-                                                    //responsible,
-                                                    rootCauseDrop,
-                                                    rootCauseDesc,
-                                                    wfCategory,
-                                                    dtType,
-                                                    shifts
-                                                        .indexOf(selectedShift),
-                                                    refNum,
-                                                    int.parse(selectedYearFrom),
-                                                    int.parse(
-                                                        selectedMonthFrom),
-                                                    int.parse(selectedDayFrom),
-                                                    int.parse(selectedYearTo),
-                                                    int.parse(selectedMonthTo),
-                                                    int.parse(selectedDayTo),
-                                                    prod_lines4.indexOf(
-                                                            selectedProdLine) +
-                                                        1,
-                                                    isPlanned,
-                                                    fromTime.hour,
-                                                    toTime.hour,
-                                                    fromTime.minute,
-                                                    toTime.minute,
-                                                    y_nDesc.indexOf(isStopped),
-                                                    technicianName,
-                                                  );
-                                                } else {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        unauthorizedEditMsg),
-                                                  ));
-                                                }
-                                              } else {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(SnackBar(
-                                                  content:
-                                                      Text(submissionErrorText),
-                                                ));
-                                              }
-                                            } else {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(SnackBar(
-                                                content: Text(
-                                                    dropDownSelectionErrorText),
-                                              ));
-                                            }
-                                            setState(() {
-                                              showSpinner = false;
-                                            });
-                                          } catch (e) {
-                                            print(e);
-                                          }
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ),
-                          //////////////////////////////////////////////////////////////////
-                          !isEdit
-                              ? EmptyPlaceHolder()
-                              : Padding(
-                                  padding: const EdgeInsets.all(minimumPadding),
-                                  child: Center(
-                                    child: RoundedButton(
-                                      btnText: 'Delete Report',
-                                      color: KelloggColors.cockRed,
-                                      onPressed: () {
-                                        setState(() {
-                                          showSpinner = true;
-                                        });
-                                        try {
+                            padding: const EdgeInsets.all(minimumPadding),
+                            child: Center(
+                              child: RoundedButton(
+                                btnText:
+                                reportDetails.isApproved == YES &&
+                                    !Credentials.isUserKws
+                                    ? "Edit Disabled"
+                                    : 'Edit Report',
+                                color: reportDetails.isApproved == YES &&
+                                    !Credentials.isUserKws
+                                    ? KelloggColors.grey
+                                    : KelloggColors.darkBlue,
+                                onPressed: () {
+                                  if ((reportDetails.isApproved == NO &&
+                                      !Credentials.isUserKws) ||
+                                      Credentials.isUserKws) {
+                                    setState(() {
+                                      showSpinner = true;
+                                      _sup_name_validate =
+                                          emptyField(supName);
+                                      _technicianName_validate =
+                                          emptyField(technicianName);
+                                    });
+                                    try {
+                                      if (_formKey.currentState!
+                                          .validate()) {
+                                        //form is valid, proceed further
+                                        _formKey.currentState!.save();
+                                        if (!_sup_name_validate &&
+                                            !_technicianName_validate) {
                                           if (canEditThisReport(
                                               supName,
                                               int.parse(selectedDayFrom),
-                                              int.parse(selectedMonthFrom),
-                                              int.parse(selectedYearFrom))) {
-                                            DownTimeReport.deleteReport(
+                                              int.parse(
+                                                  selectedMonthFrom),
+                                              int.parse(
+                                                  selectedYearFrom))) {
+                                            DownTimeReport.editReport(
                                               context,
                                               reportID,
+                                              supName,
+                                              sku,
+                                              machine,
+                                              downTimeAuthoritiesMap[
+                                              dtType]
+                                                  .toString(),
+                                              //responsible,
+                                              rootCauseDrop,
+                                              rootCauseDesc,
+                                              wfCategory,
+                                              dtType,
+                                              shifts
+                                                  .indexOf(selectedShift),
+                                              refNum,
                                               int.parse(selectedYearFrom),
+                                              int.parse(
+                                                  selectedMonthFrom),
+                                              int.parse(selectedDayFrom),
+                                              int.parse(selectedYearTo),
+                                              int.parse(selectedMonthTo),
+                                              int.parse(selectedDayTo),
+                                              prod_lines4.indexOf(
+                                                  selectedProdLine) +
+                                                  1,
+                                              isPlanned,
+                                              fromTime.hour,
+                                              toTime.hour,
+                                              fromTime.minute,
+                                              toTime.minute,
+                                              y_nDesc.indexOf(isStopped),
+                                              technicianName,
                                             );
                                           } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(SnackBar(
-                                              content:
-                                                  Text(unauthorizedEditMsg),
+                                              content: Text(
+                                                  unauthorizedEditMsg),
                                             ));
                                           }
-                                          setState(() {
-                                            showSpinner = false;
-                                          });
-                                        } catch (e) {
-                                          print(e);
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content:
+                                            Text(submissionErrorText),
+                                          ));
                                         }
-                                      },
-                                    ),
-                                  ),
-                                ),
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text(
+                                              dropDownSelectionErrorText),
+                                        ));
+                                      }
+                                      setState(() {
+                                        showSpinner = false;
+                                      });
+                                    } catch (e) {
+                                      print(e);
+                                    }
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                          //////////////////////////////////////////////////////////////////
+                          !isEdit
+                              ? EmptyPlaceHolder()
+                              : Padding(
+                            padding: const EdgeInsets.all(minimumPadding),
+                            child: Center(
+                              child: RoundedButton(
+                                btnText: 'Delete Report',
+                                color: KelloggColors.cockRed,
+                                onPressed: () {
+                                  setState(() {
+                                    showSpinner = true;
+                                  });
+                                  try {
+                                    if (canEditThisReport(
+                                        supName,
+                                        int.parse(selectedDayFrom),
+                                        int.parse(selectedMonthFrom),
+                                        int.parse(selectedYearFrom))) {
+                                      DownTimeReport.deleteReport(
+                                        context,
+                                        reportID,
+                                        int.parse(selectedYearFrom),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content:
+                                        Text(unauthorizedEditMsg),
+                                      ));
+                                    }
+                                    setState(() {
+                                      showSpinner = false;
+                                    });
+                                  } catch (e) {
+                                    print(e);
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
                           //////////////////////////////////////////////////////////////////
                         ],
                       ),

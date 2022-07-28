@@ -7,7 +7,8 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/qfs_ehs_wigdets/1kpi_good_bad_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:pretty_gauge/pretty_gauge.dart';
+// import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class QFSColScreen extends StatelessWidget {
   const QFSColScreen({
@@ -77,57 +78,97 @@ class QFSColScreen extends StatelessWidget {
         myHorizontalDivider(),
         Center(
           child: Container(
-            height: screenGaugeSize,
-            width: screenGaugeSize,
-            child: SfRadialGauge(
-              title: GaugeTitle(
-                  text: 'نسبة الهالك %',
-                  textStyle: TextStyle(
+            child: PrettyGauge(
+              minValue: 0,
+              maxValue: maxScrap,
+              gaugeSize: screenGaugeSize,
+              segments: [
+                GaugeSegment(
+                    'below',
+                    noWork
+                        ? Plans.universalTargetScrap
+                        : SKU.skuDetails[report.skuName]!.targetScrap,
+                    KelloggColors.successGreen),
+                GaugeSegment(
+                    'above',
+                    maxScrap -
+                        (noWork
+                            ? Plans.universalTargetScrap
+                            : SKU.skuDetails[report.skuName]!.targetScrap),
+                    KelloggColors.clearRed),
+              ],
+              currentValue:
+                  calculateScrapPercentFromMiniReport(report, overweight),
+              displayWidget: Text('نسبة الهالك %',
+                  style: TextStyle(
                       fontSize: largeFontSize,
                       fontWeight: FontWeight.bold,
                       color: KelloggColors.darkRed)),
-              enableLoadingAnimation: true,
-              animationDuration: 2000,
-              axes: <RadialAxis>[
-                RadialAxis(minimum: 0, maximum: maxScrap, pointers: <
-                    GaugePointer>[
-                  NeedlePointer(
-                    value:
-                        calculateScrapPercentFromMiniReport(report, overweight),
-                    needleLength: screenGaugeNeedleLength,
-                    needleEndWidth: needleEndWidth,
-                    enableAnimation: true,
-                  )
-                ], ranges: <GaugeRange>[
-                  GaugeRange(
-                      startValue: 0,
-                      endValue: noWork
-                          ? Plans.universalTargetScrap
-                          : SKU.skuDetails[report.skuName]!.targetScrap,
-                      color: KelloggColors.successGreen),
-                  GaugeRange(
-                      startValue: noWork
-                          ? Plans.universalTargetScrap
-                          : SKU.skuDetails[report.skuName]!.targetScrap,
-                      endValue: maxScrap,
-                      color: KelloggColors.clearRed)
-                ], annotations: <GaugeAnnotation>[
-                  GaugeAnnotation(
-                      widget: Text(
-                        calculateScrapPercentFromMiniReport(report, overweight)
-                                .toStringAsFixed(1) +
-                            ' %',
-                        style: TextStyle(
-                            fontSize: largeFontSize,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      positionFactor: 0.5,
-                      angle: 90)
-                ])
-              ],
+              valueWidget: Text(
+                calculateScrapPercentFromMiniReport(report, overweight)
+                        .toStringAsFixed(1) +
+                    ' %',
+                style: TextStyle(
+                    color: KelloggColors.darkRed,
+                    fontSize: largeFontSize,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ),
+        // Center(
+        //   child: Container(
+        //     height: screenGaugeSize,
+        //     width: screenGaugeSize,
+        //     child: SfRadialGauge(
+        //       title: GaugeTitle(
+        //           text: 'نسبة الهالك %',
+        //           textStyle: TextStyle(
+        //               fontSize: largeFontSize,
+        //               fontWeight: FontWeight.bold,
+        //               color: KelloggColors.darkRed)),
+        //       enableLoadingAnimation: true,
+        //       animationDuration: 2000,
+        //       axes: <RadialAxis>[
+        //         RadialAxis(minimum: 0, maximum: maxScrap, pointers: <
+        //             GaugePointer>[
+        //           NeedlePointer(
+        //             value:
+        //                 calculateScrapPercentFromMiniReport(report, overweight),
+        //             needleLength: screenGaugeNeedleLength,
+        //             needleEndWidth: needleEndWidth,
+        //             enableAnimation: true,
+        //           )
+        //         ], ranges: <GaugeRange>[
+        //           GaugeRange(
+        //               startValue: 0,
+        //               endValue: noWork
+        //                   ? Plans.universalTargetScrap
+        //                   : SKU.skuDetails[report.skuName]!.targetScrap,
+        //               color: KelloggColors.successGreen),
+        //           GaugeRange(
+        //               startValue: noWork
+        //                   ? Plans.universalTargetScrap
+        //                   : SKU.skuDetails[report.skuName]!.targetScrap,
+        //               endValue: maxScrap,
+        //               color: KelloggColors.clearRed)
+        //         ], annotations: <GaugeAnnotation>[
+        //           GaugeAnnotation(
+        //               widget: Text(
+        //                 calculateScrapPercentFromMiniReport(report, overweight)
+        //                         .toStringAsFixed(1) +
+        //                     ' %',
+        //                 style: TextStyle(
+        //                     fontSize: largeFontSize,
+        //                     fontWeight: FontWeight.bold),
+        //               ),
+        //               positionFactor: 0.5,
+        //               angle: 90)
+        //         ])
+        //       ],
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

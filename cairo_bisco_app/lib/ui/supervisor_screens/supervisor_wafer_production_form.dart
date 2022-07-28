@@ -132,60 +132,70 @@ class _WaferProductionFormState extends State<WaferProductionForm> {
     setState(() {
       sku = val;
     });
+    return null;
   }
 
   VoidCallback? onMC1Change(val) {
     setState(() {
       mc1Type = val;
     });
+    return null;
   }
 
   VoidCallback? onMC2Change(val) {
     setState(() {
       mc2Type = val;
     });
+    return null;
   }
 
   VoidCallback? onMC3Change(val) {
     setState(() {
       mc3Type = val;
     });
+    return null;
   }
 
   VoidCallback? onMC4Change(val) {
     setState(() {
       mc4Type = val;
     });
+    return null;
   }
 
   VoidCallback? onLineChange(val) {
     setState(() {
       selectedProdLine = val;
     });
+    return null;
   }
 
   VoidCallback? onShiftChange(val) {
     setState(() {
       selectedShift = val;
     });
+    return null;
   }
 
   VoidCallback? onYearChange(val) {
     setState(() {
       selectedYear = val;
     });
+    return null;
   }
 
   VoidCallback? onMonthChange(val) {
     setState(() {
       selectedMonth = val;
     });
+    return null;
   }
 
   VoidCallback? onDayChange(val) {
     setState(() {
       selectedDay = val;
     });
+    return null;
   }
 
   @override

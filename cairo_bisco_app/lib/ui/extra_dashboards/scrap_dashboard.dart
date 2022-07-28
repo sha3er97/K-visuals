@@ -1,7 +1,6 @@
 import 'package:cairo_bisco_app/classes/CauseCount.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 

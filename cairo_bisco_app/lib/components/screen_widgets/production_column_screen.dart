@@ -5,7 +5,8 @@ import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:pretty_gauge/pretty_gauge.dart';
+// import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class ProductionColScreen extends StatelessWidget {
   const ProductionColScreen({
@@ -235,43 +236,75 @@ class ProductionColScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: defaultPadding),
-          SfRadialGauge(
-            title: GaugeTitle(
-                text: 'كفاءة المكن %',
-                textStyle: TextStyle(
-                    fontSize: largeFontSize,
-                    fontWeight: FontWeight.bold,
-                    color: KelloggColors.darkRed)),
-            enableLoadingAnimation: true,
-            animationDuration: 2000,
-            axes: <RadialAxis>[
-              RadialAxis(minimum: 0, maximum: 100, pointers: <GaugePointer>[
-                NeedlePointer(
-                    value: calculateOeeFromMiniReport(
-                        report, overweight, wastedMinutes),
-                    enableAnimation: true)
-              ], ranges: <GaugeRange>[
-                GaugeRange(
-                    startValue: Plans.targetOEE - oeeMargin,
-                    endValue: Plans.targetOEE + oeeMargin,
-                    color: KelloggColors.darkBlue),
-                // GaugeRange(startValue: 50, endValue: 100, color: Colors.orange),
-                // GaugeRange(startValue: 100, endValue: regularBoxHeight, color: Colors.red)
-              ], annotations: <GaugeAnnotation>[
-                GaugeAnnotation(
-                    widget: Text(
-                      calculateOeeFromMiniReport(
-                                  report, overweight, wastedMinutes)
-                              .toStringAsFixed(1) +
-                          ' %',
-                      style: TextStyle(
-                          fontSize: largeFontSize, fontWeight: FontWeight.bold),
-                    ),
-                    positionFactor: 0.5,
-                    angle: 90)
-              ])
-            ],
+          Center(
+            child: Container(
+              child: PrettyGauge(
+                minValue: 0,
+                maxValue: 100,
+                gaugeSize: screenGaugeSize,
+                segments: [
+                  GaugeSegment("before", Plans.targetOEE - oeeMargin,
+                      KelloggColors.grey),
+                  GaugeSegment("middle", oeeMargin * 2, KelloggColors.darkBlue),
+                  GaugeSegment("after", 100 - (Plans.targetOEE + oeeMargin),
+                      KelloggColors.grey),
+                ],
+                currentValue: calculateOeeFromMiniReport(
+                    report, overweight, wastedMinutes),
+                displayWidget: Text('كفاءة المكن %',
+                    style: TextStyle(
+                        fontSize: largeFontSize,
+                        fontWeight: FontWeight.bold,
+                        color: KelloggColors.darkRed)),
+                valueWidget: Text(
+                  calculateOeeFromMiniReport(report, overweight, wastedMinutes)
+                          .toStringAsFixed(1) +
+                      ' %',
+                  style: TextStyle(
+                      color: KelloggColors.darkRed,
+                      fontSize: largeFontSize,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
           ),
+          // SfRadialGauge(
+          //   title: GaugeTitle(
+          //       text: 'كفاءة المكن %',
+          //       textStyle: TextStyle(
+          //           fontSize: largeFontSize,
+          //           fontWeight: FontWeight.bold,
+          //           color: KelloggColors.darkRed)),
+          //   enableLoadingAnimation: true,
+          //   animationDuration: 2000,
+          //   axes: <RadialAxis>[
+          //     RadialAxis(minimum: 0, maximum: 100, pointers: <GaugePointer>[
+          //       NeedlePointer(
+          //           value: calculateOeeFromMiniReport(
+          //               report, overweight, wastedMinutes),
+          //           enableAnimation: true)
+          //     ], ranges: <GaugeRange>[
+          //       GaugeRange(
+          //           startValue: Plans.targetOEE - oeeMargin,
+          //           endValue: Plans.targetOEE + oeeMargin,
+          //           color: KelloggColors.darkBlue),
+          //       // GaugeRange(startValue: 50, endValue: 100, color: Colors.orange),
+          //       // GaugeRange(startValue: 100, endValue: regularBoxHeight, color: Colors.red)
+          //     ], annotations: <GaugeAnnotation>[
+          //       GaugeAnnotation(
+          //           widget: Text(
+          //             calculateOeeFromMiniReport(
+          //                         report, overweight, wastedMinutes)
+          //                     .toStringAsFixed(1) +
+          //                 ' %',
+          //             style: TextStyle(
+          //                 fontSize: largeFontSize, fontWeight: FontWeight.bold),
+          //           ),
+          //           positionFactor: 0.5,
+          //           angle: 90)
+          //     ])
+          //   ],
+          // ),
           Center(
             child: Text('فرق تكلفة الهالك عن المستهدف',
                 style: TextStyle(

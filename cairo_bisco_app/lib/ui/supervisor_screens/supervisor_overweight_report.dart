@@ -74,42 +74,49 @@ class _SupervisorOverWeightReportFormState
     setState(() {
       sku = val;
     });
+    return null;
   }
 
   VoidCallback? onLineChange(val) {
     setState(() {
       selectedProdLine = val;
     });
+    return null;
   }
 
   VoidCallback? onPESChange(val) {
     setState(() {
       selected_pes = val;
     });
+    return null;
   }
 
   VoidCallback? onG6Change(val) {
     setState(() {
       selected_G6 = val;
     });
+    return null;
   }
 
   VoidCallback? onYearChange(val) {
     setState(() {
       selectedYear = val;
     });
+    return null;
   }
 
   VoidCallback? onMonthChange(val) {
     setState(() {
       selectedMonth = val;
     });
+    return null;
   }
 
   VoidCallback? onDayChange(val) {
     setState(() {
       selectedDay = val;
     });
+    return null;
   }
 
   @override

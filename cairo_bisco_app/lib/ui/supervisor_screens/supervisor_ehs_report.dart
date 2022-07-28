@@ -1,14 +1,14 @@
 import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/date_time_utility.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/other_utility.dart';
+import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
 import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
 import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/classes/values/form_values.dart';
 import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
 import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/date_time_utility.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
 import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:flutter/material.dart';
@@ -77,36 +77,42 @@ class _SupervisorEhsReportState extends State<SupervisorEhsReport> {
     setState(() {
       selected_S7 = val;
     });
+    return null;
   }
 
   VoidCallback? onLineChange(val) {
     setState(() {
       selectedProdLine = val;
     });
+    return null;
   }
 
   VoidCallback? onShiftChange(val) {
     setState(() {
       selectedShift = val;
     });
+    return null;
   }
 
   VoidCallback? onYearChange(val) {
     setState(() {
       selectedYear = val;
     });
+    return null;
   }
 
   VoidCallback? onMonthChange(val) {
     setState(() {
       selectedMonth = val;
     });
+    return null;
   }
 
   VoidCallback? onDayChange(val) {
     setState(() {
       selectedDay = val;
     });
+    return null;
   }
 
   @override
