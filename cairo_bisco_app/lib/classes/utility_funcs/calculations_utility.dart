@@ -392,3 +392,42 @@ bool BadNearMissIndicator(int nearMiss, int days_in_interval) {
   return nearMiss.toDouble() <=
       (Plans.monthlyNearMissTarget.toDouble() / monthDays) * days_in_interval;
 }
+
+/*************************************** New Calculations **********************************************************/
+
+//int
+double calculateSpeedLossFromMiniReport(
+  MiniProductionReport report,
+  double matchedOverWeight,
+  int wastedMinutes,
+) {
+  double workHoursRatio =
+      (report.plannedHours - minutesToHours(wastedMinutes)) /
+          report.plannedHours;
+
+  double res = (report.theoreticalAverage * workHoursRatio) -
+      calculateAllWeightFromMiniReport(report, matchedOverWeight);
+
+  // return (res / SKU.skuDetails[report.skuName]!.cartonWeight).round();
+  return report.plannedHours == 0.0
+      ? 0.0
+      : double.parse(res.toStringAsFixed(1));
+}
+
+//int
+double calculateSpeedLossFromOriginalReport(
+  int refNum,
+  report,
+  netTheoreticalKg,
+  double matchedOverWeight,
+) {
+  // double workHoursRatio =
+  //     (report.shiftHours - minutesToHours(wastedMinutes)) /
+  //         report.shiftHours;
+
+  double res = netTheoreticalKg -
+      calculateAllWeightFromOriginalReport(refNum, report, matchedOverWeight);
+
+  // return (res / SKU.skuDetails[report.skuName]!.cartonWeight).round();
+  return double.parse(res.toStringAsFixed(1));
+}

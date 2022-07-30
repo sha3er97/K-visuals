@@ -7,7 +7,6 @@ import 'package:cairo_bisco_app/classes/values/colors.dart';
 import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
 import 'package:flutter/material.dart';
-
 // import 'package:gauges/gauges.dart';
 // import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:pretty_gauge/pretty_gauge.dart';
@@ -882,6 +881,32 @@ class ProductionLine extends StatelessWidget {
                       ),
                     ),
                   ),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: defaultPadding),
+          Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(BoxImageBorder),
+              child: ConstrainedBox(
+                constraints: BoxConstraints.tightFor(height: minimumBoxHeight),
+                child: ElevatedButton(
+                  child: Text(
+                    "Rate Loss : " +
+                        calculateSpeedLossFromMiniReport(report, overweight,
+                                wastedMinutesBreakDowns + wastedMinutesOther)
+                            .toString() +
+                        " Kg.",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: KelloggColors.white),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      textStyle: TextStyle(
+                          fontSize: largeFontSize, fontFamily: 'MyFont'),
+                      primary: KelloggColors.darkBlue),
                   onPressed: () {},
                 ),
               ),

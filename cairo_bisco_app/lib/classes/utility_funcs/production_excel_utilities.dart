@@ -172,7 +172,9 @@ class ProductionExcelUtilities {
         totWeight = 0.0,
         avgOEE = 0.0,
         //5.0.1 additions
-        totOverWtKg = 0.0;
+        totOverWtKg = 0.0,
+        //5.0.2 additions
+        totSpeedLoss = 0.0;
     int totCartons = 0, totStoppedMinutes = 0, reportStoppedMinutes;
     reportsList.sort((a, b) {
       return (constructDateObject(a.day, a.month, a.year))
@@ -260,6 +262,13 @@ class ProductionExcelUtilities {
           refNum, report, matchedOverWeight);
       totCartons += report.productionInCartons;
       /////////////////////////////////////////////////////////////
+      totSpeedLoss += calculateSpeedLossFromOriginalReport(
+          refNum,
+          report,
+          calculateNetTheoreticalOfReport(
+              report, theoreticals, reportStoppedMinutes),
+          matchedOverWeight);
+      /////////////////////////////////////////////////////////////
 
       List<dynamic> row = [
         constructDateString(report.day, report.month, report.year),
@@ -331,6 +340,12 @@ class ProductionExcelUtilities {
             matchedOverWeight,
             reportStoppedMinutes),
         calculateOverweightKgFromOriginalReport(report, matchedOverWeight),
+        calculateSpeedLossFromOriginalReport(
+            refNum,
+            report,
+            calculateNetTheoreticalOfReport(
+                report, theoreticals, reportStoppedMinutes),
+            matchedOverWeight),
         report.productionInCartons,
         report.month,
         getWeekNumber(report.day, report.month, report.year),
@@ -390,6 +405,7 @@ class ProductionExcelUtilities {
       '-',
       double.parse(avgOEE.toStringAsFixed(2)),
       totOverWtKg.toStringAsFixed(2),
+      totSpeedLoss,
       totCartons,
       '-',
       '-',
@@ -430,7 +446,9 @@ class ProductionExcelUtilities {
         totWeight = 0.0,
         avgOEE = 0.0,
         //5.0.1 additions
-        totOverWtKg = 0.0;
+        totOverWtKg = 0.0,
+        //5.0.2 additions
+        totSpeedLoss = 0.0;
     int totCartons = 0, totStoppedMinutes = 0, reportStoppedMinutes;
     reportsList.sort((a, b) {
       return (constructDateObject(a.day, a.month, a.year))
@@ -518,6 +536,13 @@ class ProductionExcelUtilities {
           refNum, report, matchedOverWeight);
       totCartons += report.productionInCartons;
       /////////////////////////////////////////////////////////////
+      totSpeedLoss += calculateSpeedLossFromOriginalReport(
+          refNum,
+          report,
+          calculateNetTheoreticalOfReport(
+              report, theoreticals, reportStoppedMinutes),
+          matchedOverWeight);
+      /////////////////////////////////////////////////////////////
       List<dynamic> row = [
         constructDateString(report.day, report.month, report.year),
         prodType[refNum],
@@ -588,6 +613,12 @@ class ProductionExcelUtilities {
             matchedOverWeight,
             reportStoppedMinutes),
         calculateOverweightKgFromOriginalReport(report, matchedOverWeight),
+        calculateSpeedLossFromOriginalReport(
+            refNum,
+            report,
+            calculateNetTheoreticalOfReport(
+                report, theoreticals, reportStoppedMinutes),
+            matchedOverWeight),
         report.productionInCartons,
         report.month,
         getWeekNumber(report.day, report.month, report.year),
@@ -646,6 +677,7 @@ class ProductionExcelUtilities {
       '-',
       double.parse(avgOEE.toStringAsFixed(2)),
       totOverWtKg.toStringAsFixed(2),
+      totSpeedLoss,
       totCartons,
       '-',
       '-',
@@ -684,8 +716,9 @@ class ProductionExcelUtilities {
         totWeight = 0.0,
         avgOEE = 0.0,
         //5.0.1 additions
-        totOverWtKg = 0.0;
-
+        totOverWtKg = 0.0,
+        //5.0.2 additions
+        totSpeedLoss = 0.0;
     int totCartons = 0, totStoppedMinutes = 0, reportStoppedMinutes;
     reportsList.sort((a, b) {
       return (constructDateObject(a.day, a.month, a.year))
@@ -771,6 +804,13 @@ class ProductionExcelUtilities {
           refNum, report, matchedOverWeight);
       totCartons += report.productionInCartons;
       /////////////////////////////////////////////////////////////
+      totSpeedLoss += calculateSpeedLossFromOriginalReport(
+          refNum,
+          report,
+          calculateNetTheoreticalOfReport(
+              report, theoreticals, reportStoppedMinutes),
+          matchedOverWeight);
+      /////////////////////////////////////////////////////////////
       List<dynamic> row = [
         constructDateString(report.day, report.month, report.year),
         prodType[refNum],
@@ -838,6 +878,12 @@ class ProductionExcelUtilities {
             matchedOverWeight,
             reportStoppedMinutes),
         calculateOverweightKgFromOriginalReport(report, matchedOverWeight),
+        calculateSpeedLossFromOriginalReport(
+            refNum,
+            report,
+            calculateNetTheoreticalOfReport(
+                report, theoreticals, reportStoppedMinutes),
+            matchedOverWeight),
         report.productionInCartons,
         report.month,
         getWeekNumber(report.day, report.month, report.year),
@@ -893,6 +939,7 @@ class ProductionExcelUtilities {
       '-',
       double.parse(avgOEE.toStringAsFixed(2)),
       totOverWtKg.toStringAsFixed(2),
+      totSpeedLoss,
       totCartons,
       '-',
       '-',
@@ -915,7 +962,9 @@ class ProductionExcelUtilities {
         avgOEE = 0.0,
         totOverWeightKg = 0.0,
         totPlanKg = 0.0,
-        totRmMuv = 0.0;
+        totRmMuv = 0.0,
+        //5.0.2 additions
+        totSpeedLoss = 0.0;
     int totCartons = 0, totStoppedMinutes = 0, reportStoppedMinutes;
     reportsList.sort((a, b) {
       return (constructDateObject(a.day, a.month, a.year))
@@ -973,11 +1022,15 @@ class ProductionExcelUtilities {
                           report, matchedOverWeight, reportStoppedMinutes)) /
                   2);
       /////////////////////////////////////////////////////////////
+      totSpeedLoss += calculateSpeedLossFromMiniReport(
+          report, matchedOverWeight, reportStoppedMinutes);
+      /////////////////////////////////////////////////////////////
       List<dynamic> row = [
         constructDateString(report.day, report.month, report.year),
         report.planInKg,
         report.productionInKg,
         report.productionInCartons,
+        reportStoppedMinutes,
         doesMiniReportHaveCorrespondingOverweight(report, this.overweightList)
             ? getCorrespondingOverweightToMiniReport(
                 report, this.overweightList)
@@ -993,6 +1046,8 @@ class ProductionExcelUtilities {
         calculateOeeFromMiniReport(
             report, matchedOverWeight, reportStoppedMinutes),
         report.rmMUV,
+        calculateSpeedLossFromMiniReport(
+            report, matchedOverWeight, reportStoppedMinutes),
         report.month,
         getWeekNumber(report.day, report.month, report.year),
         report.year,
@@ -1016,6 +1071,7 @@ class ProductionExcelUtilities {
       '-',
       double.parse(avgOEE.toStringAsFixed(2)),
       totRmMuv,
+      totSpeedLoss,
       '-',
       '-',
       '-',
