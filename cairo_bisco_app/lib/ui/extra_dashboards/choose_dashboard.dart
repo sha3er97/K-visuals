@@ -5,13 +5,15 @@ import 'package:cairo_bisco_app/ui/extra_dashboards/downTime_dashboard.dart';
 import 'package:cairo_bisco_app/ui/extra_dashboards/scrap_dashboard.dart';
 import 'package:flutter/material.dart';
 
+import 'nrc_dashboard.dart';
+
 class ChooseDashBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: KelloggColors.white,
       resizeToAvoidBottomInset: true,
-      appBar: new AppBar(
+      appBar: AppBar(
         backgroundColor: KelloggColors.white.withOpacity(0),
         shadowColor: KelloggColors.white.withOpacity(0),
         leading: MyBackButton(
@@ -38,16 +40,31 @@ class ChooseDashBoard extends StatelessWidget {
                   );
                 }),
             GradientGeneralButton(
-              gradientColor1: KelloggColors.successGreen,
+              gradientColor1: KelloggColors.yellow,
               gradientColor2: KelloggColors.grey,
-              mainColor: KelloggColors.green.withOpacity(0.5),
+              mainColor: KelloggColors.yellow.withOpacity(0.5),
               title: "Scrap DashBoard",
-              btn_icon: Icons.pie_chart,
+              btn_icon: Icons.recycling,
               param_onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ScrapDashboard(),
+                  ),
+                );
+              },
+            ),
+            GradientGeneralButton(
+              gradientColor1: KelloggColors.successGreen,
+              gradientColor2: KelloggColors.grey,
+              mainColor: KelloggColors.green.withOpacity(0.5),
+              title: "NRC DashBoard",
+              btn_icon: Icons.pie_chart,
+              param_onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NRCDashboard(),
                   ),
                 );
               },

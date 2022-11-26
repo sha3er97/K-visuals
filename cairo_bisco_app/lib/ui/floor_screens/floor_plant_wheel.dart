@@ -409,24 +409,24 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
                                                             .waiting) {
                                                       return ColorLoader();
                                                     } else {
-                                                      List<
-                                                              QueryDocumentSnapshot<
-                                                                  NRCReport>>
-                                                          nrcReportsList =
-                                                          nrcSnapshot.data!.docs
-                                                              as List<
-                                                                  QueryDocumentSnapshot<
-                                                                      NRCReport>>;
-                                                      NRCReport temp_nrc = NRCReport
-                                                          .getFilteredReportOfInterval(
-                                                        nrcReportsList,
-                                                        int.parse(getMonth()),
-                                                        int.parse(getMonth()),
-                                                        int.parse(getDay()),
-                                                        int.parse(getDay()),
-                                                        int.parse(getYear()),
-                                                        prodType.indexOf(type),
-                                                      );
+                                                      // List<
+                                                      //         QueryDocumentSnapshot<
+                                                      //             NRCReport>>
+                                                      // nrcReportsList =
+                                                      // nrcSnapshot.data!.docs
+                                                      //     as List<
+                                                      //         QueryDocumentSnapshot<
+                                                      //             NRCReport>>;
+                                                      // NRCReport temp_nrc = NRCReport
+                                                      //     .getFilteredReportOfInterval(
+                                                      //   nrcReportsList,
+                                                      //   int.parse(getMonth()),
+                                                      //   int.parse(getMonth()),
+                                                      //   int.parse(getDay()),
+                                                      //   int.parse(getDay()),
+                                                      //   int.parse(getYear()),
+                                                      //   prodType.indexOf(type),
+                                                      // );
 
                                                       //plant wheel body
                                                       return KPI6GoodBadIndicator(
@@ -463,12 +463,13 @@ class _FloorPlantWheelState extends State<FloorPlantWheel> {
                                                             : KelloggColors
                                                                 .green,
                                                         title4: 'العمالة',
-                                                        color5: BadNRCDriver(
-                                                                temp_nrc)
-                                                            ? KelloggColors
-                                                                .cockRed
-                                                            : KelloggColors
-                                                                .green,
+                                                        color5:
+                                                            // BadNRCDriver(
+                                                            //         temp_nrc)
+                                                            //     ? KelloggColors
+                                                            //         .cockRed
+                                                            //     :
+                                                            KelloggColors.green,
                                                         title5:
                                                             'الموارد الطبيعية',
                                                         color6:

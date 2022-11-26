@@ -1,22 +1,26 @@
-import 'package:cairo_bisco_app/classes/values/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-/**the variables of all targets
- * N.B.
- * values are initialized with unreasonable low values to help notice
- * if something went wrong in fetching actual values without debugging
- */
+import '/classes/values/constants.dart';
+
+/// the variables of all targets
+/// N.B.
+/// values are initialized with unreasonable low values to help notice
+/// if something went wrong in fetching actual values without debugging
 class Plans {
   static double targetOverWeightAbove = 0.1;
   static double targetOEE = 20.0;
   static double mpsaTarget = 20.0;
-  static double target_absence = 0.1;
+  static double targetAbsence = 0.1;
   static int monthlyNearMissTarget = 5;
   static int mediumRisksBoundary = 5;
   static int highRisksBoundary = 12;
   static double universalTargetScrap = 3.0;
   static double universalTargetFilmWaste = 3.0;
+  static double electConsumptionTarget = 0.5;
+  static double waterConsumptionTarget = 0.5;
+  static double gasConsumptionTarget = 0.5;
+  static double organicWasteConsumptionTarget = 0.5;
 
   static Future<void> updateRules(
     context,
@@ -26,9 +30,13 @@ class Plans {
     int monthlyNearMissTarget,
     int mediumRisksBoundary,
     int highRisksBoundary,
-    double target_absence,
+    double targetAbsence,
     double universalTargetScrap,
     double universalTargetFilmWaste,
+    double electConsumptionTarget,
+    double waterConsumptionTarget,
+    double gasConsumptionTarget,
+    double organicWasteConsumptionTarget,
   ) {
     return FirebaseFirestore.instance
         .collection(factory_name)
@@ -40,12 +48,16 @@ class Plans {
           'monthlyNearMissTarget': monthlyNearMissTarget,
           'mediumRisksBoundary': mediumRisksBoundary,
           'highRisksBoundary': highRisksBoundary,
-          'target_absence': target_absence,
+          'targetAbsence': targetAbsence,
           'universalTargetScrap': universalTargetScrap,
           'universalTargetFilmWaste': universalTargetFilmWaste,
+          'electConsumptionTarget': electConsumptionTarget,
+          'waterConsumptionTarget': waterConsumptionTarget,
+          'gasConsumptionTarget': gasConsumptionTarget,
+          'organicWasteConsumptionTarget': organicWasteConsumptionTarget,
         })
         .then((value) => {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("Targets Updated"),
               )),
               getPlans(),
@@ -76,11 +88,19 @@ class Plans {
             documentSnapshot["mediumRisksBoundary"].toInt();
         Plans.highRisksBoundary = documentSnapshot["highRisksBoundary"].toInt();
         Plans.mpsaTarget = documentSnapshot["mpsaTarget"].toDouble();
-        Plans.target_absence = documentSnapshot["target_absence"].toDouble();
+        Plans.targetAbsence = documentSnapshot["targetAbsence"].toDouble();
         Plans.universalTargetFilmWaste =
             documentSnapshot["universalTargetFilmWaste"].toDouble();
         Plans.universalTargetScrap =
             documentSnapshot["universalTargetScrap"].toDouble();
+        Plans.waterConsumptionTarget =
+            documentSnapshot["waterConsumptionTarget"].toDouble();
+        Plans.electConsumptionTarget =
+            documentSnapshot["electConsumptionTarget"].toDouble();
+        Plans.gasConsumptionTarget =
+            documentSnapshot["gasConsumptionTarget"].toDouble();
+        Plans.organicWasteConsumptionTarget =
+            documentSnapshot["organicWasteConsumptionTarget"].toDouble();
       } else {
         print('Document does not exist on the database');
       }

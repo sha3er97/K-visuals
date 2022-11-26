@@ -18,7 +18,7 @@ import 'components/alert_dialog.dart';
 import 'config.dart';
 
 void main() {
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     systemNavigationBarColor: KelloggColors.white, // navigation bar color
     statusBarColor: KelloggColors.grey, // status bar color
   ));

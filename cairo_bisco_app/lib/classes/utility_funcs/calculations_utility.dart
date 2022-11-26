@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:cairo_bisco_app/classes/Credentials.dart';
 import 'package:cairo_bisco_app/classes/MiniProductionReport.dart';
-import 'package:cairo_bisco_app/classes/NRCReport.dart';
 import 'package:cairo_bisco_app/classes/PeopleReport.dart';
 import 'package:cairo_bisco_app/classes/Plans.dart';
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
@@ -367,11 +366,7 @@ bool BadProductionDriver(
 bool BadPeopleDriver(PeopleReport report) {
   return (1 - (report.attended_people.toDouble() / report.original_people)) *
           100 >
-      Plans.target_absence;
-}
-
-bool BadNRCDriver(NRCReport report) {
-  return report.notes_count > 0;
+      Plans.targetAbsence;
 }
 
 bool BadFinanceDriver(MiniProductionReport report) {

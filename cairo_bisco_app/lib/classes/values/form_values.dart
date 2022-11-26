@@ -205,3 +205,40 @@ List<String> years = <String>[
   // '2035',
   // '2036'
 ];
+
+List<String> gaugesTypes = [
+  'Electricity',
+  'Water',
+  'Gas',
+  'Organic Waste',
+];
+List<String> measureUnits = [
+  'Kwh/Ton',
+  'M3/Ton',
+  'Kws/Ton',
+  'Kg/Ton',
+];
+List<String> waterGauges = <String>[
+  'Main water meter',
+  'Admin 1 meter',
+  'Admin 2 meter',
+];
+List<String> electricityGauges = <String>[
+  'Main Meter 1',
+  'Main meter 2',
+];
+List<String> gasGauges = <String>[
+  'meter 1',
+  'meter 2',
+  'Agamia meter',
+  'Maamoul meter',
+];
+List<String> organicWasteGauges = <String>[
+  '-',
+];
+List<List<String>> gaugesPerType = [
+  electricityGauges,
+  waterGauges,
+  gasGauges,
+  organicWasteGauges,
+];

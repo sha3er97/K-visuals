@@ -1,36 +1,39 @@
 import 'dart:collection';
 
-import 'package:cairo_bisco_app/classes/utility_funcs/date_time_utility.dart';
-import 'package:cairo_bisco_app/classes/values/constants.dart';
-import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '/classes/utility_funcs/date_time_utility.dart';
+import '/classes/utility_funcs/other_utility.dart';
+import '/classes/values/constants.dart';
+import '/ui/error_success_screens/success.dart';
+import 'CauseCount.dart';
+
 class NRCReport {
-  final String supName, notes_details;
-  final int notes_count, shift_index, area, year, month, day;
+  final String supName, type, area;
+  final int reading, plant, year, month, day;
 
   NRCReport({
     required this.area,
-    required this.notes_count,
-    required this.notes_details,
+    required this.reading,
+    required this.type,
     required this.supName,
+    required this.plant,
     required this.year,
-    required this.shift_index,
     required this.month,
     required this.day,
   });
 
   NRCReport.fromJson(Map<String, Object?> json)
       : this(
-          year: json['year']! as int,
+    year: json['year']! as int,
           month: json['month']! as int,
           day: json['day']! as int,
-          area: json['area']! as int,
-          shift_index: json['shift_index']! as int,
+          area: json['area']! as String,
           supName: json['supName']! as String,
-          notes_count: json['notes_count']! as int,
-          notes_details: json['notes_details']! as String,
+          reading: json['reading']! as int,
+          plant: json['plant']! as int,
+          type: json['type']! as String,
         );
 
   Map<String, Object?> toJson() {
@@ -39,19 +42,19 @@ class NRCReport {
       'month': month,
       'day': day,
       'area': area,
-      'shift_index': shift_index,
+      'plant': plant,
       'supName': supName,
-      'notes_count': notes_count,
-      'notes_details': notes_details,
+      'reading': reading,
+      'type': type,
     };
   }
 
   static void addReport(
     String supName,
-    int notes_count,
-    String notes_details,
-    int shift_index,
-    int area,
+    String area,
+    String type,
+    int reading,
+    int plant,
     int year,
     int month,
     int day,
@@ -67,9 +70,9 @@ class NRCReport {
     await nrcReportRef.add(
       NRCReport(
         supName: supName,
-        shift_index: shift_index,
-        notes_count: notes_count,
-        notes_details: notes_details,
+        plant: plant,
+        reading: reading,
+        type: type,
         area: area,
         year: year,
         month: month,
@@ -82,10 +85,10 @@ class NRCReport {
     context,
     String id,
     String supName,
-    int notes_count,
-    String notes_details,
-    int shift_index,
-    int area,
+    String area,
+    String type,
+    int reading,
+    int plant,
     int year,
     int month,
     int day,
@@ -105,13 +108,13 @@ class NRCReport {
           'month': month,
           'day': day,
           'area': area,
-          'shift_index': shift_index,
+          'plant': plant,
           'supName': supName,
-          'notes_count': notes_count,
-          'notes_details': notes_details,
+          'reading': reading,
+          'type': type,
         })
         .then((value) => {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("Report Updated"),
               )),
               Navigator.push(context,
@@ -141,7 +144,7 @@ class NRCReport {
         .doc(id)
         .delete()
         .then((value) => {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("Report Deleted"),
               )),
               Navigator.push(context,
@@ -163,7 +166,7 @@ class NRCReport {
     int year,
     int refNum,
   ) {
-    HashMap hashMap = new HashMap<String, NRCReport>();
+    HashMap hashMap = HashMap<String, NRCReport>();
     for (var report in reportsList) {
       if (!isDayInInterval(
         report.data().day,
@@ -174,27 +177,91 @@ class NRCReport {
         day_to,
         year,
       )) {
-        print('debug :: NRCReport filtered out due to its date --> ' +
-            report.data().day.toString());
+        print(
+            'debug :: NRCReport filtered out due to its date --> ${report.data().day}');
         continue;
       }
-      if (report.data().area == refNum) hashMap[report.id] = report.data();
+      if (report.data().plant == refNum) hashMap[report.id] = report.data();
     }
     return hashMap as HashMap<String, NRCReport>;
   }
 
-  static NRCReport getFilteredReportOfInterval(
+  // static NRCReport getFilteredReportOfInterval(
+  //   List<QueryDocumentSnapshot<NRCReport>> reportsList,
+  //   int month_from,
+  //   int month_to,
+  //   int day_from,
+  //   int day_to,
+  //   int year,
+  //   int areaRequired,
+  // ) {
+  //   int temp_total_notes = 0;
+  //   String temp_all_type = '';
+  //
+  //   for (var report in reportsList) {
+  //     if (!isDayInInterval(
+  //       report.data().day,
+  //       report.data().month,
+  //       month_from,
+  //       month_to,
+  //       day_from,
+  //       day_to,
+  //       year,
+  //     )) {
+  //       print('debug :: NRCReport filtered out due to its date --> ${report.data().day}');
+  //       continue;
+  //     }
+  //
+  //     if (areaRequired != TOTAL_PLANT && report.data().plant == areaRequired) {
+  //       // all shifts all lines in one area
+  //       temp_total_notes += report.data().reading;
+  //       temp_all_type += report.data().type;
+  //       // print('debug :: NRCReport chosen in second if');
+  //     } else if (areaRequired == TOTAL_PLANT) {
+  //       // all shifts all lines all areas
+  //       temp_total_notes += report.data().reading;
+  //       temp_all_type += report.data().type;
+  //       // print('debug :: NRCReport chosen in third if');
+  //     } else {
+  //       // print('debug :: NRCReport filtered out due to conditions');
+  //     }
+  //   }
+  //   //return the total in capsulized form
+  //   return NRCReport(
+  //     supName: '',
+  //     reading: temp_total_notes,
+  //     type: temp_all_type,
+  //     shift_index: -1,
+  //     area: areaRequired,
+  //     year: -1,
+  //     month: -1,
+  //     day: -1,
+  //   );
+  // }
+
+  static NRCReport getEmptyReport() {
+    return NRCReport(
+      supName: '',
+      reading: 0,
+      type: '',
+      plant: -1,
+      area: '',
+      year: -1,
+      month: -1,
+      day: -1,
+    );
+  }
+
+  static List<CauseCount> getIntervalReadings(
     List<QueryDocumentSnapshot<NRCReport>> reportsList,
     int month_from,
     int month_to,
     int day_from,
     int day_to,
     int year,
-    int areaRequired,
+    String type,
   ) {
-    int temp_total_notes = 0;
-    String temp_all_notes_details = '';
-
+    HashMap<String, CauseCount> tempMap = HashMap<String, CauseCount>();
     for (var report in reportsList) {
       if (!isDayInInterval(
         report.data().day,
@@ -205,48 +272,56 @@ class NRCReport {
         day_to,
         year,
       )) {
-        print('debug :: NRCReport filtered out due to its date --> ' +
-            report.data().day.toString());
+        // print(
+        //     'debug :: NRC filtered out due to its date --> ${report.data().day}');
         continue;
       }
-
-      if (areaRequired != TOTAL_PLANT && report.data().area == areaRequired) {
-        // all shifts all lines in one area
-        temp_total_notes += report.data().notes_count;
-        temp_all_notes_details += report.data().notes_details;
-        // print('debug :: NRCReport chosen in second if');
-      } else if (areaRequired == TOTAL_PLANT) {
-        // all shifts all lines all areas
-        temp_total_notes += report.data().notes_count;
-        temp_all_notes_details += report.data().notes_details;
-        // print('debug :: NRCReport chosen in third if');
+      if (stringFilterCheck(report.data().type, type, '-')
+          // && intFilterCheck(report.data().plant, plant, TOTAL_PLANT)
+          ) {
+        if (tempMap[
+                "${report.data().day}/${report.data().month}/${report.data().year}"] ==
+            null) {
+          tempMap["${report.data().day}/${report.data().month}/${report.data().year}"] =
+              CauseCount(
+                  "${report.data().day}/${report.data().month}/${report.data().year}",
+                  report.data().reading);
+        } else {
+          tempMap["${report.data().day}/${report.data().month}/${report.data().year}"]!
+              .incrementCount(report.data().reading);
+        }
       } else {
-        // print('debug :: NRCReport filtered out due to conditions');
+        // print('debug :: NRC filtered out due to conditions');
       }
     }
-    //return the total in capsulized form
-    return NRCReport(
-      supName: '',
-      notes_count: temp_total_notes,
-      notes_details: temp_all_notes_details,
-      shift_index: -1,
-      area: areaRequired,
-      year: -1,
-      month: -1,
-      day: -1,
-    );
+    return tempMap.values.toList();
   }
 
-  static NRCReport getEmptyReport() {
-    return NRCReport(
-      supName: '',
-      notes_count: 0,
-      notes_details: '',
-      shift_index: 0,
-      area: -1,
-      year: -1,
-      month: -1,
-      day: -1,
-    );
+  static List<CauseCount> getConsumptions(
+    List<CauseCount> readings,
+    int month_from,
+    int day_from,
+    int year,
+  ) {
+    readings.sort((b, a) => constructDateObjectFromString(b.causeName)
+        .compareTo(constructDateObjectFromString(a.causeName))); //ascending
+    int boundary = readings.length - 1;
+    if (readings.length < 2) return readings;
+    for (int i = readings.length - 1; i > 0; i--) {
+      readings[i].decrementCount(readings[i - 1].count);
+      int month = int.parse(readings[i - 1].causeName.split("/")[1]);
+      int day = int.parse(readings[i - 1].causeName.split("/")[0]);
+      if (DateTime(year, month, day)
+              .isAfter(DateTime(year, month_from, day_from)) ||
+          DateTime(year, month, day)
+              .isAtSameMomentAs(DateTime(year, month_from, day_from))) {
+        boundary = i - 1;
+        // print("boundry reset to $boundary at $day/$month w.r.t $day_from/$month_from");
+      } else {
+        break;
+        // print("boundry stays at $boundary at $day/$month w.r.t $day_from/$month_from");
+      }
+    }
+    return readings.sublist(boundary, readings.length);
   }
 }

@@ -238,5 +238,6 @@ List<String> DownTimeHeaders = [
   "Report Entry Time",
   "Month",
   "Week",
-  "Year"
+  "Year",
+  "Sort Column"
 ];

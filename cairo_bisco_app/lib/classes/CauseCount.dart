@@ -10,10 +10,14 @@ class CauseCount {
     this.count += count;
   }
 
+  void decrementCount(num count) {
+    this.count -= count;
+  }
+
   static List<CauseCount> mergeCauseCounts(
     List<List<CauseCount>> countsList,
   ) {
-    HashMap<String, CauseCount> tempMap = new HashMap<String, CauseCount>();
+    HashMap<String, CauseCount> tempMap = HashMap<String, CauseCount>();
     for (List<CauseCount> areaList in countsList) {
       for (CauseCount count in areaList) {
         if (tempMap[count.causeName] == null) {

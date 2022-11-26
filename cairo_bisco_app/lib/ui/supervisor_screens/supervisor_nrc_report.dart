@@ -1,22 +1,23 @@
-import 'package:cairo_bisco_app/classes/Credentials.dart';
-import 'package:cairo_bisco_app/classes/NRCReport.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/date_time_utility.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/other_utility.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
-import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
-import 'package:cairo_bisco_app/classes/values/colors.dart';
-import 'package:cairo_bisco_app/classes/values/constants.dart';
-import 'package:cairo_bisco_app/classes/values/form_values.dart';
-import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
-import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
-import 'package:cairo_bisco_app/components/special_components/place_holders.dart';
-import 'package:cairo_bisco_app/ui/error_success_screens/success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
+import '/classes/Credentials.dart';
+import '/classes/NRCReport.dart';
+import '/classes/utility_funcs/date_time_utility.dart';
+import '/classes/utility_funcs/other_utility.dart';
+import '/classes/utility_funcs/text_utilities.dart';
+import '/classes/values/TextStandards.dart';
+import '/classes/values/colors.dart';
+import '/classes/values/constants.dart';
+import '/classes/values/form_values.dart';
+import '/components/buttons/back_btn.dart';
+import '/components/buttons/rounded_btn.dart';
+import '/components/special_components/place_holders.dart';
+import '/ui/error_success_screens/success.dart';
+
 class SupervisorNRCReportForm extends StatefulWidget {
-  SupervisorNRCReportForm({
+  const SupervisorNRCReportForm({
     Key? key,
     required this.refNum,
     required this.reportDetails,
@@ -24,7 +25,7 @@ class SupervisorNRCReportForm extends StatefulWidget {
     required this.reportID,
   }) : super(key: key);
   final int refNum;
-  final dynamic reportDetails;
+  final NRCReport reportDetails;
   final bool isEdit;
   final String reportID;
 
@@ -46,23 +47,33 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
   });
 
   final String reportID;
-  final dynamic reportDetails;
-  final int refNum;
   final bool isEdit;
+  final int refNum;
+  final NRCReport reportDetails;
 
   bool showSpinner = false;
-  late String supName, notes_count, notes_details;
+  late String supName, area, type, reading;
 
-  bool _sup_name_validate = false,
-      _notes_count_validate = false,
-      _notes_details_validate = false;
+  bool _sup_name_validate = false, _reading_validate = false;
 
   //drop down values
-  late String selectedShift, selectedYear, selectedMonth, selectedDay;
+  late String selectedArea,
+      selectedYear,
+      selectedMonth,
+      selectedDay,
+      selectedType;
 
-  VoidCallback? onShiftChange(val) {
+  VoidCallback? onAreaChange(val) {
     setState(() {
-      selectedShift = val;
+      area = val;
+    });
+    return null;
+  }
+
+  VoidCallback? onTypeChange(val) {
+    setState(() {
+      type = val;
+      area = gaugesPerType[gaugesTypes.indexOf(type)][0];
     });
     return null;
   }
@@ -92,16 +103,18 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
   void initState() {
     super.initState();
     supName = isEdit ? reportDetails.supName : Credentials.getUserName();
-    notes_count = isEdit ? reportDetails.notes_count.toString() : '';
-    notes_details = isEdit ? reportDetails.notes_details.toString() : '';
+    reading = isEdit ? reportDetails.reading.toString() : '';
     ///////////////////////////////////////////////////////////////////////////////
-    selectedShift = shifts[reportDetails.shift_index];
     selectedYear =
         years[(isEdit ? reportDetails.year : (int.parse(getYear()))) - 2020];
     selectedMonth =
         months[(isEdit ? reportDetails.month : (int.parse(getMonth()))) - 1];
     selectedDay =
         days[(isEdit ? reportDetails.day : (int.parse(getDay()))) - 1];
+    type = isEdit ? reportDetails.type : gaugesTypes[0];
+    area = isEdit
+        ? reportDetails.area
+        : gaugesPerType[gaugesTypes.indexOf(type)][0];
   }
 
   @override
@@ -112,14 +125,14 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
         child: Scaffold(
           backgroundColor: KelloggColors.white,
           resizeToAvoidBottomInset: true,
-          appBar: new AppBar(
+          appBar: AppBar(
             backgroundColor: KelloggColors.white.withOpacity(0),
             shadowColor: KelloggColors.white.withOpacity(0),
             leading: MyBackButton(
               color: KelloggColors.darkRed,
             ),
-            title: Text(
-              prodType[refNum],
+            title: const Text(
+              'NRC Report',
               style: TextStyle(
                   color: KelloggColors.darkRed,
                   fontWeight: FontWeight.w300,
@@ -134,16 +147,17 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
-                    margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                    margin:
+                        const EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         smallerHeading('اسم المسؤول\nResponsible Name'),
-                        SizedBox(height: minimumPadding),
+                        const SizedBox(height: minimumPadding),
                         TextFormField(
                           initialValue: supName,
                           readOnly: true,
-                          style: (TextStyle(
+                          style: (const TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType: TextInputType.name,
@@ -151,7 +165,7 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                           obscureText: false,
                           decoration: InputDecoration(
                             labelText: uneditableLabelText,
-                            border: OutlineInputBorder(
+                            border: const OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.darkRed,
                                   width: textFieldBorderRadius),
@@ -161,7 +175,7 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                             errorText: _sup_name_validate
                                 ? missingValueErrorText
                                 : null,
-                            focusedBorder: OutlineInputBorder(
+                            focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
                                   width: textFieldFocusedBorderRadius),
@@ -173,10 +187,10 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                             supName = value;
                           },
                         ),
-                        SizedBox(height: defaultPadding),
+                        const SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
                         smallerHeading('تاريخ اليوم\nToday Date'),
-                        SizedBox(height: minimumPadding),
+                        const SizedBox(height: minimumPadding),
                         Row(
                           children: [
                             Expanded(
@@ -184,19 +198,20 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: mediumPadding),
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(vertical: 10),
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 10),
                                   child: Column(
                                     children: [
                                       DropdownButton<String>(
-                                        hint: Text("day"),
+                                        hint: const Text("day"),
                                         value: selectedDay,
                                         isExpanded: true,
                                         items: days.map((String value) {
-                                          return new DropdownMenuItem<String>(
+                                          return DropdownMenuItem<String>(
                                             value: value,
                                             child: Text(
                                               value,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: KelloggColors.darkRed),
                                             ),
                                           );
@@ -213,20 +228,20 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: mediumPadding),
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(
+                                  margin: const EdgeInsets.symmetric(
                                       vertical: minimumPadding),
                                   child: Column(
                                     children: [
                                       DropdownButton<String>(
-                                        hint: Text("month"),
+                                        hint: const Text("month"),
                                         value: selectedMonth,
                                         isExpanded: true,
                                         items: months.map((String value) {
-                                          return new DropdownMenuItem<String>(
+                                          return DropdownMenuItem<String>(
                                             value: value,
                                             child: Text(
                                               value,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: KelloggColors.darkRed),
                                             ),
                                           );
@@ -244,20 +259,20 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: mediumPadding),
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(
+                                  margin: const EdgeInsets.symmetric(
                                       vertical: minimumPadding),
                                   child: Column(
                                     children: [
                                       DropdownButton<String>(
-                                        hint: Text("year"),
+                                        hint: const Text("year"),
                                         value: selectedYear,
                                         isExpanded: true,
                                         items: years.map((String value) {
-                                          return new DropdownMenuItem<String>(
+                                          return DropdownMenuItem<String>(
                                             value: value,
                                             child: Text(
                                               value,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: KelloggColors.darkRed),
                                             ),
                                           );
@@ -271,39 +286,64 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                             ),
                           ],
                         ),
-                        SizedBox(height: defaultPadding),
+                        const SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
-                        smallerHeading('اختر الوردية\nWork Shift'),
-                        SizedBox(height: minimumPadding),
+                        smallerHeading('نوع العداد Type'),
+                        const SizedBox(height: minimumPadding),
                         Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: minimumPadding),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: minimumPadding),
                           padding: const EdgeInsets.symmetric(
                               horizontal: defaultPadding),
                           child: DropdownButtonFormField<String>(
-                            value: selectedShift,
+                            value: type,
                             isExpanded: true,
-                            items: shifts.map((String value) {
-                              return new DropdownMenuItem<String>(
+                            items: gaugesTypes.map((String value) {
+                              return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
                                   value,
-                                  style:
-                                      TextStyle(color: KelloggColors.darkRed),
+                                  style: const TextStyle(
+                                      color: KelloggColors.darkRed),
                                 ),
                               );
                             }).toList(),
-                            onChanged: onShiftChange,
+                            onChanged: onTypeChange,
                           ),
                         ),
-                        SizedBox(height: defaultPadding),
-                        /////////////////////////////////////////////////////////////////////////////////
-                        smallerHeading(
-                            'عدد ملاحظات استهلاك سلبي \nNotes Count'),
-                        SizedBox(height: minimumPadding),
+                        const SizedBox(height: defaultPadding),
+                        ///////////////////////////////////////////////////////////////
+                        smallerHeading('المنطقة Area'),
+                        const SizedBox(height: minimumPadding),
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: minimumPadding),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPadding),
+                          child: DropdownButtonFormField<String>(
+                            value: area,
+                            isExpanded: true,
+                            items: gaugesPerType[gaugesTypes.indexOf(type)]
+                                .map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: const TextStyle(
+                                      color: KelloggColors.darkRed),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: onAreaChange,
+                          ),
+                        ),
+                        const SizedBox(height: defaultPadding),
+                        ///////////////////////////////////////////////////////////////
+                        smallerHeading('قراءة العداد \nReading'),
+                        const SizedBox(height: minimumPadding),
                         TextFormField(
-                          initialValue: notes_count,
-                          style: (TextStyle(
+                          initialValue: reading,
+                          style: (const TextStyle(
                               color: KelloggColors.darkRed,
                               fontWeight: FontWeight.w400)),
                           keyboardType: TextInputType.number,
@@ -313,17 +353,17 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                           cursorColor: Colors.white,
                           obscureText: false,
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(
+                            border: const OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.darkRed,
                                   width: textFieldBorderRadius),
                               borderRadius: BorderRadius.all(
                                   Radius.circular(textFieldRadius)),
                             ),
-                            errorText: _notes_count_validate
+                            errorText: _reading_validate
                                 ? missingValueErrorText
                                 : null,
-                            focusedBorder: OutlineInputBorder(
+                            focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: KelloggColors.yellow,
                                   width: textFieldFocusedBorderRadius),
@@ -332,46 +372,10 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                             ),
                           ),
                           onChanged: (value) {
-                            notes_count = value;
+                            reading = value;
                           },
                         ),
-                        SizedBox(height: defaultPadding),
-                        ///////////////////////////////////////////////////////////////
-                        smallerHeading(
-                            'ملاحظات الاستهلاك السلبي \nNotes Details'),
-                        SizedBox(height: minimumPadding),
-                        TextFormField(
-                          initialValue: notes_details,
-                          style: (TextStyle(
-                              color: KelloggColors.darkRed,
-                              fontWeight: FontWeight.w400)),
-                          keyboardType: TextInputType.multiline,
-                          cursorColor: Colors.white,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.darkRed,
-                                  width: textFieldBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                            errorText: _notes_details_validate
-                                ? conditionalMissingValueErrorText
-                                : null,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: KelloggColors.yellow,
-                                  width: textFieldFocusedBorderRadius),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(textFieldRadius)),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            notes_details = value;
-                          },
-                        ),
-                        SizedBox(height: defaultPadding),
+                        const SizedBox(height: defaultPadding),
                         ///////////////////////////////////////////////////////////////
                         isEdit
                             ? EmptyPlaceHolder()
@@ -384,25 +388,18 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                                     onPressed: () async {
                                       setState(() {
                                         showSpinner = true;
-                                        _notes_count_validate =
-                                            emptyField(notes_count);
-                                        if (!_notes_count_validate)
-                                          _notes_details_validate =
-                                              conditionalEmptyField(
-                                                  int.parse(notes_count),
-                                                  notes_details);
+                                        _reading_validate = emptyField(reading);
                                         _sup_name_validate =
                                             emptyField(supName);
                                       });
                                       try {
-                                        if (!_notes_count_validate &&
-                                            !_notes_details_validate &&
-                                            !_sup_name_validate) {
+                                        if (!_sup_name_validate &&
+                                            !_reading_validate) {
                                           NRCReport.addReport(
                                               supName,
-                                              int.parse(notes_count),
-                                              notes_details,
-                                              shifts.indexOf(selectedShift),
+                                              area,
+                                              type,
+                                              int.parse(reading),
                                               refNum,
                                               int.parse(selectedYear),
                                               int.parse(selectedMonth),
@@ -414,7 +411,7 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                                                       SuccessScreen()));
                                         } else {
                                           ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
+                                              .showSnackBar(const SnackBar(
                                             content: Text(submissionErrorText),
                                           ));
                                         }
@@ -440,21 +437,13 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                                     onPressed: () {
                                       setState(() {
                                         showSpinner = true;
-
-                                        _notes_count_validate =
-                                            emptyField(notes_count);
-                                        if (!_notes_count_validate)
-                                          _notes_details_validate =
-                                              conditionalEmptyField(
-                                                  int.parse(notes_count),
-                                                  notes_details);
+                                        _reading_validate = emptyField(reading);
                                         _sup_name_validate =
                                             emptyField(supName);
                                       });
                                       try {
-                                        if (!_notes_count_validate &&
-                                            !_notes_details_validate &&
-                                            !_sup_name_validate) {
+                                        if (!_sup_name_validate &&
+                                            !_reading_validate) {
                                           if (canEditThisReport(
                                               supName,
                                               int.parse(selectedDay),
@@ -464,23 +453,23 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                                                 context,
                                                 reportID,
                                                 supName,
-                                                int.parse(notes_count),
-                                                notes_details,
-                                                shifts.indexOf(selectedShift),
+                                                area,
+                                                type,
+                                                int.parse(reading),
                                                 refNum,
                                                 int.parse(selectedYear),
                                                 int.parse(selectedMonth),
                                                 int.parse(selectedDay));
                                           } else {
                                             ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
+                                                .showSnackBar(const SnackBar(
                                               content:
                                                   Text(unauthorizedEditMsg),
                                             ));
                                           }
                                         } else {
                                           ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
+                                              .showSnackBar(const SnackBar(
                                             content: Text(submissionErrorText),
                                           ));
                                         }
@@ -520,7 +509,7 @@ class _SupervisorNRCReportFormState extends State<SupervisorNRCReportForm> {
                                           );
                                         } else {
                                           ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
+                                              .showSnackBar(const SnackBar(
                                             content: Text(unauthorizedEditMsg),
                                           ));
                                         }

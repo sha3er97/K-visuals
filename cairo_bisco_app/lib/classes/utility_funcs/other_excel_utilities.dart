@@ -236,14 +236,12 @@ class OtherExcelUtilities {
         report.rejected_by,
         report.rejectComment,
         report.technicianName,
-        constructDateString(
-                report.report_day, report.report_month, report.report_year) +
-            "--" +
-            constructTimeString(
-                context, report.report_hour, report.report_minute),
+        "${constructDateString(report.report_day, report.report_month, report.report_year)}--${constructTimeString(context, report.report_hour, report.report_minute)}",
         report.monthFrom,
         getWeekNumber(report.dayFrom, report.monthFrom, report.yearFrom),
         report.yearFrom,
+        constructTimeSort(report.dayFrom, report.monthFrom, report.yearFrom,
+            report.hour_from, report.minute_from)
       ];
       // print(row);
       sheetObject.appendRow(row);
@@ -275,6 +273,7 @@ class OtherExcelUtilities {
       '-',
       '-',
       '-',
+      9999 * 365 * 24 * 60,
     ];
     sheetObject.appendRow(tot);
   }

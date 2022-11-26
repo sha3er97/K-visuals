@@ -1,13 +1,14 @@
-import 'package:cairo_bisco_app/classes/Plans.dart';
-import 'package:cairo_bisco_app/classes/utility_funcs/text_utilities.dart';
-import 'package:cairo_bisco_app/classes/values/TextStandards.dart';
-import 'package:cairo_bisco_app/classes/values/colors.dart';
-import 'package:cairo_bisco_app/classes/values/constants.dart';
-import 'package:cairo_bisco_app/components/buttons/back_btn.dart';
-import 'package:cairo_bisco_app/components/buttons/rounded_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+
+import '/classes/Plans.dart';
+import '/classes/utility_funcs/text_utilities.dart';
+import '/classes/values/TextStandards.dart';
+import '/classes/values/colors.dart';
+import '/classes/values/constants.dart';
+import '/components/buttons/back_btn.dart';
+import '/components/buttons/rounded_btn.dart';
 
 class AdminEditTargets extends StatefulWidget {
   @override
@@ -21,9 +22,14 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
       monthlyNearMissTarget = Plans.monthlyNearMissTarget.toString(),
       mediumRisksBoundary = Plans.mediumRisksBoundary.toString(),
       highRisksBoundary = Plans.highRisksBoundary.toString(),
-      target_absence = Plans.target_absence.toString(),
+      targetAbsence = Plans.targetAbsence.toString(),
       mpsaTarget = Plans.mpsaTarget.toString(),
       universalTargetScrap = Plans.universalTargetScrap.toString(),
+      electConsumptionTarget = Plans.electConsumptionTarget.toString(),
+      waterConsumptionTarget = Plans.waterConsumptionTarget.toString(),
+      gasConsumptionTarget = Plans.gasConsumptionTarget.toString(),
+      organicWasteConsumptionTarget =
+          Plans.organicWasteConsumptionTarget.toString(),
       universalTargetFilmWaste = Plans.universalTargetFilmWaste.toString();
 
   bool _targetOverWeightAbove_validate = false,
@@ -33,6 +39,10 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
       _highRisksBoundary_validate = false,
       _target_absence_validate = false,
       _mpsaTarget_validate = false,
+      _elect_consumption_validate = false,
+      _water_consumption_validate = false,
+      _gas_consumption_validate = false,
+      _organic_waste_consumption_validate = false,
       _universalTargetScrap_validate = false,
       _universalTargetFilmWaste_validate = false;
 
@@ -44,13 +54,13 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
         child: Scaffold(
           backgroundColor: KelloggColors.white,
           resizeToAvoidBottomInset: true,
-          appBar: new AppBar(
+          appBar: AppBar(
             backgroundColor: KelloggColors.white.withOpacity(0),
             shadowColor: KelloggColors.white.withOpacity(0),
             leading: MyBackButton(
               color: KelloggColors.darkBlue,
             ),
-            title: Text(
+            title: const Text(
               "Edit Targets",
               style: TextStyle(
                   color: KelloggColors.darkBlue,
@@ -66,7 +76,8 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Container(
-                    margin: EdgeInsets.symmetric(vertical: minimumPadding),
+                    margin:
+                        const EdgeInsets.symmetric(vertical: minimumPadding),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -74,20 +85,21 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             adminHeading('Target OverWeight :'),
-                            SizedBox(width: minimumPadding),
+                            const SizedBox(width: minimumPadding),
                             Expanded(
                               child: TextFormField(
                                 initialValue:
                                     Plans.targetOverWeightAbove.toString(),
-                                style: (TextStyle(
+                                style: (const TextStyle(
                                     color: KelloggColors.darkBlue,
                                     fontWeight: FontWeight.w400)),
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
                                 cursorColor: Colors.white,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  border: OutlineInputBorder(
+                                  border: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.darkBlue,
                                         width: textFieldBorderRadius),
@@ -97,7 +109,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                   errorText: _targetOverWeightAbove_validate
                                       ? missingValueErrorText
                                       : null,
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.yellow,
                                         width: textFieldFocusedBorderRadius),
@@ -112,25 +124,26 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                             ),
                           ],
                         ),
-                        SizedBox(height: defaultPadding),
+                        const SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             adminHeading('OEE% Target :'),
-                            SizedBox(width: minimumPadding),
+                            const SizedBox(width: minimumPadding),
                             Expanded(
                               child: TextFormField(
                                 initialValue: Plans.targetOEE.toString(),
-                                style: (TextStyle(
+                                style: (const TextStyle(
                                     color: KelloggColors.darkBlue,
                                     fontWeight: FontWeight.w400)),
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
                                 cursorColor: Colors.white,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  border: OutlineInputBorder(
+                                  border: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.darkBlue,
                                         width: textFieldBorderRadius),
@@ -140,7 +153,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                   errorText: _targetOEE_validate
                                       ? missingValueErrorText
                                       : null,
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.yellow,
                                         width: textFieldFocusedBorderRadius),
@@ -155,25 +168,26 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                             ),
                           ],
                         ),
-                        SizedBox(height: defaultPadding),
+                        const SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             adminHeading('MPSA% Target :'),
-                            SizedBox(width: minimumPadding),
+                            const SizedBox(width: minimumPadding),
                             Expanded(
                               child: TextFormField(
                                 initialValue: Plans.mpsaTarget.toString(),
-                                style: (TextStyle(
+                                style: (const TextStyle(
                                     color: KelloggColors.darkBlue,
                                     fontWeight: FontWeight.w400)),
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
                                 cursorColor: Colors.white,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  border: OutlineInputBorder(
+                                  border: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.darkBlue,
                                         width: textFieldBorderRadius),
@@ -183,7 +197,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                   errorText: _mpsaTarget_validate
                                       ? missingValueErrorText
                                       : null,
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.yellow,
                                         width: textFieldFocusedBorderRadius),
@@ -198,18 +212,18 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                             ),
                           ],
                         ),
-                        SizedBox(height: defaultPadding),
+                        const SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             adminHeading('Monthly Near Miss Target :'),
-                            SizedBox(width: minimumPadding),
+                            const SizedBox(width: minimumPadding),
                             Expanded(
                               child: TextFormField(
                                 initialValue:
                                     Plans.monthlyNearMissTarget.toString(),
-                                style: (TextStyle(
+                                style: (const TextStyle(
                                     color: KelloggColors.darkBlue,
                                     fontWeight: FontWeight.w400)),
                                 keyboardType: TextInputType.number,
@@ -219,7 +233,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                 cursorColor: Colors.white,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  border: OutlineInputBorder(
+                                  border: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.darkBlue,
                                         width: textFieldBorderRadius),
@@ -229,7 +243,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                   errorText: _monthlyNearMissTarget_validate
                                       ? missingValueErrorText
                                       : null,
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.yellow,
                                         width: textFieldFocusedBorderRadius),
@@ -244,18 +258,18 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                             ),
                           ],
                         ),
-                        SizedBox(height: defaultPadding),
+                        const SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             adminHeading('Medium Risk Assessment Boundary :'),
-                            SizedBox(width: minimumPadding),
+                            const SizedBox(width: minimumPadding),
                             Expanded(
                               child: TextFormField(
                                 initialValue:
                                     Plans.mediumRisksBoundary.toString(),
-                                style: (TextStyle(
+                                style: (const TextStyle(
                                     color: KelloggColors.darkBlue,
                                     fontWeight: FontWeight.w400)),
                                 keyboardType: TextInputType.number,
@@ -265,7 +279,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                 cursorColor: Colors.white,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  border: OutlineInputBorder(
+                                  border: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.darkBlue,
                                         width: textFieldBorderRadius),
@@ -275,7 +289,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                   errorText: _mediumRisksBoundary_validate
                                       ? missingValueErrorText
                                       : null,
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.yellow,
                                         width: textFieldFocusedBorderRadius),
@@ -290,18 +304,18 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                             ),
                           ],
                         ),
-                        SizedBox(height: defaultPadding),
+                        const SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             adminHeading('High Risk Assessment Boundary :'),
-                            SizedBox(width: minimumPadding),
+                            const SizedBox(width: minimumPadding),
                             Expanded(
                               child: TextFormField(
                                 initialValue:
                                     Plans.highRisksBoundary.toString(),
-                                style: (TextStyle(
+                                style: (const TextStyle(
                                     color: KelloggColors.darkBlue,
                                     fontWeight: FontWeight.w400)),
                                 keyboardType: TextInputType.number,
@@ -311,7 +325,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                 cursorColor: Colors.white,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  border: OutlineInputBorder(
+                                  border: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.darkBlue,
                                         width: textFieldBorderRadius),
@@ -321,7 +335,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                   errorText: _highRisksBoundary_validate
                                       ? missingValueErrorText
                                       : null,
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.yellow,
                                         width: textFieldFocusedBorderRadius),
@@ -336,25 +350,26 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                             ),
                           ],
                         ),
-                        SizedBox(height: defaultPadding),
+                        const SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             adminHeading('Maximum Absence% Target :'),
-                            SizedBox(width: minimumPadding),
+                            const SizedBox(width: minimumPadding),
                             Expanded(
                               child: TextFormField(
-                                initialValue: Plans.target_absence.toString(),
-                                style: (TextStyle(
+                                initialValue: Plans.targetAbsence.toString(),
+                                style: (const TextStyle(
                                     color: KelloggColors.darkBlue,
                                     fontWeight: FontWeight.w400)),
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
                                 cursorColor: Colors.white,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  border: OutlineInputBorder(
+                                  border: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.darkBlue,
                                         width: textFieldBorderRadius),
@@ -364,7 +379,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                   errorText: _target_absence_validate
                                       ? missingValueErrorText
                                       : null,
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.yellow,
                                         width: textFieldFocusedBorderRadius),
@@ -373,32 +388,33 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                   ),
                                 ),
                                 onChanged: (value) {
-                                  target_absence = value;
+                                  targetAbsence = value;
                                 },
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: defaultPadding),
+                        const SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             adminHeading('Plant Scrap Target :'),
-                            SizedBox(width: minimumPadding),
+                            const SizedBox(width: minimumPadding),
                             Expanded(
                               child: TextFormField(
                                 initialValue:
                                     Plans.universalTargetScrap.toString(),
-                                style: (TextStyle(
+                                style: (const TextStyle(
                                     color: KelloggColors.darkBlue,
                                     fontWeight: FontWeight.w400)),
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
                                 cursorColor: Colors.white,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  border: OutlineInputBorder(
+                                  border: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.darkBlue,
                                         width: textFieldBorderRadius),
@@ -408,7 +424,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                   errorText: _universalTargetScrap_validate
                                       ? missingValueErrorText
                                       : null,
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.yellow,
                                         width: textFieldFocusedBorderRadius),
@@ -423,26 +439,27 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                             ),
                           ],
                         ),
-                        SizedBox(height: defaultPadding),
+                        const SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             adminHeading('Plant Film Waste Target :'),
-                            SizedBox(width: minimumPadding),
+                            const SizedBox(width: minimumPadding),
                             Expanded(
                               child: TextFormField(
                                 initialValue:
                                     Plans.universalTargetFilmWaste.toString(),
-                                style: (TextStyle(
+                                style: (const TextStyle(
                                     color: KelloggColors.darkBlue,
                                     fontWeight: FontWeight.w400)),
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
                                 cursorColor: Colors.white,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  border: OutlineInputBorder(
+                                  border: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.darkBlue,
                                         width: textFieldBorderRadius),
@@ -452,7 +469,7 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                   errorText: _universalTargetFilmWaste_validate
                                       ? missingValueErrorText
                                       : null,
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: KelloggColors.yellow,
                                         width: textFieldFocusedBorderRadius),
@@ -467,7 +484,188 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                             ),
                           ],
                         ),
-                        SizedBox(height: defaultPadding),
+                        const SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            adminHeading('Electric Consumption Target :'),
+                            const SizedBox(width: minimumPadding),
+                            Expanded(
+                              child: TextFormField(
+                                initialValue:
+                                    Plans.electConsumptionTarget.toString(),
+                                style: (const TextStyle(
+                                    color: KelloggColors.darkBlue,
+                                    fontWeight: FontWeight.w400)),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
+                                cursorColor: Colors.white,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: KelloggColors.darkBlue,
+                                        width: textFieldBorderRadius),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(textFieldRadius)),
+                                  ),
+                                  errorText: _elect_consumption_validate
+                                      ? missingValueErrorText
+                                      : null,
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: KelloggColors.yellow,
+                                        width: textFieldFocusedBorderRadius),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(textFieldRadius)),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  electConsumptionTarget = value;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            adminHeading('Water Consumption Target :'),
+                            const SizedBox(width: minimumPadding),
+                            Expanded(
+                              child: TextFormField(
+                                initialValue:
+                                    Plans.waterConsumptionTarget.toString(),
+                                style: (const TextStyle(
+                                    color: KelloggColors.darkBlue,
+                                    fontWeight: FontWeight.w400)),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
+                                cursorColor: Colors.white,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: KelloggColors.darkBlue,
+                                        width: textFieldBorderRadius),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(textFieldRadius)),
+                                  ),
+                                  errorText: _water_consumption_validate
+                                      ? missingValueErrorText
+                                      : null,
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: KelloggColors.yellow,
+                                        width: textFieldFocusedBorderRadius),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(textFieldRadius)),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  waterConsumptionTarget = value;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            adminHeading('Gas Consumption Target :'),
+                            const SizedBox(width: minimumPadding),
+                            Expanded(
+                              child: TextFormField(
+                                initialValue:
+                                    Plans.gasConsumptionTarget.toString(),
+                                style: (const TextStyle(
+                                    color: KelloggColors.darkBlue,
+                                    fontWeight: FontWeight.w400)),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
+                                cursorColor: Colors.white,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: KelloggColors.darkBlue,
+                                        width: textFieldBorderRadius),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(textFieldRadius)),
+                                  ),
+                                  errorText: _gas_consumption_validate
+                                      ? missingValueErrorText
+                                      : null,
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: KelloggColors.yellow,
+                                        width: textFieldFocusedBorderRadius),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(textFieldRadius)),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  gasConsumptionTarget = value;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: defaultPadding),
+                        /////////////////////////////////////////////////////////////////////////
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            adminHeading('Organic Waste Consumption Target :'),
+                            const SizedBox(width: minimumPadding),
+                            Expanded(
+                              child: TextFormField(
+                                initialValue: Plans
+                                    .organicWasteConsumptionTarget
+                                    .toString(),
+                                style: (const TextStyle(
+                                    color: KelloggColors.darkBlue,
+                                    fontWeight: FontWeight.w400)),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
+                                cursorColor: Colors.white,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: KelloggColors.darkBlue,
+                                        width: textFieldBorderRadius),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(textFieldRadius)),
+                                  ),
+                                  errorText: _organic_waste_consumption_validate
+                                      ? missingValueErrorText
+                                      : null,
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: KelloggColors.yellow,
+                                        width: textFieldFocusedBorderRadius),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(textFieldRadius)),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  organicWasteConsumptionTarget = value;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: defaultPadding),
                         /////////////////////////////////////////////////////////////////////////
                         Padding(
                           padding: const EdgeInsets.all(minimumPadding),
@@ -489,11 +687,19 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                   _targetOverWeightAbove_validate =
                                       emptyField(targetOverWeightAbove);
                                   _target_absence_validate =
-                                      emptyField(target_absence);
+                                      emptyField(targetAbsence);
                                   _universalTargetFilmWaste_validate =
                                       emptyField(universalTargetFilmWaste);
                                   _universalTargetScrap_validate =
                                       emptyField(universalTargetScrap);
+                                  _water_consumption_validate =
+                                      emptyField(waterConsumptionTarget);
+                                  _elect_consumption_validate =
+                                      emptyField(electConsumptionTarget);
+                                  _gas_consumption_validate =
+                                      emptyField(gasConsumptionTarget);
+                                  _organic_waste_consumption_validate =
+                                      emptyField(organicWasteConsumptionTarget);
                                 });
                                 try {
                                   if (!_highRisksBoundary_validate &&
@@ -503,6 +709,10 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                       !_targetOEE_validate &&
                                       !_targetOverWeightAbove_validate &&
                                       !_universalTargetScrap_validate &&
+                                      !_elect_consumption_validate &&
+                                      !_water_consumption_validate &&
+                                      !_gas_consumption_validate &&
+                                      !_organic_waste_consumption_validate &&
                                       !_universalTargetFilmWaste_validate) {
                                     Plans.updateRules(
                                       context,
@@ -512,13 +722,18 @@ class _AdminEditTargetsState extends State<AdminEditTargets> {
                                       int.parse(monthlyNearMissTarget),
                                       int.parse(mediumRisksBoundary),
                                       int.parse(highRisksBoundary),
-                                      double.parse(target_absence),
+                                      double.parse(targetAbsence),
                                       double.parse(universalTargetScrap),
                                       double.parse(universalTargetFilmWaste),
+                                      double.parse(electConsumptionTarget),
+                                      double.parse(waterConsumptionTarget),
+                                      double.parse(gasConsumptionTarget),
+                                      double.parse(
+                                          organicWasteConsumptionTarget),
                                     );
                                   } else {
                                     ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
+                                        .showSnackBar(const SnackBar(
                                       content: Text(submissionErrorText),
                                     ));
                                   }

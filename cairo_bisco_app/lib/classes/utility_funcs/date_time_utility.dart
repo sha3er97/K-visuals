@@ -1,44 +1,44 @@
 import 'package:flutter/material.dart';
 
 String getMonth() {
-  DateTime now = new DateTime.now();
+  DateTime now = DateTime.now();
   if (now.hour < 16) //before 4 pm we are still yesterday
   {
-    now = now.subtract(Duration(days: 1));
+    now = now.subtract(const Duration(days: 1));
   }
   return now.month.toString();
 }
 
 String getYear() {
-  DateTime now = new DateTime.now();
+  DateTime now = DateTime.now();
   if (now.hour < 16) //before 4 pm we are still yesterday
   {
-    now = now.subtract(Duration(days: 1));
+    now = now.subtract(const Duration(days: 1));
   }
   return now.year.toString();
 }
 
 String getDay() {
-  DateTime now = new DateTime.now();
+  DateTime now = DateTime.now();
 
   if (now.hour < 16) //before 4 pm we are still yesterday
   {
-    now = now.subtract(Duration(days: 1));
+    now = now.subtract(const Duration(days: 1));
   }
   return now.day.toString();
 }
 
 String todayDateText() {
-  DateTime now = new DateTime.now();
+  DateTime now = DateTime.now();
 
   if (now.hour < 16) //before 4 pm we are still yesterday
   {
-    now = now.subtract(Duration(days: 1));
+    now = now.subtract(const Duration(days: 1));
   }
   int day = now.day;
   int year = now.year;
   int month = now.month;
-  return day.toString() + "/" + month.toString() + "/" + year.toString();
+  return "$day/$month/$year";
 }
 
 bool isDayInInterval(
@@ -60,12 +60,21 @@ bool isDayInInterval(
 }
 
 String constructDateString(int day, int month, int year) {
-  return day.toString() + "/" + month.toString() + "/" + year.toString();
+  return "$day/$month/$year";
 }
 
 String constructTimeString(context, int hour, int minute) {
   return TimeOfDay(hour: hour, minute: minute).format(context);
   //return hour.toString() + ":" + minute.toString();
+}
+
+int constructTimeSort(int day, int month, int year, int hour, int minute) {
+  // return DateTime(year,month,day,hour, minute).toString();
+  return minute +
+      hour * 60 +
+      day * 24 * 60 +
+      month * 30 * 24 * 60 +
+      year * 365 * 24 * 60;
 }
 
 int getTimeDifference(
@@ -79,25 +88,34 @@ int getTimeDifference(
     int minute_from,
     int hour_to,
     int minute_to) {
-  final from =
-      new DateTime(yearFrom, monthFrom, dayFrom, hour_from, minute_from);
-  final to = new DateTime(yearTo, monthTo, dayTo, hour_to, minute_to);
+  final from = DateTime(yearFrom, monthFrom, dayFrom, hour_from, minute_from);
+  final to = DateTime(yearTo, monthTo, dayTo, hour_to, minute_to);
   final diff = to.difference(from);
   return diff.inMinutes;
 }
 
+int getPreviousMonth(int month) {
+  return month == 1 ? 12 : month - 1;
+}
+
+DateTime constructDateObjectFromString(String causeName) {
+  List<String> parts = causeName.split('/');
+  return constructDateObject(
+      int.parse(parts[0]), int.parse(parts[1]), int.parse(parts[2]));
+}
+
 DateTime constructDateObject(int day, int month, int year) {
-  return new DateTime(year, month, day);
+  return DateTime(year, month, day);
 }
 
 DateTime constructTimeObject(
     int day, int month, int year, int hour, int minute) {
-  return new DateTime(year, month, day, hour, minute);
+  return DateTime(year, month, day, hour, minute);
 }
 
 int getWeekNumber(int day, int month, int year) {
-  final yearStart = new DateTime(year, 1, 1);
-  final reportDate = new DateTime(year, month, day);
+  final yearStart = DateTime(year, 1, 1);
+  final reportDate = DateTime(year, month, day);
   final diff = reportDate.difference(yearStart);
 //   final firstMonday = startOfYear.weekday;
 //   final daysInFirstWeek = 8 - firstMonday;
@@ -111,10 +129,10 @@ int getWeekNumber(int day, int month, int year) {
 }
 
 bool inEditPeriod(int day, int month, int year) {
-  DateTime now = new DateTime.now();
+  DateTime now = DateTime.now();
 
-  final reportDate = new DateTime(year, month, day);
-  final authorityEnd = now.add(Duration(days: 2));
+  final reportDate = DateTime(year, month, day);
+  final authorityEnd = now.add(const Duration(days: 2));
   final diff = reportDate.difference(authorityEnd);
   return (diff.inDays <= 2 && year == now.year && month == now.month);
 }
@@ -131,7 +149,7 @@ List<DateTime> getDaysInInterval(
   DateTime tempDay = start;
   while (tempDay.isBefore(end)) {
     out.add(tempDay);
-    tempDay = tempDay.add(Duration(days: 1));
+    tempDay = tempDay.add(const Duration(days: 1));
   }
   out.add(end);
   return out;
@@ -168,12 +186,11 @@ bool isOverlappingInterval(
     int minute_from2,
     int hour_to2,
     int minute_to2) {
-  final from =
-      new DateTime(yearFrom, monthFrom, dayFrom, hour_from, minute_from);
-  final to = new DateTime(yearTo, monthTo, dayTo, hour_to, minute_to);
+  final from = DateTime(yearFrom, monthFrom, dayFrom, hour_from, minute_from);
+  final to = DateTime(yearTo, monthTo, dayTo, hour_to, minute_to);
   final from2 =
-      new DateTime(yearFrom2, monthFrom2, dayFrom2, hour_from2, minute_from2);
-  final to2 = new DateTime(yearTo2, monthTo2, dayTo2, hour_to2, minute_to2);
+      DateTime(yearFrom2, monthFrom2, dayFrom2, hour_from2, minute_from2);
+  final to2 = DateTime(yearTo2, monthTo2, dayTo2, hour_to2, minute_to2);
   return (isTimeInInterval(from2, from, to) ||
       isTimeInInterval(to2, from, to) ||
       isTimeInInterval(to, from2, to2) ||
@@ -201,12 +218,11 @@ List<DateTime> getOverlappingInterval(
     int minute_from2,
     int hour_to2,
     int minute_to2) {
-  final from =
-      new DateTime(yearFrom, monthFrom, dayFrom, hour_from, minute_from);
-  final to = new DateTime(yearTo, monthTo, dayTo, hour_to, minute_to);
+  final from = DateTime(yearFrom, monthFrom, dayFrom, hour_from, minute_from);
+  final to = DateTime(yearTo, monthTo, dayTo, hour_to, minute_to);
   final from2 =
-      new DateTime(yearFrom2, monthFrom2, dayFrom2, hour_from2, minute_from2);
-  final to2 = new DateTime(yearTo2, monthTo2, dayTo2, hour_to2, minute_to2);
+      DateTime(yearFrom2, monthFrom2, dayFrom2, hour_from2, minute_from2);
+  final to2 = DateTime(yearTo2, monthTo2, dayTo2, hour_to2, minute_to2);
   return [
     from.compareTo(from2) < 0 ? from : from2, //take min
     to.compareTo(to2) > 0 ? to : to2 //take max

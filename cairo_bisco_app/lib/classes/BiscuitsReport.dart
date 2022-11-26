@@ -475,7 +475,7 @@ class BiscuitsReport {
           'mc4WasteKg': mc4WasteKg,
         })
         .then((value) => {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("Report Updated"),
               )),
               Navigator.push(context,
@@ -506,7 +506,7 @@ class BiscuitsReport {
         .doc(id)
         .delete()
         .then((value) => {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("Report Deleted"),
               )),
               Navigator.push(context,
@@ -519,7 +519,7 @@ class BiscuitsReport {
             });
   }
 
-  static HashMap<String, BiscuitsReport> getAllReportsOfInterval(
+  static MiniProductionReport getProductionOfInterval(
     List<QueryDocumentSnapshot<BiscuitsReport>> reportsList,
     int month_from,
     int month_to,
@@ -527,7 +527,10 @@ class BiscuitsReport {
     int day_to,
     int year,
   ) {
-    HashMap hashMap = new HashMap<String, BiscuitsReport>();
+    double temp_productionInKg = 0.0;
+    int temp_productionInCartons = 0;
+    int temp_month = month_from, temp_day = day_from, temp_year = year;
+
     for (var report in reportsList) {
       if (!isDayInInterval(
         report.data().day,
@@ -538,8 +541,62 @@ class BiscuitsReport {
         day_to,
         year,
       )) {
-        print('debug :: BiscuitsReport filtered out due to its date --> ' +
-            report.data().day.toString());
+        // print('debug :: BarReport filtered out due to its date --> ' +
+        //     report.data().day.toString());
+        continue;
+      }
+      temp_productionInCartons += report.data().productionInCartons;
+      temp_productionInKg += calculateProductionKg(
+          report.data(), report.data().productionInCartons);
+      temp_month = report.data().month;
+      temp_day = report.data().day;
+      temp_year = report.data().year;
+    }
+    //return the total in capsulized form
+    return MiniProductionReport(
+      skuName: '-',
+      shift_index: -1,
+      line_index: -1,
+      area: -1,
+      year: temp_year,
+      month: temp_month,
+      day: temp_day,
+      scrap: 0,
+      productionInCartons: temp_productionInCartons,
+      productionInKg: temp_productionInKg,
+      planInKg: 0,
+      totalFilmWasted: 0,
+      totalFilmUsed: 0,
+      shiftProductionPlan: 0,
+      theoreticalAverage: 0,
+      pmMUV: 0,
+      rmMUV: 0,
+      plannedHours: 0,
+      rework: 0,
+    );
+  }
+
+  static HashMap<String, BiscuitsReport> getAllReportsOfInterval(
+    List<QueryDocumentSnapshot<BiscuitsReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+  ) {
+    HashMap hashMap = HashMap<String, BiscuitsReport>();
+    for (var report in reportsList) {
+      if (!isDayInInterval(
+        report.data().day,
+        report.data().month,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+        year,
+      )) {
+        print(
+            'debug :: BiscuitsReport filtered out due to its date --> ${report.data().day}');
         continue;
       }
       hashMap[report.id] = report.data();
@@ -641,8 +698,7 @@ class BiscuitsReport {
         print('debug :: BiscuitsReport chosen in first if');
       } else {
         print(
-            'debug :: BiscuitsReport filtered out due to conditions ,  lineNum =' +
-                lineNumRequired.toString());
+            'debug :: BiscuitsReport filtered out due to conditions ,  lineNum =$lineNumRequired');
       }
     }
     //return the total in capsulized form

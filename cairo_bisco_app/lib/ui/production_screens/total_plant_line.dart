@@ -233,7 +233,7 @@ class _TotalPlantLineState extends State<TotalPlantLine> {
                                                             int.parse(to_day),
                                                             int.parse(
                                                                 chosenYear),
-                                                            WAFER_AREA,
+                                                            TOTAL_PLANT,
                                                           ).values.toList();
                                                           List<
                                                                   QueryDocumentSnapshot<

@@ -517,6 +517,63 @@ class MaamoulReport {
     return hashMap as HashMap<String, MaamoulReport>;
   }
 
+  static MiniProductionReport getProductionOfInterval(
+    List<QueryDocumentSnapshot<MaamoulReport>> reportsList,
+    int month_from,
+    int month_to,
+    int day_from,
+    int day_to,
+    int year,
+  ) {
+    double temp_productionInKg = 0.0;
+    int temp_productionInCartons = 0;
+    int temp_month = month_from, temp_day = day_from, temp_year = year;
+
+    for (var report in reportsList) {
+      if (!isDayInInterval(
+        report.data().day,
+        report.data().month,
+        month_from,
+        month_to,
+        day_from,
+        day_to,
+        year,
+      )) {
+        // print('debug :: BarReport filtered out due to its date --> ' +
+        //     report.data().day.toString());
+        continue;
+      }
+      temp_productionInCartons += report.data().productionInCartons;
+      temp_productionInKg += calculateProductionKg(
+          report.data(), report.data().productionInCartons);
+      temp_month = report.data().month;
+      temp_day = report.data().day;
+      temp_year = report.data().year;
+    }
+    //return the total in capsulized form
+    return MiniProductionReport(
+      skuName: '-',
+      shift_index: -1,
+      line_index: -1,
+      area: -1,
+      year: temp_year,
+      month: temp_month,
+      day: temp_day,
+      scrap: 0,
+      productionInCartons: temp_productionInCartons,
+      productionInKg: temp_productionInKg,
+      planInKg: 0,
+      totalFilmWasted: 0,
+      totalFilmUsed: 0,
+      shiftProductionPlan: 0,
+      theoreticalAverage: 0,
+      pmMUV: 0,
+      rmMUV: 0,
+      plannedHours: 0,
+      rework: 0,
+    );
+  }
+
   static MiniProductionReport getFilteredReportOfInterval(
     List<QueryDocumentSnapshot<MaamoulReport>> reportsList,
     int month_from,
