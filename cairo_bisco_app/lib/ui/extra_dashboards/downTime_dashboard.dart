@@ -658,7 +658,7 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: minimumPadding),
                       child: Text(
-                        "is Stopped ? : ",
+                        "is Product Still Packaging ? : ",
                         style: TextStyle(
                           color: KelloggColors.darkRed,
                           fontSize: aboveMediumFontSize,
@@ -707,12 +707,13 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                     color: KelloggColors.darkRed,
                     onPressed: () {
                       if (int.parse(_selectedYearTo) !=
-                          int.parse(_selectedYearFrom))
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          int.parse(_selectedYearFrom)) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
                           content: Text(
                               "Error : invalid interval (reports of same year only are allowed)"),
                         ));
-                      else {
+                      } else {
                         DateTime dateFrom = DateTime(
                             int.parse(_selectedYearTo),
                             int.parse(_selectedMonthFrom),
@@ -727,8 +728,9 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                           setState(() {
                             _chartLimitValidate = emptyField(chartLimit) &&
                                 int.parse(chartLimit) > 0;
-                            if (_chartLimitValidate)
+                            if (_chartLimitValidate) {
                               chartLimit = causesDisplayDefaultLimit.toString();
+                            }
 
                             tempCausesList =
                                 DownTimeReport.getCausesCountsOfInterval(
@@ -777,11 +779,13 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                                     correspondingLines[refNum]
                                         .indexOf(selectedProdLine));
                           });
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
                             content: Text("Report refreshed"),
                           ));
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
                             content: Text(
                                 "Error : invalid interval (from date must be <= to date)"),
                           ));
@@ -960,7 +964,7 @@ class _DownTimeDashboardState extends State<DownTimeDashboard> {
                                             child: Column(
                                               children: [
                                                 aboveMediumHeading(
-                                                    "Did the line stop ?"),
+                                                    "Is Product still packaging ?"),
                                                 SizedBox(
                                                   height: minimumPadding,
                                                 ),

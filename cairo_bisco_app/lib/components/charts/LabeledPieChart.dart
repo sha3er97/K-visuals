@@ -13,7 +13,7 @@ class PieOutsideLabelChart extends StatelessWidget {
 
   /// Creates a [PieChart] with sample data .
   factory PieOutsideLabelChart.withSampleData() {
-    return new PieOutsideLabelChart(
+    return PieOutsideLabelChart(
       _createSampleData(),
       animate: true,
     );
@@ -22,21 +22,21 @@ class PieOutsideLabelChart extends StatelessWidget {
   /// Creates a [PieChart] with real data.
   factory PieOutsideLabelChart.withYNClassificationData(
       List<CauseCount> causesList) {
-    return new PieOutsideLabelChart(
+    return PieOutsideLabelChart(
       _get_YN_ClassificationData(causesList),
       animate: true,
     );
   }
 
   factory PieOutsideLabelChart.withFiveShades(List<CauseCount> causesList) {
-    return new PieOutsideLabelChart(
+    return PieOutsideLabelChart(
       _FiveShadesData(causesList),
       animate: true,
     );
   }
 
   factory PieOutsideLabelChart.withTenShades(List<CauseCount> causesList) {
-    return new PieOutsideLabelChart(
+    return PieOutsideLabelChart(
       _TenShadesData(causesList),
       animate: true,
     );
@@ -44,7 +44,7 @@ class PieOutsideLabelChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new charts.PieChart(seriesList,
+    return charts.PieChart(seriesList,
         animate: animate,
         // Add an [ArcLabelDecorator] configured to render labels outside of the
         // arc with a leader line.
@@ -53,13 +53,13 @@ class PieOutsideLabelChart extends StatelessWidget {
         // setting [insideLabelStyleSpec] and [outsideLabelStyleSpec].
         //
         // Example configuring different styles for inside/outside:
-        //       new charts.ArcLabelDecorator(
-        //          insideLabelStyleSpec: new charts.TextStyleSpec(...),
-        //          outsideLabelStyleSpec: new charts.TextStyleSpec(...)),
-        defaultRenderer: new charts.ArcRendererConfig(arcRendererDecorators: [
-          new charts.ArcLabelDecorator(
+        //        charts.ArcLabelDecorator(
+        //          insideLabelStyleSpec:  charts.TextStyleSpec(...),
+        //          outsideLabelStyleSpec:  charts.TextStyleSpec(...)),
+        defaultRenderer: charts.ArcRendererConfig(arcRendererDecorators: [
+          charts.ArcLabelDecorator(
             labelPosition: charts.ArcLabelPosition.outside,
-            outsideLabelStyleSpec: new charts.TextStyleSpec(
+            outsideLabelStyleSpec: charts.TextStyleSpec(
               color: charts.Color.black,
               fontSize: aboveMediumFontSize.toInt(),
               fontFamily: 'MyFont',
@@ -71,7 +71,7 @@ class PieOutsideLabelChart extends StatelessWidget {
   static List<charts.Series<CauseCount, String>> _FiveShadesData(
       List<CauseCount> causesList) {
     return [
-      new charts.Series<CauseCount, String>(
+      charts.Series<CauseCount, String>(
         id: '',
         domainFn: (CauseCount cause, _) => cause.causeName,
         measureFn: (CauseCount cause, _) => cause.count,
@@ -88,7 +88,7 @@ class PieOutsideLabelChart extends StatelessWidget {
   static List<charts.Series<CauseCount, String>> _TenShadesData(
       List<CauseCount> causesList) {
     return [
-      new charts.Series<CauseCount, String>(
+      charts.Series<CauseCount, String>(
         id: '',
         domainFn: (CauseCount cause, _) => cause.causeName,
         measureFn: (CauseCount cause, _) => cause.count,
@@ -105,7 +105,7 @@ class PieOutsideLabelChart extends StatelessWidget {
   static List<charts.Series<CauseCount, String>> _get_YN_ClassificationData(
       List<CauseCount> causesList) {
     return [
-      new charts.Series<CauseCount, String>(
+      charts.Series<CauseCount, String>(
         id: 'Y/N',
         domainFn: (CauseCount cause, _) => cause.causeName,
         measureFn: (CauseCount cause, _) => cause.count,
@@ -122,13 +122,13 @@ class PieOutsideLabelChart extends StatelessWidget {
   /// Create one series with sample hard coded data.
   static List<charts.Series<CauseCount, String>> _createSampleData() {
     final data = [
-      new CauseCount(y_nDesc[0], 5),
-      new CauseCount(y_nDesc[1], 75),
-      new CauseCount(y_nDesc[2], 25),
+      CauseCount(y_nDesc[0], 5),
+      CauseCount(y_nDesc[1], 75),
+      CauseCount(y_nDesc[2], 25),
     ];
 
     return [
-      new charts.Series<CauseCount, String>(
+      charts.Series<CauseCount, String>(
         id: 'Y/N',
         domainFn: (CauseCount cause, _) => cause.causeName,
         measureFn: (CauseCount cause, _) => cause.count,

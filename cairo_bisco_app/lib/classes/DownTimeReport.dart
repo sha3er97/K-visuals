@@ -397,8 +397,8 @@ class DownTimeReport {
         day_to,
         year,
       )) {
-        print('debug :: DownTimeReport filtered out due to its date --> ' +
-            report.data().dayFrom.toString());
+        // print('debug :: DownTimeReport filtered out due to its date --> ' +
+        //     report.data().dayFrom.toString());
         continue;
       }
       if (report.data().area == refNum || refNum == TOTAL_PLANT)
@@ -424,8 +424,8 @@ class DownTimeReport {
     HashMap<String, CauseCount> tempMap = new HashMap<String, CauseCount>();
     for (var report in reportsList) {
       if (report.data().isApproved == NO) {
-        print('debug :: DownTimeReport filtered out due to its approval --> ' +
-            report.data().isApproved.toString());
+        // print('debug :: DownTimeReport filtered out due to its approval --> ' +
+        //     report.data().isApproved.toString());
         continue;
       }
       if (!isDayInInterval(
@@ -437,8 +437,8 @@ class DownTimeReport {
         day_to,
         year,
       )) {
-        print('debug :: DownTimeReport filtered out due to its date --> ' +
-            report.data().dayFrom.toString());
+        // print('debug :: DownTimeReport filtered out due to its date --> ' +
+        //     report.data().dayFrom.toString());
         continue;
       }
       if (intFilterCheck(report.data().area, areaRequired, 3) &&
@@ -479,7 +479,7 @@ class DownTimeReport {
                   report.data().minute_to));
         }
       } else {
-        print('debug :: DownTimeReport filtered out due to conditions');
+        // print('debug :: DownTimeReport filtered out due to conditions');
       }
     }
     return tempMap.values.toList();
@@ -502,8 +502,8 @@ class DownTimeReport {
     HashMap<String, CauseCount> tempMap = new HashMap<String, CauseCount>();
     for (var report in reportsList) {
       if (report.data().isApproved == NO) {
-        print('debug :: DownTimeReport filtered out due to its approval --> ' +
-            report.data().isApproved.toString());
+        // print('debug :: DownTimeReport filtered out due to its approval --> ' +
+        //     report.data().isApproved.toString());
         continue;
       }
       if (!isDayInInterval(
@@ -515,8 +515,8 @@ class DownTimeReport {
         day_to,
         year,
       )) {
-        print('debug :: DownTimeReport filtered out due to its date --> ' +
-            report.data().dayFrom.toString());
+        // print('debug :: DownTimeReport filtered out due to its date --> ' +
+        //     report.data().dayFrom.toString());
         continue;
       }
       if (intFilterCheck(report.data().area, areaRequired, 3) &&
@@ -528,9 +528,9 @@ class DownTimeReport {
               report.data().wfCategory, wfCategory, wfCategories[0]) &&
           intFilterCheck(report.data().isStopped_index, indexOfIsStopped, 0) &&
           intFilterCheck(report.data().line_index, line_index, 0)) {
-        if (tempMap[getReversedStoppedIndex(report).toString()] == null) {
-          tempMap[getReversedStoppedIndex(report).toString()] = new CauseCount(
-              y_nDesc[getReversedStoppedIndex(report)],
+        if (tempMap[(report.data().isStopped_index).toString()] == null) {
+          tempMap[(report.data().isStopped_index).toString()] = CauseCount(
+              y_nDesc[(report.data().isStopped_index)],
               getTimeDifference(
                   report.data().yearFrom,
                   report.data().monthFrom,
@@ -543,7 +543,7 @@ class DownTimeReport {
                   report.data().hour_to,
                   report.data().minute_to));
         } else {
-          tempMap[getReversedStoppedIndex(report).toString()]!.incrementCount(
+          tempMap[(report.data().isStopped_index).toString()]!.incrementCount(
               getTimeDifference(
                   report.data().yearFrom,
                   report.data().monthFrom,
@@ -557,7 +557,7 @@ class DownTimeReport {
                   report.data().minute_to));
         }
       } else {
-        print('debug :: DownTimeReport filtered out due to conditions');
+        // print('debug :: DownTimeReport filtered out due to conditions');
       }
     }
     return tempMap.values.toList();
@@ -580,8 +580,8 @@ class DownTimeReport {
     HashMap<String, CauseCount> tempMap = new HashMap<String, CauseCount>();
     for (var report in reportsList) {
       if (report.data().isApproved == NO) {
-        print('debug :: DownTimeReport filtered out due to its approval --> ' +
-            report.data().isApproved.toString());
+        // print('debug :: DownTimeReport filtered out due to its approval --> ' +
+        //     report.data().isApproved.toString());
         continue;
       }
       if (!isDayInInterval(
@@ -593,8 +593,8 @@ class DownTimeReport {
         day_to,
         year,
       )) {
-        print('debug :: DownTimeReport filtered out due to its date --> ' +
-            report.data().dayFrom.toString());
+        // print('debug :: DownTimeReport filtered out due to its date --> ' +
+        //     report.data().dayFrom.toString());
         continue;
       }
       if (intFilterCheck(report.data().area, areaRequired, 3) &&
@@ -607,7 +607,7 @@ class DownTimeReport {
           intFilterCheck(report.data().isStopped_index, indexOfIsStopped, 0) &&
           intFilterCheck(report.data().line_index, line_index, 0)) {
         if (tempMap[report.data().line_index.toString()] == null) {
-          tempMap[report.data().line_index.toString()] = new CauseCount(
+          tempMap[report.data().line_index.toString()] = CauseCount(
               prod_lines4[report.data().line_index - 1],
               getTimeDifference(
                   report.data().yearFrom,
@@ -635,7 +635,7 @@ class DownTimeReport {
                   report.data().minute_to));
         }
       } else {
-        print('debug :: DownTimeReport filtered out due to conditions');
+        // print('debug :: DownTimeReport filtered out due to conditions');
       }
     }
     return tempMap.values.toList();
@@ -763,8 +763,8 @@ class DownTimeReport {
 
     for (var report in reportsList) {
       if (report.data().isApproved == NO) {
-        print('debug :: DownTimeReport filtered out due to its approval --> ' +
-            report.data().isApproved.toString());
+        // print('debug :: DownTimeReport filtered out due to its approval --> ' +
+        //     report.data().isApproved.toString());
         continue;
       }
       if (!isDayInInterval(
@@ -776,8 +776,8 @@ class DownTimeReport {
         day_to,
         year,
       )) {
-        print('debug :: DownTimeReport filtered out due to its date --> ' +
-            report.data().dayFrom.toString());
+        // print('debug :: DownTimeReport filtered out due to its date --> ' +
+        //     report.data().dayFrom.toString());
         continue;
       }
       if (intFilterCheck(report.data().area, areaRequired, TOTAL_PLANT) &&
@@ -893,8 +893,8 @@ class DownTimeReport {
 
     for (var report in reportsList) {
       if (report.data().isApproved == NO) {
-        print('debug :: DownTimeReport filtered out due to its approval --> ' +
-            report.data().isApproved.toString());
+        // print('debug :: DownTimeReport filtered out due to its approval --> ' +
+        //     report.data().isApproved.toString());
         continue;
       }
       if (!isDayInInterval(
@@ -906,8 +906,8 @@ class DownTimeReport {
         day_to,
         year,
       )) {
-        print('debug :: DownTimeReport filtered out due to its date --> ' +
-            report.data().dayFrom.toString());
+        // print('debug :: DownTimeReport filtered out due to its date --> ' +
+        //     report.data().dayFrom.toString());
         continue;
       }
       if (intFilterCheck(report.data().area, areaRequired, TOTAL_PLANT) &&
@@ -950,8 +950,8 @@ class DownTimeReport {
 
     for (var report in reportsList) {
       if (report.data().isApproved == NO) {
-        print('debug :: DownTimeReport filtered out due to its approval --> ' +
-            report.data().isApproved.toString());
+        // print('debug :: DownTimeReport filtered out due to its approval --> ' +
+        //     report.data().isApproved.toString());
         continue;
       }
       if (!isDayInInterval(
@@ -963,8 +963,8 @@ class DownTimeReport {
         day_to,
         year,
       )) {
-        print('debug :: DownTimeReport filtered out due to its date --> ' +
-            report.data().dayFrom.toString());
+        // print('debug :: DownTimeReport filtered out due to its date --> ' +
+        //     report.data().dayFrom.toString());
         continue;
       }
       if (intFilterCheck(report.data().area, areaRequired, TOTAL_PLANT) &&
