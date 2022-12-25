@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:cairo_bisco_app/classes/DownTimeReport.dart';
 import 'package:cairo_bisco_app/classes/EhsReport.dart';
+import 'package:cairo_bisco_app/classes/NRCReport.dart';
 import 'package:cairo_bisco_app/classes/OverWeightReport.dart';
 import 'package:cairo_bisco_app/classes/QfsReport.dart';
 import 'package:cairo_bisco_app/classes/utility_funcs/date_time_utility.dart';
@@ -94,6 +95,9 @@ class OtherExcelUtilities {
         break;
       case DOWNTIME_REPORT:
         sheetObject.insertRowIterables(DownTimeHeaders, 0);
+        break;
+      case NRC_REPORT:
+        sheetObject.insertRowIterables(NrcHeaders, 0);
         break;
     }
   }
@@ -276,5 +280,36 @@ class OtherExcelUtilities {
       9999 * 365 * 24 * 60,
     ];
     sheetObject.appendRow(tot);
+  }
+
+  void insertNrcReportRows(
+    List<NRCReport> reportsList,
+  ) {
+    for (NRCReport report in reportsList) {
+      List<dynamic> row = [
+        constructDateString(report.day, report.month, report.year),
+        prodType[report.plant],
+        report.type,
+        report.reading,
+        report.month,
+        getWeekNumber(report.day, report.month, report.year),
+        report.year,
+      ];
+      // print(row);
+      sheetObject.appendRow(row);
+    }
+    // List<dynamic> tot = [
+    //   'TOTAL',
+    //   totFirstAid,
+    //   totLostTime,
+    //   totRecordable,
+    //   totNearMiss,
+    //   totPreShift,
+    //   '-',
+    //   '-',
+    //   '-',
+    //   '-',
+    // ];
+    // sheetObject.appendRow(tot);
   }
 }

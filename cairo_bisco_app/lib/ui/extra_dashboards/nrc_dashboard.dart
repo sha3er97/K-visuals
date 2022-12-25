@@ -14,9 +14,11 @@ import '../../classes/CauseCount.dart';
 import '../../classes/NRCReport.dart';
 import '../../classes/Plans.dart';
 import '../../classes/utility_funcs/date_time_utility.dart';
+import '../../classes/utility_funcs/other_excel_utilities.dart';
 import '../../classes/values/colors.dart';
 import '../../classes/values/constants.dart';
 import '../../classes/values/form_values.dart';
+import '../../components/alert_dialog.dart';
 import '../../components/buttons/back_btn.dart';
 import '../../components/buttons/rounded_btn.dart';
 import '../error_success_screens/loading_screen.dart';
@@ -994,6 +996,73 @@ class _NRCDashboardState extends State<NRCDashboard> {
                           });
                     }
                   }),
+              /////////////////////////////////////////////////////////////////////////////////////////
+              const SizedBox(height: defaultPadding),
+              Padding(
+                padding: const EdgeInsets.all(minimumPadding),
+                child: Center(
+                  child: RoundedButton(
+                      btnText: 'Export Detailed Report',
+                      color: KelloggColors.green,
+                      onPressed: () {
+                        if (int.parse(_selectedYearTo) !=
+                            int.parse(_selectedYearFrom)) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text(
+                                "Error : invalid interval (reports of same year only are allowed)"),
+                          ));
+                        } else {
+                          DateTime dateFrom = DateTime(
+                              int.parse(_selectedYearTo),
+                              int.parse(_selectedMonthFrom),
+                              int.parse(_selectedDayFrom));
+                          DateTime dateAfter = DateTime(
+                              int.parse(_selectedYearTo),
+                              int.parse(_selectedMonthTo),
+                              int.parse(_selectedDayTo));
+                          if (dateFrom.isBefore(dateAfter) ||
+                              dateFrom.isAtSameMomentAs(dateAfter)) {
+                            calculateInterval();
+                            OtherExcelUtilities util =
+                                OtherExcelUtilities(refNum: NRC_REPORT);
+                            util.insertHeaders();
+                            nrcReportRef
+                                .get()
+                                .then((QuerySnapshot nrcSnapshot) {
+                              try {
+                                List<QueryDocumentSnapshot<NRCReport>>
+                                    nrcReportsList = nrcSnapshot.docs as List<
+                                        QueryDocumentSnapshot<NRCReport>>;
+                                List<NRCReport> allReports =
+                                    NRCReport.getAllReportsOfInterval(
+                                  nrcReportsList,
+                                  validated_month_from,
+                                  validated_month_to,
+                                  validated_day_from,
+                                  validated_day_to,
+                                  validated_year,
+                                  TOTAL_PLANT,
+                                  //ALL_LINES,
+                                ).values.toList();
+
+                                util.insertNrcReportRows(allReports);
+
+                                util.saveExcelFile(
+                                    context,
+                                    validated_day_from.toString(),
+                                    validated_day_to.toString(),
+                                    validated_month_from.toString(),
+                                    validated_month_to.toString());
+                              } catch (e) {
+                                showExcelAlertDialog(context, false, "");
+                              }
+                            });
+                          }
+                        }
+                      }),
+                ),
+              ),
             ],
           ),
         ),

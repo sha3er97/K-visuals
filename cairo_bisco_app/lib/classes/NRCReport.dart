@@ -26,7 +26,7 @@ class NRCReport {
 
   NRCReport.fromJson(Map<String, Object?> json)
       : this(
-    year: json['year']! as int,
+          year: json['year']! as int,
           month: json['month']! as int,
           day: json['day']! as int,
           area: json['area']! as String,
@@ -181,7 +181,9 @@ class NRCReport {
             'debug :: NRCReport filtered out due to its date --> ${report.data().day}');
         continue;
       }
-      if (report.data().plant == refNum) hashMap[report.id] = report.data();
+      if (report.data().plant == refNum || refNum == TOTAL_PLANT) {
+        hashMap[report.id] = report.data();
+      }
     }
     return hashMap as HashMap<String, NRCReport>;
   }

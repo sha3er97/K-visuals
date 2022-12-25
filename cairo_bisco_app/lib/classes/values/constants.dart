@@ -4,8 +4,8 @@ import '../SKU.dart';
 import 'form_values.dart';
 
 /** version configs**/
-const versionNum = '5.0.3'; //edit also in pubspec.yaml
-const versionCode = 21; //edit also in pubspec.yaml
+const versionNum = '5.0.4'; //edit also in pubspec.yaml
+const versionCode = 22; //edit also in pubspec.yaml
 const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.kellogg.bisco.cairo_bisco_app';
 
@@ -164,6 +164,8 @@ List<String> reportTypeNames = <String>[
   'QFS',
   'EHS',
   'Down Time',
+  'People', //unused
+  'NRC',
   '' // more reports
 ];
 Map<String, String> downTimeAuthoritiesMap = {

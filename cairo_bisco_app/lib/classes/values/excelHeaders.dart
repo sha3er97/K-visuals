@@ -241,3 +241,12 @@ List<String> DownTimeHeaders = [
   "Year",
   "Sort Column"
 ];
+List<String> NrcHeaders = [
+  "Date",
+  "المنطقة",
+  "Type",
+  "Reading",
+  "Month",
+  "Week",
+  "Year",
+];
